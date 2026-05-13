@@ -1,8 +1,8 @@
-﻿using Domain.Entities.Base;
-using Domain.Entities.RoleModule;
+﻿using BaridikExpress.Domain.Entities.Base;
+using BaridikExpress.Domain.Entities.RoleModule;
 using Microsoft.AspNetCore.Identity;
 
-namespace Domain.Entities.AuthModules
+namespace BaridikExpress.Domain.Entities.AuthModules
 {
     public class User : IdentityUser,IAuditableEntity
     {

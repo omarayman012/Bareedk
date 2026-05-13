@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Queries.Users
+namespace BaridikExpress.Application.Queries.Users
 {
     public record GetMyPermissionsQuery():IRequest<Result<List<string>>>;
 }

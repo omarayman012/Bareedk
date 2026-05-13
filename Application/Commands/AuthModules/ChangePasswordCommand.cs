@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Application.Commands.AuthModules
+namespace BaridikExpress.Application.Commands.AuthModules
 {
     public record ChangePasswordCommand(string CurrentPassword, string NewPassword, string ConfirmPassword)
         : IRequest<Result<bool>>;

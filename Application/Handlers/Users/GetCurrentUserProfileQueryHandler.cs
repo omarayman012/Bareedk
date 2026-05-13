@@ -1,11 +1,11 @@
-﻿using Application.DTO.User;
-using Application.Interfaces;
+﻿using BaridikExpress.Application.DTO.User;
+using BaridikExpress.Application.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using System.Security.Claims;
 
-namespace Application.Handlers.AuthModules
+namespace BaridikExpress.Application.Handlers.AuthModules
 {
     public class GetCurrentUserProfileQueryHandler(
         IApplicationDbContext context,

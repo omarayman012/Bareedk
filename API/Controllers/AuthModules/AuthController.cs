@@ -1,7 +1,7 @@
-﻿using Application.Queries.Users;
+﻿using BaridikExpress.Application.Queries.Users;
 using Microsoft.AspNetCore.Authorization;
 
-namespace API.Controllers.AuthModules
+namespace BaridikExpress.API.Controllers.AuthModules
 {
     [ApiController]
     [Route("api/[controller]")]

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Application.Handlers.AuthModules
+namespace BaridikExpress.Application.Handlers.AuthModules
 {
     public class UpdateRoleCommandHandler(
         RoleManager<IdentityRole> roleManager,

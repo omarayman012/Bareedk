@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Data.Seeder.IdentitySeed
+namespace BaridikExpress.Infrastructure.Data.Seeder.IdentitySeed
 {
     public static class RoleSeed
     {

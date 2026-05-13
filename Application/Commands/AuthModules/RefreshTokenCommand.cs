@@ -1,7 +1,7 @@
-﻿using Application.DTO.AuthModules;
+﻿using BaridikExpress.Application.DTO.AuthModules;
 using MediatR;
 
-namespace Application.Commands.AuthModules
+namespace BaridikExpress.Application.Commands.AuthModules
 {
  
         public record RefreshTokenCommand(string RefreshToken)

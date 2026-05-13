@@ -1,4 +1,4 @@
-﻿using Application.DTO.User;
+﻿using BaridikExpress.Application.DTO.User;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Commands.AuthModules
+namespace BaridikExpress.Application.Commands.AuthModules
 {
     public record RegisterUserCommand(
     string FullName,

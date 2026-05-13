@@ -1,6 +1,6 @@
 using System.Security.Claims;
 
-namespace Infrastructure.Extensions
+namespace BaridikExpress.Infrastructure.Extensions
 {
     public static class UserExtension
     {

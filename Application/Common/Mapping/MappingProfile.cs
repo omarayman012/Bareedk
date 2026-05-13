@@ -1,6 +1,6 @@
 using AutoMapper;
 
-namespace Application.Common.Mapping;
+namespace BaridikExpress.Application.Common.Mapping;
 
 public class MappingProfile : Profile
 {

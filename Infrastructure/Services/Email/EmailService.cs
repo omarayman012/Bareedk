@@ -1,5 +1,5 @@
-﻿using Application.Interfaces;
-using Domain.Entities.AuthModules;
+﻿using BaridikExpress.Application.Interfaces;
+using BaridikExpress.Domain.Entities.AuthModules;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MimeKit;
 
-namespace  Infrastructure.Services.Email;
+namespace  BaridikExpress.Infrastructure.Services.Email;
 
 public class EmailService(IOptions<MailSettings> mailSettings, ILogger<EmailService> logger) : IEmailSender, IEmailService
 {
@@ -51,7 +51,7 @@ public class EmailService(IOptions<MailSettings> mailSettings, ILogger<EmailServ
                 }
         );
 
-        await SendEmailAsync(user.Email!, "✅ Authentication Module: Change Password", emailBody);
+        await SendEmailAsync(user.Email!, "✅BaridikExpress: Change Password", emailBody);
 
         await Task.CompletedTask;
     }
@@ -65,7 +65,7 @@ public class EmailService(IOptions<MailSettings> mailSettings, ILogger<EmailServ
                 { "{{OTP}}", $"{OTP}" }
                 }
         );
-        await SendEmailAsync(user.Email!, "✅  Authentication Module: Email Confirmation", emailBody);
+        await SendEmailAsync(user.Email!, "✅ BaridikExpress: Email Confirmation", emailBody);
 
         await Task.CompletedTask;
     }

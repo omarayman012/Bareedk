@@ -1,4 +1,4 @@
-﻿using Domain.Entities.AuthModules;
+﻿using BaridikExpress.Domain.Entities.AuthModules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entities.Base
+namespace BaridikExpress.Domain.Entities.Base
 {
     public class BaseEntity: IAuditableEntity
     {

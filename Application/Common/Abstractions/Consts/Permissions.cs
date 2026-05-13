@@ -1,4 +1,4 @@
-﻿namespace Application.Common.Abstractions.Consts
+﻿namespace BaridikExpress.Application.Common.Abstractions.Consts
 {
     public static class Permissions
     {

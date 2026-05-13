@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 
-namespace Domain.Entities.RoleModule
+namespace BaridikExpress.Domain.Entities.RoleModule
 {
     public class RolePermission
     {

@@ -1,4 +1,4 @@
-﻿namespace Application.Commands.Users
+﻿namespace BaridikExpress.Application.Commands.Users
 {
         public record AssignRolesToUserCommand(
             string UserId,

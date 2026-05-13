@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Infrastructure.Migrations
+namespace BaridikExpress.Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class AddIAuditableEntity2 : Migration

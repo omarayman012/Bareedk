@@ -1,7 +1,7 @@
-﻿using Domain.Entities.AuthModules;
+﻿using BaridikExpress.Domain.Entities.AuthModules;
 using Microsoft.AspNetCore.Identity;
 
-namespace Infrastructure.Data.Seeder.IdentitySeed
+namespace BaridikExpress.Infrastructure.Data.Seeder.IdentitySeed
 {
     public static class UserSeed
     {

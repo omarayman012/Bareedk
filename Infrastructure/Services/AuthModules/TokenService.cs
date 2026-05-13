@@ -6,16 +6,16 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using Application.Interfaces.Auth;
-using Domain.Entities.AuthModule;
-using Domain.Entities.AuthModules;
-using Infrastructure.Persistence;
+using BaridikExpress.Application.Interfaces.Auth;
+using BaridikExpress.Domain.Entities.AuthModule;
+using BaridikExpress.Domain.Entities.AuthModules;
+using BaridikExpress.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Infrastructure.Services.AuthModules
+namespace BaridikExpress.Infrastructure.Services.AuthModules
 {
     public class TokenService : ITokenService
     {

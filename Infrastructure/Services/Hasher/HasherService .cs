@@ -1,7 +1,7 @@
-﻿using Application.Interfaces.Auth;
+﻿using BaridikExpress.Application.Interfaces.Auth;
 using Microsoft.AspNetCore.Identity;
 
-namespace Infrastructure.Services.Hasher
+namespace BaridikExpress.Infrastructure.Services.Hasher
 {
     public class HasherService : IHasherService
     {

@@ -1,5 +1,5 @@
-﻿using Domain.Entities.AuthModules;
-using Infrastructure.Persistence;
+﻿using BaridikExpress.Domain.Entities.AuthModules;
+using BaridikExpress.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Data.Seeder.IdentitySeed
+namespace BaridikExpress.Infrastructure.Data.Seeder.IdentitySeed
 {
     public static class IdentitySeeder
     {

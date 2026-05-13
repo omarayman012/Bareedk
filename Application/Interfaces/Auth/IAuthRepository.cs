@@ -1,6 +1,6 @@
-﻿using Application.DTO.Auth;
+﻿using BaridikExpress.Application.DTO.Auth;
 
-namespace Application.Interfaces.Auth
+namespace BaridikExpress.Application.Interfaces.Auth
 {
     public interface IAuthRepository
     {

@@ -1,6 +1,6 @@
-﻿using Application.Commands.Users;
+﻿using BaridikExpress.Application.Commands.Users;
 
-namespace Application.Validators.Users
+namespace BaridikExpress.Application.Validators.Users
 {
         public class AssignRolesToUserValidator : AbstractValidator<AssignRolesToUserCommand>
         {

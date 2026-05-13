@@ -29,8 +29,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Application\Application.csproj" />
-    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\Application\BaridikExpress.Application.csproj" />
+    <ProjectReference Include="..\Infrastructure\BaridikExpress.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

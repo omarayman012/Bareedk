@@ -1,4 +1,4 @@
-﻿namespace Application.Interfaces
+﻿namespace BaridikExpress.Application.Interfaces
 {
     public interface IGetCurrentUserRepository
     {

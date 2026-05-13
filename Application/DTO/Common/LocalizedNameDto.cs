@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Application.DTO.Common;
+namespace BaridikExpress.Application.DTO.Common;
 public sealed class LocalizedNameDto
 {
     [JsonPropertyName("En")]

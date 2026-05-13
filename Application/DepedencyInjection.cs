@@ -1,9 +1,9 @@
-﻿using Application.Behaviors;
-using Application.Validators.AuthModules;
+﻿using BaridikExpress.Application.Behaviors;
+using BaridikExpress.Application.Validators.AuthModules;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
-namespace Application
+namespace BaridikExpress.Application
 {
     public static class DepedencyInjection
     {

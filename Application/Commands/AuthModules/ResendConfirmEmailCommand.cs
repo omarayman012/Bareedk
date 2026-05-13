@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Application.Commands.AuthModules
+namespace BaridikExpress.Application.Commands.AuthModules
 {
     public record ResendConfirmationEmailCommand(string Email)
       : IRequest<Result<bool>>;

@@ -2,7 +2,7 @@ using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace API.Swagger;
+namespace BaridikExpress.API.Swagger;
 
 /// <summary>
 /// Adds OpenAPI <c>examples</c> (Swagger UI shows a select menu) for JSON responses:

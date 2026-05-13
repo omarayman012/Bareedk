@@ -1,6 +1,6 @@
-﻿using Application.Common.Abstractions.Consts;
-using Domain.Entities.RoleModule;
-using Infrastructure.Persistence;
+﻿using BaridikExpress.Application.Common.Abstractions.Consts;
+using BaridikExpress.Domain.Entities.RoleModule;
+using BaridikExpress.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Data.Seeder.IdentitySeed
+namespace BaridikExpress.Infrastructure.Data.Seeder.IdentitySeed
 {
     public static class RolePermissionSeed
     {

@@ -1,7 +1,7 @@
-﻿using Application.DTO.Auth;
-using Application.Queries.AuthModules;
+﻿using BaridikExpress.Application.DTO.Auth;
+using BaridikExpress.Application.Queries.AuthModules;
 
-namespace API.Controllers.RoleModules
+namespace BaridikExpress.API.Controllers.RoleModules
 {
     [ApiController]
     [Route("api/[controller]")]

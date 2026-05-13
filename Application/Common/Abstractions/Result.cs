@@ -1,4 +1,4 @@
-﻿namespace Application.Common.Abstractions
+﻿namespace BaridikExpress.Application.Common.Abstractions
 {
     public class Result<TEntity>
     {

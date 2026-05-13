@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entities.RoleModule
+namespace BaridikExpress.Domain.Entities.RoleModule
 {
     public class Permission
     {

@@ -1,4 +1,4 @@
-﻿namespace Application.Exceptions
+﻿namespace BaridikExpress.Application.Exceptions
 {
     public class NotFoundException : Exception
     {

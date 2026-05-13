@@ -1,4 +1,4 @@
-﻿namespace Application.Handlers.Users
+﻿namespace BaridikExpress.Application.Handlers.Users
 {
     public class GetMyPermissionsQueryHandler(
         IApplicationDbContext dbContext,

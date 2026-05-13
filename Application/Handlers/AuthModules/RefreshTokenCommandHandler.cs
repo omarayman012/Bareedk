@@ -1,8 +1,8 @@
-﻿using Application.DTO.AuthModules;
-using Application.Interfaces.Auth;
+﻿using BaridikExpress.Application.DTO.AuthModules;
+using BaridikExpress.Application.Interfaces.Auth;
 using Microsoft.AspNetCore.Identity;
 
-namespace Application.Handlers.AuthModules
+namespace BaridikExpress.Application.Handlers.AuthModules
 {
     public class RefreshTokenCommandHandler(
         UserManager<User> userManager,

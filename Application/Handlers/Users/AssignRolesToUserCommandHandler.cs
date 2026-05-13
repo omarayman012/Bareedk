@@ -1,7 +1,7 @@
-﻿using Application.Commands.Users;
+﻿using BaridikExpress.Application.Commands.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
-namespace Application.Handlers.Users
+namespace BaridikExpress.Application.Handlers.Users
 {
         public class AssignRolesToUserCommandHandler(
             UserManager<User> userManager,

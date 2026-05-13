@@ -1,10 +1,10 @@
-using Domain.Entities.AuthModule;
-using Domain.Entities.AuthModules;
-using Domain.Entities.RoleModule;
+using BaridikExpress.Domain.Entities.AuthModule;
+using BaridikExpress.Domain.Entities.AuthModules;
+using BaridikExpress.Domain.Entities.RoleModule;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Interfaces
+namespace BaridikExpress.Application.Interfaces
 {
     public interface IApplicationDbContext
     {

@@ -1,15 +1,15 @@
-﻿using Application.Interfaces;
-using Domain.Entities.AuthModule;
-using Domain.Entities.AuthModules;
-using Domain.Entities.Base;
-using Domain.Entities.RoleModule;
-using Infrastructure.Extensions;
+﻿using BaridikExpress.Application.Interfaces;
+using BaridikExpress.Domain.Entities.AuthModule;
+using BaridikExpress.Domain.Entities.AuthModules;
+using BaridikExpress.Domain.Entities.Base;
+using BaridikExpress.Domain.Entities.RoleModule;
+using BaridikExpress.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace Infrastructure.Persistence
+namespace BaridikExpress.Infrastructure.Persistence
 {
     public class ApplicationDbContext : IdentityDbContext<User>, IApplicationDbContext
     {

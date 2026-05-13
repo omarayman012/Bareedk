@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
 
-namespace Application.Handlers.AuthModules
+namespace BaridikExpress.Application.Handlers.AuthModules
 {
     public class DeleteRoleCommandHandler(
         RoleManager<IdentityRole> roleManager,

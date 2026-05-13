@@ -1,8 +1,8 @@
-﻿using Application.Interfaces;
+﻿using BaridikExpress.Application.Interfaces;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
-namespace Infrastructure.Repositories
+namespace BaridikExpress.Infrastructure.Repositories
 {
     public class GetCurrentUserRepository : IGetCurrentUserRepository
     {

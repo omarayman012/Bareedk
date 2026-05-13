@@ -1,7 +1,7 @@
-﻿using Domain.Entities.AuthModule;
-using Domain.Entities.AuthModules;
+﻿using BaridikExpress.Domain.Entities.AuthModule;
+using BaridikExpress.Domain.Entities.AuthModules;
 
-namespace Application.Interfaces.Auth
+namespace BaridikExpress.Application.Interfaces.Auth
 {
     public interface ITokenService
     {

@@ -6,7 +6,7 @@ using System.Globalization;
 using System.Text;
 using System.Text.Json;
 
-namespace Infrastructure.Localizer
+namespace BaridikExpress.Infrastructure.Localizer
 {
     public class JsonStringLocalizer : IStringLocalizer
     {

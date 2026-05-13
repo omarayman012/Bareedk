@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.14.36203.30 d17.14
+# Visual Studio Version 18
+VisualStudioVersion = 18.5.11723.231 stable
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{080CBC25-40C8-43B9-8260-1AB0360A2F73}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaridikExpress.API", "API\BaridikExpress.API.csproj", "{080CBC25-40C8-43B9-8260-1AB0360A2F73}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{F927FF71-BD07-40F5-BD20-68A237A8F0C3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaridikExpress.Application", "Application\BaridikExpress.Application.csproj", "{F927FF71-BD07-40F5-BD20-68A237A8F0C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{BF30703B-094E-43DE-B4D4-ACDEB3CE3BAE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaridikExpress.Domain", "Domain\BaridikExpress.Domain.csproj", "{BF30703B-094E-43DE-B4D4-ACDEB3CE3BAE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{8DF3C082-2F38-4D10-A2C9-049D04BDBD73}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaridikExpress.Infrastructure", "Infrastructure\BaridikExpress.Infrastructure.csproj", "{8DF3C082-2F38-4D10-A2C9-049D04BDBD73}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

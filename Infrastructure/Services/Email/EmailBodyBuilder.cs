@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Services.Email;
+﻿namespace BaridikExpress.Infrastructure.Services.Email;
 
 public static class EmailBodyBuilder
 {

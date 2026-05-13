@@ -1,4 +1,4 @@
-﻿namespace Application.DTO.Auth
+﻿namespace BaridikExpress.Application.DTO.Auth
 {
     public class TokenResult
     {

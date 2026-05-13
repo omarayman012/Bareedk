@@ -1,9 +1,9 @@
-using Application.Common.Abstractions;
-using Application.Exceptions;
+using BaridikExpress.Application.Common.Abstractions;
+using BaridikExpress.Application.Exceptions;
 using System.Net;
 using System.Text.Json;
 
-namespace API.Middlewares;
+namespace BaridikExpress.API.Middlewares;
 
 public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger)
 {

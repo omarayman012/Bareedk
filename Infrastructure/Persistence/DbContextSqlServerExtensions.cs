@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Persistence;
+namespace BaridikExpress.Infrastructure.Persistence;
 public static class DbContextSqlServerExtensions
 {
     public static DbContextOptionsBuilder UseSqlServerWithRetry(

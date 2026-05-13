@@ -1,4 +1,4 @@
-﻿namespace Application.DTO.AuthModules
+﻿namespace BaridikExpress.Application.DTO.AuthModules
 {
     public class RefreshTokenResponseDto
     {

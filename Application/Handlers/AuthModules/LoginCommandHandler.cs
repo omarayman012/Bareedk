@@ -1,12 +1,12 @@
-﻿using Application.Commands.AuthModules;
-using Application.DTO.AuthModules;
-using Application.Interfaces.Auth;
-using Domain.Entities.AuthModules;
+﻿using BaridikExpress.Application.Commands.AuthModules;
+using BaridikExpress.Application.DTO.AuthModules;
+using BaridikExpress.Application.Interfaces.Auth;
+using BaridikExpress.Domain.Entities.AuthModules;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 
-namespace Application.Handlers.AuthModules
+namespace BaridikExpress.Application.Handlers.AuthModules
 {
     public class LoginCommandHandler(
         UserManager<User> userManager,

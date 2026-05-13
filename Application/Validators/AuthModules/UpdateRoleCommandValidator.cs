@@ -1,4 +1,4 @@
-﻿namespace Application.Validators.AuthModules
+﻿namespace BaridikExpress.Application.Validators.AuthModules
 {
     public class UpdateRoleCommandValidator : AbstractValidator<UpdateRoleCommand>
     {

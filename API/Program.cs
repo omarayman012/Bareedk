@@ -1,10 +1,10 @@
 using Api;
-using API.Extensions;
-using API.Middlewares;
-using Application;
-using Application.Common.Abstractions;
-using Infrastructure;
-using Infrastructure.Persistence;
+using BaridikExpress.API.Extensions;
+using BaridikExpress.API.Middlewares;
+using BaridikExpress.Application;
+using BaridikExpress.Application.Common.Abstractions;
+using BaridikExpress.Infrastructure;
+using BaridikExpress.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;

@@ -1,7 +1,7 @@
-﻿using Application.DTO.Auth;
+﻿using BaridikExpress.Application.DTO.Auth;
 
 
-namespace Application.Queries.AuthModules
+namespace BaridikExpress.Application.Queries.AuthModules
 {
     public record GetRolesQuery() : IRequest<Result<List<RoleDto>>>;
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.DTO.User
+namespace BaridikExpress.Application.DTO.User
 {
     public record CurrentUserResponseDTO(
             string Id 

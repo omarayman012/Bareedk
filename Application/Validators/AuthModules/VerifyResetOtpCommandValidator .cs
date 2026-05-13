@@ -1,4 +1,4 @@
-﻿namespace Application.Commands.AuthModules
+﻿namespace BaridikExpress.Application.Commands.AuthModules
 {
     public class VerifyResetOtpCommandValidator : AbstractValidator<VerifyResetOtpCommand>
     {

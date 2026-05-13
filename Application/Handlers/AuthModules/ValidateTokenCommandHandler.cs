@@ -1,6 +1,6 @@
-﻿using Application.DTO.Auth;
+﻿using BaridikExpress.Application.DTO.Auth;
 
-namespace Application.Handlers.AuthModules
+namespace BaridikExpress.Application.Handlers.AuthModules
 {
     public class ValidateTokenCommandHandler(
         IHttpContextAccessor httpContextAccessor,

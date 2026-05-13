@@ -1,4 +1,4 @@
-﻿using Application.Queries.Users;
+﻿using BaridikExpress.Application.Queries.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Handlers.Users
+namespace BaridikExpress.Application.Handlers.Users
 {
     public class GetUserRolesQueryHandler(
       UserManager<User> userManager,

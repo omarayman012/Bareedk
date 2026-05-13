@@ -1,6 +1,6 @@
-﻿using Application.Queries.AuthModules;
+﻿using BaridikExpress.Application.Queries.AuthModules;
 
-namespace Application.Handlers.AuthModules
+namespace BaridikExpress.Application.Handlers.AuthModules
 {
     public class GetPermissionsQueryHandler(
         IApplicationDbContext context

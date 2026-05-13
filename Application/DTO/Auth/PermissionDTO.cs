@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.DTO.Auth
+namespace BaridikExpress.Application.DTO.Auth
 {
     public class PermissionDTO
     {

@@ -1,10 +1,10 @@
-﻿using Application.Interfaces;
+﻿using BaridikExpress.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace API.Filters
+namespace BaridikExpress.API.Filters
 {
     public class PermissionRequirement : IAuthorizationRequirement
     {

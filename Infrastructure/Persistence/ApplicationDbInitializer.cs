@@ -1,11 +1,11 @@
-﻿using Infrastructure.Data.Seeder.IdentitySeed;
+﻿using BaridikExpress.Infrastructure.Data.Seeder.IdentitySeed;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Infrastructure.Persistence
+namespace BaridikExpress.Infrastructure.Persistence
 {
     public static class ApplicationDbInitializer
     {

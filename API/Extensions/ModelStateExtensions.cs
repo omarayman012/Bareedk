@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace API.Extensions;
+namespace BaridikExpress.API.Extensions;
 
 public static class ModelStateExtensions
 {

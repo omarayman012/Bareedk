@@ -1,6 +1,6 @@
 ﻿using FluentValidation.Results;
 
-namespace Application.Exceptions
+namespace BaridikExpress.Application.Exceptions
 {
     public class ValidationExceptions : Exception
     {

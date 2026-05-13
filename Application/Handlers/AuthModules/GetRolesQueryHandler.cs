@@ -1,7 +1,7 @@
-﻿using Application.DTO.Auth;
-using Application.Queries.AuthModules;
+﻿using BaridikExpress.Application.DTO.Auth;
+using BaridikExpress.Application.Queries.AuthModules;
 
-namespace Application.Handlers.AuthModules
+namespace BaridikExpress.Application.Handlers.AuthModules
 {
     public class GetRolesQueryHandler(
         IApplicationDbContext context

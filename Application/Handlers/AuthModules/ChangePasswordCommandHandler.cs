@@ -1,11 +1,11 @@
-﻿using Application.Commands.AuthModules;
-using Application.Interfaces;
-using Domain.Entities.AuthModules;
+﻿using BaridikExpress.Application.Commands.AuthModules;
+using BaridikExpress.Application.Interfaces;
+using BaridikExpress.Domain.Entities.AuthModules;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 
-namespace Application.Handlers.AuthModules
+namespace BaridikExpress.Application.Handlers.AuthModules
 {
     public class ChangePasswordCommandHandler(
         UserManager<User> userManager,

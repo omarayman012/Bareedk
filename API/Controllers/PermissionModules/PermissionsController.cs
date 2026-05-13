@@ -1,6 +1,6 @@
-﻿using Application.Queries.AuthModules;
+﻿using BaridikExpress.Application.Queries.AuthModules;
 
-namespace API.Controllers.PermissionModules
+namespace BaridikExpress.API.Controllers.PermissionModules
 {
     [ApiController]
     [Route("api/[controller]")]

@@ -1,8 +1,8 @@
-﻿using Domain.Entities.AuthModules;
+﻿using BaridikExpress.Domain.Entities.AuthModules;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.Configurations.UserConfiguration
+namespace BaridikExpress.Infrastructure.Configurations.UserConfiguration
 {
     public class UserConfiguration : IEntityTypeConfiguration<User>
     {

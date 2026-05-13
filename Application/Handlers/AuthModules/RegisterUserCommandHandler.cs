@@ -1,14 +1,14 @@
-﻿using Application.Commands.AuthModules;
-using Application.DTO.User;
-using Application.Interfaces;
-using Application.Interfaces.Auth;
-using Domain.Entities.AuthModules;
+﻿using BaridikExpress.Application.Commands.AuthModules;
+using BaridikExpress.Application.DTO.User;
+using BaridikExpress.Application.Interfaces;
+using BaridikExpress.Application.Interfaces.Auth;
+using BaridikExpress.Domain.Entities.AuthModules;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Localization;
 
-namespace Application.Handlers.AuthModules
+namespace BaridikExpress.Application.Handlers.AuthModules
 {
     public class RegisterUserCommandHandler(UserManager<User> userManager
         ,IApplicationDbContext context

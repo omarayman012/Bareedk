@@ -1,12 +1,12 @@
-﻿using Application.Interfaces;
-using Application.Interfaces.Auth;
-using Domain.Entities.AuthModules;
-using Infrastructure.Localizer;
-using Infrastructure.Persistence;
-using Infrastructure.Repositories;
-using Infrastructure.Services.AuthModules;
-using Infrastructure.Services.Email;
-using Infrastructure.Services.Hasher;
+﻿using BaridikExpress.Application.Interfaces;
+using BaridikExpress.Application.Interfaces.Auth;
+using BaridikExpress.Domain.Entities.AuthModules;
+using BaridikExpress.Infrastructure.Localizer;
+using BaridikExpress.Infrastructure.Persistence;
+using BaridikExpress.Infrastructure.Repositories;
+using BaridikExpress.Infrastructure.Services.AuthModules;
+using BaridikExpress.Infrastructure.Services.Email;
+using BaridikExpress.Infrastructure.Services.Hasher;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using ServiceStack.Auth;
 
-namespace Infrastructure
+namespace BaridikExpress.Infrastructure
 {
     public static class DepedencyInjection
     {

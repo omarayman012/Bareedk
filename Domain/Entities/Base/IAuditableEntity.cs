@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entities.Base
+namespace BaridikExpress.Domain.Entities.Base
 {
     public interface IAuditableEntity
     {

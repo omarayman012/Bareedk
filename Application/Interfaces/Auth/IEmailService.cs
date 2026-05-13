@@ -1,6 +1,6 @@
-﻿using Domain.Entities.AuthModules;
+﻿using BaridikExpress.Domain.Entities.AuthModules;
 
-namespace Application.Interfaces
+namespace BaridikExpress.Application.Interfaces
 {
     public interface IEmailService
     {

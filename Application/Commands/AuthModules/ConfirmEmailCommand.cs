@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Commands.AuthModules
+namespace BaridikExpress.Application.Commands.AuthModules
 {
     public record ConfirmEmailCommand(string Email, string OTP)
          : IRequest<Result<bool>>;

@@ -63,7 +63,7 @@ namespace Api
             {
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "Authentication Module API",
+                    Title = "BaridikExpress.API",
                     Version = "v1"
                 });
 

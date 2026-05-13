@@ -1,4 +1,4 @@
-﻿namespace Application.Validators.Users
+﻿namespace BaridikExpress.Application.Validators.Users
 {
     public class GetUserRolesValidator : AbstractValidator<GetUserRolesQuery>
     {

@@ -1,10 +1,10 @@
-﻿global using Application.Common.Abstractions;
+﻿global using BaridikExpress.Application.Common.Abstractions;
 global using MediatR;
 global using FluentValidation;
-global using Application.Commands.AuthModules;
-global using Domain.Entities.AuthModules;
-global using Application.Interfaces;
-global using Application.Queries.Users;
+global using BaridikExpress.Application.Commands.AuthModules;
+global using BaridikExpress.Domain.Entities.AuthModules;
+global using BaridikExpress.Application.Interfaces;
+global using BaridikExpress.Application.Queries.Users;
 global using Microsoft.AspNetCore.Http;
 global using Microsoft.EntityFrameworkCore;
 global using System.Security.Claims;

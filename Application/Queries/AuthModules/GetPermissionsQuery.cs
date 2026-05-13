@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Queries.AuthModules
+namespace BaridikExpress.Application.Queries.AuthModules
 {
     public record GetPermissionsQuery() : IRequest<Result<List<string>>>;
 }

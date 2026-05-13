@@ -1,6 +1,6 @@
-﻿using Application.DTO.Auth;
+﻿using BaridikExpress.Application.DTO.Auth;
 
-namespace Application.Commands.AuthModules
+namespace BaridikExpress.Application.Commands.AuthModules
 {
     public record ValidateTokenCommand() : IRequest<Result<ValidateTokenResponseDto>>;
 }
