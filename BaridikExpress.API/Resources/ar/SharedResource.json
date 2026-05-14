@@ -70,6 +70,65 @@
   "RoleCreated": "تم إنشاء الدور بنجاح.",
   "RoleUpdated": "تم تحديث الدور بنجاح.",
   "RoleDeleted": "تم حذف الدور بنجاح.",
-  "PermissionsFetched": "تم جلب الصلاحيات بنجاح."
+  "PermissionsFetched": "تم جلب الصلاحيات بنجاح.",
+  
+    "FullNameMinLength": "الاسم يجب ألا يقل عن 3 حروف",
+    "FullNameMaxLength": "الاسم يجب ألا يزيد عن 150 حرف",
+
+    "DateOfBirthRequired": "تاريخ الميلاد مطلوب",
+    "InvalidAge": "يجب أن يكون العمر 18 سنة على الأقل",
+
+    "EmailMaxLength": "البريد الإلكتروني يجب ألا يزيد عن 256 حرف",
+    "EmailAlreadyExists": "البريد الإلكتروني مستخدم بالفعل",
+    "InvalidEmailFormat": "صيغة البريد الإلكتروني غير صحيحة",
+
+    "PasswordMinLength": "كلمة المرور يجب ألا تقل عن 8 حروف",
+    "PasswordInvalid": "كلمة المرور يجب أن تحتوي على حرف كبير وصغير ورقم ورمز",
+    "PasswordUppercase": "كلمة المرور يجب أن تحتوي على حرف كبير",
+    "PasswordLowercase": "كلمة المرور يجب أن تحتوي على حرف صغير",
+    "PasswordNumber": "كلمة المرور يجب أن تحتوي على رقم",
+    "PasswordSpecialCharacter": "كلمة المرور يجب أن تحتوي على رمز خاص",
+
+    "PasswordNotMatch": "كلمة المرور غير متطابقة",
+
+    "PhoneAlreadyExists": "رقم الهاتف مستخدم بالفعل",
+
+    "PlateRequired": "رقم اللوحة مطلوب",
+    "PlateMaxLength": "رقم اللوحة يجب ألا يزيد عن 20 حرف",
+
+    "InvalidVehicleType": "نوع المركبة غير صحيح",
+
+    "CountryMaxLength": "الدولة يجب ألا تزيد عن 100 حرف",
+    "GovMaxLength": "المحافظة يجب ألا تزيد عن 100 حرف",
+    "CityMaxLength": "المدينة يجب ألا تزيد عن 100 حرف",
+    "VillageMaxLength": "القرية يجب ألا تزيد عن 100 حرف",
+    "AddressMaxLength": "العنوان يجب ألا يزيد عن 300 حرف",
+    "FloorMaxLength": "الطابق يجب ألا يزيد عن 20 حرف",
+    "ApartmentMaxLength": "الشقة يجب ألا تزيد عن 20 حرف",
+    "EducationMaxLength": "المؤهل يجب ألا يزيد عن 150 حرف",
+
+    "ProfileImageRequired": "صورة الملف الشخصي مطلوبة",
+    "InvalidProfileImage": "صورة الملف الشخصي غير صحيحة",
+
+    "NationalIdRequired": "صورة البطاقة مطلوبة",
+    "InvalidNationalIdImage": "صورة البطاقة غير صحيحة",
+
+    "LicenseRequired": "صورة الرخصة مطلوبة",
+    "InvalidLicenseImage": "صورة الرخصة غير صحيحة",
+
+    "VehicleImageRequired": "صورة المركبة مطلوبة",
+    "InvalidVehicleImage": "صورة المركبة غير صحيحة",
+
+    "PoliceCertRequired": "شهادة الشرطة مطلوبة",
+    "InvalidPoliceCertImage": "شهادة الشرطة غير صحيحة",
+
+    "PlateImageRequired": "صورة اللوحة مطلوبة",
+    "InvalidPlateImage": "صورة اللوحة غير صحيحة",
+
+    "MustAcceptTerms": "يجب قبول الشروط والأحكام",
+    "MustAcceptPrivacy": "يجب قبول سياسة الخصوصية",
+
+    "FilesMustBeTogether": "يجب رفع جميع الملفات معًا"
+  
 
 }

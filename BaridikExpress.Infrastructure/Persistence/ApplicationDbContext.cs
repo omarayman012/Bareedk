@@ -2,6 +2,7 @@
 using BaridikExpress.Domain.Entities.AuthModule;
 using BaridikExpress.Domain.Entities.AuthModules;
 using BaridikExpress.Domain.Entities.Base;
+using BaridikExpress.Domain.Entities.DeliveryModule;
 using BaridikExpress.Domain.Entities.RoleModule;
 using BaridikExpress.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Http;
@@ -31,6 +32,7 @@ namespace BaridikExpress.Infrastructure.Persistence
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<User> ApplicationUsers { get; set; }
+        public DbSet<Delivery> Deliveries { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -46,8 +48,8 @@ namespace BaridikExpress.Infrastructure.Persistence
                     continue;
 
                 if (!typeof(IAuditableEntity).IsAssignableFrom(clrType)
-          || clrType == typeof(User)
-          || clrType == typeof(BaseEntity))
+                  || clrType == typeof(User)
+                  || clrType == typeof(BaseEntity))
                     continue;
 
                 modelBuilder.Entity(clrType)
@@ -61,6 +63,12 @@ namespace BaridikExpress.Infrastructure.Persistence
                     .WithMany()
                     .HasForeignKey("UpdatedById")
                     .OnDelete(DeleteBehavior.NoAction);
+             
+                modelBuilder.Entity<Delivery>()
+                    .HasOne(d => d.User)
+                    .WithOne()
+                    .HasForeignKey<Delivery>(d => d.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
             }
 
             modelBuilder.Entity<RefreshToken>()
