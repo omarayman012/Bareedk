@@ -2,6 +2,8 @@
 using BaridikExpress.Domain.Entities.AuthModule;
 using BaridikExpress.Domain.Entities.AuthModules;
 using BaridikExpress.Domain.Entities.Base;
+using BaridikExpress.Domain.Entities.CareerFields;
+using BaridikExpress.Domain.Entities.Customers;
 using BaridikExpress.Domain.Entities.RoleModule;
 using BaridikExpress.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Http;
@@ -31,6 +33,8 @@ namespace BaridikExpress.Infrastructure.Persistence
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<User> ApplicationUsers { get; set; }
+        public DbSet<CareerField> CareerFields { get; set; }
+        public DbSet<Customer> Customers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

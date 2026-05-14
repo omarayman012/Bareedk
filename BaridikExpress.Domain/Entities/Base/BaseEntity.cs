@@ -18,5 +18,14 @@ namespace BaridikExpress.Domain.Entities.Base
 
         public User? CreatedBy { get; set; }
         public User? UpdatedBy { get; set; }
+
+        public bool IsActive { get; private set; } = true;
+        public void ToggleStatus( )
+        {
+            IsActive = !IsActive;
+        }
+
+
+
     }
 }
