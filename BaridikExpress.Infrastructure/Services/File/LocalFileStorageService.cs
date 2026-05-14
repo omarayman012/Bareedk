@@ -1,10 +1,6 @@
 ﻿using BaridikExpress.Application.Interfaces.File;
+using Infrastructure.Services.File;
 using Microsoft.AspNetCore.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BaridikExpress.Infrastructure.Services.File
 {
@@ -75,9 +71,9 @@ namespace BaridikExpress.Infrastructure.Services.File
                 foreach (var root in candidateRoots)
                 {
                     var fullPath = Path.Combine(root, relativePath);
-                    if (File.Exists(fullPath))
+                    if (System.IO.File.Exists(fullPath))
                     {
-                        File.Delete(fullPath);
+                        System.IO.File.Delete(fullPath);
                         break;
                     }
                 }
