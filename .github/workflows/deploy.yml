@@ -37,10 +37,10 @@ jobs:
             git reset --hard origin/main
 
             echo "Restore packages"
-            dotnet restore BaridikExpress.API/BaridikExpress.Api.csproj
+            dotnet restore BaridikExpress.sln
 
             echo "Build backend"
-            dotnet build BaridikExpress.API/BaridikExpress.Api.csproj -c Release --no-restore
+            dotnet build BaridikExpress.sln -c Release --no-restore
 
             echo "Restart backend service"
             sudo -n systemctl restart baridik-backend
