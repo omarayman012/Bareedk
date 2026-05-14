@@ -20,10 +20,14 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+          timeout: 60s
+          command_timeout: 20m
+
           script: |
             set -e
 
-            cd ${{ secrets.DEPLOY_DIR }}
+            echo "Go to backend directory"
+            cd /home/baridik/apps/backend
 
             echo "Current path:"
             pwd
@@ -32,15 +36,15 @@ jobs:
             git pull origin main
 
             echo "Restore packages"
-            dotnet restore BaridikExpress.sln
+            dotnet restore BaridikExpress/BaridikExpress.Api.csproj
 
             echo "Build backend"
-            dotnet build BaridikExpress.sln -c Release --no-restore
+            dotnet build BaridikExpress/BaridikExpress.Api.csproj -c Release --no-restore
 
             echo "Restart backend service"
             sudo -n systemctl restart baridik-backend
 
             echo "Check backend service"
-            sudo -n systemctl status baridik-backend --no-pager
+            sudo -n systemctl status baridik-backend
 
-            echo "Deployment completed"
+            echo "Backend deployed successfully"
