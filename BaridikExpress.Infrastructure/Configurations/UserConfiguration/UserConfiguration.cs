@@ -16,3 +16,4 @@ namespace BaridikExpress.Infrastructure.Configurations.UserConfiguration
         }
     }
 }
+ 

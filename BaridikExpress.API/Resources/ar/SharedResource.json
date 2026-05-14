@@ -62,7 +62,7 @@
   "Otpverifiedsuccessfully": "تم التحقق من رمز التحقق بنجاح.",
   "Loginsuccessful": "تم تسجيل الدخول بنجاح.",
   "Rolesassignedsuccessfully": "تم تعيين الأدوار بنجاح.",
-  "Operationcompletedsuccessfully": "تم إكمال العملية بنجاح.",
+  "OperationCompletedSuccessfully": "تم إكمال العملية بنجاح.",
   "Rolerequired": "الدور مطلوب.",
   "RoleAlreadyExists": "الدور موجود بالفعل.",
   "RoleNotFound": "الدور غير موجود.",
@@ -128,7 +128,9 @@
     "MustAcceptTerms": "يجب قبول الشروط والأحكام",
     "MustAcceptPrivacy": "يجب قبول سياسة الخصوصية",
 
-    "FilesMustBeTogether": "يجب رفع جميع الملفات معًا"
+    "FilesMustBeTogether": "يجب رفع جميع الملفات معًا",
   
+  "CareerFieldAlreadyExists": "مجال العمل موجود بالفعل.",
+  "CareerFieldNameRequired": "اسم مجال العمل مطلوب."
 
 }

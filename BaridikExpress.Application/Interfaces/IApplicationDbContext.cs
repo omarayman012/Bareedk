@@ -1,6 +1,8 @@
 using BaridikExpress.Domain.Entities.AuthModule;
 using BaridikExpress.Domain.Entities.AuthModules;
 using BaridikExpress.Domain.Entities.DeliveryModule;
+using BaridikExpress.Domain.Entities.CareerFields;
+using BaridikExpress.Domain.Entities.Customers;
 using BaridikExpress.Domain.Entities.RoleModule;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +19,9 @@ namespace BaridikExpress.Application.Interfaces
         DbSet<IdentityUserRole<string>> UserRoles { get; }
         DbSet<RefreshToken> RefreshTokens { get; }
         DbSet<Delivery> Deliveries { get; }
+
+        DbSet<CareerField> CareerFields { get; set; }
+        DbSet<Customer> Customers { get; set; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }

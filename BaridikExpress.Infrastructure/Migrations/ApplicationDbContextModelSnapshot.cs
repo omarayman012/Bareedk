@@ -39,6 +39,9 @@ namespace BaridikExpress.Infrastructure.Migrations
                     b.Property<DateTime>("ExpiresOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime?>("RevokedOn")
                         .HasColumnType("datetime2");
 
@@ -149,6 +152,116 @@ namespace BaridikExpress.Infrastructure.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("BaridikExpress.Domain.Entities.CareerFields.CareerField", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("UpdatedById");
+
+                    b.ToTable("CareerFields", (string)null);
+                });
+
+            modelBuilder.Entity("BaridikExpress.Domain.Entities.Customers.Customer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CareerFieldId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CustomerImage")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Mobile")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Nationality")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<decimal>("OpeningBalance")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("OpeningBalanceDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TaxRegistrationNumber")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WhatsappNumber")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CareerFieldId");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("UpdatedById");
+
+                    b.ToTable("Customers", (string)null);
+                });
+
             modelBuilder.Entity("BaridikExpress.Domain.Entities.DeliveryModule.Delivery", b =>
                 {
                     b.Property<Guid>("Id")
@@ -190,6 +303,9 @@ namespace BaridikExpress.Infrastructure.Migrations
 
                     b.Property<string>("Gov")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsApproved")
                         .HasColumnType("bit");
@@ -456,6 +572,112 @@ namespace BaridikExpress.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("BaridikExpress.Domain.Entities.CareerFields.CareerField", b =>
+                {
+                    b.HasOne("BaridikExpress.Domain.Entities.AuthModules.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("BaridikExpress.Domain.Entities.AuthModules.User", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.OwnsOne("BaridikExpress.Domain.Entities.ValueObjects.LocalizedString", "Name", b1 =>
+                        {
+                            b1.Property<Guid>("CareerFieldId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Ar")
+                                .IsRequired()
+                                .HasMaxLength(200)
+                                .HasColumnType("nvarchar(200)")
+                                .HasColumnName("NameAr");
+
+                            b1.Property<string>("En")
+                                .IsRequired()
+                                .HasMaxLength(200)
+                                .HasColumnType("nvarchar(200)")
+                                .HasColumnName("NameEn");
+
+                            b1.HasKey("CareerFieldId");
+
+                            b1.HasIndex("Ar");
+
+                            b1.HasIndex("En");
+
+                            b1.ToTable("CareerFields");
+
+                            b1.WithOwner()
+                                .HasForeignKey("CareerFieldId");
+                        });
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("Name")
+                        .IsRequired();
+
+                    b.Navigation("UpdatedBy");
+                });
+
+            modelBuilder.Entity("BaridikExpress.Domain.Entities.Customers.Customer", b =>
+                {
+                    b.HasOne("BaridikExpress.Domain.Entities.CareerFields.CareerField", "CareerField")
+                        .WithMany("Customers")
+                        .HasForeignKey("CareerFieldId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("BaridikExpress.Domain.Entities.AuthModules.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("BaridikExpress.Domain.Entities.AuthModules.User", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.OwnsOne("BaridikExpress.Domain.Entities.ValueObjects.LocalizedString", "Name", b1 =>
+                        {
+                            b1.Property<Guid>("CustomerId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Ar")
+                                .IsRequired()
+                                .HasMaxLength(300)
+                                .HasColumnType("nvarchar(300)")
+                                .HasColumnName("NameAr");
+
+                            b1.Property<string>("En")
+                                .IsRequired()
+                                .HasMaxLength(300)
+                                .HasColumnType("nvarchar(300)")
+                                .HasColumnName("NameEn");
+
+                            b1.HasKey("CustomerId");
+
+                            b1.HasIndex("Ar");
+
+                            b1.HasIndex("En");
+
+                            b1.ToTable("Customers");
+
+                            b1.WithOwner()
+                                .HasForeignKey("CustomerId");
+                        });
+
+                    b.Navigation("CareerField");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("Name")
+                        .IsRequired();
+
+                    b.Navigation("UpdatedBy");
+                });
+
             modelBuilder.Entity("BaridikExpress.Domain.Entities.DeliveryModule.Delivery", b =>
                 {
                     b.HasOne("BaridikExpress.Domain.Entities.AuthModules.User", "CreatedBy")
@@ -558,6 +780,11 @@ namespace BaridikExpress.Infrastructure.Migrations
             modelBuilder.Entity("BaridikExpress.Domain.Entities.AuthModules.User", b =>
                 {
                     b.Navigation("Roles");
+                });
+
+            modelBuilder.Entity("BaridikExpress.Domain.Entities.CareerFields.CareerField", b =>
+                {
+                    b.Navigation("Customers");
                 });
 
             modelBuilder.Entity("BaridikExpress.Domain.Entities.RoleModule.Permission", b =>

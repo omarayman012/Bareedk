@@ -2,11 +2,6 @@
 using BaridikExpress.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BaridikExpress.Infrastructure.Data.Seeder.IdentitySeed
 {
@@ -20,7 +15,7 @@ namespace BaridikExpress.Infrastructure.Data.Seeder.IdentitySeed
 
             await RoleSeed.SeedAsync(roleManager);
             await PermissionSeed.SeedAsync(context);
-            await RolePermissionSeed.SeedAsync(context, roleManager);
+            await RolePermissionSeed.SeedAsync(context);
             await UserSeed.SeedAsync(userManager);
         }
     }

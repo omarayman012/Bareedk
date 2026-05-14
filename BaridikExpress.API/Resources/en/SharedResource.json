@@ -53,7 +53,6 @@
   "RoleUpdated": "Role updated successfully.",
   "RoleDeleted": "Role deleted successfully.",
   "PermissionsFetched": "Permissions retrieved successfully.",
-  
     "FullNameMinLength": "Full name must be at least 3 characters",
     "FullNameMaxLength": "Full name must not exceed 150 characters",
 
@@ -111,6 +110,8 @@
     "MustAcceptTerms": "You must accept terms and conditions",
     "MustAcceptPrivacy": "You must accept privacy policy",
 
-    "FilesMustBeTogether": "All files must be provided together"
+    "FilesMustBeTogether": "All files must be provided together",
   
+  "CareerFieldAlreadyExists": "Career field already exists.",
+  "CareerFieldNameRequired" : "Career field name is required."
 }

@@ -8,7 +8,7 @@ namespace BaridikExpress.Application.Interfaces.Auth
         Task<User?> GetUserByIdAsync(string id);
         Task<User?> GetUserByEmailOrPhoneAsync(string target);
         Task<RoleDto?> GetRoleByNameAsync(string roleName);
-        Task<List<PermissionDTO>> GetPermissionsByRoleIdAsync(string roleId);
+        Task<List<PermissionDto>> GetPermissionsByRoleIdAsync(string roleId);
         Task<List<string>> GetAllPermissionNamesAsync();
         Task UpdateUserAsync(User user);
     }
