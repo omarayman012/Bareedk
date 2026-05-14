@@ -1,12 +1,15 @@
 ﻿using BaridikExpress.Application.Interfaces;
 using BaridikExpress.Application.Interfaces.Auth;
+using BaridikExpress.Application.Interfaces.File;
 using BaridikExpress.Domain.Entities.AuthModules;
 using BaridikExpress.Infrastructure.Localizer;
 using BaridikExpress.Infrastructure.Persistence;
 using BaridikExpress.Infrastructure.Repositories;
 using BaridikExpress.Infrastructure.Services.AuthModules;
 using BaridikExpress.Infrastructure.Services.Email;
+using BaridikExpress.Infrastructure.Services.File;
 using BaridikExpress.Infrastructure.Services.Hasher;
+using Infrastructure.Services.File;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -53,8 +56,10 @@ namespace BaridikExpress.Infrastructure
                  provider.GetRequiredService<ApplicationDbContext>());
             services.AddScoped<IHasherService, HasherService>();
             services.AddScoped<IGetCurrentUserRepository, GetCurrentUserRepository>();
+            services.AddScoped<IFileStorageService, LocalFileStorageService>();
+            services.AddScoped<IBaseUrlService, BaseUrlService>();
 
-        
+
 
             return services;
         }
