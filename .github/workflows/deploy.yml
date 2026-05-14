@@ -25,19 +25,27 @@ jobs:
 
           script: |
             set -e
+
             echo "Go to backend directory"
             cd /home/baridik/apps/backend
+
             echo "Current path:"
             pwd
+
             echo "Pull latest code"
             git fetch origin main
             git reset --hard origin/main
+
             echo "Restore packages"
-            dotnet restore BaridikExpress/BaridikExpress.Api.csproj
+            dotnet restore BaridikExpress.API/BaridikExpress.Api.csproj
+
             echo "Build backend"
-            dotnet build BaridikExpress/BaridikExpress.Api.csproj -c Release --no-restore
+            dotnet build BaridikExpress.API/BaridikExpress.Api.csproj -c Release --no-restore
+
             echo "Restart backend service"
             sudo -n systemctl restart baridik-backend
+
             echo "Check backend service"
             sudo -n systemctl status baridik-backend
+
             echo "Backend deployed successfully"
