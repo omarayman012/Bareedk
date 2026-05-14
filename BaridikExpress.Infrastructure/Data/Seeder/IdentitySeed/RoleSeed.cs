@@ -4,8 +4,7 @@ namespace BaridikExpress.Infrastructure.Data.Seeder.IdentitySeed
 {
     public static class RoleSeed
     {
-        private static readonly string[] Roles = { "SuperAdmin" };
-
+        private static readonly string[] Roles = { "SuperAdmin", "Client", "Delivery" };
         public static async Task SeedAsync(RoleManager<IdentityRole> roleManager)
         {
             foreach (var role in Roles)
