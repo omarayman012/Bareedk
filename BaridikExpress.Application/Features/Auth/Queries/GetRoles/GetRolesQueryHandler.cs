@@ -10,9 +10,12 @@ namespace BaridikExpress.Application.Features.Auth.Queries.GetRoles
         {
             var roles = await context.Roles
                 .Select(r => new RoleDto(r.Id, r.Name!))
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
 
-            return Result<List<RoleDto>>.Success(roles, "Operationcompletedsuccessfully", 200);
+            if (!roles.Any())
+                return Result<List<RoleDto>>.Failure("No roles found", 404);
+
+            return Result<List<RoleDto>>.Success(roles, "Operation completed successfully", 200);
         }
     }
 }

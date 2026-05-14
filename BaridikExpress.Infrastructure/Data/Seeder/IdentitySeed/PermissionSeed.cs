@@ -1,11 +1,6 @@
 ﻿using BaridikExpress.Application.Common.Abstractions.Consts;
 using BaridikExpress.Domain.Entities.RoleModule;
 using BaridikExpress.Infrastructure.Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BaridikExpress.Infrastructure.Data.Seeder.IdentitySeed
 {
