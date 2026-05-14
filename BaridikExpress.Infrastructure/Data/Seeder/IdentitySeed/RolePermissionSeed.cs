@@ -1,55 +1,38 @@
-﻿using BaridikExpress.Application.Common.Abstractions.Consts;
-using BaridikExpress.Domain.Entities.RoleModule;
+﻿using BaridikExpress.Domain.Entities.RoleModule;
 using BaridikExpress.Infrastructure.Persistence;
-using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace BaridikExpress.Infrastructure.Data.Seeder.IdentitySeed
 {
     public static class RolePermissionSeed
     {
-        public static async Task SeedAsync(
-            ApplicationDbContext context,
-            RoleManager<IdentityRole> roleManager)
+        public static async Task SeedAsync(ApplicationDbContext context)
         {
-            if (context.RolePermissions.Any()) return;
+            var superAdminRole = await context.Roles
+                .FirstOrDefaultAsync(r => r.Name == "SuperAdmin");
 
-            var adminRole = await roleManager.FindByNameAsync("Admin");
-            var userRole = await roleManager.FindByNameAsync("User");
+            if (superAdminRole is null) return;
 
-            var permissions = context.Permissions.ToList();
+            var permissions = await context.Permissions.ToListAsync();
 
-           
-            foreach (var perm in permissions)
-            {
-                context.RolePermissions.Add(new RolePermission
+            var existingPermissionIds = await context.RolePermissions
+                .Where(rp => rp.RoleId == superAdminRole.Id)
+                .Select(rp => rp.PermissionId)
+                .ToListAsync();
+
+            var newRolePermissions = permissions
+                .Where(p => !existingPermissionIds.Contains(p.PermissionId))
+                .Select(p => new RolePermission
                 {
                     RolePermissionId = Guid.NewGuid(),
-                    RoleId = adminRole.Id,
-                    PermissionId = perm.PermissionId
-                });
-            }
+                    RoleId = superAdminRole.Id,
+                    PermissionId = p.PermissionId
+                })
+                .ToList();
 
-           
-            var userPerms = permissions.Where(p =>
-                p.PermissionName == Permissions.UsersRead ||
-                p.PermissionName == Permissions.AuthView
-            );
+            if (!newRolePermissions.Any()) return;
 
-            foreach (var perm in userPerms)
-            {
-                context.RolePermissions.Add(new RolePermission
-                {
-                    RolePermissionId = Guid.NewGuid(),
-                    RoleId = userRole.Id,
-                    PermissionId = perm.PermissionId
-                });
-            }
-
+            await context.RolePermissions.AddRangeAsync(newRolePermissions);
             await context.SaveChangesAsync();
         }
     }
