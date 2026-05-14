@@ -17,5 +17,10 @@
 
         public const string PermissionsRead = "permissions.read";
         public const string PermissionsAssign = "permissions.assign";
+
+
+        public const string CareerFieldsCreate = "CareerFields.Create";
+
+
     }
 }

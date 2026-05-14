@@ -18,8 +18,6 @@ namespace BaridikExpress.Domain.Entities.AuthModule
         public DateTime? RevokedOn { get; set; }
         public string UserId { get; set; }
         public User User { get; set; }
-
-        public bool IsActive => RevokedOn == null && !IsExpired;
         public bool IsExpired => DateTime.UtcNow >= ExpiresOn;
     }
 }
