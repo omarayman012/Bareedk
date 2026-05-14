@@ -1,22 +1,27 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BaridikExpress.Infrastructure.Data.Seeder.IdentitySeed
 {
     public static class RoleSeed
     {
+        private static readonly string[] Roles = { "SuperAdmin" };
+
         public static async Task SeedAsync(RoleManager<IdentityRole> roleManager)
         {
-            string[] roles = { "Admin", "User" };
-
-            foreach (var role in roles)
+            foreach (var role in Roles)
             {
-                if (!await roleManager.RoleExistsAsync(role))
-                    await roleManager.CreateAsync(new IdentityRole(role));
+                if (await roleManager.RoleExistsAsync(role)) continue;
+
+                var result = await roleManager.CreateAsync(new IdentityRole(role)
+                {
+                    NormalizedName = role.ToUpperInvariant()
+                });
+
+                if (!result.Succeeded)
+                {
+                    var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+                    throw new Exception($"Failed to create role '{role}': {errors}");
+                }
             }
         }
     }
