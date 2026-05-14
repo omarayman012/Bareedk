@@ -52,5 +52,7 @@
   "RoleCreated": "Role created successfully.",
   "RoleUpdated": "Role updated successfully.",
   "RoleDeleted": "Role deleted successfully.",
-  "PermissionsFetched": "Permissions retrieved successfully."
+  "PermissionsFetched": "Permissions retrieved successfully.",
+  "CareerFieldAlreadyExists": "Career field already exists.",
+  "CareerFieldNameRequired" : "Career field name is required.",
 }

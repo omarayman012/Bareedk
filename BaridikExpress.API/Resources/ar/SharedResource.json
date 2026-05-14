@@ -62,7 +62,7 @@
   "Otpverifiedsuccessfully": "تم التحقق من رمز التحقق بنجاح.",
   "Loginsuccessful": "تم تسجيل الدخول بنجاح.",
   "Rolesassignedsuccessfully": "تم تعيين الأدوار بنجاح.",
-  "Operationcompletedsuccessfully": "تم إكمال العملية بنجاح.",
+  "OperationCompletedSuccessfully": "تم إكمال العملية بنجاح.",
   "Rolerequired": "الدور مطلوب.",
   "RoleAlreadyExists": "الدور موجود بالفعل.",
   "RoleNotFound": "الدور غير موجود.",
@@ -70,6 +70,8 @@
   "RoleCreated": "تم إنشاء الدور بنجاح.",
   "RoleUpdated": "تم تحديث الدور بنجاح.",
   "RoleDeleted": "تم حذف الدور بنجاح.",
-  "PermissionsFetched": "تم جلب الصلاحيات بنجاح."
+  "PermissionsFetched": "تم جلب الصلاحيات بنجاح.",
+  "CareerFieldAlreadyExists": "مجال العمل موجود بالفعل.",
+  "CareerFieldNameRequired": "اسم مجال العمل مطلوب."
 
 }

@@ -1,6 +1,7 @@
 ﻿using BaridikExpress.Application.Interfaces;
 using BaridikExpress.Application.Interfaces.Auth;
 using BaridikExpress.Application.Interfaces.File;
+using BaridikExpress.Application.Interfaces.IRepository;
 using BaridikExpress.Domain.Entities.AuthModules;
 using BaridikExpress.Infrastructure.Localizer;
 using BaridikExpress.Infrastructure.Persistence;
@@ -49,7 +50,8 @@ namespace BaridikExpress.Infrastructure
 
         public static IServiceCollection AddPersistence(this IServiceCollection services)
         {
-           // services.AddScoped<IUnitOfWork>(serviceProvider => serviceProvider.GetRequiredService<ApplicationDbContext>());
+            // services.AddScoped<IUnitOfWork>(serviceProvider => serviceProvider.GetRequiredService<ApplicationDbContext>());
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IEmailService , EmailService>();
             services.AddScoped<IApplicationDbContext>(provider =>
