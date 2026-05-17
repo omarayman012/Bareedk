@@ -20,6 +20,9 @@
 
 
         public const string CareerFieldsCreate = "CareerFields.Create";
+        public const string CareerFieldsUpdate = "CareerFields.update";
+        public const string CareerFieldsRead = "CareerFields.Read";
+        public const string CareerFieldsDelete = "CareerFields.Delete";
 
 
     }
