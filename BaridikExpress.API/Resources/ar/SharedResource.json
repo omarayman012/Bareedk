@@ -179,5 +179,24 @@
     "GovernmentNameArMaxLength": "الحد الأقصى لاسم المحافظة بالعربية هو 100 حرف",
     "GovernmentNameEnMaxLength": "الحد الأقصى لاسم المحافظة بالإنجليزية هو 100 حرف",
     "GovernmentNameEnInvalid": "اسم المحافظة بالإنجليزية غير صالح",
-    "AtLeastOneGovernmentNameRequired": "يجب إدخال اسم المحافظة بالعربية أو الإنجليزية على الأقل"
+    "AtLeastOneGovernmentNameRequired": "يجب إدخال اسم المحافظة بالعربية أو الإنجليزية على الأقل",
+    "CityNotFound": "المدينة غير موجودة",
+    "CitiesNotFound": "المدن التالية غير موجودة",
+    "CityAlreadyExists": "المدينة موجودة بالفعل",
+    "CityHasVillages": "لا يمكن حذف المدينة لأنها تحتوي على قرى مرتبطة بها",
+    "CityActivatedSuccessfully": "تم تفعيل المدينة بنجاح",
+    "CityDeactivatedSuccessfully": "تم تعطيل المدينة بنجاح",
+    "DeleteCitiesSuccessfully": "تم حذف المدن بنجاح",
+    "CityCreatedSuccessfully": "تم إضافة المدينة بنجاح",
+    "CityUpdatedSuccessfully": "تم تعديل المدينة بنجاح",
+
+    "CitiesRetrievedSuccessfully": "تم استرجاع المدن بنجاح",
+    
+    "CityIdRequired": "معرف المدينة مطلوب",
+    "CityNameArRequired": "اسم المدينة بالعربية مطلوب",
+    "CityNameEnRequired": "اسم المدينة بالإنجليزية مطلوب",
+    "CityNameArMaxLength": "الحد الأقصى لاسم المدينة بالعربية هو 100 حرف",
+    "CityNameEnMaxLength": "الحد الأقصى لاسم المدينة بالإنجليزية هو 100 حرف",
+    "CityNameEnInvalid": "اسم المدينة بالإنجليزية غير صالح",
+    "AtLeastOneCityNameRequired": "يجب إدخال اسم المدينة بالعربية أو الإنجليزية على الأقل"
 }
