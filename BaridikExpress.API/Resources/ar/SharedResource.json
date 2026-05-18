@@ -191,12 +191,29 @@
     "CityUpdatedSuccessfully": "تم تعديل المدينة بنجاح",
 
     "CitiesRetrievedSuccessfully": "تم استرجاع المدن بنجاح",
-    
+
     "CityIdRequired": "معرف المدينة مطلوب",
     "CityNameArRequired": "اسم المدينة بالعربية مطلوب",
     "CityNameEnRequired": "اسم المدينة بالإنجليزية مطلوب",
     "CityNameArMaxLength": "الحد الأقصى لاسم المدينة بالعربية هو 100 حرف",
     "CityNameEnMaxLength": "الحد الأقصى لاسم المدينة بالإنجليزية هو 100 حرف",
     "CityNameEnInvalid": "اسم المدينة بالإنجليزية غير صالح",
-    "AtLeastOneCityNameRequired": "يجب إدخال اسم المدينة بالعربية أو الإنجليزية على الأقل"
+    "AtLeastOneCityNameRequired": "يجب إدخال اسم المدينة بالعربية أو الإنجليزية على الأقل",
+    "VillageNotFound": "القرية غير موجودة",
+    "VillageAlreadyExists": "القرية موجودة بالفعل",
+    "VillageCreatedSuccessfully": "تم إنشاء القرية بنجاح",
+    "VillageUpdatedSuccessfully": "تم تحديث القرية بنجاح",
+    "VillageActivatedSuccessfully": "تم تفعيل القرية بنجاح",
+    "VillageDeactivatedSuccessfully": "تم إلغاء تفعيل القرية بنجاح",
+    "DeleteVillagesSuccessfully": "تم حذف القرى بنجاح",
+    "VillagesRetrievedSuccessfully": "تم استرجاع القرى بنجاح",
+    "VillageRetrievedSuccessfully": "تم استرجاع القرية بنجاح",
+    "VillagesNotFound": "بعض القرى غير موجودة",
+    "VillageIdRequired": "معرف القرية مطلوب",
+    "VillageNameArRequired": "اسم القرية بالعربية مطلوب",
+    "VillageNameEnRequired": "اسم القرية بالإنجليزية مطلوب",
+    "VillageNameArMaxLength": "الحد الأقصى لاسم القرية بالعربية هو 100 حرف",
+    "VillageNameEnMaxLength": "الحد الأقصى لاسم القرية بالإنجليزية هو 100 حرف",
+    "VillageNameEnInvalid": "اسم القرية بالإنجليزية غير صالح",
+    "AtLeastOneVillageNameRequired": "يجب إدخال اسم القرية بالعربية أو الإنجليزية على الأقل"
 }
