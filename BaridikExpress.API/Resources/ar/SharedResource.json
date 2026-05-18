@@ -147,6 +147,13 @@
     "PermissionsRetrievedSuccessfully": "تم استرجاع الصلاحيات بنجاح",
     "RolePermissionsRetrievedSuccessfully": "تم استرجاع صلاحيات الدور بنجاح",
     "NoPermissionsFoundForRole": "تم الارجاع ولا توجد صلاحيات مرتبطة بهذا الدور",
-    "OperationFailed": "فشلت العملية"
+  "OperationFailed": "فشلت العملية"
+      
+  "InvalidImage": "الصورة غير صالحة (يسمح بـ .jpg, .jpeg, .png, .webp).",
+  "DeliveryNotFound": "مندوب التوصيل غير موجود.",
+  "DeliveryAlreadyApproved": "تمت الموافقة على مندوب التوصيل بالفعل.",
+  "DeliveryApprovedSuccessfully": "تمت الموافقة على مندوب التوصيل بنجاح.",
+  "DeliveryCreatedSuccessfully": "تم إنشاء مندوب التوصيل بنجاح.",
+  "Success": "تم بنجاح."
 
 }

@@ -1,4 +1,5 @@
 ﻿using BaridikExpress.Application.Features.DeliveryModule.Command;
+using BaridikExpress.Application.Features.DeliveryModule.Queries;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BaridikExpress.API.Controllers.DeliveryModule
@@ -23,6 +24,89 @@ namespace BaridikExpress.API.Controllers.DeliveryModule
                 return StatusCode(result.StatusCode, result);
 
             return StatusCode(result.StatusCode, result);
-        } 
+        }
+
+
+        [HttpPost("CreateByAdmin")]
+        public async Task<IActionResult> CreateByAdmin(
+             [FromForm] CreateDeliveryByAdminCommand command)
+        {
+            var result = await _mediator.Send(command);
+
+            if (!result.IsSuccess)
+                return StatusCode(result.StatusCode, result);
+
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpPatch("ApproveDelivery/{id}")]
+        public async Task<IActionResult> ApproveDelivery(Guid id)
+        {
+            var command = new ApproveDeliveryCommand
+            {
+                DeliveryId = id
+            };
+
+            var result = await _mediator.Send(command);
+
+            if (!result.IsSuccess)
+                return StatusCode(result.StatusCode, result);
+
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAll(
+             [FromQuery] string? search = null,
+             [FromQuery] bool? isApproved = null,
+             [FromQuery] DateTime? approvedFrom = null,
+             [FromQuery] DateTime? approvedTo = null,
+             [FromQuery] string? country = null,
+             [FromQuery] string? gov = null,
+             [FromQuery] string? city = null,
+             [FromQuery] string? village = null,
+             [FromQuery] int pageNumber = 1,
+             [FromQuery] int pageSize = 10)
+        {
+            var query = new GetAllDeliveriesQuery
+            {
+                Search = search,
+                IsApproved = isApproved,
+                ApprovedFrom = approvedFrom,
+                ApprovedTo = approvedTo,
+
+                Country = country,
+                Gov = gov,
+                City = city,
+                Village = village,
+
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
+
+            var result = await _mediator.Send(query);
+
+            if (!result.IsSuccess)
+                return StatusCode(result.StatusCode, result);
+
+            return Ok(result);
+        }
+
+
+        [HttpGet("GetById/{id}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var result = await _mediator.Send(
+                new GetDeliveryByIdQuery
+                {
+                    Id = id
+                });
+
+            if (!result.IsSuccess)
+                return StatusCode(result.StatusCode, result);
+
+            return Ok(result);
+        }
+
     }
 }
