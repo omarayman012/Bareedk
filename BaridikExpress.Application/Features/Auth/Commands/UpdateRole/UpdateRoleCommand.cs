@@ -3,5 +3,5 @@
     public record UpdateRoleCommand(
      string Id,
      string Name
-    ) : IRequest<Result<string>>;
+    ) : IRequest<Result<bool>>;
 }
