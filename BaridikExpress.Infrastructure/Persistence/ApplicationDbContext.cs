@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using BaridikExpress.Domain.Entities.Location;
 
 namespace BaridikExpress.Infrastructure.Persistence
 {
@@ -37,7 +38,10 @@ namespace BaridikExpress.Infrastructure.Persistence
         public DbSet<Delivery> Deliveries { get; set; }
         public DbSet<CareerField> CareerFields { get; set; }
         public DbSet<Customer> Customers { get; set; }
-
+        public DbSet<Country>Countries { get; set; }
+        public DbSet<Government>Governments { get; set; }
+        public DbSet<City>Cities { get; set; }
+        public DbSet<Village>Villages { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

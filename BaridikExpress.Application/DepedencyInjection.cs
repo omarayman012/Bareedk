@@ -1,4 +1,5 @@
 ﻿using BaridikExpress.Application.Behaviors;
+using BaridikExpress.Application.Common.Mapping;
 using BaridikExpress.Application.Features.Auth.Commands.CreateAccount;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -16,6 +17,7 @@ namespace BaridikExpress.Application
 
             services.AddValidatorsFromAssembly(typeof(RegisterUserCommandValidator).Assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+            services.AddAutoMapper(typeof(MappingProfile));
             return services;
         }
 
