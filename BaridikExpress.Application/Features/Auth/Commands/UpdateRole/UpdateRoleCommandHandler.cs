@@ -1,27 +1,38 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace BaridikExpress.Application.Features.Auth.Commands.UpdateRole
+namespace BaridikExpress.Application.Features.Auth.Commands.UpdateRole;
+
+public class UpdateRoleCommandHandler(
+    RoleManager<IdentityRole> roleManager,
+    IStringLocalizer localizer
+) : IRequestHandler<UpdateRoleCommand, Result<bool>>
 {
-    public class UpdateRoleCommandHandler(
-        RoleManager<IdentityRole> roleManager,
-        IStringLocalizer localizer
-    ) : IRequestHandler<UpdateRoleCommand, Result<string>>
+    public async Task<Result<bool>> Handle(
+        UpdateRoleCommand request,
+        CancellationToken cancellationToken)
     {
-        public async Task<Result<string>> Handle(UpdateRoleCommand request, CancellationToken cancellationToken)
+        var role = await roleManager.FindByIdAsync(request.Id);
+        if (role == null)
+            return Result<bool>.Failure(localizer["RoleNotFound"], 404);
+
+        var nameExists = await roleManager.FindByNameAsync(request.Name);
+        if (nameExists != null && nameExists.Id != request.Id)
+            return Result<bool>.Failure(localizer["RoleAlreadyExists"], 400);
+
+        role.Name = request.Name;
+        role.NormalizedName = request.Name.ToUpperInvariant();
+
+        var result = await roleManager.UpdateAsync(role);
+        if (!result.Succeeded)
         {
-            var role = await roleManager.FindByIdAsync(request.Id);
-
-            if (role == null)
-                return Result<string>.Failure(localizer["RoleNotFound"], 404);
-
-            role.Name = request.Name;
-
-            var result = await roleManager.UpdateAsync(role);
-
-            if (!result.Succeeded)
-                return Result<string>.Failure(localizer["Operationfailed"], 400);
-
-            return Result<string>.Success("Updated", localizer["Operationcompletedsuccessfully"], 200);
+            var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+            return Result<bool>.Failure(
+                string.Format(localizer["FailedToUpdateRole"], errors), 400);
         }
+
+        return Result<bool>.Success(
+            true,
+            localizer["RoleUpdatedSuccessfully"],
+            200);
     }
 }
