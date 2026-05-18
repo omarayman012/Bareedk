@@ -147,5 +147,22 @@
     "NameEnRequired": "English name is required",
     "NameArMaxLength": "Arabic name must not exceed 100 characters",
     "NameEnMaxLength": "English name must not exceed 100 characters",
-    "AtLeastOneNameRequired": "At least one name is required"
+    "AtLeastOneNameRequired": "At least one name is required",
+    "GovernmentNotFound": "Government not found",
+    "GovernmentAlreadyExists": "Government already exists",
+    "GovernmentCreatedSuccessfully": "Government created successfully",
+    "GovernmentUpdatedSuccessfully": "Government updated successfully",
+    "GovernmentActivatedSuccessfully": "Government activated successfully",
+    "GovernmentDeactivatedSuccessfully": "Government deactivated successfully",
+    "DeleteGovernmentsSuccessfully": "Governments deleted successfully",
+    "GovernmentsRetrievedSuccessfully": "Governments retrieved successfully",
+    "GovernmentHasCities": "Cannot delete government because it contains cities",
+    "GovernmentsNotFound": "Some governments were not found",
+    "GovernmentIdRequired": "Government id is required",
+    "GovernmentNameArRequired": "Arabic government name is required",
+    "GovernmentNameEnRequired": "English government name is required",
+    "GovernmentNameArMaxLength": "Arabic government name maximum length is 100 characters",
+    "GovernmentNameEnMaxLength": "English government name maximum length is 100 characters",
+    "GovernmentNameEnInvalid": "English government name is invalid",
+    "AtLeastOneGovernmentNameRequired": "At least one government name in Arabic or English is required"
 }

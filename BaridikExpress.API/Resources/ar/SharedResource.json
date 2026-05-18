@@ -162,5 +162,22 @@
     "NameEnRequired": "الاسم بالإنجليزي مطلوب",
     "NameArMaxLength": "الاسم بالعربي لا يتجاوز 100 حرف",
     "NameEnMaxLength": "الاسم بالإنجليزي لا يتجاوز 100 حرف",
-    "AtLeastOneNameRequired": "يجب إدخال اسم واحد على الأقل"
+    "AtLeastOneNameRequired": "يجب إدخال اسم واحد على الأقل",
+    "GovernmentNotFound": "المحافظة غير موجودة",
+    "GovernmentAlreadyExists": "المحافظة موجودة بالفعل",
+    "GovernmentCreatedSuccessfully": "تم إنشاء المحافظة بنجاح",
+    "GovernmentUpdatedSuccessfully": "تم تحديث المحافظة بنجاح",
+    "GovernmentActivatedSuccessfully": "تم تفعيل المحافظة بنجاح",
+    "GovernmentDeactivatedSuccessfully": "تم إلغاء تفعيل المحافظة بنجاح",
+    "DeleteGovernmentsSuccessfully": "تم حذف المحافظات بنجاح",
+    "GovernmentsRetrievedSuccessfully": "تم استرجاع المحافظات بنجاح",
+    "GovernmentHasCities": "لا يمكن حذف المحافظة لاحتوائها على مدن",
+    "GovernmentsNotFound": "بعض المحافظات غير موجودة",
+    "GovernmentIdRequired": "معرف المحافظة مطلوب",
+    "GovernmentNameArRequired": "اسم المحافظة بالعربية مطلوب",
+    "GovernmentNameEnRequired": "اسم المحافظة بالإنجليزية مطلوب",
+    "GovernmentNameArMaxLength": "الحد الأقصى لاسم المحافظة بالعربية هو 100 حرف",
+    "GovernmentNameEnMaxLength": "الحد الأقصى لاسم المحافظة بالإنجليزية هو 100 حرف",
+    "GovernmentNameEnInvalid": "اسم المحافظة بالإنجليزية غير صالح",
+    "AtLeastOneGovernmentNameRequired": "يجب إدخال اسم المحافظة بالعربية أو الإنجليزية على الأقل"
 }
