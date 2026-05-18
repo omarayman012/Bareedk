@@ -22,6 +22,8 @@ namespace BaridikExpress.Domain.Entities.Customers
         public DateTime? OpeningBalanceDate { get; private set; }
         public string? Notes { get; private set; }
 
+
+
         private Customer() { }
         public Customer(
             string userId,

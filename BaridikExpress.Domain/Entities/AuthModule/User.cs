@@ -6,7 +6,9 @@ namespace BaridikExpress.Domain.Entities.AuthModules
 {
     public class User : IdentityUser,IAuditableEntity
     {
-        public string FullName { get; set; }= string.Empty;
+
+        public string FullName { get; set; } = string.Empty;
+
         public ICollection<RolePermission> Roles { get; set; } = new HashSet<RolePermission>();
 
         public DateTime CreatedAt { get; set; }

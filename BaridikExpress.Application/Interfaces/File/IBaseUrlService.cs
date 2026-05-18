@@ -11,5 +11,6 @@ namespace BaridikExpress.Application.Interfaces.File
             string GetBaseUrl();
             string ToAbsoluteMediaUrl(string? path);
 
-        } }
+        }
+}
 

@@ -26,6 +26,12 @@
 
 	<ItemGroup>
 		<Folder Include="Logs\" />
+		<Folder Include="wwwroot\deliveries\license\" />
+		<Folder Include="wwwroot\deliveries\nid\" />
+		<Folder Include="wwwroot\deliveries\vehicle\" />
+		<Folder Include="wwwroot\deliveries\police\" />
+		<Folder Include="wwwroot\deliveries\plate\" />
+		<Folder Include="wwwroot\deliveries\profile\" />
 	</ItemGroup>
 
 	<ItemGroup>

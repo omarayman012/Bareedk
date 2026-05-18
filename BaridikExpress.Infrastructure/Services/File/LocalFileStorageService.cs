@@ -19,46 +19,50 @@ namespace BaridikExpress.Infrastructure.Services.File
 
         public async Task<string?> SaveFileAsync(Stream fileStream, string fileName, string folderName)
         {
-            if (fileStream is null || fileStream.Length == 0)
-                return null;
-
-            var ext = Path.GetExtension(fileName);
-            var uniqueId = Guid.NewGuid();
-            var uniqueFileName = $"{uniqueId}{ext}";
-            var folderForUrl = folderName.Trim().Trim('/').Replace('\\', '/');
-
-            var candidateRoots = UploadsPathResolver.GetCandidateUploadRoots(_env);
-
-            string? fullPath = null;
-            foreach (var root in candidateRoots)
+            try
             {
-                try
-                {
-                    var uploadsPath = Path.Combine(root, folderName);
-                    Directory.CreateDirectory(uploadsPath);
-                    fullPath = Path.Combine(uploadsPath, uniqueFileName);
-                    break;
-                }
-                catch
-                {
-                    // Try next candidate root (e.g., fallback to wwwroot).
-                }
-            }
+                if (fileStream == null)
+                    return null;
 
-            if (string.IsNullOrWhiteSpace(fullPath))
+                var ext = Path.GetExtension(fileName);
+                var uniqueFileName = $"{Guid.NewGuid()}{ext}";
+
+                var candidateRoots = UploadsPathResolver.GetCandidateUploadRoots(_env);
+
+                foreach (var root in candidateRoots)
+                {
+                    try
+                    {
+                        var uploadsPath = Path.Combine(root, folderName);
+
+                        Directory.CreateDirectory(uploadsPath);
+
+                        var fullPath = Path.Combine(uploadsPath, uniqueFileName);
+
+                        fileStream.Position = 0; // 🔥 مهم جدًا
+
+                        using var stream = new FileStream(fullPath, FileMode.Create);
+                        await fileStream.CopyToAsync(stream);
+
+                        var relative = $"{folderName.Replace("\\", "/")}/{uniqueFileName}";
+                        var baseUrl = _baseUrlService.GetBaseUrl()?.TrimEnd('/');
+
+                        return string.IsNullOrEmpty(baseUrl)
+                            ? $"/{relative}"
+                            : $"{baseUrl}/{relative}";
+                    }
+                    catch
+                    {
+                        continue; // جرب root تاني
+                    }
+                }
+
                 return null;
-
-            using (var stream = new FileStream(fullPath, FileMode.Create))
-            {
-                await fileStream.CopyToAsync(stream);
             }
-
-            var relative = $"{folderForUrl}/{uniqueFileName}";
-            var baseUrl = _baseUrlService.GetBaseUrl().TrimEnd('/');
-            if (string.IsNullOrEmpty(baseUrl))
-                return $"/{relative}";
-
-            return $"{baseUrl}/{relative}";
+            catch
+            {
+                return null;
+            }
         }
 
         public Task DeleteFileAsync(string? filePath)
