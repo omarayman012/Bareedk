@@ -25,9 +25,9 @@ public class GetCountryByIdQueryHandler(
                     AR = x.CountryNameAr,
                     EN = x.CountryNameEn
                 },
-                CreatedBy = x.CreatedBy != null ? x.CreatedBy.UserName : x.CreatedById,
+                CreatedBy = x.CreatedBy != null ? x.CreatedBy.FullName : x.CreatedById,
                 CreatedAt = x.CreatedAt,
-                UpdatedBy = x.UpdatedBy != null ? x.UpdatedBy.UserName : x.UpdatedById,
+                UpdatedBy = x.UpdatedBy != null ? x.UpdatedBy.FullName : x.UpdatedById,
                 UpdatedAt = x.UpdatedAt,
                 IsActive = x.IsActive
             })
