@@ -114,7 +114,7 @@
 
     "CareerFieldAlreadyExists": "Career field already exists.",
     "CareerFieldNameRequired": "Career field name is required.",
-  
+
     "RoleCreatedSuccessfully": "Role created successfully",
     "RoleUpdatedSuccessfully": "Role updated successfully",
     "RoleDeletedSuccessfully": "Role deleted successfully",
@@ -132,5 +132,20 @@
     "RoleNameRequired": "Role name is required",
     "RoleNameTooLong": "Role name is too long",
     "OperationCompletedSuccessfully": "Operation completed successfully",
-    "OperationFailed": "Operation failed"
+    "OperationFailed": "Operation failed",
+    "CountryNotFound": "Country not found",
+    "CountriesNotFound": "The following countries were not found",
+    "CountryAlreadyExists": "Country already exists",
+    "CountryHasGovernments": "Cannot delete country because it has linked governments",
+    "CountryActivatedSuccessfully": "Country activated successfully",
+    "CountryDeactivatedSuccessfully": "Country deactivated successfully",
+    "DeleteCountriesSuccessfully": "Countries deleted successfully",
+    "CountryCreatedSuccessfully": "Country created successfully",
+    "CountryUpdatedSuccessfully": "Country updated successfully",
+    "IdRequired": "Id is required",
+    "NameArRequired": "Arabic name is required",
+    "NameEnRequired": "English name is required",
+    "NameArMaxLength": "Arabic name must not exceed 100 characters",
+    "NameEnMaxLength": "English name must not exceed 100 characters",
+    "AtLeastOneNameRequired": "At least one name is required"
 }

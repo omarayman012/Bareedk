@@ -132,7 +132,7 @@
 
     "CareerFieldAlreadyExists": "مجال العمل موجود بالفعل.",
     "CareerFieldNameRequired": "اسم مجال العمل مطلوب.",
-  
+
     "RoleCreatedSuccessfully": "تم إنشاء الدور بنجاح",
     "RoleUpdatedSuccessfully": "تم تحديث الدور بنجاح",
     "RoleDeletedSuccessfully": "تم حذف الدور بنجاح",
@@ -147,6 +147,20 @@
     "PermissionsRetrievedSuccessfully": "تم استرجاع الصلاحيات بنجاح",
     "RolePermissionsRetrievedSuccessfully": "تم استرجاع صلاحيات الدور بنجاح",
     "NoPermissionsFoundForRole": "تم الارجاع ولا توجد صلاحيات مرتبطة بهذا الدور",
-    "OperationFailed": "فشلت العملية"
-
+    "OperationFailed": "فشلت العملية",
+    "CountryNotFound": "الدولة غير موجودة",
+    "CountriesNotFound": "الدول التالية غير موجودة",
+    "CountryAlreadyExists": "الدولة موجودة بالفعل",
+    "CountryHasGovernments": "لا يمكن حذف الدولة لأنها تحتوي على محافظات مرتبطة بها",
+    "CountryActivatedSuccessfully": "تم تفعيل الدولة بنجاح",
+    "CountryDeactivatedSuccessfully": "تم تعطيل الدولة بنجاح",
+    "DeleteCountriesSuccessfully": "تم حذف الدول بنجاح",
+    "CountryCreatedSuccessfully": "تم إضافة الدولة بنجاح",
+    "CountryUpdatedSuccessfully": "تم تعديل الدولة بنجاح",
+    "IdRequired": "المعرف مطلوب",
+    "NameArRequired": "الاسم بالعربي مطلوب",
+    "NameEnRequired": "الاسم بالإنجليزي مطلوب",
+    "NameArMaxLength": "الاسم بالعربي لا يتجاوز 100 حرف",
+    "NameEnMaxLength": "الاسم بالإنجليزي لا يتجاوز 100 حرف",
+    "AtLeastOneNameRequired": "يجب إدخال اسم واحد على الأقل"
 }
