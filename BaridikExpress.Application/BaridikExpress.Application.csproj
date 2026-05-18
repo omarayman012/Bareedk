@@ -22,7 +22,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Features\LocationGeography\Commands\City\" />
 	  <Folder Include="Features\LocationGeography\Commands\Villiage\" />
 	</ItemGroup>
 

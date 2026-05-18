@@ -45,7 +45,7 @@ public class GetGovernmentByIdQueryHandler(
                 CreatedAt = x.CreatedAt,
 
                 UpdatedBy = x.UpdatedBy != null
-                    ? x.UpdatedBy.UserName
+                    ? x.UpdatedBy.FullName
                     : x.UpdatedById,
 
                 UpdatedAt = x.UpdatedAt,

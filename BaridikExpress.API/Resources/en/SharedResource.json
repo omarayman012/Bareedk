@@ -164,5 +164,23 @@
     "GovernmentNameArMaxLength": "Arabic government name maximum length is 100 characters",
     "GovernmentNameEnMaxLength": "English government name maximum length is 100 characters",
     "GovernmentNameEnInvalid": "English government name is invalid",
-    "AtLeastOneGovernmentNameRequired": "At least one government name in Arabic or English is required"
+    "AtLeastOneGovernmentNameRequired": "At least one government name in Arabic or English is required",
+    "CityNotFound": "City not found",
+    "CitiesNotFound": "The following cities were not found",
+    "CityAlreadyExists": "City already exists",
+    "CityHasVillages": "Cannot delete city because it has linked villages",
+    "CityActivatedSuccessfully": "City activated successfully",
+    "CityDeactivatedSuccessfully": "City deactivated successfully",
+    "DeleteCitiesSuccessfully": "Cities deleted successfully",
+    "CityCreatedSuccessfully": "City created successfully",
+    "CityUpdatedSuccessfully": "City updated successfully",
+
+    "CitiesRetrievedSuccessfully": "Cities retrieved successfully",
+    "CityIdRequired": "City id is required",
+    "CityNameArRequired": "Arabic city name is required",
+    "CityNameEnRequired": "English city name is required",
+    "CityNameArMaxLength": "Arabic city name maximum length is 100 characters",
+    "CityNameEnMaxLength": "English city name maximum length is 100 characters",
+    "CityNameEnInvalid": "English city name is invalid",
+    "AtLeastOneCityNameRequired": "At least one city name in Arabic or English is required"
 }
