@@ -314,6 +314,16 @@
     "PermissionsRetrievedSuccessfully": "تم استرجاع الصلاحيات بنجاح",
     "RolePermissionsRetrievedSuccessfully": "تم استرجاع صلاحيات الدور بنجاح",
     "NoPermissionsFoundForRole": "تم الارجاع ولا توجد صلاحيات مرتبطة بهذا الدور",
+<<<<<<< HEAD
+  "OperationFailed": "فشلت العملية"
+      
+  "InvalidImage": "الصورة غير صالحة (يسمح بـ .jpg, .jpeg, .png, .webp).",
+  "DeliveryNotFound": "مندوب التوصيل غير موجود.",
+  "DeliveryAlreadyApproved": "تمت الموافقة على مندوب التوصيل بالفعل.",
+  "DeliveryApprovedSuccessfully": "تمت الموافقة على مندوب التوصيل بنجاح.",
+  "DeliveryCreatedSuccessfully": "تم إنشاء مندوب التوصيل بنجاح.",
+  "Success": "تم بنجاح."
+=======
     "OperationFailed": "فشلت العملية",
     "CountryNotFound": "الدولة غير موجودة",
     "CountriesNotFound": "الدول التالية غير موجودة",
@@ -356,6 +366,7 @@
     "DeleteCitiesSuccessfully": "تم حذف المدن بنجاح",
     "CityCreatedSuccessfully": "تم إضافة المدينة بنجاح",
     "CityUpdatedSuccessfully": "تم تعديل المدينة بنجاح",
+>>>>>>> origin/main
 
     "CitiesRetrievedSuccessfully": "تم استرجاع المدن بنجاح",
 

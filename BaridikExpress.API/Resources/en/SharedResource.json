@@ -115,6 +115,7 @@
 
   "CareerFieldAlreadyExists": "Career field already exists.",
   "CareerFieldNameRequired": "Career field name is required.",
+
   "CareerFieldNotFound": "Career field not found.",
 
   "RoleCreatedSuccessfully": "Role created successfully",
@@ -135,6 +136,7 @@
   "RoleNameTooLong": "Role name is too long",
   "OperationCompletedSuccessfully": "Operation completed successfully",
   "OperationFailed": "Operation failed",
+
   "CountryNotFound": "Country not found",
   "CountriesNotFound": "The following countries were not found",
   "CountryAlreadyExists": "Country already exists",
@@ -286,6 +288,14 @@
     "RoleNameTooLong": "Role name is too long",
     "OperationCompletedSuccessfully": "Operation completed successfully",
     "OperationFailed": "Operation failed",
+
+  "InvalidImage": "Invalid image (allowed: .jpg, .jpeg, .png, .webp).",
+  "DeliveryNotFound": "Delivery not found.",
+  "DeliveryAlreadyApproved": "Delivery already approved.",
+  "DeliveryApprovedSuccessfully": "Delivery approved successfully.",
+  "DeliveryCreatedSuccessfully": "Delivery created successfully.",
+  "Success": "Success.",
+  
     "CountryNotFound": "Country not found",
     "CountriesNotFound": "The following countries were not found",
     "CountryAlreadyExists": "Country already exists",

@@ -158,9 +158,8 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Validator
 
             return System.Text.RegularExpressions.Regex.IsMatch(
                 phone,
-                @"^\+[1-9]\d{7,14}$");
+                @"^\+\d{5,20}$");
         }
-
         private bool BeStrongPassword(string password)
         {
             if (string.IsNullOrWhiteSpace(password))
