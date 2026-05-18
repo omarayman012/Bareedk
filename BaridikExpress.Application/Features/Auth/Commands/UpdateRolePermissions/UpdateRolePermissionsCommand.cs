@@ -3,5 +3,5 @@
     public record UpdateRolePermissionsCommand(
         string RoleId,
         List<Guid> PermissionIds
-    ) : IRequest<Result<string>>;
+    ) : IRequest<Result<bool>>;
 }

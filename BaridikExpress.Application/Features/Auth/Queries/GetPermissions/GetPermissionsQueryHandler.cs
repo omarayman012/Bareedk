@@ -1,16 +1,27 @@
-﻿namespace BaridikExpress.Application.Features.Auth.Queries.GetPermissions
-{
-    public class GetPermissionsQueryHandler(
-        IApplicationDbContext context
-    ) : IRequestHandler<GetPermissionsQuery, Result<List<string>>>
-    {
-        public async Task<Result<List<string>>> Handle(GetPermissionsQuery request, CancellationToken cancellationToken)
-        {
-            var permissions = await context.Permissions
-                .Select(p => p.PermissionName)
-                .ToListAsync();
+﻿using BaridikExpress.Application.Features.Auth.DTO.Auth;
 
-            return Result<List<string>>.Success(permissions, "Success", 200);
-        }
+namespace BaridikExpress.Application.Features.Auth.Queries.GetPermissions;
+
+public class GetPermissionsQueryHandler(
+    IApplicationDbContext context,
+    IStringLocalizer localizer
+) : IRequestHandler<GetPermissionsQuery, Result<List<PermissionDto>>>
+{
+    public async Task<Result<List<PermissionDto>>> Handle(
+        GetPermissionsQuery request,
+        CancellationToken cancellationToken)
+    {
+        var permissions = await context.Permissions
+            .Select(p => new PermissionDto(p.PermissionId, p.PermissionName))
+            .ToListAsync(cancellationToken);
+
+        if (!permissions.Any())
+            return Result<List<PermissionDto>>.Failure(
+                localizer["NoPermissionsFound"], 404);
+
+        return Result<List<PermissionDto>>.Success(
+          permissions,
+          localizer["PermissionsRetrievedSuccessfully"],
+        200);
     }
 }

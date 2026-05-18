@@ -1,26 +1,48 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
+namespace BaridikExpress.Application.Features.Auth.Commands.DeleteRole;
 
-namespace BaridikExpress.Application.Features.Auth.Commands.DeleteRole
+public class DeleteRoleCommandHandler(
+    RoleManager<IdentityRole> roleManager,
+    IApplicationDbContext context,
+    IStringLocalizer localizer
+) : IRequestHandler<DeleteRoleCommand, Result<bool>>
 {
-    public class DeleteRoleCommandHandler(
-        RoleManager<IdentityRole> roleManager,
-        IStringLocalizer localizer
-    ) : IRequestHandler<DeleteRoleCommand, Result<string>>
+    public async Task<Result<bool>> Handle(
+        DeleteRoleCommand request,
+        CancellationToken cancellationToken)
     {
-        public async Task<Result<string>> Handle(DeleteRoleCommand request, CancellationToken cancellationToken)
+        var role = await roleManager.FindByIdAsync(request.Id);
+        if (role == null)
+            return Result<bool>.Failure(localizer["RoleNotFound"], 404);
+
+        var hasUsers = await context.UserRoles
+            .AnyAsync(ur => ur.RoleId == request.Id, cancellationToken);
+
+        if (hasUsers)
+            return Result<bool>.Failure(localizer["RoleAssignedToUsers"], 400);
+
+        var rolePermissions = await context.RolePermissions
+            .Where(rp => rp.RoleId == request.Id)
+            .ToListAsync(cancellationToken);
+
+        if (rolePermissions.Any())
         {
-            var role = await roleManager.FindByIdAsync(request.Id);
-
-            if (role == null)
-                return Result<string>.Failure(localizer["RoleNotFound"], 404);
-
-            var result = await roleManager.DeleteAsync(role);
-
-            if (!result.Succeeded)
-                return Result<string>.Failure(localizer["Operationfailed"], 400);
-
-            return Result<string>.Success("Deleted", localizer["Operationcompletedsuccessfully"], 200);
+            context.RolePermissions.RemoveRange(rolePermissions);
+            await context.SaveChangesAsync(cancellationToken);
         }
+
+        var result = await roleManager.DeleteAsync(role);
+        if (!result.Succeeded)
+        {
+            var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+            return Result<bool>.Failure(
+                string.Format(localizer["FailedToDeleteRole"], errors), 400);
+        }
+
+        return Result<bool>.Success(
+            true,
+            localizer["RoleDeletedSuccessfully"],
+            200);
     }
 }
