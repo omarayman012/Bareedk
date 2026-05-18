@@ -21,10 +21,4 @@
 		<ProjectReference Include="..\BaridikExpress.Domain\BaridikExpress.Domain.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Features\LocationGeography\Commands\Government\" />
-	  <Folder Include="Features\LocationGeography\Commands\City\" />
-	  <Folder Include="Features\LocationGeography\Commands\Villiage\" />
-	</ItemGroup>
-
 </Project>
