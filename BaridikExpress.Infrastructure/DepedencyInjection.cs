@@ -59,6 +59,7 @@ namespace BaridikExpress.Infrastructure
             services.AddScoped<IHasherService, HasherService>();
             services.AddScoped<IGetCurrentUserRepository, GetCurrentUserRepository>();
             services.AddScoped<IFileStorageService, LocalFileStorageService>();
+            services.AddScoped<IExcelService, ExcelService>();
             services.AddScoped<IBaseUrlService, BaseUrlService>();
 
 
