@@ -2,16 +2,18 @@
 using BaridikExpress.Domain.Entities.AuthModule;
 using BaridikExpress.Domain.Entities.AuthModules;
 using BaridikExpress.Domain.Entities.Base;
-using BaridikExpress.Domain.Entities.DeliveryModule;
 using BaridikExpress.Domain.Entities.CareerFields;
 using BaridikExpress.Domain.Entities.Customers;
+using BaridikExpress.Domain.Entities.DeliveryModule;
+using BaridikExpress.Domain.Entities.Location;
+using BaridikExpress.Domain.Entities.Nationality;
 using BaridikExpress.Domain.Entities.RoleModule;
+using BaridikExpress.Infrastructure.Data.Seeder.NationalitySeeder;
 using BaridikExpress.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using BaridikExpress.Domain.Entities.Location;
 
 namespace BaridikExpress.Infrastructure.Persistence
 {
@@ -43,6 +45,7 @@ namespace BaridikExpress.Infrastructure.Persistence
         public DbSet<City>Cities { get; set; }
         public DbSet<Village>Villages { get; set; }
         public DbSet<SubAdminEmployee> SubAdminEmployees { get; set; }
+        public DbSet<Nationality>Nationalities { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -86,6 +89,7 @@ namespace BaridikExpress.Infrastructure.Persistence
                 .WithMany()
                 .HasForeignKey(r => r.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

@@ -4,6 +4,7 @@ using BaridikExpress.Domain.Entities.CareerFields;
 using BaridikExpress.Domain.Entities.Customers;
 using BaridikExpress.Domain.Entities.DeliveryModule;
 using BaridikExpress.Domain.Entities.Location;
+using BaridikExpress.Domain.Entities.Nationality;
 using BaridikExpress.Domain.Entities.RoleModule;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,7 @@ namespace BaridikExpress.Application.Interfaces
         public DbSet<City> Cities { get; set; }
         public DbSet<Village> Villages { get; set; }
         public DbSet<SubAdminEmployee> SubAdminEmployees { get; set; }
+        public DbSet<Nationality> Nationalities { get; set; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }
