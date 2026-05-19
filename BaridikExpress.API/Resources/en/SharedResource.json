@@ -1,4 +1,5 @@
 {
+
   "Unauthorized": "You are not authorized to perform this action, please login first.",
   "Userregisteredsuccessfully": "User registered successfully.",
   "Userregistrationfailed": "User registration failed.",
@@ -115,6 +116,8 @@
   "CareerFieldAlreadyExists": "Career field already exists.",
   "CareerFieldNameRequired": "Career field name is required.",
 
+  "CareerFieldNotFound": "Career field not found.",
+
   "RoleCreatedSuccessfully": "Role created successfully",
   "RoleUpdatedSuccessfully": "Role updated successfully",
   "RoleDeletedSuccessfully": "Role deleted successfully",
@@ -133,12 +136,6 @@
   "RoleNameTooLong": "Role name is too long",
   "OperationCompletedSuccessfully": "Operation completed successfully",
   "OperationFailed": "Operation failed",
-  "InvalidImage": "Invalid image (allowed: .jpg, .jpeg, .png, .webp).",
-  "DeliveryNotFound": "Delivery not found.",
-  "DeliveryAlreadyApproved": "Delivery already approved.",
-  "DeliveryApprovedSuccessfully": "Delivery approved successfully.",
-  "DeliveryCreatedSuccessfully": "Delivery created successfully.",
-  "Success": "Success.",
 
   "CountryNotFound": "Country not found",
   "CountriesNotFound": "The following countries were not found",
@@ -155,6 +152,17 @@
   "NameArMaxLength": "Arabic name must not exceed 100 characters",
   "NameEnMaxLength": "English name must not exceed 100 characters",
   "AtLeastOneNameRequired": "At least one name is required",
+  "InvalidIds": "The following IDs are invalid",
+
+  
+
+  "InvalidImage": "Invalid image (allowed: .jpg, .jpeg, .png, .webp).",
+  "DeliveryNotFound": "Delivery not found.",
+  "DeliveryAlreadyApproved": "Delivery already approved.",
+  "DeliveryApprovedSuccessfully": "Delivery approved successfully.",
+  "DeliveryCreatedSuccessfully": "Delivery created successfully.",
+  "Success": "Success.",
+
   "GovernmentNotFound": "Government not found",
   "GovernmentAlreadyExists": "Government already exists",
   "GovernmentCreatedSuccessfully": "Government created successfully",
@@ -207,5 +215,7 @@
   "VillageNameEnMaxLength": "English village name maximum length is 100 characters",
   "VillageNameEnInvalid": "English village name is invalid",
   "AtLeastOneVillageNameRequired": "At least one village name in Arabic or English is required"
-}
 
+  
+
+}

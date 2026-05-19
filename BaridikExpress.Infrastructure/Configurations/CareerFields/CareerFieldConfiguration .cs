@@ -22,8 +22,11 @@ namespace BaridikExpress.Infrastructure.Configurations.CareerFields
                     .HasColumnName("NameAr")
                     .HasMaxLength(200)
                     .IsRequired();
-                b.HasIndex(p => p.En);
-                b.HasIndex(p => p.Ar);
+                b.HasIndex(p => p.En)
+                .IsUnique();
+
+                b.HasIndex(p => p.Ar)
+                    .IsUnique();
             });
 
 
