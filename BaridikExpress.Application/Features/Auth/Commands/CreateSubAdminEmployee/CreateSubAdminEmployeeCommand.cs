@@ -1,4 +1,5 @@
 ﻿using BaridikExpress.Application.Features.Auth.DTO.Auth;
+using BaridikExpress.Domain.Enum;
 
 namespace BaridikExpress.Application.Features.Auth.Commands.CreateSubAdminEmployee
 {
@@ -7,7 +8,7 @@ namespace BaridikExpress.Application.Features.Auth.Commands.CreateSubAdminEmploy
         public string FullName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string? PhoneNumber { get; set; }
-        public string Gender { get; set; } = string.Empty;
+        public Gender? Gender { get; set; }
         public string RoleId { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
         public string ConfirmPassword { get; set; } = string.Empty;

@@ -33,6 +33,7 @@ public class GetSubAdminEmployeeByIdQueryHandler(
             Email = subAdmin.User.Email!,
             PhoneNumber = subAdmin.User.PhoneNumber,
             Role = subAdmin.Role?.Name ?? string.Empty,
+            Gender=subAdmin.Gender,
             CreatedBy = subAdmin.CreatedBy?.FullName ?? string.Empty,
             CreatedAt = subAdmin.CreatedAt,
             UpdatedBy = subAdmin.UpdatedBy?.FullName,

@@ -93,9 +93,8 @@ public class UpdateSubAdminEmployeeCommandHandler(
 
         if (!string.IsNullOrWhiteSpace(request.FullName))
             subAdmin.User.FullName = request.FullName;
-
-        if (!string.IsNullOrWhiteSpace(request.Gender))
-            subAdmin.Gender = request.Gender;
+        if (request.Gender.HasValue)
+            subAdmin.Gender = request.Gender.Value.ToString();
 
         subAdmin.User.UpdatedAt = DateTime.UtcNow;
 

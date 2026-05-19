@@ -48,6 +48,7 @@ public class GetAllSubAdminEmployeesQueryHandler(
                 Email = x.User.Email!,
                 PhoneNumber = x.User.PhoneNumber,
                 Role = x.Role != null ? x.Role.Name! : string.Empty,
+                Gender=x.Gender,
                 CreatedBy = x.CreatedBy != null ? x.CreatedBy.FullName : string.Empty,
                 CreatedAt = x.CreatedAt,
                 UpdatedBy = x.UpdatedBy != null ? x.UpdatedBy.FullName : null,
