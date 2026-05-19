@@ -16,7 +16,8 @@ using Microsoft.AspNetCore.Authorization;
 namespace BaridikExpress.API.Controllers.AuthModules
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/v1/auth/[controller]")]
+    [ApiExplorerSettings(GroupName = "auth-v1")]
     public class AuthController(IMediator mediator) : ControllerBase
     {
         private readonly IMediator _mediator = mediator;

@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace BaridikExpress.API.Controllers.DeliveryModule
 {
     [ApiController]
-    [Route("api/deliveries")]
+    [Route("api/v1/delivery/[controller]")]
+    [ApiExplorerSettings(GroupName = "delivery-v1")]
     public class DeliveryController : ControllerBase
     {
         private readonly IMediator _mediator;
