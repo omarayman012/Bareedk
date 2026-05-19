@@ -27,6 +27,7 @@ namespace BaridikExpress.Application.Interfaces
         public DbSet<Government> Governments { get; set; }
         public DbSet<City> Cities { get; set; }
         public DbSet<Village> Villages { get; set; }
+        public DbSet<SubAdminEmployee> SubAdminEmployees { get; set; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }

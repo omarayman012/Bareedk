@@ -42,6 +42,8 @@ namespace BaridikExpress.Infrastructure.Persistence
         public DbSet<Government>Governments { get; set; }
         public DbSet<City>Cities { get; set; }
         public DbSet<Village>Villages { get; set; }
+        public DbSet<SubAdminEmployee> SubAdminEmployees { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
