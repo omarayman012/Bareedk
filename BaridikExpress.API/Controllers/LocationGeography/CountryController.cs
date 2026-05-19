@@ -12,6 +12,7 @@ namespace BaridikExpress.API.Controllers.LocationGeography;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
+[ApiExplorerSettings(GroupName = "location-geography-v1")]
 public class CountryController(ISender sender) : ControllerBase
 {
     private readonly ISender _sender = sender;
