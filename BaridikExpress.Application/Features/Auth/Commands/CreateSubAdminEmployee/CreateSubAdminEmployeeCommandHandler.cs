@@ -84,10 +84,9 @@ public class CreateSubAdminEmployeeCommandHandler
         {
             Id = Guid.NewGuid(),
             UserId = user.Id,
-            Gender = request.Gender,
+            Gender = request.Gender.HasValue ? request.Gender.Value.ToString() : null,
             RoleId = request.RoleId,
         };
-
         await _context.SubAdminEmployees.AddAsync(subAdmin, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
@@ -99,6 +98,7 @@ public class CreateSubAdminEmployeeCommandHandler
             Email = user.Email!,
             PhoneNumber = user.PhoneNumber,
             Role = role.Name!,
+            Gender=subAdmin.Gender,
             CreatedBy = user.CreatedById ?? string.Empty,
             CreatedAt = user.CreatedAt,
             UpdatedBy = null,

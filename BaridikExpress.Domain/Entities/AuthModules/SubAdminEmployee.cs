@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using BaridikExpress.Domain.Entities.Base;
+using BaridikExpress.Domain.Enum;
 using Microsoft.AspNetCore.Identity;
 
 namespace BaridikExpress.Domain.Entities.AuthModules

@@ -26,11 +26,10 @@ public class CreateSubAdminEmployeeValidator : AbstractValidator<CreateSubAdminE
             .When(x => !string.IsNullOrWhiteSpace(x.PhoneNumber));
 
         RuleFor(x => x.Gender)
-            .NotEmpty()
-            .WithMessage(localizer["GenderRequired"])
-            .Must(x => x == "Male" || x == "Female")
-            .WithMessage(localizer["GenderInvalid"]);
-
+     .NotNull()
+     .WithMessage(localizer["GenderRequired"])
+     .IsInEnum()
+     .WithMessage(localizer["GenderInvalid"]);
         RuleFor(x => x.RoleId)
             .NotEmpty()
             .WithMessage(localizer["RoleIdRequired"]);

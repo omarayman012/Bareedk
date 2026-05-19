@@ -28,9 +28,9 @@ public class UpdateSubAdminEmployeeValidator : AbstractValidator<UpdateSubAdminE
             .When(x => !string.IsNullOrWhiteSpace(x.PhoneNumber));
 
         RuleFor(x => x.Gender)
-            .Must(x => x == "Male" || x == "Female")
-            .WithMessage(localizer["GenderInvalid"])
-            .When(x => !string.IsNullOrWhiteSpace(x.Gender));
+    .IsInEnum()
+    .WithMessage(localizer["GenderInvalid"])
+    .When(x => x.Gender.HasValue);
 
         RuleFor(x => x.RoleId)
             .NotEmpty()
