@@ -12,6 +12,8 @@ namespace BaridikExpress.API.Controllers.CareerFields
 {
     [ApiController]
     [Route("api/[controller]")]
+    [ApiExplorerSettings(GroupName = "admin-v1")]
+
     public class CareerFieldsController(IMediator mediator, IExcelService excelService) : ControllerBase
     {
         private readonly IMediator _mediator = mediator;

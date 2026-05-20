@@ -11,115 +11,102 @@ namespace BaridikExpress.Application.Features.Customer.Queries.GetCustomerById
         private readonly IStringLocalizer _localizer = localizer;
 
         public async Task<Result<CustomerDetailsResponse>> Handle(
-      GetCustomerByIdQuery request,
-      CancellationToken cancellationToken)
+              GetCustomerByIdQuery request,
+             CancellationToken cancellationToken)
         {
-            var customer = await _context.Customers
+            var response = await _context.Customers
                 .AsNoTracking()
-                .Include(c => c.Contacts)
-                .Include(c => c.Addresses)
-                    .ThenInclude(a => a.Country)
-                .Include(c => c.Addresses)
-                    .ThenInclude(a => a.Government)
-                .Include(c => c.Addresses)
-                    .ThenInclude(a => a.City)
-                .Include(c => c.Addresses)
-                    .ThenInclude(a => a.Village)
-                .Include(c => c.Account)
-                .Include(c => c.CreatedBy)
-                .Include(c => c.UpdatedBy)
-                .FirstOrDefaultAsync(c => c.Id == request.Id, cancellationToken);
-
-            if (customer is null)
-                return Result<CustomerDetailsResponse>
-                    .Failure(_localizer["CustomerNotFound"], 404);
-
-            var response = new CustomerDetailsResponse
-            {
-                Id = customer.Id,
-                Name = customer.Name,
-                Image = customer.ImageUrl,
-
-                Contacts = customer.Contacts.Select(c => new CustomerContactResponse
+                .Where(c => c.Id == request.Id)
+                .Select(c => new CustomerDetailsResponse
                 {
                     Id = c.Id,
-                    PhoneCountryCode = c.PhoneCountryCode,
-                    PhoneNumber = c.PhoneNumber,
-                    Email = c.Email,
-                    WhatsAppCountryCode = c.WhatsAppCountryCode,
-                    WhatsAppNumber = c.WhatsAppNumber,
-                    IsPrimary = c.IsPrimary
-                }).ToList(),
+                    Name = c.Name,
+                    Image = c.ImageUrl,
 
-                Addresses = customer.Addresses.Select(a => new CustomerAddressResponse
-                {
-                    Id = a.Id,
-                    AddressType = a.AddressType.ToString(),
-                    IsDefault = a.IsDefault,
-                    Street = a.Street,
-                    BuildingNumber = a.BuildingNumber,
-                    FloorNumber = a.FloorNumber,
-                    ZipCode = a.ZipCode,
-                    DistinctiveMark = a.DistinctiveMark,
-                    Location = a.Location,
-
-                    Country = a.Country is not null ? new LocalizedEntityDto
+                    Contacts = c.Contacts.Select(contact => new CustomerContactResponse
                     {
-                        Id = a.Country.CountryId,
-                        Name = new LocalizeLang
-                        {
-                            AR = a.Country.CountryNameAr,
-                            EN = a.Country.CountryNameEn
-                        }
-                    } : null,
+                        Id = contact.Id,
+                        PhoneCountryCode = contact.PhoneCountryCode,
+                        PhoneNumber = contact.PhoneNumber,
+                        Email = contact.Email,
+                        WhatsAppCountryCode = contact.WhatsAppCountryCode,
+                        WhatsAppNumber = contact.WhatsAppNumber,
+                        IsPrimary = contact.IsPrimary
+                    }).ToList(),
 
-                    Government = a.Government is not null ? new LocalizedEntityDto
+                    Addresses = c.Addresses.Select(a => new CustomerAddressResponse
                     {
-                        Id = a.Government.GovernmentId,
-                        Name = new LocalizeLang
-                        {
-                            AR = a.Government.GovernmentNameAr,
-                            EN = a.Government.GovernmentNameEn
-                        }
-                    } : null,
+                        Id = a.Id,
+                        AddressType = a.AddressType.ToString(),
+                        IsDefault = a.IsDefault,
+                        Street = a.Street,
+                        BuildingNumber = a.BuildingNumber,
+                        FloorNumber = a.FloorNumber,
+                        ZipCode = a.ZipCode,
+                        DistinctiveMark = a.DistinctiveMark,
+                        Location = a.Location,
 
-                    City = a.City is not null ? new LocalizedEntityDto
+                        Country = a.Country == null ? null : new LocalizedEntityDto
+                        {
+                            Id = a.Country.CountryId,
+                            Name = new LocalizeLang
+                            {
+                                AR = a.Country.CountryNameAr,
+                                EN = a.Country.CountryNameEn
+                            }
+                        },
+
+                        Government = a.Government == null ? null : new LocalizedEntityDto
+                        {
+                            Id = a.Government.GovernmentId,
+                            Name = new LocalizeLang
+                            {
+                                AR = a.Government.GovernmentNameAr,
+                                EN = a.Government.GovernmentNameEn
+                            }
+                        },
+
+                        City = a.City == null ? null : new LocalizedEntityDto
+                        {
+                            Id = a.City.CityId,
+                            Name = new LocalizeLang
+                            {
+                                AR = a.City.CityNameAr,
+                                EN = a.City.CityNameEn
+                            }
+                        },
+
+                        Village = a.Village == null ? null : new LocalizedEntityDto
+                        {
+                            Id = a.Village.VillageId,
+                            Name = new LocalizeLang
+                            {
+                                AR = a.Village.VillageNameAr,
+                                EN = a.Village.VillageNameEn
+                            }
+                        }
+                    }).ToList(),
+
+                    Account = c.Account == null ? null : new CustomerAccountResponse
                     {
-                        Id = a.City.CityId,
-                        Name = new LocalizeLang
-                        {
-                            AR = a.City.CityNameAr,
-                            EN = a.City.CityNameEn
-                        }
-                    } : null,
+                        Id = c.Account.Id,
+                        TaxRegistrationNumber = c.Account.TaxRegistrationNumber,
+                        Currency = c.Account.Currency.ToString(),
+                        OpeningBalance = c.Account.OpeningBalance,
+                        OpeningBalanceDate = c.Account.OpeningBalanceDate,
+                        Note = c.Account.Note
+                    },
 
-                    Village = a.Village is not null ? new LocalizedEntityDto
-                    {
-                        Id = a.Village.VillageId,
-                        Name = new LocalizeLang
-                        {
-                            AR = a.Village.VillageNameAr,
-                            EN = a.Village.VillageNameEn
-                        }
-                    } : null,
+                    CreatedBy = c.CreatedBy != null ? c.CreatedBy.FullName : null,
+                    CreatedAt = c.CreatedAt,
+                    UpdatedBy = c.UpdatedBy != null ? c.UpdatedBy.FullName : null,
+                    UpdatedAt = c.UpdatedAt,
+                })
+                .FirstOrDefaultAsync(cancellationToken);
 
-                }).ToList(),
-
-                Account = customer.Account is not null ? new CustomerAccountResponse
-                {
-                    Id = customer.Account.Id,
-                    TaxRegistrationNumber = customer.Account.TaxRegistrationNumber,
-                    Currency = customer.Account.Currency.ToString(),
-                    OpeningBalance = customer.Account.OpeningBalance,
-                    OpeningBalanceDate = customer.Account.OpeningBalanceDate,
-                    Note = customer.Account.Note
-                } : null,
-
-                CreatedBy = customer.CreatedBy?.FullName,
-                CreatedAt = customer.CreatedAt,
-                UpdatedBy = customer.UpdatedBy?.FullName,
-                UpdatedAt = customer.UpdatedAt,
-            };
+            if (response is null)
+                return Result<CustomerDetailsResponse>
+                    .Failure(_localizer["CustomerNotFound"], 404);
 
             return Result<CustomerDetailsResponse>
                 .Success(response, _localizer["CustomerRetrievedSuccessfully"]);

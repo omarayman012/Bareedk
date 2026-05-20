@@ -1,6 +1,6 @@
 ﻿using BaridikExpress.Application.Features.Customer.Dtos;
 
-namespace BaridikExpress.Application.Features.Customer.Commands;
+namespace BaridikExpress.Application.Features.Customer.Commands.CreateCustomer;
 
 public record CreateCustomerCommand(
     string Name,

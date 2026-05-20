@@ -8,6 +8,7 @@ using BaridikExpress.Domain.Entities.Nationality;
 using BaridikExpress.Domain.Entities.RoleModule;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace BaridikExpress.Application.Interfaces
 {
@@ -33,6 +34,8 @@ namespace BaridikExpress.Application.Interfaces
         public DbSet<Village> Villages { get; set; }
         public DbSet<SubAdminEmployee> SubAdminEmployees { get; set; }
         public DbSet<Nationality> Nationalities { get; set; }
+        DatabaseFacade Database { get; }
+
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }
