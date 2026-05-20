@@ -46,6 +46,9 @@ namespace BaridikExpress.Infrastructure.Persistence
         public DbSet<Village>Villages { get; set; }
         public DbSet<SubAdminEmployee> SubAdminEmployees { get; set; }
         public DbSet<Nationality>Nationalities { get; set; }
+        public DbSet<CustomerAccount> CustomerAccounts { get; set; }
+        public DbSet<CustomerAddress> CustomerAddresses { get; set; }
+        public DbSet<CustomerContact> CustomerContacts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

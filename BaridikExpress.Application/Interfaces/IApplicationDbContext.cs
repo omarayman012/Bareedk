@@ -24,6 +24,9 @@ namespace BaridikExpress.Application.Interfaces
 
         DbSet<CareerField> CareerFields { get; set; }
         DbSet<Customer> Customers { get; set; }
+         DbSet<CustomerAccount> CustomerAccounts { get; set; }
+         DbSet<CustomerAddress> CustomerAddresses { get; set; }
+        DbSet<CustomerContact> CustomerContacts { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<Government> Governments { get; set; }
         public DbSet<City> Cities { get; set; }

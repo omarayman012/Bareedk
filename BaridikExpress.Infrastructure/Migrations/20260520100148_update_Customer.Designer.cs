@@ -4,6 +4,7 @@ using BaridikExpress.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BaridikExpress.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260520100148_update_Customer")]
+    partial class update_Customer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -348,17 +351,18 @@ namespace BaridikExpress.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("AddressType")
+                    b.Property<int>("AddressType")
                         .HasColumnType("int");
 
                     b.Property<string>("BuildingNumber")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<Guid?>("CityId")
+                    b.Property<Guid>("CityId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CountryId")
+                    b.Property<Guid>("CountryId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
@@ -378,7 +382,7 @@ namespace BaridikExpress.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<Guid?>("GovernmentId")
+                    b.Property<Guid>("GovernmentId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsActive")
@@ -392,6 +396,7 @@ namespace BaridikExpress.Infrastructure.Migrations
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Street")
+                        .IsRequired()
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
 
@@ -401,7 +406,7 @@ namespace BaridikExpress.Infrastructure.Migrations
                     b.Property<string>("UpdatedById")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<Guid?>("VillageId")
+                    b.Property<Guid>("VillageId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ZipCode")
@@ -1184,12 +1189,14 @@ namespace BaridikExpress.Infrastructure.Migrations
                     b.HasOne("BaridikExpress.Domain.Entities.Location.City", "City")
                         .WithMany()
                         .HasForeignKey("CityId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("BaridikExpress.Domain.Entities.Location.Country", "Country")
                         .WithMany()
                         .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("BaridikExpress.Domain.Entities.AuthModules.User", "CreatedBy")
                         .WithMany()
@@ -1205,7 +1212,8 @@ namespace BaridikExpress.Infrastructure.Migrations
                     b.HasOne("BaridikExpress.Domain.Entities.Location.Government", "Government")
                         .WithMany()
                         .HasForeignKey("GovernmentId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("BaridikExpress.Domain.Entities.AuthModules.User", "UpdatedBy")
                         .WithMany()
@@ -1215,7 +1223,8 @@ namespace BaridikExpress.Infrastructure.Migrations
                     b.HasOne("BaridikExpress.Domain.Entities.Location.Village", "Village")
                         .WithMany()
                         .HasForeignKey("VillageId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("City");
 
