@@ -41,7 +41,7 @@ builder.Services.AddSwaggerGen(options =>
 
     options.SwaggerDoc("admin-v1", new Microsoft.OpenApi.Models.OpenApiInfo
     {
-        Title = "Admin API",
+        Title = "Admin Dashboard API",
         Version = "v1"
     });
 

@@ -1,6 +1,7 @@
 using BaridikExpress.Domain.Entities.AuthModule;
 using BaridikExpress.Domain.Entities.AuthModules;
 using BaridikExpress.Domain.Entities.CareerFields;
+using BaridikExpress.Domain.Entities.ClientModule;
 using BaridikExpress.Domain.Entities.Customers;
 using BaridikExpress.Domain.Entities.DeliveryModule;
 using BaridikExpress.Domain.Entities.Location;
@@ -30,6 +31,8 @@ namespace BaridikExpress.Application.Interfaces
         public DbSet<Village> Villages { get; set; }
         public DbSet<SubAdminEmployee> SubAdminEmployees { get; set; }
         public DbSet<Nationality> Nationalities { get; set; }
+        public DbSet<Client> Clients { get; set; }
+
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }
