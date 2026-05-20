@@ -2,64 +2,58 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace BaridikExpress.Infrastructure.Configurations.Customers
+namespace BaridikExpress.Infrastructure.Configurations.Customers;
+
+internal sealed class CustomerConfiguration
+    : IEntityTypeConfiguration<Customer>
 {
-    public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
+    public void Configure(EntityTypeBuilder<Customer> builder)
     {
-        public void Configure(EntityTypeBuilder<Customer> builder)
-        {
-            builder.ToTable("Customers");
-            builder.HasKey(x => x.Id);
-            builder.Property(x => x.UserId)
-                .IsRequired();
+        builder.ToTable("Customers");
 
-            builder.Property(x => x.Email)
-                .HasMaxLength(256)
-                .IsRequired();
+        builder.HasKey(x => x.Id);
 
-            builder.Property(x => x.Mobile)
-                .HasMaxLength(50)
-                .IsRequired();
+        builder.Property(x => x.Name)
+            .HasMaxLength(200)
+            .IsRequired();
 
-            builder.Property(x => x.WhatsappNumber)
-                .HasMaxLength(50);
+        builder.Property(x => x.ImageUrl)
+            .HasMaxLength(500);
 
-            builder.Property(x => x.Nationality)
-                .HasMaxLength(100);
+        builder.Property(x => x.UserId)
+            .IsRequired();
 
-            builder.Property(x => x.PasswordHash)
-                .IsRequired();
+        builder.HasIndex(x => x.UserId)
+            .IsUnique();
 
-            builder.Property(x => x.CustomerImage)
-                .HasMaxLength(1000);
+        builder.HasOne(x => x.User)
+            .WithOne()
+            .HasForeignKey<Customer>(x => x.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Property(x => x.TaxRegistrationNumber)
-                .HasMaxLength(100);
+        builder.HasOne(x => x.Nationality)
+            .WithMany()
+            .HasForeignKey(x => x.NationalityId)
+            .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Property(x => x.OpeningBalance)
-                .HasPrecision(18, 2);
+        builder.HasOne(x => x.CareerField)
+       .WithMany(cf => cf.Customers) 
+       .HasForeignKey(x => x.CareerFieldId)
+       .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Property(x => x.Notes)
-                .HasMaxLength(2000);
+        builder.HasMany(x => x.Contacts)
+            .WithOne(x => x.Customer)
+            .HasForeignKey(x => x.CustomerId)
+            .OnDelete(DeleteBehavior.Cascade);
 
+        builder.HasMany(x => x.Addresses)
+            .WithOne(x => x.Customer)
+            .HasForeignKey(x => x.CustomerId)
+            .OnDelete(DeleteBehavior.Cascade);
 
-
-            builder.OwnsOne(x => x.Name, b =>
-            {
-                b.Property(p => p.En)
-                    .HasColumnName("NameEn")
-                    .HasMaxLength(300)
-                    .IsRequired();
-
-                b.Property(p => p.Ar)
-                    .HasColumnName("NameAr")
-                    .HasMaxLength(300)
-                    .IsRequired();
-                b.HasIndex(p => p.En);
-                b.HasIndex(p => p.Ar);
-
-            });
-
-        }
+        builder.HasOne(x => x.Account)
+            .WithOne(x => x.Customer)
+            .HasForeignKey<CustomerAccount>(x => x.CustomerId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -14,7 +14,7 @@ namespace BaridikExpress.API.Controllers.LocationGeography;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-[ApiExplorerSettings(GroupName = "location-geography-v1")]
+[ApiExplorerSettings(GroupName = "admin-v1")]
 [Tags("Governments")]
 public class GovernmentController(ISender sender) : ControllerBase
 {

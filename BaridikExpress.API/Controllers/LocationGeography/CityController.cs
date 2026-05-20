@@ -13,7 +13,7 @@ namespace BaridikExpress.API.Controllers.LocationGeography;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-[ApiExplorerSettings(GroupName = "location-geography-v1")]
+[ApiExplorerSettings(GroupName = "admin-v1")]
 [Tags("Cities")]
 public class CityController(IMediator mediator) : ControllerBase
 {
