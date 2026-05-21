@@ -16,13 +16,13 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
         private readonly IApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
         private readonly IFileStorageService _fileStorage;
-        private readonly IStringLocalizer<RegisterDeliveryHandler> _localizer;
+        private readonly IStringLocalizer _localizer;
 
         public RegisterDeliveryHandler(
             IApplicationDbContext context,
             UserManager<User> userManager,
             IFileStorageService fileStorage,
-            IStringLocalizer<RegisterDeliveryHandler> localizer)
+            IStringLocalizer localizer)
         {
             _context = context;
             _userManager = userManager;
@@ -53,6 +53,7 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
             // ================= CREATE USER =================
             var user = new User
             {
+                FullName = request.FullName,
                 UserName = request.Email,
                 Email = request.Email,
                 PhoneNumber = request.Phone,
@@ -117,6 +118,7 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
             var delivery = new Delivery
             {
                 UserId = user.Id,
+               
                 DateOfBirth = request.DateOfBirth,
 
                 PlateNo = request.PlateNo,
@@ -153,7 +155,6 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
             var response = new RegisterDeliveryResponseDto
             {
                 Id = delivery.Id,
-                UserId = user.Id,
 
                 FullName = request.FullName,
                 DateOfBirth = delivery.DateOfBirth,

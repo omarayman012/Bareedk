@@ -30,10 +30,7 @@ namespace BaridikExpress.Infrastructure.Configurations.CareerFields
             });
 
 
-            builder.HasMany(x => x.Customers)
-                .WithOne(x => x.CareerField)
-                .HasForeignKey(x => x.CareerFieldId)
-                .OnDelete(DeleteBehavior.Restrict);
+         
         }
     }
 }

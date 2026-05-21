@@ -4,9 +4,11 @@ using BaridikExpress.Domain.Entities.CareerFields;
 using BaridikExpress.Domain.Entities.Customers;
 using BaridikExpress.Domain.Entities.DeliveryModule;
 using BaridikExpress.Domain.Entities.Location;
+using BaridikExpress.Domain.Entities.Nationality;
 using BaridikExpress.Domain.Entities.RoleModule;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace BaridikExpress.Application.Interfaces
 {
@@ -23,10 +25,17 @@ namespace BaridikExpress.Application.Interfaces
 
         DbSet<CareerField> CareerFields { get; set; }
         DbSet<Customer> Customers { get; set; }
+         DbSet<CustomerAccount> CustomerAccounts { get; set; }
+         DbSet<CustomerAddress> CustomerAddresses { get; set; }
+        DbSet<CustomerContact> CustomerContacts { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<Government> Governments { get; set; }
         public DbSet<City> Cities { get; set; }
         public DbSet<Village> Villages { get; set; }
+        public DbSet<SubAdminEmployee> SubAdminEmployees { get; set; }
+        public DbSet<Nationality> Nationalities { get; set; }
+        DatabaseFacade Database { get; }
+
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }

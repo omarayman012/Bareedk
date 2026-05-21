@@ -2,16 +2,18 @@
 using BaridikExpress.Domain.Entities.AuthModule;
 using BaridikExpress.Domain.Entities.AuthModules;
 using BaridikExpress.Domain.Entities.Base;
-using BaridikExpress.Domain.Entities.DeliveryModule;
 using BaridikExpress.Domain.Entities.CareerFields;
 using BaridikExpress.Domain.Entities.Customers;
+using BaridikExpress.Domain.Entities.DeliveryModule;
+using BaridikExpress.Domain.Entities.Location;
+using BaridikExpress.Domain.Entities.Nationality;
 using BaridikExpress.Domain.Entities.RoleModule;
+using BaridikExpress.Infrastructure.Data.Seeder.NationalitySeeder;
 using BaridikExpress.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using BaridikExpress.Domain.Entities.Location;
 
 namespace BaridikExpress.Infrastructure.Persistence
 {
@@ -42,6 +44,12 @@ namespace BaridikExpress.Infrastructure.Persistence
         public DbSet<Government>Governments { get; set; }
         public DbSet<City>Cities { get; set; }
         public DbSet<Village>Villages { get; set; }
+        public DbSet<SubAdminEmployee> SubAdminEmployees { get; set; }
+        public DbSet<Nationality>Nationalities { get; set; }
+        public DbSet<CustomerAccount> CustomerAccounts { get; set; }
+        public DbSet<CustomerAddress> CustomerAddresses { get; set; }
+        public DbSet<CustomerContact> CustomerContacts { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -84,6 +92,7 @@ namespace BaridikExpress.Infrastructure.Persistence
                 .WithMany()
                 .HasForeignKey(r => r.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

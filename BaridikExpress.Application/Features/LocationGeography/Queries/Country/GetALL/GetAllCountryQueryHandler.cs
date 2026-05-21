@@ -43,11 +43,11 @@ public class GetAllCountryQueryHandler(
                 EN = x.CountryNameEn
             },
             CreatedBy = x.CreatedBy != null
-                ? x.CreatedBy.UserName
+                ? x.CreatedBy.FullName
                 : x.CreatedById,
             CreatedAt = x.CreatedAt,
             UpdatedBy = x.UpdatedBy != null
-                ? x.UpdatedBy.UserName
+                ? x.UpdatedBy.FullName
                 : x.UpdatedById,
             UpdatedAt = x.UpdatedAt,
             IsActive = x.IsActive

@@ -11,7 +11,6 @@ namespace BaridikExpress.Application.DTOs.DeliveryModule
     {
         public Guid Id { get; set; }
 
-        public string UserId { get; set; } = string.Empty;
 
         // BASIC
         public string FullName { get; set; }
