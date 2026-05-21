@@ -12,8 +12,8 @@ public class DeliveryType : BaseEntity
     public decimal PricePerShipment { get; private set; }
     public bool IsSwitchActive { get; private set; }
     public string? ImageUrl { get; private set; }
-    public string? Description { get; private set; }
-
+    public string? DescriptionEn { get; private set; }
+    public string? DescriptionAr { get; private set; }
     public decimal PricePerTotal => DaysTo * PricePerShipment;
 
     private DeliveryType() { }
@@ -26,7 +26,8 @@ public class DeliveryType : BaseEntity
         decimal pricePerShipment,
         bool isSwitchActive,
         string? imageUrl = null,
-        string? description = null)
+        string? descriptionEn = null,
+        string? descriptionAr = null)
     {
         return new DeliveryType
         {
@@ -38,7 +39,8 @@ public class DeliveryType : BaseEntity
             PricePerShipment = pricePerShipment,
             IsSwitchActive = isSwitchActive,
             ImageUrl = imageUrl,
-            Description = description,
+            DescriptionEn = descriptionEn,
+            DescriptionAr = descriptionAr,
         };
     }
 
@@ -50,7 +52,8 @@ public class DeliveryType : BaseEntity
         decimal? pricePerShipment = null,
         bool? isSwitchActive = null,
         string? imageUrl = null,
-        string? description = null)
+        string? descriptionEn = null,
+        string? descriptionAr = null)
     {
         if (!string.IsNullOrWhiteSpace(nameEn)) NameEn = nameEn;
         if (!string.IsNullOrWhiteSpace(nameAr)) NameAr = nameAr;
@@ -59,6 +62,9 @@ public class DeliveryType : BaseEntity
         if (pricePerShipment.HasValue) PricePerShipment = pricePerShipment.Value;
         if (isSwitchActive.HasValue) IsSwitchActive = isSwitchActive.Value;
         if (!string.IsNullOrWhiteSpace(imageUrl)) ImageUrl = imageUrl;
-        if (!string.IsNullOrWhiteSpace(description)) Description = description;
+        if (!string.IsNullOrWhiteSpace(descriptionEn)) DescriptionEn = descriptionEn;
+        if (!string.IsNullOrWhiteSpace(descriptionAr)) DescriptionAr = descriptionAr;
     }
+
+    public void ToggleStatus() => IsSwitchActive = !IsSwitchActive;
 }
