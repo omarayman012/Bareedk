@@ -1242,3 +1242,119 @@
    at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
    at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
    at BaridikExpress.API.Middlewares.ExceptionHandlingMiddleware.Invoke(HttpContext context) in C:\Users\ASM\OneDrive\Desktop\baridik-express-project-back-end\BaridikExpress.API\Middlewares\ExceptionHandlingMiddleware.cs:line 19
+2026-05-21 18:40:23 | ValidationException | Validation failed: 
+ -- LoadCapacityTo: Load capacity to must be greater than load capacity from. Severity: Error |    at BaridikExpress.Application.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in D:\courses\back end.net\API Pojectes\Team Projects\Drcode\baridik-express-project-back-end\BaridikExpress.Application\Behaviors\ValidationBehavior.cs:line 37
+   at BaridikExpress.API.Controllers.Vehicles.VehiclesController.Create(CreateVehicleCommand command) in D:\courses\back end.net\API Pojectes\Team Projects\Drcode\baridik-express-project-back-end\BaridikExpress.API\Controllers\Vehicles\VehiclesController.cs:line 48
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at BaridikExpress.API.Middlewares.ExceptionHandlingMiddleware.Invoke(HttpContext context) in D:\courses\back end.net\API Pojectes\Team Projects\Drcode\baridik-express-project-back-end\BaridikExpress.API\Middlewares\ExceptionHandlingMiddleware.cs:line 19
+2026-05-21 18:46:07 | ValidationException | Validation failed: 
+ -- : Career field name is required. Severity: Error |    at BaridikExpress.Application.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in D:\courses\back end.net\API Pojectes\Team Projects\Drcode\baridik-express-project-back-end\BaridikExpress.Application\Behaviors\ValidationBehavior.cs:line 37
+   at BaridikExpress.API.Controllers.CareerFields.CareerFieldsController.Create(CreateCareerFieldCommand command) in D:\courses\back end.net\API Pojectes\Team Projects\Drcode\baridik-express-project-back-end\BaridikExpress.API\Controllers\CareerFields\CareerFieldsController.cs:line 46
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at BaridikExpress.API.Middlewares.ExceptionHandlingMiddleware.Invoke(HttpContext context) in D:\courses\back end.net\API Pojectes\Team Projects\Drcode\baridik-express-project-back-end\BaridikExpress.API\Middlewares\ExceptionHandlingMiddleware.cs:line 19
+2026-05-21 18:51:13 | ValidationException | Validation failed: 
+ -- : Career field name is required. Severity: Error |    at BaridikExpress.Application.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in D:\courses\back end.net\API Pojectes\Team Projects\Drcode\baridik-express-project-back-end\BaridikExpress.Application\Behaviors\ValidationBehavior.cs:line 37
+   at BaridikExpress.API.Controllers.CareerFields.CareerFieldsController.Create(CreateCareerFieldCommand command) in D:\courses\back end.net\API Pojectes\Team Projects\Drcode\baridik-express-project-back-end\BaridikExpress.API\Controllers\CareerFields\CareerFieldsController.cs:line 46
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at BaridikExpress.API.Middlewares.ExceptionHandlingMiddleware.Invoke(HttpContext context) in D:\courses\back end.net\API Pojectes\Team Projects\Drcode\baridik-express-project-back-end\BaridikExpress.API\Middlewares\ExceptionHandlingMiddleware.cs:line 19
+2026-05-21 18:52:46 | TypeLoadException | Could not load type 'BaridikExpress.Application.Features.LocationGeography.Queries.Country.GetALL.GetAllCountryQuery' from assembly 'BaridikExpress.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null' due to value type mismatch. |    at System.Signature.GetSignature(Void* pCorSig, Int32 cCorSig, RuntimeFieldHandleInternal fieldHandle, IRuntimeMethodInfo methodHandle, RuntimeType declaringType)
+   at System.Reflection.RuntimeMethodInfo.<get_Signature>g__LazyCreateSignature|25_0()
+   at System.Reflection.RuntimeMethodInfo.GetParameters()
+   at Microsoft.Extensions.Internal.PropertyHelper.IsInterestingProperty(PropertyInfo property)
+   at Microsoft.Extensions.Internal.PropertyHelper.<GetProperties>g__AddInterestingProperties|39_0(List`1 propertyHelpers, Type type)
+   at Microsoft.Extensions.Internal.PropertyHelper.GetProperties(Type type, ConcurrentDictionary`2 cache)
+   at Microsoft.Extensions.Internal.PropertyHelper.GetVisibleProperties(Type type, ConcurrentDictionary`2 allPropertiesCache, ConcurrentDictionary`2 visiblePropertiesCache)
+   at Microsoft.AspNetCore.Mvc.ModelBinding.Metadata.DefaultModelMetadataProvider.CreatePropertyDetails(ModelMetadataIdentity key)
+   at Microsoft.AspNetCore.Mvc.ModelBinding.Metadata.DefaultModelMetadataProvider.GetMetadataForProperties(Type modelType)
+   at Microsoft.AspNetCore.Mvc.ModelBinding.Metadata.DefaultModelMetadata.get_Properties()
+   at Microsoft.AspNetCore.Mvc.ApiExplorer.DefaultApiDescriptionProvider.PseudoModelBindingVisitor.Visit(ApiParameterDescriptionContext bindingContext, BindingSource ambientSource, String containerName)
+   at Microsoft.AspNetCore.Mvc.ApiExplorer.DefaultApiDescriptionProvider.GetParameters(ApiParameterContext context)
+   at Microsoft.AspNetCore.Mvc.ApiExplorer.DefaultApiDescriptionProvider.CreateApiDescription(ControllerActionDescriptor action, String httpMethod, String groupName)
+   at Microsoft.AspNetCore.Mvc.ApiExplorer.DefaultApiDescriptionProvider.OnProvidersExecuting(ApiDescriptionProviderContext context)
+   at Microsoft.AspNetCore.Mvc.ApiExplorer.ApiDescriptionGroupCollectionProvider.GetCollection(ActionDescriptorCollection actionDescriptors)
+   at Microsoft.AspNetCore.Mvc.ApiExplorer.ApiDescriptionGroupCollectionProvider.get_ApiDescriptionGroups()
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GetSwaggerDocumentWithoutPaths(String documentName, String host, String basePath)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GetSwaggerAsync(String documentName, String host, String basePath)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at BaridikExpress.API.Middlewares.ExceptionHandlingMiddleware.Invoke(HttpContext context) in D:\courses\back end.net\API Pojectes\Team Projects\Drcode\baridik-express-project-back-end\BaridikExpress.API\Middlewares\ExceptionHandlingMiddleware.cs:line 19
+2026-05-21 19:09:03 | ValidationException | Validation failed: 
+ -- Name: NameIsRequired Severity: Error
+ -- Password: Password must be at least 8 characters. Severity: Error
+ -- Password: Password must contain at least one uppercase letter. Severity: Error
+ -- Password: Password must contain at least one number. Severity: Error
+ -- Password: Password must contain at least one special character. Severity: Error
+ -- Contacts: ContactsIsRequired Severity: Error
+ -- Contacts: PrimaryContactIsRequired Severity: Error |    at BaridikExpress.Application.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in D:\courses\back end.net\API Pojectes\Team Projects\Drcode\baridik-express-project-back-end\BaridikExpress.Application\Behaviors\ValidationBehavior.cs:line 37
+   at BaridikExpress.API.Controllers.CustomerModule.CustomerController.Create(CreateCustomerCommand command) in D:\courses\back end.net\API Pojectes\Team Projects\Drcode\baridik-express-project-back-end\BaridikExpress.API\Controllers\CustomerModule\CustomerController.cs:line 25
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at BaridikExpress.API.Middlewares.ExceptionHandlingMiddleware.Invoke(HttpContext context) in D:\courses\back end.net\API Pojectes\Team Projects\Drcode\baridik-express-project-back-end\BaridikExpress.API\Middlewares\ExceptionHandlingMiddleware.cs:line 19
+2026-05-21 19:15:50 | ValidationException | Validation failed: 
+ -- : Vehicle name is required. Severity: Error |    at BaridikExpress.Application.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in D:\courses\back end.net\API Pojectes\Team Projects\Drcode\baridik-express-project-back-end\BaridikExpress.Application\Behaviors\ValidationBehavior.cs:line 37
+   at BaridikExpress.API.Controllers.Vehicles.VehiclesController.Create(CreateVehicleCommand command) in D:\courses\back end.net\API Pojectes\Team Projects\Drcode\baridik-express-project-back-end\BaridikExpress.API\Controllers\Vehicles\VehiclesController.cs:line 48
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at BaridikExpress.API.Middlewares.ExceptionHandlingMiddleware.Invoke(HttpContext context) in D:\courses\back end.net\API Pojectes\Team Projects\Drcode\baridik-express-project-back-end\BaridikExpress.API\Middlewares\ExceptionHandlingMiddleware.cs:line 19

@@ -24,6 +24,11 @@
         public const string CareerFieldsRead = "CareerFields.Read";
         public const string CareerFieldsDelete = "CareerFields.Delete";
 
+        public const string VehiclesRead =   "Permissions.Vehicles.Read";
+        public const string VehiclesCreate = "Permissions.Vehicles.Create";
+        public const string VehiclesUpdate = "Permissions.Vehicles.Update";
+        public const string VehiclesDelete = "Permissions.Vehicles.Delete";
+
 
     }
 }

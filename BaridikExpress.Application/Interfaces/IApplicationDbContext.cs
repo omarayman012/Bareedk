@@ -1,13 +1,12 @@
 using BaridikExpress.Domain.Entities.AuthModule;
-using BaridikExpress.Domain.Entities.AuthModules;
 using BaridikExpress.Domain.Entities.CareerFields;
 using BaridikExpress.Domain.Entities.Customers;
 using BaridikExpress.Domain.Entities.DeliveryModule;
 using BaridikExpress.Domain.Entities.Location;
 using BaridikExpress.Domain.Entities.Nationality;
 using BaridikExpress.Domain.Entities.RoleModule;
+using BaridikExpress.Domain.Entities.Vehicles;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace BaridikExpress.Application.Interfaces
@@ -24,6 +23,7 @@ namespace BaridikExpress.Application.Interfaces
         DbSet<Delivery> Deliveries { get; }
 
         DbSet<CareerField> CareerFields { get; set; }
+        DbSet<Vehicle>  Vehicles { get; set; }
         DbSet<Customer> Customers { get; set; }
          DbSet<CustomerAccount> CustomerAccounts { get; set; }
          DbSet<CustomerAddress> CustomerAddresses { get; set; }
