@@ -4,18 +4,22 @@ using BaridikExpress.Application.Features.LocationGeography.Commands.Villiage.Up
 using BaridikExpress.Application.Features.LocationGeography.Commands.Villiage.UpdateVillage;
 using BaridikExpress.Application.Features.LocationGeography.Queries.Villiage.GetAll;
 using BaridikExpress.Application.Features.LocationGeography.Queries.Villiage.GetById;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BaridikExpress.API.Controllers.LocationGeography;
 
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
+[ApiExplorerSettings(GroupName = "admin-v1")]
+[Tags("Villages")]
 public class VillageController(ISender sender) : ControllerBase
 {
     private readonly ISender _sender = sender;
 
-    // GET api/village
+    // GET: api/village
     [HttpGet]
     public async Task<IActionResult> GetAll(
         [FromQuery] GetAllVillageQuery query)
@@ -27,7 +31,7 @@ public class VillageController(ISender sender) : ControllerBase
             : StatusCode(result.StatusCode, result);
     }
 
-    // GET api/village/{id}
+    // GET: api/village/{id}
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById(Guid id)
     {
@@ -42,7 +46,7 @@ public class VillageController(ISender sender) : ControllerBase
             : StatusCode(result.StatusCode, result);
     }
 
-    // POST api/village
+    // POST: api/village
     [HttpPost]
     public async Task<IActionResult> Create(
         [FromBody] CreateVillageCommand command)
@@ -50,11 +54,11 @@ public class VillageController(ISender sender) : ControllerBase
         var result = await _sender.Send(command);
 
         return result.IsSuccess
-            ? StatusCode(201, result)
+            ? StatusCode(StatusCodes.Status201Created, result)
             : StatusCode(result.StatusCode, result);
     }
 
-    // PUT api/village
+    // PUT: api/village
     [HttpPut]
     public async Task<IActionResult> Update(
         [FromBody] UpdateVillageCommand command)
@@ -66,7 +70,7 @@ public class VillageController(ISender sender) : ControllerBase
             : StatusCode(result.StatusCode, result);
     }
 
-    // DELETE api/village
+    // DELETE: api/village
     [HttpDelete]
     public async Task<IActionResult> Delete(
         [FromBody] DeleteVillageCommand command)
@@ -78,7 +82,7 @@ public class VillageController(ISender sender) : ControllerBase
             : StatusCode(result.StatusCode, result);
     }
 
-    // PATCH api/village/toggle-status/{id}
+    // PATCH: api/village/toggle-status/{id}
     [HttpPatch("toggle-status/{id:guid}")]
     public async Task<IActionResult> ToggleStatus(Guid id)
     {

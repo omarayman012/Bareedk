@@ -39,11 +39,11 @@ public class GetCareerFieldByIdQueryHandler(
                     .Select(c => new CareerFieldCustomerDto
                     {
                         Id = c.Id,
-                        NameEn = c.Name.En,
-                        NameAr = c.Name.Ar,
-                        Email = c.Email,
-                        Mobile = c.Mobile,
-                        WhatsappNumber = c.WhatsappNumber,
+                        //NameEn = c.Name.En,
+                        //NameAr = c.Name.Ar,
+                        //Email = c.Email,
+                        //Mobile = c.Mobile,
+                        //WhatsappNumber = c.WhatsappNumber,
                         Address = "c.Address",
                         //TotalShipments = c.Shipments.Count,,
                         TotalShipments = 0,

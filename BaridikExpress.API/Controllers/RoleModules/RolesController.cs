@@ -6,73 +6,100 @@ using BaridikExpress.Application.Features.Auth.DTO.Auth;
 using BaridikExpress.Application.Features.Auth.Queries.GetPermissions;
 using BaridikExpress.Application.Features.Auth.Queries.GetPermissionsByRole;
 using BaridikExpress.Application.Features.Auth.Queries.GetRoles;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BaridikExpress.API.Controllers.RoleModules;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
+[ApiExplorerSettings(GroupName = "role-management-v1")]
+[Tags("Roles")]
 public class RolesController(IMediator mediator) : ControllerBase
 {
-    // GET api/roles
+    private readonly IMediator _mediator = mediator;
+
+    // GET: api/roles
     [HttpGet]
     [HasPermission(Permissions.RolesRead)]
     public async Task<IActionResult> GetRoles()
     {
-        var result = await mediator.Send(new GetRolesQuery());
+        var result = await _mediator.Send(new GetRolesQuery());
+
         return StatusCode(result.StatusCode, result);
     }
 
-    // GET api/roles/permissions
+    // GET: api/roles/permissions
     [HttpGet("permissions")]
     [HasPermission(Permissions.RolesRead)]
     public async Task<IActionResult> GetPermissions()
     {
-        var result = await mediator.Send(new GetPermissionsQuery());
+        var result = await _mediator.Send(new GetPermissionsQuery());
+
         return StatusCode(result.StatusCode, result);
     }
 
-    // GET api/roles/{roleId}/permissions
+    // GET: api/roles/{roleId}/permissions
     [HttpGet("{roleId}/permissions")]
     [HasPermission(Permissions.RolesRead)]
-    public async Task<IActionResult> GetPermissionsByRole(string roleId)
+    public async Task<IActionResult> GetPermissionsByRole(
+        string roleId)
     {
-        var result = await mediator.Send(new GetPermissionsByRoleQuery(roleId));
+        var result = await _mediator.Send(
+            new GetPermissionsByRoleQuery(roleId));
+
         return StatusCode(result.StatusCode, result);
     }
 
-    // POST api/roles
+    // POST: api/roles
     [HttpPost]
     [HasPermission(Permissions.RolesCreate)]
-    public async Task<IActionResult> CreateRole([FromBody] CreateRoleCommand command)
+    public async Task<IActionResult> CreateRole(
+        [FromBody] CreateRoleCommand command)
     {
-        var result = await mediator.Send(command);
+        var result = await _mediator.Send(command);
+
         return StatusCode(result.StatusCode, result);
     }
 
-    // PUT api/roles/{id}
+    // PUT: api/roles/{id}
     [HttpPut("{id}")]
     [HasPermission(Permissions.RolesUpdate)]
-    public async Task<IActionResult> UpdateRole(string id, [FromBody] CreateRoleRequestDto dto)
+    public async Task<IActionResult> UpdateRole(
+        string id,
+        [FromBody] CreateRoleRequestDto dto)
     {
-        var result = await mediator.Send(new UpdateRoleCommand(id, dto.Name));
+        var result = await _mediator.Send(
+            new UpdateRoleCommand(id, dto.Name));
+
         return StatusCode(result.StatusCode, result);
     }
 
-    // PUT api/roles/{roleId}/permissions
+    // PUT: api/roles/{roleId}/permissions
     [HttpPut("{roleId}/permissions")]
     [HasPermission(Permissions.RolesUpdate)]
-    public async Task<IActionResult> UpdateRolePermissions(string roleId, [FromBody] List<Guid> permissionIds)
+    public async Task<IActionResult> UpdateRolePermissions(
+        string roleId,
+        [FromBody] List<Guid> permissionIds)
     {
-        var result = await mediator.Send(new UpdateRolePermissionsCommand(roleId, permissionIds));
+        var result = await _mediator.Send(
+            new UpdateRolePermissionsCommand(
+                roleId,
+                permissionIds));
+
         return StatusCode(result.StatusCode, result);
     }
 
-    // DELETE api/roles/{id}
+    // DELETE: api/roles/{id}
     [HttpDelete("{id}")]
     [HasPermission(Permissions.RolesDelete)]
     public async Task<IActionResult> DeleteRole(string id)
     {
-        var result = await mediator.Send(new DeleteRoleCommand(id));
+        var result = await _mediator.Send(
+            new DeleteRoleCommand(id));
+
         return StatusCode(result.StatusCode, result);
     }
 }
