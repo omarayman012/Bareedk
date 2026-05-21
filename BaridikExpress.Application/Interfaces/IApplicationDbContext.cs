@@ -2,6 +2,7 @@ using BaridikExpress.Domain.Entities.AuthModule;
 using BaridikExpress.Domain.Entities.CareerFields;
 using BaridikExpress.Domain.Entities.Customers;
 using BaridikExpress.Domain.Entities.DeliveryModule;
+using BaridikExpress.Domain.Entities.DeliveryType;
 using BaridikExpress.Domain.Entities.Location;
 using BaridikExpress.Domain.Entities.Nationality;
 using BaridikExpress.Domain.Entities.RoleModule;
@@ -35,7 +36,7 @@ namespace BaridikExpress.Application.Interfaces
         public DbSet<SubAdminEmployee> SubAdminEmployees { get; set; }
         public DbSet<Nationality> Nationalities { get; set; }
         DatabaseFacade Database { get; }
-
+        DbSet<DeliveryType> DeliveryTypes { get; set; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }
