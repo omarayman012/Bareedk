@@ -11,5 +11,5 @@ namespace BaridikExpress.Application.Features.CareerFields.Commands.UpdateCareer
         Guid Id,
         string ?NameAr,
         string ?NameEn
-    ) : IRequest<Result<Guid>>;
+    ) : IRequest<Result<bool>>;
 }

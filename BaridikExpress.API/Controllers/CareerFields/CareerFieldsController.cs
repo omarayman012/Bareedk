@@ -11,7 +11,7 @@ using BaridikExpress.Application.Interfaces.File;
 namespace BaridikExpress.API.Controllers.CareerFields
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiExplorerSettings(GroupName = "admin-v1")]
 
     public class CareerFieldsController(IMediator mediator, IExcelService excelService) : ControllerBase

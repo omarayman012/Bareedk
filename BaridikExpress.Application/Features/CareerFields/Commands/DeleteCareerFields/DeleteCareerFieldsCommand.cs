@@ -2,5 +2,5 @@
 {
     public record DeleteCareerFieldsCommand(
         List<Guid> Ids
-    ) : IRequest<Result<List<Guid>>>;
+    ) : IRequest<Result<bool>>;
 }

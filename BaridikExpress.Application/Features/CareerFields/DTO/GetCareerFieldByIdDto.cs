@@ -1,12 +1,12 @@
-﻿namespace BaridikExpress.Application.Features.CareerFields.DTO;
+﻿using BaridikExpress.Application.Features.CommanDTO.Localizes;
+
+namespace BaridikExpress.Application.Features.CareerFields.DTO;
 
 public class GetCareerFieldByIdDto
 {
     public Guid Id { get; set; }
 
-    public string NameAr { get; set; }
-
-    public string NameEn { get; set; }
+    public LocalizedDto Name { get; set; }  
 
     public bool IsActive { get; set; }
 
