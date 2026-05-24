@@ -1,6 +1,7 @@
 ﻿using BaridikExpress.Application.Common.Extensions;
 using BaridikExpress.Application.Common.Helpers;
 using BaridikExpress.Application.Features.CareerFields.DTOs;
+using BaridikExpress.Application.Features.CommanDTO.Localizes;
 using BaridikExpress.Application.Interfaces.IRepository;
 using BaridikExpress.Domain.Entities.CareerFields;
 
@@ -40,8 +41,11 @@ public class GetAllCareerFieldsQueryHandler(
             .Select(x => new GetAllCareerFieldsDto
             {
                 Id = x.Id,
-                NameAr = x.Name.Ar,
-                NameEn = x.Name.En,
+                Name = new LocalizedDto
+                {
+                    AR = x.Name.Ar,
+                    EN = x.Name.En
+                },
                 CreatedBy = x.CreatedBy!.FullName,
                 CreatedAt = x.CreatedAt,
                 UpdatedBy = x.UpdatedBy != null

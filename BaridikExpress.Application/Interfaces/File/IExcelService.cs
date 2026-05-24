@@ -10,7 +10,7 @@ namespace BaridikExpress.Application.Interfaces.File
     {
         Task<byte[]> DownloadTemplateAsync<T>() where T : class, new();
         Task<byte[]> DownloadDataAsync<T>(IEnumerable<T> data) where T : class;
-        // Task<ExcelUploadResult<T>> UploadAsync<T>(IFormFile file) where T : class, new();
+      // Task<ExcelUploadResult<T>> UploadAsync<T>(IFormFile file) where T : class, new();
         Task<ExcelUploadResult<TEntity>> UploadAsync<TExcel, TEntity>(
                 IFormFile file,
                 Func<TExcel, TEntity> mapper,

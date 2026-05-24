@@ -1,4 +1,6 @@
-﻿using BaridikExpress.Application.Features.CareerFields.DTO;
+﻿using BaridikExpress.Application.Common.Mapping;
+using BaridikExpress.Application.Features.CareerFields.DTO;
+using BaridikExpress.Application.Features.CommanDTO.Localizes;
 using BaridikExpress.Application.Interfaces.IRepository;
 using BaridikExpress.Domain.Entities.CareerFields;
 
@@ -25,8 +27,11 @@ public class GetCareerFieldByIdQueryHandler(
             .Select(x => new GetCareerFieldByIdDto
             {
                 Id = x.Id,
-                NameAr = x.Name.Ar,
-                NameEn = x.Name.En,
+                Name= new LocalizedDto
+                {
+                    AR = x.Name.Ar,
+                    EN = x.Name.En
+                },
                 IsActive = x.IsActive,
                 CreatedBy = x.CreatedBy!.FullName,
                 CreatedAt = x.CreatedAt,
@@ -39,15 +44,18 @@ public class GetCareerFieldByIdQueryHandler(
                     .Select(c => new CareerFieldCustomerDto
                     {
                         Id = c.Id,
-                        NameEn = c.Name.En,
-                        NameAr = c.Name.Ar,
-                        Email = c.Email,
-                        Mobile = c.Mobile,
-                        WhatsappNumber = c.WhatsappNumber,
-                        Address = "c.Address",
-                        //TotalShipments = c.Shipments.Count,,
+                        Name = c.Name,
+                        Addresses = c.Addresses
+                        .AsQueryable()
+                        .Select(CustomerMappings.AddressProjection)
+                        .ToList(),
+                        Contacts = c.Contacts
+                        .AsQueryable()
+                        .Select(CustomerMappings.ContactProjection)
+                        .ToList(),
+                        // TotalShipments = c.Shipments.Count  ,
                         TotalShipments = 0,
-                       // TotalSpent = c.Payments.Sum(p => p.Amount),
+                        //TotalSpent = c.Payments.Sum(p => p.Amount),
                         TotalSpent = 0,
                         IsActive = c.IsActive
                     })

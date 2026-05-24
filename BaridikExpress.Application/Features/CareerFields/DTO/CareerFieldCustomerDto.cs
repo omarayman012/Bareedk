@@ -1,19 +1,15 @@
-﻿namespace BaridikExpress.Application.Features.CareerFields.DTO;
+﻿using BaridikExpress.Application.Features.Customer.Dtos;
+
+namespace BaridikExpress.Application.Features.CareerFields.DTO;
 
 public class CareerFieldCustomerDto
 {
     public Guid Id { get; set; }
+    public string Name { get; set; }
 
-    public string NameAr { get; set; }
+    public List<CustomerContactResponse> Contacts { get; set; } = [];
 
-    public string NameEn { get; set; }
-
-    public string Email { get; set; }
-
-    public string Mobile { get; set; }
-    public string WhatsappNumber { get; set; }
-
-    public string Address { get; set; }
+    public List<CustomerAddressResponse> Addresses { get; set; } = [];
 
     public int TotalShipments { get; set; }
 

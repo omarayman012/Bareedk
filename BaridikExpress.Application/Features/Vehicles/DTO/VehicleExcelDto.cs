@@ -1,0 +1,26 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BaridikExpress.Application.Features.Vehicles.DTO
+{
+        public class VehicleExcelDto
+        {
+            public string NameAr { get; set; } = default!;
+
+            public string NameEn { get; set; } = default!;
+
+            public decimal LoadCapacityFrom { get; set; }
+
+            public decimal LoadCapacityTo { get; set; }
+
+            public decimal PricePerTon { get; set; }
+
+            public string? ImageUrl { get; set; }
+
+            public bool IsPriceCalculationEnabled { get; set; }
+        }
+    
+}

@@ -7,18 +7,18 @@ namespace BaridikExpress.Application.Features.CareerFields.Commands.UpdateCareer
 public class UpdateCareerFieldCommandHandler(
     IGenericRepository<CareerField> repo,
     IStringLocalizer localizer
-) : IRequestHandler<UpdateCareerFieldCommand, Result<Guid>>
+) : IRequestHandler<UpdateCareerFieldCommand, Result<bool>>
 {
     private readonly IGenericRepository<CareerField> _repo = repo;
     private readonly IStringLocalizer _localizer = localizer;
 
-    public async Task<Result<Guid>> Handle(
+    public async Task<Result<bool>> Handle(
         UpdateCareerFieldCommand request,
         CancellationToken cancellationToken)
     {
         var careerField = await _repo.GetByIdAsync(request.Id);
         if (careerField is null)
-            return Result<Guid>.Failure( _localizer["CareerFieldNotFound"] );
+            return Result<bool>.Failure( _localizer["CareerFieldNotFound"] );
 
 
         var nameAr = string.IsNullOrWhiteSpace(request.NameAr) ? careerField.Name.Ar : request.NameAr;
@@ -38,13 +38,13 @@ public class UpdateCareerFieldCommandHandler(
         );
 
         if (exists)
-            return Result<Guid>.Failure(_localizer["CareerFieldAlreadyExists"]);
+            return Result<bool>.Failure(_localizer["CareerFieldAlreadyExists"]);
 
         careerField.Update(nameEn, nameAr);
         await _repo.UpdateAsync(careerField);
 
-        return Result<Guid>.Success(
-            careerField.Id,
+        return Result<bool>.Success(
+            true,
             _localizer["OperationCompletedSuccessfully"]);
     }
 }

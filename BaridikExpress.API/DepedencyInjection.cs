@@ -21,6 +21,11 @@ namespace Api
         private static IServiceCollection AddControllersConfig(this IServiceCollection services)
         {
             services.AddControllers();
+            // To Stop automatic model state validation and use custom response instead
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
             return services;
         }
 
