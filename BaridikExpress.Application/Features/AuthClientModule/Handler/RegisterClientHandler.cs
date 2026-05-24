@@ -102,7 +102,7 @@ namespace BaridikExpress.Application.Features.AuthClientModule.Handler
             // ================= RESPONSE =================
             var response = new RegisterClientResponseDto
             {
-                Id = client.Id,
+                Id = client.UserId,
                 FullName = user.FullName,
                 Email = user.Email!,
                 Phone = user.PhoneNumber!,
@@ -127,4 +127,4 @@ namespace BaridikExpress.Application.Features.AuthClientModule.Handler
                 201);
         }
     }
-}
+} 

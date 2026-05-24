@@ -195,7 +195,7 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
 
             var response = new RegisterDeliveryResponseDto
             {
-                Id = delivery.Id,
+                Id = delivery.UserId,
 
 
                 FullName = user.FullName,

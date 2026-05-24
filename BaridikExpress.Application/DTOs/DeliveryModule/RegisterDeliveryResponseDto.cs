@@ -9,8 +9,7 @@ namespace BaridikExpress.Application.DTOs.DeliveryModule
 {
     public class RegisterDeliveryResponseDto
     {
-        public Guid Id { get; set; }
-
+        public string Id { get; set; }
 
         // BASIC
         public string FullName { get; set; }
