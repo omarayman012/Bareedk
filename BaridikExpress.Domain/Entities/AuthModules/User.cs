@@ -19,6 +19,25 @@ namespace BaridikExpress.Domain.Entities.AuthModules
         public string? UpdatedById { get; set; }
         public SubAdminEmployee? SubAdminEmployee { get; set; }
 
+        public string? EmailOtp { get; set; }
 
+        public DateTime? EmailOtpExpireAt { get; set; }
+     
+    
+        public DateTime? EmailOtpLastSentAt { get; set; }
+
+
+        public string? PhoneOtp { get; set; }
+        public DateTime? PhoneOtpExpireAt { get; set; }
+        public DateTime? PhoneOtpLastSentAt { get; set; }
+
+        public string? ResetPasswordOtp { get; set; }
+        public DateTime? ResetPasswordOtpExpireAt { get; set; }
+        public DateTime? ResetPasswordOtpLastSentAt { get; set; }
+        public string? ResetPasswordToken { get; set; }
+        public DateTime? ResetPasswordTokenExpireAt { get; set; }
+
+        public string? RefreshToken { get; set; }
+        public DateTime? RefreshTokenExpireAt { get; set; }
     }
 }

@@ -1,15 +1,19 @@
-using System.Globalization;
 using Api;
 using BaridikExpress.API.Extensions;
 using BaridikExpress.API.Middlewares;
 using BaridikExpress.Application;
 using BaridikExpress.Application.Common.Abstractions;
+using BaridikExpress.Application.Interfaces;
+using BaridikExpress.Application.Interfaces.Auth;
 using BaridikExpress.Infrastructure;
 using BaridikExpress.Infrastructure.Data.Seeder.NationalitySeeder;
 using BaridikExpress.Infrastructure.Persistence;
+using BaridikExpress.Infrastructure.Services.Email;
+using BaridikExpress.Infrastructure.Services.SmsService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -80,6 +84,14 @@ builder.Services.AddSwaggerGen(options =>
         Version = "v1"
     });
 });
+builder.Services.Configure<MailSettings>(
+    builder.Configuration.GetSection("MailSettings"));
+builder.Services.Configure<TwilioSettings>(
+    builder.Configuration.GetSection("TwilioSettings"));
+builder.Services.AddScoped<ISmsService, SmsService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
+
+
 var app = builder.Build();
 await app.InitializeAsync();
 

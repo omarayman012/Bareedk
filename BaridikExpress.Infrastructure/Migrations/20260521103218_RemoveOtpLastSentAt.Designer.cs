@@ -4,6 +4,7 @@ using BaridikExpress.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BaridikExpress.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260521103218_RemoveOtpLastSentAt")]
+    partial class RemoveOtpLastSentAt
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -191,27 +194,6 @@ namespace BaridikExpress.Infrastructure.Migrations
 
                     b.Property<string>("ProfileImageUrl")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RefreshToken")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("RefreshTokenExpireAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ResetPasswordOtp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("ResetPasswordOtpExpireAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("ResetPasswordOtpLastSentAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ResetPasswordToken")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("ResetPasswordTokenExpireAt")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");

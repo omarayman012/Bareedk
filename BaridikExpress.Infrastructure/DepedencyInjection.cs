@@ -61,7 +61,7 @@ namespace BaridikExpress.Infrastructure
             services.AddScoped<IFileStorageService, LocalFileStorageService>();
             services.AddScoped<IExcelService, ExcelService>();
             services.AddScoped<IBaseUrlService, BaseUrlService>();
-
+            services.AddScoped<IJwtService, JwtService>();
 
 
             return services;
