@@ -21,11 +21,4 @@
 		<ProjectReference Include="..\BaridikExpress.Domain\BaridikExpress.Domain.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Features\DeliveryTypes\Commands\DeleteDeliveryType\" />
-	  <Folder Include="Features\DeliveryTypes\Commands\UpdateDeliveryTypeToggle\" />
-	  <Folder Include="Features\DeliveryTypes\Commands\UpdateDeliveryType\" />
-	  <Folder Include="Features\DeliveryTypes\Queries\GetDeliveryTypeById\" />
-	</ItemGroup>
-
 </Project>
