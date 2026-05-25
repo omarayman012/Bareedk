@@ -9,6 +9,7 @@ using BaridikExpress.Domain.Entities.DeliveryType;
 using BaridikExpress.Domain.Entities.Location;
 using BaridikExpress.Domain.Entities.Nationality;
 using BaridikExpress.Domain.Entities.RoleModule;
+using BaridikExpress.Domain.Entities.Vehicles;
 using BaridikExpress.Infrastructure.Data.Seeder.NationalitySeeder;
 using BaridikExpress.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Http;
@@ -40,6 +41,7 @@ namespace BaridikExpress.Infrastructure.Persistence
         public DbSet<User> ApplicationUsers { get; set; }
         public DbSet<Delivery> Deliveries { get; set; }
         public DbSet<CareerField> CareerFields { get; set; }
+        public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Country>Countries { get; set; }
         public DbSet<Government>Governments { get; set; }
