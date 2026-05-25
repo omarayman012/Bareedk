@@ -1,9 +1,8 @@
-﻿using BaridikExpress.Application.Features.DeliveryTypes.DTO;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace BaridikExpress.Application.Features.DeliveryTypes.Commands.UpdateDeliveryType;
 
-public sealed class UpdateDeliveryTypeCommand : IRequest<Result<DeliveryTypeResponse>>
+public sealed class UpdateDeliveryTypeCommand : IRequest<Result<bool>>
 {
     public Guid Id { get; set; }
     public string? NameEn { get; set; }

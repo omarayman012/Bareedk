@@ -1,25 +1,23 @@
 ﻿using BaridikExpress.Application.Features.CommanDTO.Localizes;
-using BaridikExpress.Application.Features.DeliveryTypes.DTO;
+using BaridikExpress.Application.Features.Services.DTOs;
 using Microsoft.EntityFrameworkCore;
 
-namespace BaridikExpress.Application.Features.DeliveryTypes.Queries.GetAllDeliveryTypes;
+namespace BaridikExpress.Application.Features.Services.Queries.GetAllServices;
 
-public sealed class GetAllDeliveryTypesQueryHandler(
+public sealed class GetAllServicesQueryHandler(
     IApplicationDbContext db,
     IStringLocalizer localizer)
-    : IRequestHandler<GetAllDeliveryTypesQuery, Result<PaginatedList<DeliveryTypeResponse>>>
+    : IRequestHandler<GetAllServicesQuery, Result<PaginatedList<ServiceResponse>>>
 {
     #region Handle
 
-    public async Task<Result<PaginatedList<DeliveryTypeResponse>>> Handle(
-        GetAllDeliveryTypesQuery request,
+    public async Task<Result<PaginatedList<ServiceResponse>>> Handle(
+        GetAllServicesQuery request,
         CancellationToken cancellationToken)
     {
         #region Build Query
 
-        var query = db.DeliveryTypes
-            .AsNoTracking()
-            .AsQueryable();
+        var query = db.Services.AsNoTracking().AsQueryable();
 
         #endregion
 
@@ -48,16 +46,12 @@ public sealed class GetAllDeliveryTypesQueryHandler(
 
         var projected = query
             .OrderByDescending(x => x.CreatedAt)
-            .Select(x => new DeliveryTypeResponse(
+            .Select(x => new ServiceResponse(
                 x.Id,
                 new LocalizedDto { EN = x.NameEn, AR = x.NameAr },
-                x.DaysFrom,
-                x.DaysTo,
-                x.PricePerShipment,
-                x.DaysTo * x.PricePerShipment,
-                x.IsSwitchActive,
+                x.Price,
                 x.ImageUrl,
-                new LocalizedDto { EN = x.DescriptionEn, AR = x.DescriptionAr },
+                x.IsActive,
                 x.CreatedBy != null ? x.CreatedBy.FullName : null,
                 x.CreatedAt,
                 x.UpdatedBy != null ? x.UpdatedBy.FullName : null,
@@ -67,13 +61,12 @@ public sealed class GetAllDeliveryTypesQueryHandler(
 
         #region Paginate
 
-        var result = await PaginatedList<DeliveryTypeResponse>
+        var result = await PaginatedList<ServiceResponse>
             .CreateAsync(projected, request.PageNumber, request.PageSize);
 
         #endregion
 
-        return Result<PaginatedList<DeliveryTypeResponse>>
-            .Success(result, localizer["DeliveryTypesRetrievedSuccessfully"]);
+        return Result<PaginatedList<ServiceResponse>>.Success(result, localizer["ServicesRetrievedSuccessfully"]);
     }
 
     #endregion

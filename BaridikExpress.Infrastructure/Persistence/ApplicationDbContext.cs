@@ -9,6 +9,7 @@ using BaridikExpress.Domain.Entities.DeliveryType;
 using BaridikExpress.Domain.Entities.Location;
 using BaridikExpress.Domain.Entities.Nationality;
 using BaridikExpress.Domain.Entities.RoleModule;
+using BaridikExpress.Domain.Entities.Services;
 using BaridikExpress.Domain.Entities.Vehicles;
 using BaridikExpress.Infrastructure.Data.Seeder.NationalitySeeder;
 using BaridikExpress.Infrastructure.Extensions;
@@ -53,6 +54,8 @@ namespace BaridikExpress.Infrastructure.Persistence
         public DbSet<CustomerAddress> CustomerAddresses { get; set; }
         public DbSet<CustomerContact> CustomerContacts { get; set; }
         DbSet<DeliveryType> DeliveryTypes { get; set; }
+        public DbSet<Service> Services { get; set; }
+
         DbSet<DeliveryType> IApplicationDbContext.DeliveryTypes { get => DeliveryTypes; set => DeliveryTypes = value; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
