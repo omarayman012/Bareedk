@@ -9,6 +9,7 @@ using BaridikExpress.Domain.Entities.RoleModule;
 using BaridikExpress.Domain.Entities.Vehicles;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using ServiceStack;
 
 namespace BaridikExpress.Application.Interfaces
 {
@@ -37,6 +38,7 @@ namespace BaridikExpress.Application.Interfaces
         public DbSet<Nationality> Nationalities { get; set; }
         DatabaseFacade Database { get; }
         DbSet<DeliveryType> DeliveryTypes { get; set; }
+        DbSet<Domain.Entities.Services.Service>Services { get; set; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }

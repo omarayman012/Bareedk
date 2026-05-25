@@ -1,4 +1,5 @@
-﻿using BaridikExpress.Application.Features.DeliveryTypes.DTO;
+﻿using BaridikExpress.Application.Features.CommanDTO.Localizes;
+using BaridikExpress.Application.Features.DeliveryTypes.DTO;
 using Microsoft.EntityFrameworkCore;
 
 namespace BaridikExpress.Application.Features.DeliveryTypes.Queries.GetDeliveryTypeById;
@@ -21,20 +22,18 @@ public sealed class GetDeliveryTypeByIdQueryHandler(
             .Where(x => x.Id == request.Id)
             .Select(x => new DeliveryTypeResponse(
                 x.Id,
-                x.NameEn,
-                x.NameAr,
+                new LocalizedDto { EN = x.NameEn, AR = x.NameAr },
                 x.DaysFrom,
                 x.DaysTo,
                 x.PricePerShipment,
                 x.DaysTo * x.PricePerShipment,
                 x.IsSwitchActive,
                 x.ImageUrl,
-                x.DescriptionEn,
-                x.DescriptionAr,
+                new LocalizedDto { EN = x.DescriptionEn, AR = x.DescriptionAr },
                 x.CreatedBy != null ? x.CreatedBy.FullName : null,
                 x.CreatedAt,
                 x.UpdatedBy != null ? x.UpdatedBy.FullName : null,
-                x.UpdatedAt ?? default))
+                x.UpdatedAt))
             .FirstOrDefaultAsync(cancellationToken);
 
         #endregion

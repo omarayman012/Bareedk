@@ -1,8 +1,8 @@
 ﻿using BaridikExpress.Application.Common.Helpers;
+using BaridikExpress.Application.Features.CommanDTO.Localizes;
 using BaridikExpress.Application.Features.DeliveryTypes.DTO;
 using BaridikExpress.Application.Interfaces.File;
 using BaridikExpress.Domain.Entities.DeliveryType;
-using Microsoft.EntityFrameworkCore;
 
 namespace BaridikExpress.Application.Features.DeliveryTypes.Commands.CreateDeliveryType;
 
@@ -81,20 +81,18 @@ public sealed class CreateDeliveryTypeCommandHandler(
 
         var response = new DeliveryTypeResponse(
             deliveryType.Id,
-            deliveryType.NameEn,
-            deliveryType.NameAr,
+            new LocalizedDto { EN = deliveryType.NameEn, AR = deliveryType.NameAr },
             deliveryType.DaysFrom,
             deliveryType.DaysTo,
             deliveryType.PricePerShipment,
             deliveryType.PricePerTotal,
             deliveryType.IsSwitchActive,
             deliveryType.ImageUrl,
-            deliveryType.DescriptionEn,
-            deliveryType.DescriptionAr,
+            new LocalizedDto { EN = deliveryType.DescriptionEn, AR = deliveryType.DescriptionAr },
             deliveryType.CreatedBy?.FullName,
             deliveryType.CreatedAt,
             deliveryType.UpdatedBy?.FullName,
-            deliveryType.UpdatedAt ?? default);
+            deliveryType.UpdatedAt);
 
         #endregion
 

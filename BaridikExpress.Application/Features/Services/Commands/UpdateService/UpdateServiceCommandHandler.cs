@@ -1,27 +1,26 @@
 ﻿using BaridikExpress.Application.Interfaces.File;
-using Microsoft.EntityFrameworkCore;
 
-namespace BaridikExpress.Application.Features.DeliveryTypes.Commands.UpdateDeliveryType;
+namespace BaridikExpress.Application.Features.Services.Commands.UpdateService;
 
-public sealed class UpdateDeliveryTypeCommandHandler(
+public sealed class UpdateServiceCommandHandler(
     IApplicationDbContext db,
     IStringLocalizer localizer,
     IFileStorageService fileStorage)
-    : IRequestHandler<UpdateDeliveryTypeCommand, Result<bool>>
+    : IRequestHandler<UpdateServiceCommand, Result<bool>>
 {
     #region Handle
 
     public async Task<Result<bool>> Handle(
-        UpdateDeliveryTypeCommand request,
+        UpdateServiceCommand request,
         CancellationToken cancellationToken)
     {
-        #region Fetch DeliveryType
+        #region Fetch Service
 
-        var deliveryType = await db.DeliveryTypes
+        var service = await db.Services
             .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
-        if (deliveryType is null)
-            return Result<bool>.Failure(localizer["DeliveryTypeNotFound"], 404);
+        if (service is null)
+            return Result<bool>.Failure(localizer["ServiceNotFound"], 404);
 
         #endregion
 
@@ -29,8 +28,6 @@ public sealed class UpdateDeliveryTypeCommandHandler(
 
         var nameEn = request.NameEn?.Trim();
         var nameAr = request.NameAr?.Trim();
-        var descriptionEn = request.DescriptionEn?.Trim();
-        var descriptionAr = request.DescriptionAr?.Trim();
 
         #endregion
 
@@ -38,21 +35,21 @@ public sealed class UpdateDeliveryTypeCommandHandler(
 
         if (nameEn is not null || nameAr is not null)
         {
-            var nameExists = await db.DeliveryTypes
+            var nameExists = await db.Services
                 .AnyAsync(x =>
                     x.Id != request.Id &&
                     (x.NameEn == nameEn || x.NameAr == nameAr),
                     cancellationToken);
 
             if (nameExists)
-                return Result<bool>.Failure(localizer["DeliveryTypeAlreadyExists"]);
+                return Result<bool>.Failure(localizer["ServiceAlreadyExists"]);
         }
 
         #endregion
 
         #region Upload Image (if sent)
 
-        var imageUrl = deliveryType.ImageUrl;
+        var imageUrl = service.ImageUrl;
 
         if (request.Image is not null)
         {
@@ -61,7 +58,7 @@ public sealed class UpdateDeliveryTypeCommandHandler(
             imageUrl = await fileStorage.SaveFileAsync(
                 request.Image.OpenReadStream(),
                 uniqueFileName,
-                "delivery-type-images");
+                "service-images");
 
             if (imageUrl is null)
                 return Result<bool>.Failure(localizer["ImageUploadFailed"], 400);
@@ -71,22 +68,12 @@ public sealed class UpdateDeliveryTypeCommandHandler(
 
         #region Update & Save
 
-        deliveryType.Update(
-            nameEn,
-            nameAr,
-            request.DaysFrom,
-            request.DaysTo,
-            request.PricePerShipment,
-            request.IsSwitchActive,
-            imageUrl,
-            descriptionEn,
-            descriptionAr);
-
+        service.Update(nameEn, nameAr, request.Price, imageUrl);
         await db.SaveChangesAsync(cancellationToken);
 
         #endregion
 
-        return Result<bool>.Success(true, localizer["DeliveryTypeUpdatedSuccessfully"]);
+        return Result<bool>.Success(true, localizer["ServiceUpdatedSuccessfully"]);
     }
 
     #endregion
