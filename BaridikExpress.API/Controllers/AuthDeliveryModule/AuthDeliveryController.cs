@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace BaridikExpress.API.Controllers.AuthDeliveryModule
 {
     [ApiController]
-    [Authorize]
     [Route("api/v1/delivery/[controller]")]
     [ApiExplorerSettings(GroupName = "delivery-v1")]
     public class AuthDeliveryController : ControllerBase
@@ -30,7 +29,7 @@ namespace BaridikExpress.API.Controllers.AuthDeliveryModule
             return StatusCode(result.StatusCode, result);
         }
 
-
+        [Authorize ("SuperAdmin")]
         [HttpPost("CreateByAdmin")]
         public async Task<IActionResult> CreateByAdmin(
              [FromForm] CreateDeliveryByAdminCommand command)
@@ -42,7 +41,7 @@ namespace BaridikExpress.API.Controllers.AuthDeliveryModule
 
             return StatusCode(result.StatusCode, result);
         }
-
+        [Authorize("SuperAdmin")]
         [HttpPatch("ApproveDelivery/{id}")]
         public async Task<IActionResult> ApproveDelivery(Guid id)
         {
@@ -58,7 +57,7 @@ namespace BaridikExpress.API.Controllers.AuthDeliveryModule
 
             return StatusCode(result.StatusCode, result);
         }
-
+        [Authorize("SuperAdmin")]
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetAll(
              [FromQuery] string? search = null,
@@ -96,7 +95,7 @@ namespace BaridikExpress.API.Controllers.AuthDeliveryModule
             return Ok(result);
         }
 
-
+        [Authorize("SuperAdmin")]
         [HttpGet("GetById/{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
@@ -111,6 +110,7 @@ namespace BaridikExpress.API.Controllers.AuthDeliveryModule
 
             return Ok(result);
         }
+        [AllowAnonymous]
         [HttpPost("send-email-otp")]
         public async Task<IActionResult> SendEmailOtp([FromBody] SendEmailOtpCommand command)
         {
@@ -118,7 +118,7 @@ namespace BaridikExpress.API.Controllers.AuthDeliveryModule
             return StatusCode(result.StatusCode, result);
         }
 
-
+        [AllowAnonymous]
         [HttpPost("verify-email-otp")]
         public async Task<IActionResult> VerifyEmailOtp(
           [FromBody] VerifyEmailOtpCommand command)
@@ -127,7 +127,7 @@ namespace BaridikExpress.API.Controllers.AuthDeliveryModule
 
             return StatusCode(result.StatusCode, result);
         }
-
+        [AllowAnonymous]
         [HttpPost("send-phone-otp")]
         public async Task<IActionResult> SendPhoneOtp([FromBody] SendPhoneOtpCommand command)
         {
@@ -135,7 +135,7 @@ namespace BaridikExpress.API.Controllers.AuthDeliveryModule
 
             return StatusCode(result.StatusCode, result);
         }
-
+        [AllowAnonymous]
         [HttpPost("verify-phone-otp")]
         public async Task<IActionResult> VerifyPhoneOtp(
           [FromBody] VerifyPhoneOtpCommand command)
@@ -144,34 +144,35 @@ namespace BaridikExpress.API.Controllers.AuthDeliveryModule
 
             return StatusCode(result.StatusCode, result);
         }
-
+        [AllowAnonymous]
         [HttpPost("resend-email-otp")]
         public async Task<IActionResult> ResendEmailOtp([FromBody] ResendEmailOtpCommand command)
         {
             var result = await _mediator.Send(command);
             return StatusCode(result.StatusCode, result);
         }
-
+        [AllowAnonymous]
         [HttpPost("resend-phone-otp")]
         public async Task<IActionResult> ResendPhoneOtp([FromBody] ResendPhoneOtpCommand command)
         {
             var result = await _mediator.Send(command);
             return StatusCode(result.StatusCode, result);
         }
+        [Authorize]
         [HttpPost("change-password")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordCommand command)
         {
             var result = await _mediator.Send(command);
             return StatusCode(result.StatusCode, result);
         }
-
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginCommand command)
         {
             var result = await _mediator.Send(command);
             return StatusCode(result.StatusCode, result);
         }
-
+        [Authorize]
         [HttpPost("refresh-token")]
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenCommand command)
         {
