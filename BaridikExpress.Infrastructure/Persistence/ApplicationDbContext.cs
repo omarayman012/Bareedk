@@ -1,4 +1,5 @@
-﻿using BaridikExpress.Application.Interfaces;
+﻿// ApplicationDbContext.cs
+using BaridikExpress.Application.Interfaces;
 using BaridikExpress.Domain.Entities.AuthModule;
 using BaridikExpress.Domain.Entities.AuthModules;
 using BaridikExpress.Domain.Entities.Base;
@@ -125,13 +126,13 @@ public class ApplicationDbContext : IdentityDbContext<User>, IApplicationDbConte
                 .WithMany()
                 .HasForeignKey("UpdatedById")
                 .OnDelete(DeleteBehavior.NoAction);
-
-            modelBuilder.Entity<Delivery>()
-                .HasOne(d => d.User)
-                .WithOne()
-                .HasForeignKey<Delivery>(d => d.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
         }
+
+        modelBuilder.Entity<Delivery>()
+            .HasOne(d => d.User)
+            .WithOne()
+            .HasForeignKey<Delivery>(d => d.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<RefreshToken>()
             .HasOne(r => r.User)
