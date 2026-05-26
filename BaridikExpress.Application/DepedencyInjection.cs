@@ -1,26 +1,90 @@
 ﻿using BaridikExpress.Application.Behaviors;
+using BaridikExpress.Application.Common.Abstractions;
 using BaridikExpress.Application.Common.Mapping;
 using BaridikExpress.Application.Features.Auth.Commands.CreateAccount;
+using BaridikExpress.Application.Features.SystemManagement.Commands.UpdateSystemManagement;
+using BaridikExpress.Application.Features.SystemManagement.DTOs;
+using BaridikExpress.Application.Features.SystemManagement.Queries.GetSystemManagement;
+using BaridikExpress.Domain.Entities.SystemManagment;
 using FluentValidation;
-using FluentValidation.AspNetCore;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-namespace BaridikExpress.Application
+
+namespace BaridikExpress.Application;
+
+public static class DepedencyInjection
 {
-    public static class DepedencyInjection
+    public static IServiceCollection AddApplicationDependencies(this IServiceCollection services)
     {
-        public static IServiceCollection AddApplicationDependencies(this IServiceCollection services)
+        services.AddMediatR(options =>
         {
-            services.AddMediatR(options =>
-            {
-                options.RegisterServicesFromAssemblyContaining(typeof(DepedencyInjection));
-            });
+            options.RegisterServicesFromAssemblyContaining(typeof(DepedencyInjection));
+        });
 
-            services.AddValidatorsFromAssembly(typeof(RegisterUserCommandValidator).Assembly);
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-            services.AddAutoMapper(typeof(MappingProfile));
-            return services;
-        }
+        services.AddValidatorsFromAssembly(typeof(RegisterUserCommandValidator).Assembly);
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+        services.AddAutoMapper(typeof(MappingProfile));
 
+        #region System Management Handlers
 
+        services.AddTransient<
+            IRequestHandler<UpdateSystemManagementCommand<TermsAndConditions>, Result<SystemManagementResponse>>,
+            UpdateSystemManagementCommandHandler<TermsAndConditions>>();
+
+        services.AddTransient<
+            IRequestHandler<UpdateSystemManagementCommand<PrivacyPolicy>, Result<SystemManagementResponse>>,
+            UpdateSystemManagementCommandHandler<PrivacyPolicy>>();
+
+        services.AddTransient<
+            IRequestHandler<UpdateSystemManagementCommand<ShippingPolicy>, Result<SystemManagementResponse>>,
+            UpdateSystemManagementCommandHandler<ShippingPolicy>>();
+
+        services.AddTransient<
+            IRequestHandler<UpdateSystemManagementCommand<SalesAndPurchasePolicy>, Result<SystemManagementResponse>>,
+            UpdateSystemManagementCommandHandler<SalesAndPurchasePolicy>>();
+
+        services.AddTransient<
+            IRequestHandler<UpdateSystemManagementCommand<Help>, Result<SystemManagementResponse>>,
+            UpdateSystemManagementCommandHandler<Help>>();
+
+        services.AddTransient<
+            IRequestHandler<UpdateSystemManagementCommand<DeliveryDriverRegistrationTerms>, Result<SystemManagementResponse>>,
+            UpdateSystemManagementCommandHandler<DeliveryDriverRegistrationTerms>>();
+
+        services.AddTransient<
+            IRequestHandler<UpdateSystemManagementCommand<CustomerRegistration>, Result<SystemManagementResponse>>,
+            UpdateSystemManagementCommandHandler<CustomerRegistration>>();
+
+        services.AddTransient<
+            IRequestHandler<GetSystemManagementQuery<TermsAndConditions>, Result<SystemManagementResponse>>,
+            GetSystemManagementQueryHandler<TermsAndConditions>>();
+
+        services.AddTransient<
+            IRequestHandler<GetSystemManagementQuery<PrivacyPolicy>, Result<SystemManagementResponse>>,
+            GetSystemManagementQueryHandler<PrivacyPolicy>>();
+
+        services.AddTransient<
+            IRequestHandler<GetSystemManagementQuery<ShippingPolicy>, Result<SystemManagementResponse>>,
+            GetSystemManagementQueryHandler<ShippingPolicy>>();
+
+        services.AddTransient<
+            IRequestHandler<GetSystemManagementQuery<SalesAndPurchasePolicy>, Result<SystemManagementResponse>>,
+            GetSystemManagementQueryHandler<SalesAndPurchasePolicy>>();
+
+        services.AddTransient<
+            IRequestHandler<GetSystemManagementQuery<Help>, Result<SystemManagementResponse>>,
+            GetSystemManagementQueryHandler<Help>>();
+
+        services.AddTransient<
+            IRequestHandler<GetSystemManagementQuery<DeliveryDriverRegistrationTerms>, Result<SystemManagementResponse>>,
+            GetSystemManagementQueryHandler<DeliveryDriverRegistrationTerms>>();
+
+        services.AddTransient<
+            IRequestHandler<GetSystemManagementQuery<CustomerRegistration>, Result<SystemManagementResponse>>,
+            GetSystemManagementQueryHandler<CustomerRegistration>>();
+
+        #endregion
+
+        return services;
     }
 }
