@@ -6,7 +6,9 @@ using BaridikExpress.Application.Common.Abstractions;
 using BaridikExpress.Application.Interfaces;
 using BaridikExpress.Application.Interfaces.Auth;
 using BaridikExpress.Infrastructure;
+using BaridikExpress.Infrastructure.Data.Seeder.IdentitySeed;
 using BaridikExpress.Infrastructure.Data.Seeder.NationalitySeeder;
+using BaridikExpress.Infrastructure.Data.Seeder.SystemManagementSeeder;
 using BaridikExpress.Infrastructure.Persistence;
 using BaridikExpress.Infrastructure.Services.Email;
 using BaridikExpress.Infrastructure.Services.SmsService;
@@ -27,7 +29,6 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
     };
 });
 
-// Add services to the container.
 builder.Services.AddAPIDependencies(builder.Configuration);
 builder.Services.AddApplicationDependencies();
 builder.Services.AddInfrastructureDependencies(builder.Configuration);
@@ -35,6 +36,7 @@ builder.Services.AddDataProtection();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddMemoryCache();
 builder.Services.AddScoped<IAuthorizationHandler, PermissionHandler>();
+
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("auth-v1", new Microsoft.OpenApi.Models.OpenApiInfo
@@ -61,10 +63,6 @@ builder.Services.AddSwaggerGen(options =>
         Version = "v1"
     });
 
-    options.DocInclusionPredicate((docName, apiDesc) =>
-    {
-        return apiDesc.GroupName == docName;
-    });
     options.SwaggerDoc("location-geography-v1", new Microsoft.OpenApi.Models.OpenApiInfo
     {
         Title = "Location Geography API",
@@ -77,11 +75,15 @@ builder.Services.AddSwaggerGen(options =>
         Version = "v1"
     });
 
-
     options.SwaggerDoc("select-menu-v1", new Microsoft.OpenApi.Models.OpenApiInfo
     {
         Title = "Select Menu API",
         Version = "v1"
+    });
+
+    options.DocInclusionPredicate((docName, apiDesc) =>
+    {
+        return apiDesc.GroupName == docName;
     });
 });
 builder.Services.Configure<MailSettings>(
@@ -93,7 +95,6 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 
 
 var app = builder.Build();
-await app.InitializeAsync();
 
 using (var scope = app.Services.CreateScope())
 {
@@ -101,8 +102,12 @@ using (var scope = app.Services.CreateScope())
         .GetRequiredService<ApplicationDbContext>();
 
     await NationalitySeeder.SeedAsync(dbContext);
+    await SystemManagementSeeder.SeedAsync(dbContext);
+    await IdentitySeeder.SeedAsync(scope.ServiceProvider);
 }
-// Localization configuration
+
+await app.InitializeAsync();
+
 var supportedCultures = new[] { "en", "ar" };
 
 app.UseRequestLocalization(new RequestLocalizationOptions
@@ -118,33 +123,18 @@ app.UseRequestLocalization(new RequestLocalizationOptions
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(options =>
     {
         options.SwaggerEndpoint("/swagger/auth-v1/swagger.json", "Auth API V1");
-
         options.SwaggerEndpoint("/swagger/admin-v1/swagger.json", "Admin API V1");
-
         options.SwaggerEndpoint("/swagger/client-v1/swagger.json", "Client API V1");
-
         options.SwaggerEndpoint("/swagger/delivery-v1/swagger.json", "Delivery API V1");
-        options.SwaggerEndpoint(
-    "/swagger/location-geography-v1/swagger.json",
-    "Location Geography API V1");
-
-        options.SwaggerEndpoint(
-            "/swagger/role-management-v1/swagger.json",
-            "Role Management API V1");
-
-
-
-        options.SwaggerEndpoint(
-            "/swagger/select-menu-v1/swagger.json",
-            "Select Menu API V1");
-
+        options.SwaggerEndpoint("/swagger/location-geography-v1/swagger.json", "Location Geography API V1");
+        options.SwaggerEndpoint("/swagger/role-management-v1/swagger.json", "Role Management API V1");
+        options.SwaggerEndpoint("/swagger/select-menu-v1/swagger.json", "Select Menu API V1");
     });
 }
 

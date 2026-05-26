@@ -1,3 +1,4 @@
+// IApplicationDbContext.cs
 using BaridikExpress.Domain.Entities.AuthModule;
 using BaridikExpress.Domain.Entities.CareerFields;
 using BaridikExpress.Domain.Entities.ClientModule;
@@ -7,39 +8,80 @@ using BaridikExpress.Domain.Entities.DeliveryType;
 using BaridikExpress.Domain.Entities.Location;
 using BaridikExpress.Domain.Entities.Nationality;
 using BaridikExpress.Domain.Entities.RoleModule;
+using BaridikExpress.Domain.Entities.Services;
+using BaridikExpress.Domain.Entities.SystemManagment;
 using BaridikExpress.Domain.Entities.Vehicles;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
-namespace BaridikExpress.Application.Interfaces
+namespace BaridikExpress.Application.Interfaces;
+
+
+public interface IApplicationDbContext
 {
-    public interface IApplicationDbContext
-    {
-       
-        DbSet<User> ApplicationUsers { get; }
-        DbSet<IdentityRole> Roles { get; }
-        public DbSet<RolePermission> RolePermissions { get; set; }
-        public DbSet<Permission> Permissions { get; set; }
-        DbSet<IdentityUserRole<string>> UserRoles { get; }
-        DbSet<RefreshToken> RefreshTokens { get; }
-        DbSet<Delivery> Deliveries { get; }
+    #region Auth & Users
 
-        DbSet<CareerField> CareerFields { get; set; }
-        DbSet<Vehicle>  Vehicles { get; set; }
-        DbSet<Customer> Customers { get; set; }
-         DbSet<CustomerAccount> CustomerAccounts { get; set; }
-         DbSet<CustomerAddress> CustomerAddresses { get; set; }
-        DbSet<CustomerContact> CustomerContacts { get; set; }
-        public DbSet<Country> Countries { get; set; }
-        public DbSet<Government> Governments { get; set; }
-        public DbSet<City> Cities { get; set; }
-        public DbSet<Village> Villages { get; set; }
-        public DbSet<SubAdminEmployee> SubAdminEmployees { get; set; }
-        public DbSet<Nationality> Nationalities { get; set; }
-        public DbSet<Client> Clients { get; set; }
+    DbSet<User> ApplicationUsers { get; }
+    DbSet<IdentityRole> Roles { get; }
+    DbSet<RolePermission> RolePermissions { get; set; }
+    DbSet<Permission> Permissions { get; set; }
+    DbSet<IdentityUserRole<string>> UserRoles { get; }
+    DbSet<RefreshToken> RefreshTokens { get; }
+    DbSet<SubAdminEmployee> SubAdminEmployees { get; set; }
 
-        DatabaseFacade Database { get; }
-        DbSet<DeliveryType> DeliveryTypes { get; set; }
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken);
-    }
+    #endregion
+
+    #region Location
+
+    DbSet<Country> Countries { get; set; }
+    DbSet<Government> Governments { get; set; }
+    DbSet<City> Cities { get; set; }
+    DbSet<Village> Villages { get; set; }
+    DbSet<Nationality> Nationalities { get; set; }
+
+    #endregion
+
+    #region Customers
+
+    DbSet<Customer> Customers { get; set; }
+    DbSet<CustomerAccount> CustomerAccounts { get; set; }
+    DbSet<CustomerAddress> CustomerAddresses { get; set; }
+    DbSet<CustomerContact> CustomerContacts { get; set; }
+
+    #endregion
+
+    #region Delivery
+
+    DbSet<Delivery> Deliveries { get; }
+    DbSet<DeliveryType> DeliveryTypes { get; set; }
+
+    #endregion
+
+    #region Core Business
+
+    DbSet<CareerField> CareerFields { get; set; }
+    DbSet<Vehicle> Vehicles { get; set; }
+    DbSet<Service> Services { get; set; }
+
+    #endregion
+
+    #region System Management
+
+    DbSet<AboutUs> AboutUs { get; set; }
+    DbSet<TermsAndConditions> TermsAndConditions { get; set; }
+    DbSet<PrivacyPolicy> PrivacyPolicies { get; set; }
+    DbSet<ShippingPolicy> ShippingPolicies { get; set; }
+    DbSet<SalesAndPurchasePolicy> SalesAndPurchasePolicies { get; set; }
+    DbSet<Help> Help { get; set; }
+    DbSet<DeliveryDriverRegistrationTerms> DeliveryDriverRegistrationTerms { get; set; }
+    DbSet<CustomerRegistration> CustomerRegistrationTerms { get; set; }
+    DbSet<SocialMediaLinks> SocialMediaLinks { get; set; }
+    DbSet<FAQ> FAQs { get; set; }
+
+    #endregion
+     DbSet<Client> Clients { get; set; }
+
+    DatabaseFacade Database { get; }
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }
