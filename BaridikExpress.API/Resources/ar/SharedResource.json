@@ -294,5 +294,32 @@
     "ServiceActivatedSuccessfully": "تم تفعيل الخدمة بنجاح",
     "ServiceDeactivatedSuccessfully": "تم تعطيل الخدمة بنجاح",
     "SomeServicesNotFound": "بعض الخدمات غير موجودة",
-    "ServicesDeletedSuccessfully": "تم حذف الخدمات بنجاح"
+    "ServicesDeletedSuccessfully": "تم حذف الخدمات بنجاح",
+    "TermsAndConditionsNotFound": "الشروط والأحكام غير موجودة.",
+    "TermsAndConditionsUpdatedSuccessfully": "تم تحديث الشروط والأحكام بنجاح.",
+    "TermsAndConditionsRetrievedSuccessfully": "تم استرجاع الشروط والأحكام بنجاح.",
+
+    "PrivacyPolicyNotFound": "سياسة الخصوصية غير موجودة.",
+    "PrivacyPolicyUpdatedSuccessfully": "تم تحديث سياسة الخصوصية بنجاح.",
+    "PrivacyPolicyRetrievedSuccessfully": "تم استرجاع سياسة الخصوصية بنجاح.",
+
+    "ShippingPolicyNotFound": "سياسة الشحن غير موجودة.",
+    "ShippingPolicyUpdatedSuccessfully": "تم تحديث سياسة الشحن بنجاح.",
+    "ShippingPolicyRetrievedSuccessfully": "تم استرجاع سياسة الشحن بنجاح.",
+
+    "SalesAndPurchasePolicyNotFound": "سياسة البيع والشراء غير موجودة.",
+    "SalesAndPurchasePolicyUpdatedSuccessfully": "تم تحديث سياسة البيع والشراء بنجاح.",
+    "SalesAndPurchasePolicyRetrievedSuccessfully": "تم استرجاع سياسة البيع والشراء بنجاح.",
+
+    "HelpNotFound": "المساعدة غير موجودة.",
+    "HelpUpdatedSuccessfully": "تم تحديث المساعدة بنجاح.",
+    "HelpRetrievedSuccessfully": "تم استرجاع المساعدة بنجاح.",
+
+    "DeliveryDriverRegistrationTermsNotFound": "شروط تسجيل مندوب التوصيل غير موجودة.",
+    "DeliveryDriverRegistrationTermsUpdatedSuccessfully": "تم تحديث شروط تسجيل مندوب التوصيل بنجاح.",
+    "DeliveryDriverRegistrationTermsRetrievedSuccessfully": "تم استرجاع شروط تسجيل مندوب التوصيل بنجاح.",
+
+    "CustomerRegistrationNotFound": "شروط تسجيل العميل غير موجودة.",
+    "CustomerRegistrationUpdatedSuccessfully": "تم تحديث شروط تسجيل العميل بنجاح.",
+    "CustomerRegistrationRetrievedSuccessfully": "تم استرجاع شروط تسجيل العميل بنجاح."
 }

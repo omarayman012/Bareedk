@@ -1,4 +1,3 @@
-// IApplicationDbContext.cs
 using BaridikExpress.Domain.Entities.AuthModule;
 using BaridikExpress.Domain.Entities.CareerFields;
 using BaridikExpress.Domain.Entities.Customers;
@@ -80,5 +79,8 @@ public interface IApplicationDbContext
     #endregion
 
     DatabaseFacade Database { get; }
+    DbSet<TEntity> Set<TEntity>() where TEntity : class;
+    Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<TEntity> Entry<TEntity>(TEntity entity)
+    where TEntity : class;
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }
