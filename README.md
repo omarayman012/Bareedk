@@ -11,8 +11,7 @@
 
 </div>
 
-
---
+---
 
 ## 🗂️ Table of Contents
 
@@ -26,7 +25,6 @@
 - [🌐 API Endpoints](#-api-endpoints)
 - [🔐 Authentication & Authorization](#-authentication--authorization)
 - [🗃️ Database & Migrations](#️-database--migrations)
-- [🧪 Testing](#-testing)
 - [🤝 Contributing](#-contributing)
 
 ---
@@ -35,11 +33,12 @@
 
 **BaridikExpress** is a robust, scalable delivery management platform built for logistics and shipping companies. It provides a comprehensive API to manage:
 
-- 🚚 **Shipment Lifecycle** — Create, track, update, and complete deliveries
-- 👤 **Customer Management** — Senders and receivers with full address handling
-- 🏢 **Branch Operations** — Multi-branch support with zone management
-- 🧾 **Order Processing** — Real-time order status and history
-- 🔔 **Notifications** — Automated SMS/Email updates for customers
+- 🚚 **Delivery Management** — Register drivers, approve, track, and manage deliveries
+- 👤 **Customer Management** — Full customer lifecycle with contacts, addresses, and accounts
+- 🔐 **Auth & Identity** — JWT-based authentication with role & permission system
+- 🗺️ **Location & Geography** — Countries, Governments, Cities, Villages hierarchy
+- ⚙️ **System Management** — Policies, terms, social media links, FAQs, and more
+- 🛵 **Delivery Types & Services** — Configurable delivery types with pricing and services
 
 The system is designed with **reliability**, **scalability**, and **clean separation of concerns** at its core using the CQRS pattern powered by **MediatR**.
 
@@ -99,84 +98,7 @@ User Request
      └──── Read Operation  ──► Query  ──►  QueryHandler  ──► Database (Read)
 ```
 
-### Command Example — Create Shipment
-
-```csharp
-// Command
-public record CreateShipmentCommand(
-    string SenderName,
-    string ReceiverName,
-    string DestinationAddress,
-    decimal Weight,
-    ShipmentType Type
-) : IRequest<CreateShipmentResult>;
-
-// Handler
-public class CreateShipmentCommandHandler 
-    : IRequestHandler<CreateShipmentCommand, CreateShipmentResult>
-{
-    private readonly IShipmentRepository _repository;
-    private readonly IUnitOfWork _unitOfWork;
-
-    public CreateShipmentCommandHandler(
-        IShipmentRepository repository, 
-        IUnitOfWork unitOfWork)
-    {
-        _repository = repository;
-        _unitOfWork = unitOfWork;
-    }
-
-    public async Task<CreateShipmentResult> Handle(
-        CreateShipmentCommand command, 
-        CancellationToken cancellationToken)
-    {
-        var shipment = Shipment.Create(
-            command.SenderName,
-            command.ReceiverName,
-            command.DestinationAddress,
-            command.Weight,
-            command.Type
-        );
-
-        await _repository.AddAsync(shipment, cancellationToken);
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
-
-        return new CreateShipmentResult(shipment.Id, shipment.TrackingCode);
-    }
-}
-```
-
-### Query Example — Get Shipment by Tracking Code
-
-```csharp
-// Query
-public record GetShipmentByTrackingQuery(string TrackingCode) 
-    : IRequest<ShipmentDto>;
-
-// Handler
-public class GetShipmentByTrackingQueryHandler 
-    : IRequestHandler<GetShipmentByTrackingQuery, ShipmentDto>
-{
-    private readonly IShipmentReadRepository _readRepository;
-
-    public async Task<ShipmentDto> Handle(
-        GetShipmentByTrackingQuery query, 
-        CancellationToken cancellationToken)
-    {
-        var shipment = await _readRepository
-            .GetByTrackingCodeAsync(query.TrackingCode, cancellationToken);
-
-        if (shipment is null)
-            throw new ShipmentNotFoundException(query.TrackingCode);
-
-        return shipment.ToDto();
-    }
-}
-```
-
 ### Pipeline Behaviors (MediatR)
-
-We use MediatR Pipeline Behaviors to add cross-cutting concerns:
 
 ```
 Request ──► ValidationBehavior ──► LoggingBehavior ──► Handler ──► Response
@@ -186,8 +108,6 @@ Request ──► ValidationBehavior ──► LoggingBehavior ──► Handler
 |----------|---------------|
 | `ValidationBehavior` | Auto-validates using FluentValidation before handler runs |
 | `LoggingBehavior` | Logs request/response with timing |
-| `TransactionBehavior` | Wraps Commands in DB transactions automatically |
-| `CachingBehavior` | Caches Query results with configurable TTL |
 
 ---
 
@@ -202,16 +122,13 @@ Request ──► ValidationBehavior ──► LoggingBehavior ──► Handler
 | **Entity Framework Core** | 9.x | ORM & Database Access |
 | **MediatR** | 12.x | CQRS Mediator Pattern |
 | **FluentValidation** | 11.x | Input Validation |
-| **AutoMapper** | 13.x | Object-to-Object Mapping |
-| **Serilog** | 3.x | Structured Logging |
 | **Swagger / Swashbuckle** | 6.x | API Documentation |
 
-### Database & Caching
+### Database
 
 | Technology | Purpose |
 |------------|---------|
-| **SQL Server / PostgreSQL** | Primary Database |
-| **Redis** | Distributed Caching |
+| **SQL Server** | Primary Database |
 | **EF Core Migrations** | Schema Management |
 
 ### Security & Auth
@@ -220,7 +137,7 @@ Request ──► ValidationBehavior ──► LoggingBehavior ──► Handler
 |------------|---------|
 | **ASP.NET Core Identity** | User Management |
 | **JWT Bearer Tokens** | Stateless Authentication |
-| **Role-Based Authorization** | Access Control |
+| **Role & Permission-Based Authorization** | Fine-grained Access Control |
 
 ---
 
@@ -228,83 +145,47 @@ Request ──► ValidationBehavior ──► LoggingBehavior ──► Handler
 
 ```
 BaridikExpress/
-
-├── 📁 src/
-│   ├── 📁 BaridikExpress.API/                    # Presentation Layer
-│   │   ├── Controllers/
-│   │   │   ├── ShipmentsController.cs
-│   │   │   ├── OrdersController.cs
-│   │   │   └── CustomersController.cs
-│   │   ├── Middlewares/
-│   │   │   ├── ExceptionHandlingMiddleware.cs
-│   │   │   └── RequestLoggingMiddleware.cs
-│   │   └── Program.cs
-│   │
-│   ├── 📁 BaridikExpress.Application/            # Application Layer (CQRS)
-│   │   ├── Features/
-│   │   │   ├── Shipments/
-│   │   │   │   ├── Commands/
-│   │   │   │   │   ├── CreateShipment/
-│   │   │   │   │   ├── UpdateShipmentStatus/
-│   │   │   │   │   └── CancelShipment/
-│   │   │   │   └── Queries/
-│   │   │   │       ├── GetShipmentByTracking/
-│   │   │   │       └── GetShipmentsList/
-│   │   │   ├── Orders/
-│   │   │   └── Customers/
-│   │   ├── Behaviors/
-│   │   │   ├── ValidationBehavior.cs
-│   │   │   ├── LoggingBehavior.cs
-│   │   │   └── TransactionBehavior.cs
-│   │   ├── Common/
-│   │   │   ├── Interfaces/
-│   │   │   └── Mappings/
-│   │   └── DependencyInjection.cs
-│   │
-│   ├── 📁 BaridikExpress.Domain/                 # Domain Layer
-│   │   ├── Entities/
-│   │   │   ├── Shipment.cs
-│   │   │   ├── Order.cs
-│   │   │   └── Customer.cs
-│   │   ├── Enums/
-│   │   │   ├── ShipmentStatus.cs
-│   │   │   └── ShipmentType.cs
-│   │   ├── Events/
-│   │   │   └── ShipmentStatusChangedEvent.cs
-│   │   └── Exceptions/
-│   │       ├── ShipmentNotFoundException.cs
-│   │       └── InvalidShipmentStatusException.cs
-│   │
-│   └── 📁 BaridikExpress.Infrastructure/         # Infrastructure Layer
-│       ├── Persistence/
-│       │   ├── ApplicationDbContext.cs
-│       │   ├── Configurations/
-│       │   │   ├── ShipmentConfiguration.cs
-│       │   │   └── OrderConfiguration.cs
-│       │   ├── Repositories/
-│       │   │   ├── ShipmentRepository.cs
-│       │   │   └── OrderRepository.cs
-│       │   └── Migrations/
-│       ├── Caching/
-│       │   └── RedisCacheService.cs
-│       ├── Notifications/
-│       │   ├── SmsService.cs
-│       │   └── EmailService.cs
-│       └── DependencyInjection.cs
 │
-├── 📁 tests/
-│   ├── BaridikExpress.Application.Tests/
-│   │   ├── Shipments/
-│   │   │   ├── CreateShipmentCommandHandlerTests.cs
-│   │   │   └── GetShipmentQueryHandlerTests.cs
-│   │   └── Orders/
-│   └── BaridikExpress.API.Tests/
-│       └── Integration/
+├── 📁 BaridikExpress.API/
+│   ├── Controllers/
+│   │   ├── AuthModule/
+│   │   ├── CustomerModule/
+│   │   ├── DeliveryModule/
+│   │   └── SystemManagement/
+│   ├── Middlewares/
+│   │   └── ExceptionHandlingMiddleware.cs
+│   └── Program.cs
 │
-├── 📄 .gitignore
-├── 📄 docker-compose.yml
-├── 📄 BaridikExpress.sln
-└── 📄 README.md
+├── 📁 BaridikExpress.Application/
+│   ├── Features/
+│   │   ├── Auth/
+│   │   ├── Customer/
+│   │   ├── DeliveryType/
+│   │   ├── Services/
+│   │   └── SystemManagement/
+│   ├── Behaviors/
+│   │   └── ValidationBehavior.cs
+│   ├── Interfaces/
+│   │   └── IApplicationDbContext.cs
+│   └── Common/
+│
+├── 📁 BaridikExpress.Domain/
+│   ├── Entities/
+│   │   ├── AuthModule/
+│   │   ├── Customers/
+│   │   ├── DeliveryModule/
+│   │   ├── Location/
+│   │   └── SystemManagment/
+│   └── Enums/
+│
+└── 📁 BaridikExpress.Infrastructure/
+    ├── Persistence/
+    │   ├── ApplicationDbContext.cs
+    │   ├── Configurations/
+    │   └── Migrations/
+    ├── Data/
+    │   └── Seeder/
+    └── DependencyInjection.cs
 ```
 
 ---
@@ -313,12 +194,9 @@ BaridikExpress/
 
 ### Prerequisites
 
-Make sure you have the following installed:
-
 ```
-✅ .NET SDK 9.0+          → https://dotnet.microsoft.com/download
-✅ SQL Server / PostgreSQL → or use Docker (see below)
-✅ Redis                   → or use Docker
+✅ .NET SDK 9.0+
+✅ SQL Server
 ✅ Git
 ```
 
@@ -329,21 +207,14 @@ git clone https://github.com/Dr-CodE-Software-Company/baridik-express-project-ba
 cd baridik-express-project-back-end
 ```
 
-### 2️⃣ Configure Environment
-
-Copy the example settings and update with your values:
-
-```bash
-cp src/BaridikExpress.API/appsettings.example.json src/BaridikExpress.API/appsettings.Development.json
-```
+### 2️⃣ Configure appsettings
 
 Update `appsettings.Development.json`:
 
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Server=localhost;Database=BaridikExpressDb;Trusted_Connection=True;",
-    "Redis": "localhost:6379"
+    "DefaultConnection": "Server=localhost;Database=BaridikExpressDB;Trusted_Connection=True;"
   },
   "JwtSettings": {
     "SecretKey": "your-super-secret-key-here",
@@ -351,40 +222,27 @@ Update `appsettings.Development.json`:
     "Audience": "baridikexpress-clients",
     "ExpiryMinutes": 60
   },
-  "Serilog": {
-    "MinimumLevel": "Information"
+  "App": {
+    "TimeZoneId": "Egypt Standard Time"
   }
 }
 ```
 
-### 3️⃣ Run with Docker (Recommended)
+### 3️⃣ Apply Database Migrations
 
 ```bash
-docker-compose up -d
+dotnet ef database update \
+  --project BaridikExpress.Infrastructure \
+  --startup-project BaridikExpress.API
 ```
 
-This spins up:
-- 🟦 SQL Server on port `1433`
-- 🟥 Redis on port `6379`
-- 🌐 API on port `5000` / `5001`
-
-### 4️⃣ Apply Database Migrations
+### 4️⃣ Run the Application
 
 ```bash
-cd src/BaridikExpress.API
-dotnet ef database update
+dotnet run --project BaridikExpress.API
 ```
 
-### 5️⃣ Run the Application
-
-```bash
-dotnet run --project src/BaridikExpress.API
-```
-
-API will be available at:
-- **HTTP**: `http://localhost:5000`
-- **HTTPS**: `https://localhost:5001`
-- **Swagger UI**: `https://localhost:5001/swagger`
+Swagger UI available at: `https://localhost:7240/swagger`
 
 ---
 
@@ -393,113 +251,191 @@ API will be available at:
 ### Application Layer
 
 ```xml
-<!-- CQRS Mediator -->
 <PackageReference Include="MediatR" Version="12.4.1" />
-<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
-
-<!-- Validation -->
 <PackageReference Include="FluentValidation" Version="11.11.0" />
 <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
-
-<!-- Mapping -->
-<PackageReference Include="AutoMapper" Version="13.0.1" />
-<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
 ```
 
 ### Infrastructure Layer
 
 ```xml
-<!-- Entity Framework Core -->
 <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.4" />
 <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.4" />
 <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.4" />
-
-<!-- Caching -->
-<PackageReference Include="StackExchange.Redis" Version="2.8.16" />
-<PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.4" />
-
-<!-- Logging -->
-<PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
-<PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
-<PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
+<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.4" />
 ```
 
 ### API Layer
 
 ```xml
-<!-- Swagger -->
 <PackageReference Include="Swashbuckle.AspNetCore" Version="6.9.0" />
-
-<!-- Authentication -->
 <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.4" />
-
-<!-- Health Checks -->
-<PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="9.0.0" />
-<PackageReference Include="AspNetCore.HealthChecks.Redis" Version="9.0.0" />
 ```
 
 ---
 
 ## 🌐 API Endpoints
 
-### Shipments
+The API is split into multiple Swagger groups:
 
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| `POST` | `/api/shipments` | Create new shipment | ✅ Required |
-| `GET` | `/api/shipments/{id}` | Get shipment by ID | ✅ Required |
-| `GET` | `/api/shipments/track/{code}` | Track by code (public) | ❌ Public |
-| `PUT` | `/api/shipments/{id}/status` | Update shipment status | ✅ Admin |
-| `DELETE` | `/api/shipments/{id}` | Cancel shipment | ✅ Required |
-| `GET` | `/api/shipments` | List all shipments | ✅ Admin |
-
-### Orders
-
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| `POST` | `/api/orders` | Create new order | ✅ Required |
-| `GET` | `/api/orders/{id}` | Get order details | ✅ Required |
-| `GET` | `/api/orders/customer/{customerId}` | Customer order history | ✅ Required |
-| `PUT` | `/api/orders/{id}` | Update order | ✅ Required |
-
-### Authentication
+### 🔐 Auth API
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| `POST` | `/api/auth/register` | Register new user |
-| `POST` | `/api/auth/login` | Login & get JWT token |
-| `POST` | `/api/auth/refresh` | Refresh access token |
+| `POST` | `/api/v1/auth/Auth/register` | Register new user |
+| `POST` | `/api/v1/auth/Auth/Login` | Login & get JWT token |
+| `POST` | `/api/v1/auth/Auth/refresh-token` | Refresh access token |
+| `POST` | `/api/v1/auth/Auth/logout` | Logout |
+| `POST` | `/api/v1/auth/Auth/confirm-email` | Confirm email |
+| `POST` | `/api/v1/auth/Auth/resend-verification` | Resend verification |
+| `POST` | `/api/v1/auth/Auth/forgot-password` | Forgot password |
+| `POST` | `/api/v1/auth/Auth/verify-reset-otp` | Verify OTP |
+| `POST` | `/api/v1/auth/Auth/reset-password` | Reset password |
+| `POST` | `/api/v1/auth/Auth/change-password` | Change password |
+| `GET` | `/api/v1/auth/Auth/me` | Get current user profile |
+| `GET` | `/api/v1/auth/Auth/me/permissions` | Get current user permissions |
+| `POST` | `/api/v1/auth/Auth/validate-token` | Validate token |
+
+### 👤 Sub Admin Employees
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/SubAdminEmployee` | Get all |
+| `POST` | `/api/SubAdminEmployee` | Create |
+| `PUT` | `/api/SubAdminEmployee` | Update |
+| `DELETE` | `/api/SubAdminEmployee` | Delete list |
+| `GET` | `/api/SubAdminEmployee/{id}` | Get by ID |
+| `PATCH` | `/api/SubAdminEmployee/toggle-status/{id}` | Toggle status |
+
+### 👥 Customers
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/v1/Customer/Create` | Create customer |
+| `PUT` | `/api/v1/Customer/Update/{id}` | Update customer |
+| `GET` | `/api/v1/Customer/GetAll` | Get all customers |
+| `GET` | `/api/v1/Customer/GetById/{id}` | Get by ID |
+| `PATCH` | `/api/v1/Customer/ToggleStatus/{id}` | Toggle status |
+| `DELETE` | `/api/v1/Customer/DeleteList` | Delete list |
+
+### 🚚 Delivery
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/v1/delivery/Delivery/RegisterDriver` | Driver self-registration |
+| `POST` | `/api/v1/delivery/Delivery/CreateByAdmin` | Create driver by admin |
+| `PATCH` | `/api/v1/delivery/Delivery/ApproveDelivery/{id}` | Approve driver |
+| `GET` | `/api/v1/delivery/Delivery/GetAll` | Get all deliveries |
+| `GET` | `/api/v1/delivery/Delivery/GetById/{id}` | Get by ID |
+
+### 🛵 Delivery Types
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/v1/DeliveryType/Create` | Create delivery type |
+| `PUT` | `/api/v1/DeliveryType/Update/{id}` | Update |
+| `GET` | `/api/v1/DeliveryType/GetAll` | Get all |
+| `GET` | `/api/v1/DeliveryType/GetById/{id}` | Get by ID |
+| `PATCH` | `/api/v1/DeliveryType/ToggleStatus/{id}` | Toggle status |
+| `DELETE` | `/api/v1/DeliveryType/DeleteList` | Delete list |
+
+### 🛠️ Services
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/v1/Service/Create` | Create service |
+| `PUT` | `/api/v1/Service/Update/{id}` | Update |
+| `GET` | `/api/v1/Service/GetAll` | Get all |
+| `GET` | `/api/v1/Service/GetById/{id}` | Get by ID |
+| `PATCH` | `/api/v1/Service/ToggleStatus/{id}` | Toggle status |
+| `DELETE` | `/api/v1/Service/DeleteList` | Delete list |
+
+### 🗺️ Location & Geography
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET/POST/PUT/DELETE` | `/api/Country` | Countries CRUD |
+| `PATCH` | `/api/Country/toggle-status/{id}` | Toggle status |
+| `GET/POST/PUT/DELETE` | `/api/Government` | Governments CRUD |
+| `PATCH` | `/api/Government/toggle-status/{id}` | Toggle status |
+| `GET/POST/PUT/DELETE` | `/api/City` | Cities CRUD |
+| `PATCH` | `/api/City/toggle-status/{id}` | Toggle status |
+| `GET/POST/PUT/DELETE` | `/api/Village` | Villages CRUD |
+| `PATCH` | `/api/Village/toggle-status/{id}` | Toggle status |
+
+### 📋 Career Fields & Vehicles
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET/POST/PUT/DELETE` | `/api/v1/CareerFields` | Career Fields CRUD |
+| `PATCH` | `/api/v1/CareerFields/{id}/toggle-status` | Toggle status |
+| `GET` | `/api/v1/CareerFields/export` | Export |
+| `POST` | `/api/v1/CareerFields/upload` | Upload |
+| `GET/POST/PUT/DELETE` | `/api/v1/Vehicles` | Vehicles CRUD |
+| `PATCH` | `/api/v1/Vehicles/{id}/toggle-status` | Toggle status |
+
+### ⚙️ System Management
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET/PUT` | `/api/v1/Help` | Help content |
+| `GET/PUT` | `/api/v1/TermsAndConditions` | Terms & Conditions |
+| `GET/PUT` | `/api/v1/PrivacyPolicy` | Privacy Policy |
+| `GET/PUT` | `/api/v1/ShippingPolicy` | Shipping Policy |
+| `GET/PUT` | `/api/v1/SalesAndPurchasePolicy` | Sales & Purchase Policy |
+| `GET/PUT` | `/api/v1/CustomerRegistration` | Customer Registration Terms |
+| `GET/PUT` | `/api/v1/DeliveryDriverRegistrationTerms` | Driver Registration Terms |
 
 ---
 
 ## 🔐 Authentication & Authorization
 
-We use **JWT Bearer Authentication** with role-based access control.
+We use **JWT Bearer Authentication** with a custom **Permission-based** access control system.
 
 ### Roles
 
-| Role | Permissions |
+| Role | Description |
 |------|-------------|
 | `SuperAdmin` | Full system access |
-| `BranchManager` | Manage branch shipments & staff |
-| `Courier` | Update delivery status |
-| `Customer` | Track own shipments |
+| `Admin` | Manage platform data |
+| `SubAdmin` | Limited admin access |
 
 ### Getting a Token
 
 ```bash
-curl -X POST https://localhost:5001/api/auth/login \
+curl -X POST https://localhost:7240/api/v1/auth/Auth/Login \
   -H "Content-Type: application/json" \
   -d '{"email": "admin@baridikexpress.com", "password": "your-password"}'
 ```
 
 Response:
+
 ```json
 {
-  "token": "eyJhbGciOiJIUzI1NiIs...",
-  "expiresAt": "2025-01-15T12:00:00Z",
-  "refreshToken": "..."
+  "isSuccess": true,
+  "data": {
+    "token": "eyJhbGciOiJIUzI1NiIs...",
+    "refreshToken": "...",
+    "expiresAt": "2025-01-15T12:00:00Z"
+  }
 }
+```
+
+### Using the Token
+
+Add the token to Swagger UI via the **Authorize** button, or pass it in requests:
+
+```bash
+curl -H "Authorization: Bearer {token}" https://localhost:7240/api/v1/Customer/GetAll
+```
+
+### Language Support
+
+All endpoints support `Accept-Language` header:
+
+```
+Accept-Language: ar   → Arabic responses
+Accept-Language: en   → English responses (default)
 ```
 
 ---
@@ -510,49 +446,24 @@ Response:
 
 ```bash
 dotnet ef migrations add MigrationName \
-  --project src/BaridikExpress.Infrastructure \
-  --startup-project src/BaridikExpress.API
+  --project BaridikExpress.Infrastructure \
+  --startup-project BaridikExpress.API
 ```
 
 ### Apply Migrations
 
 ```bash
 dotnet ef database update \
-  --project src/BaridikExpress.Infrastructure \
-  --startup-project src/BaridikExpress.API
+  --project BaridikExpress.Infrastructure \
+  --startup-project BaridikExpress.API
 ```
 
 ### Rollback Migration
 
 ```bash
 dotnet ef database update PreviousMigrationName \
-  --project src/BaridikExpress.Infrastructure \
-  --startup-project src/BaridikExpress.API
-```
-
----
-
-## 🧪 Testing
-
-### Run All Tests
-
-```bash
-dotnet test
-```
-
-### Run with Coverage
-
-```bash
-dotnet test --collect:"XPlat Code Coverage"
-```
-
-### Test Structure
-
-```
-tests/
-├── Unit Tests          → Handler logic, Domain rules
-├── Integration Tests   → API endpoints, DB operations
-└── Architecture Tests  → Layer dependency validation (NetArchTest)
+  --project BaridikExpress.Infrastructure \
+  --startup-project BaridikExpress.API
 ```
 
 ---
