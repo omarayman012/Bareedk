@@ -14,6 +14,8 @@ namespace BaridikExpress.API.Controllers.SystemManagement;
 public class PrivacyPolicyController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
+    [AllowAnonymous]
+
     public async Task<IActionResult> Get(CancellationToken cancellationToken)
     {
         var result = await mediator.Send(new GetSystemManagementQuery<PrivacyPolicy>(), cancellationToken);

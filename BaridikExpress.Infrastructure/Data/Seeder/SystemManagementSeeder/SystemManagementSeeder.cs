@@ -48,6 +48,7 @@ public static class SystemManagementSeeder
                 "Customer registration terms.");
 
             await SeedSocialMediaLinksAsync(context);
+            await SeedFAQsAsync(context);
 
             await context.SaveChangesAsync();
 
@@ -121,6 +122,51 @@ public static class SystemManagementSeeder
         };
 
         await context.SocialMediaLinks.AddRangeAsync(links);
+    }
+
+    #endregion
+
+    #region FAQs
+
+    private static async Task SeedFAQsAsync(ApplicationDbContext context)
+    {
+        if (await context.FAQs.AnyAsync())
+            return;
+
+        var faqs = new List<FAQ>
+        {
+            FAQ.Create(
+                questionAr: "ما هي بريدك إكسبريس؟",
+                questionEn: "What is Baridik Express?",
+                answerAr: "بريدك إكسبريس شركة رائدة في مجال الشحن والتوصيل توفر خدمات لوجستية متكاملة.",
+                answerEn: "Baridik Express is a leading shipping and delivery company providing integrated logistics services."),
+
+            FAQ.Create(
+                questionAr: "كيف يمكنني تتبع شحنتي؟",
+                questionEn: "How can I track my shipment?",
+                answerAr: "يمكنك تتبع شحنتك من خلال التطبيق أو الموقع الإلكتروني باستخدام رقم التتبع.",
+                answerEn: "You can track your shipment through the app or website using your tracking number."),
+
+            FAQ.Create(
+                questionAr: "ما هي مناطق التوصيل المتاحة؟",
+                questionEn: "What delivery areas are available?",
+                answerAr: "نوفر خدمات التوصيل في جميع أنحاء المملكة العربية السعودية.",
+                answerEn: "We provide delivery services across all regions of Saudi Arabia."),
+
+            FAQ.Create(
+                questionAr: "كيف يمكنني التسجيل كمندوب توصيل؟",
+                questionEn: "How can I register as a delivery driver?",
+                answerAr: "يمكنك التسجيل من خلال التطبيق واتباع خطوات التسجيل وتقديم المستندات المطلوبة.",
+                answerEn: "You can register through the app by following the registration steps and submitting the required documents."),
+
+            FAQ.Create(
+                questionAr: "ما هي طرق الدفع المتاحة؟",
+                questionEn: "What payment methods are available?",
+                answerAr: "نقبل الدفع النقدي وبطاقات الائتمان والمدفوعات الإلكترونية.",
+                answerEn: "We accept cash, credit cards, and electronic payments."),
+        };
+
+        await context.FAQs.AddRangeAsync(faqs);
     }
 
     #endregion

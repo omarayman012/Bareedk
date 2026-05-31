@@ -321,5 +321,31 @@
 
     "CustomerRegistrationNotFound": "شروط تسجيل العميل غير موجودة.",
     "CustomerRegistrationUpdatedSuccessfully": "تم تحديث شروط تسجيل العميل بنجاح.",
-    "CustomerRegistrationRetrievedSuccessfully": "تم استرجاع شروط تسجيل العميل بنجاح."
+    "CustomerRegistrationRetrievedSuccessfully": "تم استرجاع شروط تسجيل العميل بنجاح.",
+    "FAQCreatedSuccessfully": "تم إنشاء السؤال الشائع بنجاح.",
+    "FAQUpdatedSuccessfully": "تم تحديث السؤال الشائع بنجاح.",
+    "FAQDeletedSuccessfully": "تم حذف السؤال الشائع بنجاح.",
+    "FAQNotFound": "السؤال الشائع غير موجود.",
+    "FAQRetrievedSuccessfully": "تم استرجاع السؤال الشائع بنجاح.",
+    "AtLeastOneQuestionRequired": "يجب إدخال السؤال بالعربية أو الإنجليزية على الأقل.",
+    "AtLeastOneAnswerRequired": "يجب إدخال الإجابة بالعربية أو الإنجليزية على الأقل.",
+    "QuestionArMaxLength": "السؤال بالعربية يجب ألا يتجاوز 500 حرف.",
+    "QuestionEnMaxLength": "السؤال بالإنجليزية يجب ألا يتجاوز 500 حرف.",
+    "SocialMediaLinksUpdatedSuccessfully": "تم تحديث روابط وسائل التواصل الاجتماعي بنجاح.",
+    "SocialMediaLinksRetrievedSuccessfully": "تم استرجاع روابط وسائل التواصل الاجتماعي بنجاح.",
+    "SomeFAQsNotFound": "بعض الأسئلة الشائعة غير موجودة",
+    "FAQsDeletedSuccessfully": "تم حذف الأسئلة الشائعة بنجاح",
+    "FAQActivatedSuccessfully": "تم تفعيل السؤال الشائع بنجاح",
+    "FAQDeactivatedSuccessfully": "تم تعطيل السؤال الشائع بنجاح",
+    "AboutUsNotFound": "صفحة من نحن غير موجودة",
+    "AboutUsRetrievedSuccessfully": "تم جلب صفحة من نحن بنجاح",
+    "AboutUsUpdatedSuccessfully": "تم تحديث صفحة من نحن بنجاح",
+    "VideoUploadFailed": "فشل رفع الفيديو",
+    "TitleMaxLength": "العنوان يجب أن لا يتجاوز 300 حرف",
+    "DescriptionMaxLength": "الوصف يجب أن لا يتجاوز 5000 حرف",
+    "UrlMaxLength": "الرابط يجب أن لا يتجاوز 500 حرف",
+    "InvalidYoutubeUrl": "رابط يوتيوب غير صالح، يجب أن يبدأ بـ https://",
+   
+    "InvalidVideoFile": "ملف الفيديو غير صالح",
+    "InvalidVideoFormat": "صيغة الفيديو غير مدعومة، يُسمح فقط بـ MP4 و MOV و AVI و MKV و WEBM"
 }

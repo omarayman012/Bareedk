@@ -1,6 +1,5 @@
-﻿using BaridikExpress.Application.Features.SystemManagement.Commands.UpdateSystemManagement;
-using BaridikExpress.Application.Features.SystemManagement.Queries.GetSystemManagement;
-using BaridikExpress.Domain.Entities.SystemManagment;
+﻿using BaridikExpress.Application.Features.SystemManagement.Commands.UpdateSocialMediaLinks;
+using BaridikExpress.Application.Features.SystemManagement.Queries.GetSocialMediaLinks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,21 +9,20 @@ namespace BaridikExpress.API.Controllers.SystemManagement;
 [Route("api/v1/[controller]")]
 [ApiExplorerSettings(GroupName = "admin-v1")]
 [Authorize]
-
-public class HelpController(IMediator mediator) : ControllerBase
+public class SocialMediaLinksController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
     [AllowAnonymous]
-
     public async Task<IActionResult> Get(CancellationToken cancellationToken)
     {
-        var result = await mediator.Send(new GetSystemManagementQuery<Help>(), cancellationToken);
+        var result = await mediator.Send(
+            new GetSocialMediaLinksQuery(), cancellationToken);
         return StatusCode(result.StatusCode, result);
     }
 
     [HttpPut]
     public async Task<IActionResult> Update(
-        [FromBody] UpdateSystemManagementCommand<Help> command,
+        [FromBody] UpdateSocialMediaLinksCommand command,
         CancellationToken cancellationToken)
     {
         var result = await mediator.Send(command, cancellationToken);
