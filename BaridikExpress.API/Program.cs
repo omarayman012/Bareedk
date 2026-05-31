@@ -93,19 +93,21 @@ app.UseRequestLocalization(new RequestLocalizationOptions
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-var uploadsRoot = UploadsPathResolver.GetCandidateUploadRoots(app.Environment)
-    .FirstOrDefault(Directory.Exists);
+app.UseStaticFiles();
 
-if (!string.IsNullOrEmpty(uploadsRoot))
+var candidateRoots = UploadsPathResolver.GetCandidateUploadRoots(app.Environment);
+
+foreach (var root in candidateRoots)
 {
+    if (!Directory.Exists(root)) continue;
+    if (string.Equals(root, app.Environment.WebRootPath, StringComparison.OrdinalIgnoreCase)) continue;
+
     app.UseStaticFiles(new StaticFileOptions
     {
-        FileProvider = new PhysicalFileProvider(uploadsRoot),
+        FileProvider = new PhysicalFileProvider(root),
         RequestPath = ""
     });
 }
-
-app.UseStaticFiles();
 
 app.UseSwagger();
 app.UseSwaggerUI(options =>
