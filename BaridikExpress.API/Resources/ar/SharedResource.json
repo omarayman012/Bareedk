@@ -345,7 +345,18 @@
     "DescriptionMaxLength": "الوصف يجب أن لا يتجاوز 5000 حرف",
     "UrlMaxLength": "الرابط يجب أن لا يتجاوز 500 حرف",
     "InvalidYoutubeUrl": "رابط يوتيوب غير صالح، يجب أن يبدأ بـ https://",
-   
+
     "InvalidVideoFile": "ملف الفيديو غير صالح",
-    "InvalidVideoFormat": "صيغة الفيديو غير مدعومة، يُسمح فقط بـ MP4 و MOV و AVI و MKV و WEBM"
+    "InvalidVideoFormat": "صيغة الفيديو غير مدعومة، يُسمح فقط بـ MP4 و MOV و AVI و MKV و WEBM",
+  
+    "PhoneIsRequired": "رقم الهاتف مطلوب",
+    "PhoneMaxLength": "رقم الهاتف يجب أن لا يتجاوز 20 حرف",
+    "MessageIsRequired": "الرسالة مطلوبة",
+    "MessageMaxLength": "الرسالة يجب أن لا تتجاوز 2000 حرف",
+    "MessageSentSuccessfully": "تم إرسال رسالتك بنجاح",
+    "ContactUsNotFound": "الرسالة غير موجودة",
+    "MarkedAsReadSuccessfully": "تم تمييز الرسالة كمقروءة",
+    "SomeContactUsNotFound": "بعض الرسائل غير موجودة",
+    "ContactUsDeletedSuccessfully": "تم حذف الرسائل بنجاح",
+    "ContactUsRetrievedSuccessfully": "تم جلب الرسائل بنجاح"
 }

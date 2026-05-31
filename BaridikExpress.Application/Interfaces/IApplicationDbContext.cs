@@ -1,5 +1,6 @@
 using BaridikExpress.Domain.Entities.AuthModule;
 using BaridikExpress.Domain.Entities.CareerFields;
+using BaridikExpress.Domain.Entities.ContactUs;
 using BaridikExpress.Domain.Entities.Customers;
 using BaridikExpress.Domain.Entities.DeliveryModule;
 using BaridikExpress.Domain.Entities.DeliveryType;
@@ -60,6 +61,7 @@ public interface IApplicationDbContext
     DbSet<CareerField> CareerFields { get; set; }
     DbSet<Vehicle> Vehicles { get; set; }
     DbSet<Service> Services { get; set; }
+    DbSet<ContactUs>ContactUs { get; set; }
 
     #endregion
 
