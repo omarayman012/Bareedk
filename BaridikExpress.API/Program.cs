@@ -9,9 +9,12 @@ using BaridikExpress.Infrastructure.Data.Seeder.IdentitySeed;
 using BaridikExpress.Infrastructure.Data.Seeder.NationalitySeeder;
 using BaridikExpress.Infrastructure.Data.Seeder.SystemManagementSeeder;
 using BaridikExpress.Infrastructure.Persistence;
+using BaridikExpress.Infrastructure.Services.File;
+using Infrastructure.Services.File;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -89,6 +92,20 @@ app.UseRequestLocalization(new RequestLocalizationOptions
 });
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
+
+var uploadsRoot = UploadsPathResolver.GetCandidateUploadRoots(app.Environment)
+    .FirstOrDefault(Directory.Exists);
+
+if (!string.IsNullOrEmpty(uploadsRoot))
+{
+    app.UseStaticFiles(new StaticFileOptions
+    {
+        FileProvider = new PhysicalFileProvider(uploadsRoot),
+        RequestPath = ""
+    });
+}
+
+app.UseStaticFiles();
 
 app.UseSwagger();
 app.UseSwaggerUI(options =>
