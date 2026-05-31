@@ -4,6 +4,7 @@ using BaridikExpress.Domain.Entities.AuthModule;
 using BaridikExpress.Domain.Entities.AuthModules;
 using BaridikExpress.Domain.Entities.Base;
 using BaridikExpress.Domain.Entities.CareerFields;
+using BaridikExpress.Domain.Entities.ContactUs;
 using BaridikExpress.Domain.Entities.Customers;
 using BaridikExpress.Domain.Entities.DeliveryModule;
 using BaridikExpress.Domain.Entities.DeliveryType;
@@ -78,6 +79,7 @@ public class ApplicationDbContext : IdentityDbContext<User>, IApplicationDbConte
     public DbSet<CareerField> CareerFields { get; set; }
     public DbSet<Vehicle> Vehicles { get; set; }
     public DbSet<Service> Services { get; set; }
+    public DbSet<ContactUs> ContactUs { get; set; }
 
     #endregion
 

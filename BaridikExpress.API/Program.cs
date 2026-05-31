@@ -12,6 +12,7 @@ using BaridikExpress.Infrastructure.Persistence;
 using BaridikExpress.Infrastructure.Services.File;
 using Infrastructure.Services.File;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.FileProviders;
@@ -66,6 +67,11 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+});
+
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider
@@ -93,19 +99,21 @@ app.UseRequestLocalization(new RequestLocalizationOptions
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-var uploadsRoot = UploadsPathResolver.GetCandidateUploadRoots(app.Environment)
-    .FirstOrDefault(Directory.Exists);
+app.UseStaticFiles();
 
-if (!string.IsNullOrEmpty(uploadsRoot))
+var candidateRoots = UploadsPathResolver.GetCandidateUploadRoots(app.Environment);
+
+foreach (var root in candidateRoots)
 {
+    if (!Directory.Exists(root)) continue;
+    if (string.Equals(root, app.Environment.WebRootPath, StringComparison.OrdinalIgnoreCase)) continue;
+
     app.UseStaticFiles(new StaticFileOptions
     {
-        FileProvider = new PhysicalFileProvider(uploadsRoot),
+        FileProvider = new PhysicalFileProvider(root),
         RequestPath = ""
     });
 }
-
-app.UseStaticFiles();
 
 app.UseSwagger();
 app.UseSwaggerUI(options =>
