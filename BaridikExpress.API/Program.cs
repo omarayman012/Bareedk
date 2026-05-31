@@ -9,9 +9,12 @@ using BaridikExpress.Infrastructure.Data.Seeder.IdentitySeed;
 using BaridikExpress.Infrastructure.Data.Seeder.NationalitySeeder;
 using BaridikExpress.Infrastructure.Data.Seeder.SystemManagementSeeder;
 using BaridikExpress.Infrastructure.Persistence;
+using BaridikExpress.Infrastructure.Services.File;
+using Infrastructure.Services.File;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,43 +43,21 @@ builder.Services.AddSwaggerGen(options =>
         Title = "Auth API",
         Version = "v1"
     });
-
     options.SwaggerDoc("admin-v1", new Microsoft.OpenApi.Models.OpenApiInfo
     {
         Title = "Admin API",
         Version = "v1"
     });
-
     options.SwaggerDoc("client-v1", new Microsoft.OpenApi.Models.OpenApiInfo
     {
         Title = "Client API",
         Version = "v1"
     });
-
     options.SwaggerDoc("delivery-v1", new Microsoft.OpenApi.Models.OpenApiInfo
     {
         Title = "Delivery API",
         Version = "v1"
     });
-
-    options.SwaggerDoc("location-geography-v1", new Microsoft.OpenApi.Models.OpenApiInfo
-    {
-        Title = "Location Geography API",
-        Version = "v1"
-    });
-
-    options.SwaggerDoc("role-management-v1", new Microsoft.OpenApi.Models.OpenApiInfo
-    {
-        Title = "Role Management API",
-        Version = "v1"
-    });
-
-    options.SwaggerDoc("select-menu-v1", new Microsoft.OpenApi.Models.OpenApiInfo
-    {
-        Title = "Select Menu API",
-        Version = "v1"
-    });
-
     options.DocInclusionPredicate((docName, apiDesc) =>
     {
         return apiDesc.GroupName == docName;
@@ -112,22 +93,31 @@ app.UseRequestLocalization(new RequestLocalizationOptions
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-if (app.Environment.IsDevelopment())
+var uploadsRoot = UploadsPathResolver.GetCandidateUploadRoots(app.Environment)
+    .FirstOrDefault(Directory.Exists);
+
+if (!string.IsNullOrEmpty(uploadsRoot))
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(options =>
+    app.UseStaticFiles(new StaticFileOptions
     {
-        options.SwaggerEndpoint("/swagger/auth-v1/swagger.json", "Auth API V1");
-        options.SwaggerEndpoint("/swagger/admin-v1/swagger.json", "Admin API V1");
-        options.SwaggerEndpoint("/swagger/client-v1/swagger.json", "Client API V1");
-        options.SwaggerEndpoint("/swagger/delivery-v1/swagger.json", "Delivery API V1");
-        options.SwaggerEndpoint("/swagger/location-geography-v1/swagger.json", "Location Geography API V1");
-        options.SwaggerEndpoint("/swagger/role-management-v1/swagger.json", "Role Management API V1");
-        options.SwaggerEndpoint("/swagger/select-menu-v1/swagger.json", "Select Menu API V1");
+        FileProvider = new PhysicalFileProvider(uploadsRoot),
+        RequestPath = ""
     });
 }
 
+app.UseStaticFiles();
+
+app.UseSwagger();
+app.UseSwaggerUI(options =>
+{
+    options.SwaggerEndpoint("/swagger/auth-v1/swagger.json", "Auth API V1");
+    options.SwaggerEndpoint("/swagger/admin-v1/swagger.json", "Admin API V1");
+    options.SwaggerEndpoint("/swagger/client-v1/swagger.json", "Client API V1");
+    options.SwaggerEndpoint("/swagger/delivery-v1/swagger.json", "Delivery API V1");
+});
+
 app.MapGet("/", () => Results.Redirect("/swagger"));
+
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

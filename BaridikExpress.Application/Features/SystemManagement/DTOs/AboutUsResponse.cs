@@ -5,8 +5,8 @@ namespace BaridikExpress.Application.Features.SystemManagement.DTOs;
 public sealed record AboutUsResponse(
     LocalizedDto? Title,
     LocalizedDto? Description,
-    string? ImageUrl,
-    string? VideoUrl,
+    string? Image,
+    string? Video,
     string? ExternalLinkYoutube,
     string? UpdatedBy,
     DateTime? UpdatedAt
