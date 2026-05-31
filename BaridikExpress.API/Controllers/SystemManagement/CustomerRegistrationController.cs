@@ -13,6 +13,8 @@ namespace BaridikExpress.API.Controllers.SystemManagement;
 public class CustomerRegistrationController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
+    [AllowAnonymous]
+
     public async Task<IActionResult> Get(CancellationToken cancellationToken)
     {
         var result = await mediator.Send(new GetSystemManagementQuery<CustomerRegistration>(), cancellationToken);
