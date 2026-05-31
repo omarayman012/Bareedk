@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BaridikExpress.API.Controllers.SelectMenus;
 
-[ApiExplorerSettings(GroupName = "select-menu-v1")]
+[ApiExplorerSettings(GroupName = "admin-v1")]
 [Tags("Select Menus")]
 [Route("api/select-menus")]
 [ApiController]
