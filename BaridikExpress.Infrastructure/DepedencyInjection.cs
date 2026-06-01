@@ -1,4 +1,4 @@
-﻿using BaridikExpress.Application.Interfaces;
+using BaridikExpress.Application.Interfaces;
 using BaridikExpress.Application.Interfaces.Auth;
 using BaridikExpress.Application.Interfaces.File;
 using BaridikExpress.Application.Interfaces.IRepository;
@@ -25,48 +25,44 @@ namespace BaridikExpress.Infrastructure
     {
         public static IServiceCollection AddInfrastructureDependencies(this IServiceCollection services, IConfiguration configuration)
         {
-            services.Configure<MailSettings>(
-    configuration.GetSection("MailSettings"));
+            services.Configure<MailSettings>(configuration.GetSection("MailSettings"));
+            
             return services
                 .AddDatabaseConfig(configuration)
                 .AddPersistence()
-                    .AddLocalizationConfig()
+                .AddLocalizationConfig()
                 .AddIdentityConfig();
-
-
         }
+
         // ── Localization ─────────────────────────────
-        private static IServiceCollection AddLocalizationConfig(
-            this IServiceCollection services)
+        private static IServiceCollection AddLocalizationConfig(this IServiceCollection services)
         {
             services.AddLocalization();
-
             services.AddScoped<IStringLocalizer, JsonStringLocalizer>();
 
             return services;
         }
-
-
 
         public static IServiceCollection AddPersistence(this IServiceCollection services)
         {
             // services.AddScoped<IUnitOfWork>(serviceProvider => serviceProvider.GetRequiredService<ApplicationDbContext>());
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<ITokenService, TokenService>();
-            services.AddScoped<IEmailService , EmailService>();
-            services.AddScoped<IApplicationDbContext>(provider =>
-                 provider.GetRequiredService<ApplicationDbContext>());
+            services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
             services.AddScoped<IHasherService, HasherService>();
             services.AddScoped<IGetCurrentUserRepository, GetCurrentUserRepository>();
             services.AddScoped<IFileStorageService, LocalFileStorageService>();
             services.AddScoped<IExcelService, ExcelService>();
             services.AddScoped<IBaseUrlService, BaseUrlService>();
-            services.AddScoped<IMapService,MapService>();
-
-
+            
+            // تم الدمج والإبقاء على الخدمتين معاً هنا
+            services.AddScoped<IJwtService, JwtService>();
+            services.AddScoped<IMapService, MapService>();
 
             return services;
         }
+
         private static IServiceCollection AddDatabaseConfig(this IServiceCollection services, IConfiguration configuration)
         {
             var connectionString = configuration.GetConnectionString("DefaultConnection") ??
@@ -80,13 +76,12 @@ namespace BaridikExpress.Infrastructure
 
         public static IServiceCollection AddIdentityConfig(this IServiceCollection services)
         {
-
             services.AddIdentityCore<User>()
                .AddRoles<IdentityRole>()
                .AddEntityFrameworkStores<ApplicationDbContext>()
                .AddDefaultTokenProviders();
+               
             return services;
         }
-
-           }
+    }
 }

@@ -1,9 +1,9 @@
-﻿// ApplicationDbContext.cs
 using BaridikExpress.Application.Interfaces;
 using BaridikExpress.Domain.Entities.AuthModule;
 using BaridikExpress.Domain.Entities.AuthModules;
 using BaridikExpress.Domain.Entities.Base;
 using BaridikExpress.Domain.Entities.CareerFields;
+using BaridikExpress.Domain.Entities.ClientModule;
 using BaridikExpress.Domain.Entities.ContactUs;
 using BaridikExpress.Domain.Entities.Customers;
 using BaridikExpress.Domain.Entities.DeliveryModule;
@@ -99,6 +99,7 @@ public class ApplicationDbContext : IdentityDbContext<User>, IApplicationDbConte
     #endregion
 
     #region OnModelCreating
+    public DbSet<Client> Clients { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

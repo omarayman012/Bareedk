@@ -1134,6 +1134,20 @@
    at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
    at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
    at BaridikExpress.API.Middlewares.ExceptionHandlingMiddleware.Invoke(HttpContext context) in C:\Users\ASM\OneDrive\Desktop\baridik-express-project-back-end\BaridikExpress.API\Middlewares\ExceptionHandlingMiddleware.cs:line 19
+<<<<<<< HEAD
+2026-05-20 14:44:33 | SmtpProtocolException | The SMTP server has unexpectedly disconnected: 5.7.0 Invalid credentials |    at MailKit.Net.Smtp.SmtpStream.ReadAhead(CancellationToken cancellationToken)
+   at MailKit.Net.Smtp.SmtpStream.ReadResponse(CancellationToken cancellationToken)
+   at MailKit.Net.Smtp.SmtpStream.SendCommand(String command, CancellationToken cancellationToken)
+   at MailKit.Net.Smtp.SmtpClient.SendCommandInternal(String command, CancellationToken cancellationToken)
+   at MailKit.Net.Smtp.SmtpClient.Authenticate(Encoding encoding, ICredentials credentials, CancellationToken cancellationToken)
+   at MailKit.MailService.Authenticate(Encoding encoding, String userName, String password, CancellationToken cancellationToken)
+   at MailKit.MailService.Authenticate(String userName, String password, CancellationToken cancellationToken)
+   at BaridikExpress.Infrastructure.Services.Email.EmailService.SendEmailAsync(String email, String subject, String htmlMessage) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.Infrastructure\Services\Email\EmailService.cs:line 39
+   at BaridikExpress.Infrastructure.Services.Email.EmailService.SendConfirmationEmail(User user, String OTP) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.Infrastructure\Services\Email\EmailService.cs:line 68
+   at BaridikExpress.Application.Features.ClientModule.Handler.SendEmailOtpHandler.Handle(SendEmailOtpCommand request, CancellationToken cancellationToken) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.Application\Features\ClientModule\Handler\SendEmailOtpHandler.cs:line 46
+   at BaridikExpress.Application.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.Application\Behaviors\ValidationBehavior.cs:line 40
+   at BaridikExpress.API.Controllers.ClientModule.ClientsController.SendEmailOtp(SendEmailOtpCommand command) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.API\Controllers\ClientModule\ClientsController.cs:line 60
+=======
 2026-05-20 15:50:58 | ValidationException | Validation failed: 
  -- Contacts: ContactsIsRequired Severity: Error |    at BaridikExpress.Application.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in C:\Users\ASM\OneDrive\Desktop\baridik-express-project-back-end\BaridikExpress.Application\Behaviors\ValidationBehavior.cs:line 37
    at BaridikExpress.API.Controllers.CustomerModule.CustomerController.Create(CreateCustomerCommand command) in C:\Users\ASM\OneDrive\Desktop\baridik-express-project-back-end\BaridikExpress.API\Controllers\CustomerModule\CustomerController.cs:line 22
@@ -1168,6 +1182,7 @@
    at BaridikExpress.Application.Features.Customer.Commands.CreateCustomer.CreateCustomerCommandHandler.Handle(CreateCustomerCommand request, CancellationToken cancellationToken) in C:\Users\ASM\OneDrive\Desktop\baridik-express-project-back-end\BaridikExpress.Application\Features\Customer\Commands\CreateCustomer\CreateCustomerCommandHandler.cs:line 264
    at BaridikExpress.Application.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in C:\Users\ASM\OneDrive\Desktop\baridik-express-project-back-end\BaridikExpress.Application\Behaviors\ValidationBehavior.cs:line 40
    at BaridikExpress.API.Controllers.CustomerModule.CustomerController.Create(CreateCustomerCommand command) in C:\Users\ASM\OneDrive\Desktop\baridik-express-project-back-end\BaridikExpress.API\Controllers\CustomerModule\CustomerController.cs:line 25
+>>>>>>> origin/main
    at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
@@ -1181,6 +1196,12 @@
    at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
    at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
    at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+<<<<<<< HEAD
+   at BaridikExpress.API.Middlewares.ExceptionHandlingMiddleware.Invoke(HttpContext context) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.API\Middlewares\ExceptionHandlingMiddleware.cs:line 19
+2026-05-20 14:46:05 | ValidationException | Validation failed: 
+ -- Phone: Invalid phone number. Severity: Error |    at BaridikExpress.Application.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.Application\Behaviors\ValidationBehavior.cs:line 37
+   at BaridikExpress.API.Controllers.ClientModule.ClientsController.Register(RegisterClientCommand command) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.API\Controllers\ClientModule\ClientsController.cs:line 22
+=======
    at BaridikExpress.API.Middlewares.ExceptionHandlingMiddleware.Invoke(HttpContext context) in C:\Users\ASM\OneDrive\Desktop\baridik-express-project-back-end\BaridikExpress.API\Middlewares\ExceptionHandlingMiddleware.cs:line 19
 2026-05-21 00:50:23 | DbUpdateException | An error occurred while saving the entity changes. See the inner exception for details. |    at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
    at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
@@ -1198,6 +1219,7 @@
    at BaridikExpress.Application.Features.Customer.Commands.CreateCustomer.CreateCustomerCommandHandler.Handle(CreateCustomerCommand request, CancellationToken cancellationToken) in C:\Users\ASM\OneDrive\Desktop\baridik-express-project-back-end\BaridikExpress.Application\Features\Customer\Commands\CreateCustomer\CreateCustomerCommandHandler.cs:line 265
    at BaridikExpress.Application.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in C:\Users\ASM\OneDrive\Desktop\baridik-express-project-back-end\BaridikExpress.Application\Behaviors\ValidationBehavior.cs:line 40
    at BaridikExpress.API.Controllers.CustomerModule.CustomerController.Create(CreateCustomerCommand command) in C:\Users\ASM\OneDrive\Desktop\baridik-express-project-back-end\BaridikExpress.API\Controllers\CustomerModule\CustomerController.cs:line 25
+>>>>>>> origin/main
    at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
@@ -1211,6 +1233,21 @@
    at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
    at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
    at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+<<<<<<< HEAD
+   at BaridikExpress.API.Middlewares.ExceptionHandlingMiddleware.Invoke(HttpContext context) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.API\Middlewares\ExceptionHandlingMiddleware.cs:line 19
+2026-05-20 14:46:34 | SmtpProtocolException | The SMTP server has unexpectedly disconnected: 5.7.0 Invalid credentials |    at MailKit.Net.Smtp.SmtpStream.ReadAhead(CancellationToken cancellationToken)
+   at MailKit.Net.Smtp.SmtpStream.ReadResponse(CancellationToken cancellationToken)
+   at MailKit.Net.Smtp.SmtpStream.SendCommand(String command, CancellationToken cancellationToken)
+   at MailKit.Net.Smtp.SmtpClient.SendCommandInternal(String command, CancellationToken cancellationToken)
+   at MailKit.Net.Smtp.SmtpClient.Authenticate(Encoding encoding, ICredentials credentials, CancellationToken cancellationToken)
+   at MailKit.MailService.Authenticate(Encoding encoding, String userName, String password, CancellationToken cancellationToken)
+   at MailKit.MailService.Authenticate(String userName, String password, CancellationToken cancellationToken)
+   at BaridikExpress.Infrastructure.Services.Email.EmailService.SendEmailAsync(String email, String subject, String htmlMessage) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.Infrastructure\Services\Email\EmailService.cs:line 39
+   at BaridikExpress.Infrastructure.Services.Email.EmailService.SendConfirmationEmail(User user, String OTP) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.Infrastructure\Services\Email\EmailService.cs:line 68
+   at BaridikExpress.Application.Features.ClientModule.Handler.SendEmailOtpHandler.Handle(SendEmailOtpCommand request, CancellationToken cancellationToken) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.Application\Features\ClientModule\Handler\SendEmailOtpHandler.cs:line 46
+   at BaridikExpress.Application.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.Application\Behaviors\ValidationBehavior.cs:line 40
+   at BaridikExpress.API.Controllers.ClientModule.ClientsController.SendEmailOtp(SendEmailOtpCommand command) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.API\Controllers\ClientModule\ClientsController.cs:line 60
+=======
    at BaridikExpress.API.Middlewares.ExceptionHandlingMiddleware.Invoke(HttpContext context) in C:\Users\ASM\OneDrive\Desktop\baridik-express-project-back-end\BaridikExpress.API\Middlewares\ExceptionHandlingMiddleware.cs:line 19
 2026-05-21 00:53:50 | DbUpdateException | An error occurred while saving the entity changes. See the inner exception for details. |    at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
    at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
@@ -1228,6 +1265,7 @@
    at BaridikExpress.Application.Features.Customer.Commands.CreateCustomer.CreateCustomerCommandHandler.Handle(CreateCustomerCommand request, CancellationToken cancellationToken) in C:\Users\ASM\OneDrive\Desktop\baridik-express-project-back-end\BaridikExpress.Application\Features\Customer\Commands\CreateCustomer\CreateCustomerCommandHandler.cs:line 265
    at BaridikExpress.Application.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in C:\Users\ASM\OneDrive\Desktop\baridik-express-project-back-end\BaridikExpress.Application\Behaviors\ValidationBehavior.cs:line 40
    at BaridikExpress.API.Controllers.CustomerModule.CustomerController.Create(CreateCustomerCommand command) in C:\Users\ASM\OneDrive\Desktop\baridik-express-project-back-end\BaridikExpress.API\Controllers\CustomerModule\CustomerController.cs:line 25
+>>>>>>> origin/main
    at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
@@ -1241,17 +1279,37 @@
    at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
    at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
    at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+<<<<<<< HEAD
+   at BaridikExpress.API.Middlewares.ExceptionHandlingMiddleware.Invoke(HttpContext context) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.API\Middlewares\ExceptionHandlingMiddleware.cs:line 19
+2026-05-20 14:51:27 | SmtpProtocolException | The SMTP server has unexpectedly disconnected: 5.7.0 Invalid credentials |    at MailKit.Net.Smtp.SmtpStream.ReadAhead(CancellationToken cancellationToken)
+   at MailKit.Net.Smtp.SmtpStream.ReadResponse(CancellationToken cancellationToken)
+   at MailKit.Net.Smtp.SmtpStream.SendCommand(String command, CancellationToken cancellationToken)
+   at MailKit.Net.Smtp.SmtpClient.SendCommandInternal(String command, CancellationToken cancellationToken)
+   at MailKit.Net.Smtp.SmtpClient.Authenticate(Encoding encoding, ICredentials credentials, CancellationToken cancellationToken)
+   at MailKit.MailService.Authenticate(Encoding encoding, String userName, String password, CancellationToken cancellationToken)
+   at MailKit.MailService.Authenticate(String userName, String password, CancellationToken cancellationToken)
+   at BaridikExpress.Infrastructure.Services.Email.EmailService.SendEmailAsync(String email, String subject, String htmlMessage) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.Infrastructure\Services\Email\EmailService.cs:line 39
+   at BaridikExpress.Infrastructure.Services.Email.EmailService.SendConfirmationEmail(User user, String OTP) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.Infrastructure\Services\Email\EmailService.cs:line 68
+   at BaridikExpress.Application.Features.ClientModule.Handler.SendEmailOtpHandler.Handle(SendEmailOtpCommand request, CancellationToken cancellationToken) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.Application\Features\ClientModule\Handler\SendEmailOtpHandler.cs:line 48
+   at BaridikExpress.Application.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.Application\Behaviors\ValidationBehavior.cs:line 40
+   at BaridikExpress.API.Controllers.ClientModule.ClientsController.SendEmailOtp(SendEmailOtpCommand command) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.API\Controllers\ClientModule\ClientsController.cs:line 60
+=======
    at BaridikExpress.API.Middlewares.ExceptionHandlingMiddleware.Invoke(HttpContext context) in C:\Users\ASM\OneDrive\Desktop\baridik-express-project-back-end\BaridikExpress.API\Middlewares\ExceptionHandlingMiddleware.cs:line 19
 2026-05-21 18:40:23 | ValidationException | Validation failed: 
  -- LoadCapacityTo: Load capacity to must be greater than load capacity from. Severity: Error |    at BaridikExpress.Application.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in D:\courses\back end.net\API Pojectes\Team Projects\Drcode\baridik-express-project-back-end\BaridikExpress.Application\Behaviors\ValidationBehavior.cs:line 37
    at BaridikExpress.API.Controllers.Vehicles.VehiclesController.Create(CreateVehicleCommand command) in D:\courses\back end.net\API Pojectes\Team Projects\Drcode\baridik-express-project-back-end\BaridikExpress.API\Controllers\Vehicles\VehiclesController.cs:line 48
+>>>>>>> origin/main
    at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+<<<<<<< HEAD
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+=======
    at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
 --- End of stack trace from previous location ---
+>>>>>>> origin/main
    at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
@@ -1259,17 +1317,37 @@
    at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
    at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
    at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+<<<<<<< HEAD
+   at BaridikExpress.API.Middlewares.ExceptionHandlingMiddleware.Invoke(HttpContext context) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.API\Middlewares\ExceptionHandlingMiddleware.cs:line 19
+2026-05-20 14:58:04 | SmtpProtocolException | The SMTP server has unexpectedly disconnected: 5.7.0 Invalid credentials |    at MailKit.Net.Smtp.SmtpStream.ReadAhead(CancellationToken cancellationToken)
+   at MailKit.Net.Smtp.SmtpStream.ReadResponse(CancellationToken cancellationToken)
+   at MailKit.Net.Smtp.SmtpStream.SendCommand(String command, CancellationToken cancellationToken)
+   at MailKit.Net.Smtp.SmtpClient.SendCommandInternal(String command, CancellationToken cancellationToken)
+   at MailKit.Net.Smtp.SmtpClient.Authenticate(Encoding encoding, ICredentials credentials, CancellationToken cancellationToken)
+   at MailKit.MailService.Authenticate(Encoding encoding, String userName, String password, CancellationToken cancellationToken)
+   at MailKit.MailService.Authenticate(String userName, String password, CancellationToken cancellationToken)
+   at BaridikExpress.Infrastructure.Services.Email.EmailService.SendEmailAsync(String email, String subject, String htmlMessage) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.Infrastructure\Services\Email\EmailService.cs:line 39
+   at BaridikExpress.Infrastructure.Services.Email.EmailService.SendConfirmationEmail(User user, String OTP) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.Infrastructure\Services\Email\EmailService.cs:line 68
+   at BaridikExpress.Application.Features.ClientModule.Handler.SendEmailOtpHandler.Handle(SendEmailOtpCommand request, CancellationToken cancellationToken) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.Application\Features\ClientModule\Handler\SendEmailOtpHandler.cs:line 48
+   at BaridikExpress.Application.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.Application\Behaviors\ValidationBehavior.cs:line 40
+   at BaridikExpress.API.Controllers.ClientModule.ClientsController.SendEmailOtp(SendEmailOtpCommand command) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.API\Controllers\ClientModule\ClientsController.cs:line 60
+=======
    at BaridikExpress.API.Middlewares.ExceptionHandlingMiddleware.Invoke(HttpContext context) in D:\courses\back end.net\API Pojectes\Team Projects\Drcode\baridik-express-project-back-end\BaridikExpress.API\Middlewares\ExceptionHandlingMiddleware.cs:line 19
 2026-05-21 18:46:07 | ValidationException | Validation failed: 
  -- : Career field name is required. Severity: Error |    at BaridikExpress.Application.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in D:\courses\back end.net\API Pojectes\Team Projects\Drcode\baridik-express-project-back-end\BaridikExpress.Application\Behaviors\ValidationBehavior.cs:line 37
    at BaridikExpress.API.Controllers.CareerFields.CareerFieldsController.Create(CreateCareerFieldCommand command) in D:\courses\back end.net\API Pojectes\Team Projects\Drcode\baridik-express-project-back-end\BaridikExpress.API\Controllers\CareerFields\CareerFieldsController.cs:line 46
+>>>>>>> origin/main
    at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+<<<<<<< HEAD
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+=======
    at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
 --- End of stack trace from previous location ---
+>>>>>>> origin/main
    at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
@@ -1277,17 +1355,32 @@
    at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
    at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
    at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+<<<<<<< HEAD
+   at BaridikExpress.API.Middlewares.ExceptionHandlingMiddleware.Invoke(HttpContext context) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.API\Middlewares\ExceptionHandlingMiddleware.cs:line 19
+2026-05-20 15:21:32 | ArgumentException | The host name cannot be empty. (Parameter 'host') |    at MailKit.Net.Smtp.SmtpClient.ValidateArguments(String host, Int32 port)
+   at MailKit.Net.Smtp.SmtpClient.ConnectAsync(String host, Int32 port, SecureSocketOptions options, CancellationToken cancellationToken)
+   at BaridikExpress.Infrastructure.Services.Email.EmailService.SendEmailAsync(String email, String subject, String htmlMessage) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.Infrastructure\Services\Email\EmailService.cs:line 40
+   at BaridikExpress.Infrastructure.Services.Email.EmailService.SendConfirmationEmail(User user, String OTP) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.Infrastructure\Services\Email\EmailService.cs:line 90
+   at BaridikExpress.Application.Features.ClientModule.Handler.SendEmailOtpHandler.Handle(SendEmailOtpCommand request, CancellationToken cancellationToken) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.Application\Features\ClientModule\Handler\SendEmailOtpHandler.cs:line 48
+   at BaridikExpress.Application.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.Application\Behaviors\ValidationBehavior.cs:line 40
+   at BaridikExpress.API.Controllers.ClientModule.ClientsController.SendEmailOtp(SendEmailOtpCommand command) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.API\Controllers\ClientModule\ClientsController.cs:line 60
+=======
    at BaridikExpress.API.Middlewares.ExceptionHandlingMiddleware.Invoke(HttpContext context) in D:\courses\back end.net\API Pojectes\Team Projects\Drcode\baridik-express-project-back-end\BaridikExpress.API\Middlewares\ExceptionHandlingMiddleware.cs:line 19
 2026-05-21 18:51:13 | ValidationException | Validation failed: 
  -- : Career field name is required. Severity: Error |    at BaridikExpress.Application.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in D:\courses\back end.net\API Pojectes\Team Projects\Drcode\baridik-express-project-back-end\BaridikExpress.Application\Behaviors\ValidationBehavior.cs:line 37
    at BaridikExpress.API.Controllers.CareerFields.CareerFieldsController.Create(CreateCareerFieldCommand command) in D:\courses\back end.net\API Pojectes\Team Projects\Drcode\baridik-express-project-back-end\BaridikExpress.API\Controllers\CareerFields\CareerFieldsController.cs:line 46
+>>>>>>> origin/main
    at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+<<<<<<< HEAD
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+=======
    at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
 --- End of stack trace from previous location ---
+>>>>>>> origin/main
    at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
@@ -1295,6 +1388,16 @@
    at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
    at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
    at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+<<<<<<< HEAD
+   at BaridikExpress.API.Middlewares.ExceptionHandlingMiddleware.Invoke(HttpContext context) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.API\Middlewares\ExceptionHandlingMiddleware.cs:line 19
+2026-05-20 15:22:05 | ArgumentException | The host name cannot be empty. (Parameter 'host') |    at MailKit.Net.Smtp.SmtpClient.ValidateArguments(String host, Int32 port)
+   at MailKit.Net.Smtp.SmtpClient.ConnectAsync(String host, Int32 port, SecureSocketOptions options, CancellationToken cancellationToken)
+   at BaridikExpress.Infrastructure.Services.Email.EmailService.SendEmailAsync(String email, String subject, String htmlMessage) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.Infrastructure\Services\Email\EmailService.cs:line 40
+   at BaridikExpress.Infrastructure.Services.Email.EmailService.SendConfirmationEmail(User user, String OTP) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.Infrastructure\Services\Email\EmailService.cs:line 90
+   at BaridikExpress.Application.Features.ClientModule.Handler.SendEmailOtpHandler.Handle(SendEmailOtpCommand request, CancellationToken cancellationToken) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.Application\Features\ClientModule\Handler\SendEmailOtpHandler.cs:line 48
+   at BaridikExpress.Application.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.Application\Behaviors\ValidationBehavior.cs:line 40
+   at BaridikExpress.API.Controllers.ClientModule.ClientsController.SendEmailOtp(SendEmailOtpCommand command) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.API\Controllers\ClientModule\ClientsController.cs:line 60
+=======
    at BaridikExpress.API.Middlewares.ExceptionHandlingMiddleware.Invoke(HttpContext context) in D:\courses\back end.net\API Pojectes\Team Projects\Drcode\baridik-express-project-back-end\BaridikExpress.API\Middlewares\ExceptionHandlingMiddleware.cs:line 19
 2026-05-21 18:52:46 | TypeLoadException | Could not load type 'BaridikExpress.Application.Features.LocationGeography.Queries.Country.GetALL.GetAllCountryQuery' from assembly 'BaridikExpress.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null' due to value type mismatch. |    at System.Signature.GetSignature(Void* pCorSig, Int32 cCorSig, RuntimeFieldHandleInternal fieldHandle, IRuntimeMethodInfo methodHandle, RuntimeType declaringType)
    at System.Reflection.RuntimeMethodInfo.<get_Signature>g__LazyCreateSignature|25_0()
@@ -1325,13 +1428,18 @@
  -- Contacts: ContactsIsRequired Severity: Error
  -- Contacts: PrimaryContactIsRequired Severity: Error |    at BaridikExpress.Application.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in D:\courses\back end.net\API Pojectes\Team Projects\Drcode\baridik-express-project-back-end\BaridikExpress.Application\Behaviors\ValidationBehavior.cs:line 37
    at BaridikExpress.API.Controllers.CustomerModule.CustomerController.Create(CreateCustomerCommand command) in D:\courses\back end.net\API Pojectes\Team Projects\Drcode\baridik-express-project-back-end\BaridikExpress.API\Controllers\CustomerModule\CustomerController.cs:line 25
+>>>>>>> origin/main
    at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+<<<<<<< HEAD
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+=======
    at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
 --- End of stack trace from previous location ---
+>>>>>>> origin/main
    at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
@@ -1339,17 +1447,32 @@
    at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
    at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
    at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+<<<<<<< HEAD
+   at BaridikExpress.API.Middlewares.ExceptionHandlingMiddleware.Invoke(HttpContext context) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.API\Middlewares\ExceptionHandlingMiddleware.cs:line 19
+2026-05-20 15:30:12 | ArgumentException | The host name cannot be empty. (Parameter 'host') |    at MailKit.Net.Smtp.SmtpClient.ValidateArguments(String host, Int32 port)
+   at MailKit.Net.Smtp.SmtpClient.ConnectAsync(String host, Int32 port, SecureSocketOptions options, CancellationToken cancellationToken)
+   at BaridikExpress.Infrastructure.Services.Email.EmailService.SendEmailAsync(String email, String subject, String htmlMessage) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.Infrastructure\Services\Email\EmailService.cs:line 40
+   at BaridikExpress.Infrastructure.Services.Email.EmailService.SendConfirmationEmail(User user, String OTP) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.Infrastructure\Services\Email\EmailService.cs:line 90
+   at BaridikExpress.Application.Features.ClientModule.Handler.SendEmailOtpHandler.Handle(SendEmailOtpCommand request, CancellationToken cancellationToken) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.Application\Features\ClientModule\Handler\SendEmailOtpHandler.cs:line 48
+   at BaridikExpress.Application.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.Application\Behaviors\ValidationBehavior.cs:line 40
+   at BaridikExpress.API.Controllers.ClientModule.ClientsController.SendEmailOtp(SendEmailOtpCommand command) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.API\Controllers\ClientModule\ClientsController.cs:line 60
+=======
    at BaridikExpress.API.Middlewares.ExceptionHandlingMiddleware.Invoke(HttpContext context) in D:\courses\back end.net\API Pojectes\Team Projects\Drcode\baridik-express-project-back-end\BaridikExpress.API\Middlewares\ExceptionHandlingMiddleware.cs:line 19
 2026-05-21 19:15:50 | ValidationException | Validation failed: 
  -- : Vehicle name is required. Severity: Error |    at BaridikExpress.Application.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in D:\courses\back end.net\API Pojectes\Team Projects\Drcode\baridik-express-project-back-end\BaridikExpress.Application\Behaviors\ValidationBehavior.cs:line 37
    at BaridikExpress.API.Controllers.Vehicles.VehiclesController.Create(CreateVehicleCommand command) in D:\courses\back end.net\API Pojectes\Team Projects\Drcode\baridik-express-project-back-end\BaridikExpress.API\Controllers\Vehicles\VehiclesController.cs:line 48
+>>>>>>> origin/main
    at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+<<<<<<< HEAD
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+=======
    at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
 --- End of stack trace from previous location ---
+>>>>>>> origin/main
    at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
@@ -1357,4 +1480,70 @@
    at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
    at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
    at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+<<<<<<< HEAD
+   at BaridikExpress.API.Middlewares.ExceptionHandlingMiddleware.Invoke(HttpContext context) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.API\Middlewares\ExceptionHandlingMiddleware.cs:line 19
+2026-05-20 18:55:29 | ValidationException | Validation failed: 
+ -- CompanyLink: InvalidCompanyLink Severity: Error |    at BaridikExpress.Application.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.Application\Behaviors\ValidationBehavior.cs:line 37
+   at BaridikExpress.API.Controllers.ClientModule.ClientsController.Register(RegisterClientCommand command) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.API\Controllers\ClientModule\ClientsController.cs:line 22
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at BaridikExpress.API.Middlewares.ExceptionHandlingMiddleware.Invoke(HttpContext context) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.API\Middlewares\ExceptionHandlingMiddleware.cs:line 19
+2026-05-20 18:56:05 | ApiException | The number +20102034XXXX is unverified. Trial accounts cannot send messages to unverified numbers; verify +20102034XXXX at twilio.com/user/account/phone-numbers/verified, or purchase a Twilio number to send messages to unverified numbers |    at Twilio.Clients.TwilioRestClient.ProcessResponse(Response response)
+   at Twilio.Clients.TwilioRestClient.RequestAsync(Request request)
+   at Twilio.Rest.Api.V2010.Account.MessageResource.CreateAsync(CreateMessageOptions options, ITwilioRestClient client)
+   at Twilio.Rest.Api.V2010.Account.MessageResource.CreateAsync(PhoneNumber to, String pathAccountSid, PhoneNumber from, String messagingServiceSid, String body, List`1 mediaUrl, String contentSid, Uri statusCallback, String applicationSid, Nullable`1 maxPrice, Nullable`1 provideFeedback, Nullable`1 attempt, Nullable`1 validityPeriod, Nullable`1 forceDelivery, ContentRetentionEnum contentRetention, AddressRetentionEnum addressRetention, Nullable`1 smartEncoded, List`1 persistentAction, TrafficTypeEnum trafficType, Nullable`1 shortenUrls, ScheduleTypeEnum scheduleType, Nullable`1 sendAt, Nullable`1 sendAsMms, String contentVariables, RiskCheckEnum riskCheck, PhoneNumber fallbackFrom, ITwilioRestClient client)
+   at BaridikExpress.Infrastructure.Services.SmsService.SmsService.SendSmsAsync(String phoneNumber, String message) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.Infrastructure\Services\SmsService\SmsService.cs:line 29
+   at BaridikExpress.Application.Features.ClientModule.Handler.SendPhoneOtpHandler.Handle(SendPhoneOtpCommand request, CancellationToken cancellationToken) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.Application\Features\ClientModule\Handler\SendPhoneOtpHandler.cs:line 45
+   at BaridikExpress.Application.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.Application\Behaviors\ValidationBehavior.cs:line 40
+   at BaridikExpress.API.Controllers.ClientModule.ClientsController.SendPhoneOtp(SendPhoneOtpCommand command) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.API\Controllers\ClientModule\ClientsController.cs:line 77
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at BaridikExpress.API.Middlewares.ExceptionHandlingMiddleware.Invoke(HttpContext context) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.API\Middlewares\ExceptionHandlingMiddleware.cs:line 19
+2026-05-24 15:33:04 | ValidationException | Validation failed: 
+ -- CompanyLink: InvalidCompanyLink Severity: Error |    at BaridikExpress.Application.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.Application\Behaviors\ValidationBehavior.cs:line 37
+   at BaridikExpress.API.Controllers.AuthClientModule.AuthClientsController.Register(RegisterClientCommand command) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.API\Controllers\AuthClientModule\AuthClientsController.cs:line 24
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at BaridikExpress.API.Middlewares.ExceptionHandlingMiddleware.Invoke(HttpContext context) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.API\Middlewares\ExceptionHandlingMiddleware.cs:line 19
+=======
    at BaridikExpress.API.Middlewares.ExceptionHandlingMiddleware.Invoke(HttpContext context) in D:\courses\back end.net\API Pojectes\Team Projects\Drcode\baridik-express-project-back-end\BaridikExpress.API\Middlewares\ExceptionHandlingMiddleware.cs:line 19
+>>>>>>> origin/main
+2026-05-25 18:46:57 | InvalidOperationException | The AuthorizationPolicy named: 'SuperAdmin' was not found. |    at Microsoft.AspNetCore.Authorization.AuthorizationPolicy.CombineAsync(IAuthorizationPolicyProvider policyProvider, IEnumerable`1 authorizeData, IEnumerable`1 policies)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at BaridikExpress.API.Middlewares.ExceptionHandlingMiddleware.Invoke(HttpContext context) in C:\Users\omar\Desktop\baridik-express-project-back-end\BaridikExpress.API\Middlewares\ExceptionHandlingMiddleware.cs:line 19

@@ -24,7 +24,7 @@ namespace BaridikExpress.Infrastructure.Data.Seeder.IdentitySeed
             await SeedUserAsync(userManager,
                 email: "delivery@gmail.com",
                 password: "Delivery@2026",
-                userName: "delivery",
+                userName: "delivery@gmail.com",
                 fullName: "delivery",
                 role: "Delivery");
         }

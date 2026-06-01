@@ -7,66 +7,115 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MimeKit;
 
-namespace  BaridikExpress.Infrastructure.Services.Email;
+namespace BaridikExpress.Infrastructure.Services.Email;
 
-public class EmailService(IOptions<MailSettings> mailSettings, ILogger<EmailService> logger) : IEmailSender, IEmailService
+public class EmailService : IEmailSender, IEmailService
 {
-    private readonly MailSettings _mailSettings = mailSettings.Value;
-    private readonly ILogger<EmailService> _logger = logger;
+    private readonly MailSettings _mailSettings;
+    private readonly ILogger<EmailService> _logger;
 
-    public async Task SendEmailAsync(string email, string subject, string htmlMessage)
+    public EmailService(
+        IOptions<MailSettings> mailSettings,
+        ILogger<EmailService> logger)
     {
-        var message = new MimeMessage
-        {
-            Sender = MailboxAddress.Parse(_mailSettings.Mail),
-            Subject = subject
-        };
+        _mailSettings = mailSettings.Value;
+        _logger = logger;
+    }
 
-        message.To.Add(MailboxAddress.Parse(email));
-
-        var builder = new BodyBuilder
-        {
-            HtmlBody = htmlMessage
-        };
-
-        message.Body = builder.ToMessageBody();
-
+    public async Task SendEmailAsync(
+        string email,
+        string subject,
+        string htmlMessage)
+    {
         using var smtp = new SmtpClient();
 
-        _logger.LogInformation("Sending email to {email}", email);
+        try
+        {
+            smtp.Timeout = 10000;
 
-        smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
-        smtp.Authenticate(_mailSettings.Mail, _mailSettings.Password);
-        await smtp.SendAsync(message);
-        smtp.Disconnect(true);
+            var message = new MimeMessage();
+
+            message.From.Add(
+                new MailboxAddress(
+                    _mailSettings.DisplayName,
+                    _mailSettings.UserName));
+
+            message.To.Add(
+                MailboxAddress.Parse(email));
+
+            message.Subject = subject;
+
+            message.Body = new BodyBuilder
+            {
+                HtmlBody = htmlMessage
+            }.ToMessageBody();
+
+            await smtp.ConnectAsync(
+                _mailSettings.Host,
+                _mailSettings.Port,
+                SecureSocketOptions.StartTls);
+
+            await smtp.AuthenticateAsync(
+                _mailSettings.UserName,
+                _mailSettings.Password);
+
+            await smtp.SendAsync(message);
+
+            _logger.LogInformation(
+                "Email sent successfully to {Email}",
+                email);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(
+                ex,
+                "Failed to send email to {Email}",
+                email);
+
+            throw;
+        }
+        finally
+        {
+            if (smtp.IsConnected)
+            {
+                await smtp.DisconnectAsync(true);
+            }
+        }
     }
 
-    public async Task SendResetPasswordEmail(User user, string OTP)
+    public async Task SendResetPasswordEmail(
+        User user,
+        string otp)
     {
-
-        var emailBody = EmailBodyBuilder.GenerateEmailBody("ForgetPassword", templateModel: new Dictionary<string, string>
-                {
-                    { "{{name}}", user.FullName },
-                    { "{{OTP}}", $"{OTP}" }
-                }
-        );
-
-        await SendEmailAsync(user.Email!, "✅BaridikExpress: Change Password", emailBody);
-
-        await Task.CompletedTask;
-    }
-
-    public async Task SendConfirmationEmail(User user, string OTP)
-    {
-
-        var emailBody = EmailBodyBuilder.GenerateEmailBody("EmailConfirmation", templateModel: new Dictionary<string, string>
-                {
+        var emailBody = EmailBodyBuilder.GenerateEmailBody(
+            "ForgetPassword",
+            new Dictionary<string, string>
+            {
                 { "{{name}}", user.FullName },
-                { "{{OTP}}", $"{OTP}" }
-                }
-        );
-        await SendEmailAsync(user.Email!, "✅ BaridikExpress: Email Confirmation", emailBody);
+                { "{{OTP}}", otp }
+            });
 
-        await Task.CompletedTask;
+        await SendEmailAsync(
+            user.Email!,
+            "BaridikExpress: Change Password",
+            emailBody);
+    }
+
+    public async Task SendConfirmationEmail(
+        User user,
+        string otp)
+    {
+        var emailBody = EmailBodyBuilder.GenerateEmailBody(
+            "EmailConfirmation",
+            new Dictionary<string, string>
+            {
+                { "{{name}}", user.FullName },
+                { "{{OTP}}", otp }
+            });
+
+        await SendEmailAsync(
+            user.Email!,
+            "BaridikExpress: Email Confirmation",
+            emailBody);
     }
 }
