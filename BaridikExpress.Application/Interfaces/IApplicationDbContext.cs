@@ -83,7 +83,6 @@ public interface IApplicationDbContext
     #endregion
      DbSet<Client> Clients { get; set; }
 
-    DbSet<Client> Clients { get; set; }
 
     DatabaseFacade Database { get; }
     DbSet<TEntity> Set<TEntity>() where TEntity : class;
