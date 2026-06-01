@@ -2,6 +2,7 @@
 using BaridikExpress.Application.Interfaces.Auth;
 using BaridikExpress.Application.Interfaces.File;
 using BaridikExpress.Application.Interfaces.IRepository;
+using BaridikExpress.Application.Interfaces.Services;
 using BaridikExpress.Domain.Entities.AuthModules;
 using BaridikExpress.Infrastructure.Localizer;
 using BaridikExpress.Infrastructure.Persistence;
@@ -10,14 +11,13 @@ using BaridikExpress.Infrastructure.Services.AuthModules;
 using BaridikExpress.Infrastructure.Services.Email;
 using BaridikExpress.Infrastructure.Services.File;
 using BaridikExpress.Infrastructure.Services.Hasher;
+using BaridikExpress.Infrastructure.Services.Maps;
 using Infrastructure.Services.File;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
-using ServiceStack.Auth;
 
 namespace BaridikExpress.Infrastructure
 {
@@ -62,6 +62,8 @@ namespace BaridikExpress.Infrastructure
             services.AddScoped<IExcelService, ExcelService>();
             services.AddScoped<IBaseUrlService, BaseUrlService>();
             services.AddScoped<IJwtService, JwtService>();
+            services.AddScoped<IMapService,MapService>();
+
 
 
             return services;
