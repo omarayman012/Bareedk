@@ -12,6 +12,7 @@ using BaridikExpress.Domain.Entities.Location;
 using BaridikExpress.Domain.Entities.Nationality;
 using BaridikExpress.Domain.Entities.RoleModule;
 using BaridikExpress.Domain.Entities.Services;
+using BaridikExpress.Domain.Entities.Shipments;
 using BaridikExpress.Domain.Entities.SystemManagment;
 using BaridikExpress.Domain.Entities.Vehicles;
 using BaridikExpress.Infrastructure.Extensions;
@@ -71,6 +72,16 @@ public class ApplicationDbContext : IdentityDbContext<User>, IApplicationDbConte
     public DbSet<Delivery> Deliveries { get; set; }
     DbSet<DeliveryType> IApplicationDbContext.DeliveryTypes { get => DeliveryTypes; set => DeliveryTypes = value; }
     DbSet<DeliveryType> DeliveryTypes { get; set; }
+
+    #endregion
+
+    #region DbSets - Shipments
+
+    public DbSet<Shipment> Shipments { get; set; }
+    public DbSet<ShipmentAddress> ShipmentAddresses { get; set; }
+    public DbSet<ShipmentAttachment> ShipmentAttachments { get; set; }
+    public DbSet<ShipmentService> ShipmentServices { get; set; }
+    public DbSet<ShipmentStatusHistory> ShipmentStatusHistories { get; set; }
 
     #endregion
 
