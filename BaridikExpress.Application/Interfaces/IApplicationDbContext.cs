@@ -17,6 +17,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace BaridikExpress.Application.Interfaces;
 
+
 public interface IApplicationDbContext
 {
     #region Auth & Users
@@ -80,6 +81,7 @@ public interface IApplicationDbContext
     DbSet<FAQ> FAQs { get; set; }
 
     #endregion
+     DbSet<Client> Clients { get; set; }
 
     DbSet<Client> Clients { get; set; }
 

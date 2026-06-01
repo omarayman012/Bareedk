@@ -99,6 +99,7 @@ public class ApplicationDbContext : IdentityDbContext<User>, IApplicationDbConte
     #endregion
 
     #region OnModelCreating
+
     public DbSet<Client> Clients { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

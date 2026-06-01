@@ -68,6 +68,13 @@ builder.Services.AddSwaggerGen(options =>
         return apiDesc.GroupName == docName;
     });
 });
+builder.Services.Configure<MailSettings>(
+    builder.Configuration.GetSection("MailSettings"));
+builder.Services.Configure<TwilioSettings>(
+    builder.Configuration.GetSection("TwilioSettings"));
+builder.Services.AddScoped<ISmsService, SmsService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
+
 
 builder.Services.Configure<MailSettings>(
     builder.Configuration.GetSection("MailSettings"));

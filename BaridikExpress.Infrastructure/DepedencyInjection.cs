@@ -26,7 +26,7 @@ namespace BaridikExpress.Infrastructure
         public static IServiceCollection AddInfrastructureDependencies(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<MailSettings>(configuration.GetSection("MailSettings"));
-            
+
             return services
                 .AddDatabaseConfig(configuration)
                 .AddPersistence()
@@ -39,13 +39,11 @@ namespace BaridikExpress.Infrastructure
         {
             services.AddLocalization();
             services.AddScoped<IStringLocalizer, JsonStringLocalizer>();
-
             return services;
         }
 
         public static IServiceCollection AddPersistence(this IServiceCollection services)
         {
-            // services.AddScoped<IUnitOfWork>(serviceProvider => serviceProvider.GetRequiredService<ApplicationDbContext>());
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IEmailService, EmailService>();
@@ -55,11 +53,8 @@ namespace BaridikExpress.Infrastructure
             services.AddScoped<IFileStorageService, LocalFileStorageService>();
             services.AddScoped<IExcelService, ExcelService>();
             services.AddScoped<IBaseUrlService, BaseUrlService>();
-            
-            // تم الدمج والإبقاء على الخدمتين معاً هنا
             services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<IMapService, MapService>();
-
             return services;
         }
 
@@ -80,7 +75,7 @@ namespace BaridikExpress.Infrastructure
                .AddRoles<IdentityRole>()
                .AddEntityFrameworkStores<ApplicationDbContext>()
                .AddDefaultTokenProviders();
-               
+
             return services;
         }
     }
