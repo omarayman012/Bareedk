@@ -262,5 +262,17 @@
     "PricePerShipmentMustBeGreaterThanZero": "Price per shipment must be greater than zero",
     "InvalidImageFile": "Invalid image file",
     "InvalidImageFormat": "Invalid image format, only JPG and PNG are allowed",
-    "SomeServicesNotFound": "Some services were not found"
+    "SomeServicesNotFound": "Some services were not found",
+    "NameIsRequired": "Name is required",
+    "NameMaxLength": "Name must not exceed 200 characters",
+    "PhoneIsRequired": "Phone number is required",
+    "PhoneMaxLength": "Phone number must not exceed 20 characters",
+    "MessageIsRequired": "Message is required",
+    "MessageMaxLength": "Message must not exceed 2000 characters",
+    "MessageSentSuccessfully": "Your message has been sent successfully",
+    "ContactUsNotFound": "Message not found",
+    "MarkedAsReadSuccessfully": "Message marked as read successfully",
+    "SomeContactUsNotFound": "Some messages were not found",
+    "ContactUsDeletedSuccessfully": "Messages deleted successfully",
+    "ContactUsRetrievedSuccessfully": "Messages retrieved successfully"
 }

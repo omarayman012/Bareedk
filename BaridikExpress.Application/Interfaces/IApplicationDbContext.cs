@@ -1,7 +1,7 @@
-// IApplicationDbContext.cs
 using BaridikExpress.Domain.Entities.AuthModule;
 using BaridikExpress.Domain.Entities.CareerFields;
 using BaridikExpress.Domain.Entities.ClientModule;
+using BaridikExpress.Domain.Entities.ContactUs;
 using BaridikExpress.Domain.Entities.Customers;
 using BaridikExpress.Domain.Entities.DeliveryModule;
 using BaridikExpress.Domain.Entities.DeliveryType;
@@ -16,7 +16,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace BaridikExpress.Application.Interfaces;
-
 
 public interface IApplicationDbContext
 {
@@ -63,6 +62,7 @@ public interface IApplicationDbContext
     DbSet<CareerField> CareerFields { get; set; }
     DbSet<Vehicle> Vehicles { get; set; }
     DbSet<Service> Services { get; set; }
+    DbSet<ContactUs> ContactUs { get; set; }
 
     #endregion
 
@@ -80,8 +80,11 @@ public interface IApplicationDbContext
     DbSet<FAQ> FAQs { get; set; }
 
     #endregion
-     DbSet<Client> Clients { get; set; }
+
+    DbSet<Client> Clients { get; set; }
 
     DatabaseFacade Database { get; }
+    DbSet<TEntity> Set<TEntity>() where TEntity : class;
+    Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

@@ -15,7 +15,7 @@ namespace BaridikExpress.API.Controllers.RoleModules;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-[ApiExplorerSettings(GroupName = "role-management-v1")]
+[ApiExplorerSettings(GroupName = "admin-v1")]
 [Tags("Roles")]
 public class RolesController(IMediator mediator) : ControllerBase
 {
