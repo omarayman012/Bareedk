@@ -1,4 +1,4 @@
-﻿using BaridikExpress.Application.Interfaces;
+using BaridikExpress.Application.Interfaces;
 using BaridikExpress.Domain.Entities.AuthModule;
 using BaridikExpress.Domain.Entities.AuthModules;
 using BaridikExpress.Domain.Entities.Base;
@@ -99,6 +99,7 @@ public class ApplicationDbContext : IdentityDbContext<User>, IApplicationDbConte
     #endregion
 
     #region OnModelCreating
+
     public DbSet<Client> Clients { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
