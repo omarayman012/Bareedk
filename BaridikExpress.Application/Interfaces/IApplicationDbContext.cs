@@ -63,7 +63,7 @@ public interface IApplicationDbContext
     DbSet<CareerField> CareerFields { get; set; }
     DbSet<Vehicle> Vehicles { get; set; }
     DbSet<Service> Services { get; set; }
-    DbSet<ContactUs>ContactUs { get; set; }
+    DbSet<ContactUs> ContactUs { get; set; }
 
     #endregion
 
@@ -83,9 +83,10 @@ public interface IApplicationDbContext
     #endregion
      DbSet<Client> Clients { get; set; }
 
+    DbSet<Client> Clients { get; set; }
+
     DatabaseFacade Database { get; }
     DbSet<TEntity> Set<TEntity>() where TEntity : class;
-    Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<TEntity> Entry<TEntity>(TEntity entity)
-    where TEntity : class;
+    Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }
