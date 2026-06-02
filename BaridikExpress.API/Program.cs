@@ -68,6 +68,7 @@ builder.Services.AddSwaggerGen(options =>
         return apiDesc.GroupName == docName;
     });
 });
+
 builder.Services.Configure<MailSettings>(
     builder.Configuration.GetSection("MailSettings"));
 builder.Services.Configure<TwilioSettings>(
@@ -82,6 +83,23 @@ builder.Services.Configure<TwilioSettings>(
     builder.Configuration.GetSection("TwilioSettings"));
 builder.Services.AddScoped<ISmsService, SmsService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins(
+                "http://localhost:5173",
+                "http://localhost:5174",
+                "http://127.0.0.1:5173",
+                "http://127.0.0.1:5174",
+                "https://admin.baridikexpress.com"
+            )
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
 
 var app = builder.Build();
 
@@ -116,6 +134,8 @@ app.UseRequestLocalization(new RequestLocalizationOptions
 });
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
+
+app.UseCors("AllowFrontend");
 
 app.UseStaticFiles();
 
