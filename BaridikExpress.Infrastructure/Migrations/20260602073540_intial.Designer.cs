@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BaridikExpress.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260601115205_add-shipment")]
-    partial class addshipment
+    [Migration("20260602073540_intial")]
+    partial class intial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1382,7 +1382,7 @@ namespace BaridikExpress.Infrastructure.Migrations
 
                     b.HasIndex("UpdatedById");
 
-                    b.ToTable("ShipmentAttachment");
+                    b.ToTable("ShipmentAttachments");
                 });
 
             modelBuilder.Entity("BaridikExpress.Domain.Entities.Shipments.ShipmentService", b =>
