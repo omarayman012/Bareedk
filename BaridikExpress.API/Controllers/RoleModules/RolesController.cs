@@ -77,8 +77,8 @@ public class RolesController(IMediator mediator) : ControllerBase
         return StatusCode(result.StatusCode, result);
     }
 
-    // PUT: api/roles/{roleId}/permissions
-    [HttpPut("{roleId}/permissions")]
+    // PUT: api/roles/permissions/{roleId}
+    [HttpPut("permissions/{roleId}")]
     [HasPermission(Permissions.RolesUpdate)]
     public async Task<IActionResult> UpdateRolePermissions(
         string roleId,
