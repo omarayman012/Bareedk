@@ -29,6 +29,13 @@ public class CreateVillageCommandValidator
 
         RuleFor(x => x.CityId)
             .NotEmpty()
-            .WithMessage(localizer["CityIdRequired"]);
+            .WithMessage(localizer["CityIdRequired"])
+            .Must(BeValidGuid)
+            .WithMessage(localizer["CityIdMustBeValid"]);
+    }
+
+    private static bool BeValidGuid(Guid cityId)
+    {
+        return cityId != Guid.Empty;
     }
 }
