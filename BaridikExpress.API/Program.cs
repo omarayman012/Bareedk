@@ -49,25 +49,21 @@ builder.Services.AddSwaggerGen(options =>
         Title = "Auth API",
         Version = "v1"
     });
-
     options.SwaggerDoc("admin-v1", new Microsoft.OpenApi.Models.OpenApiInfo
     {
         Title = "Admin Dashboard API",
         Version = "v1"
     });
-
     options.SwaggerDoc("client-v1", new Microsoft.OpenApi.Models.OpenApiInfo
     {
         Title = "Client API",
         Version = "v1"
     });
-
     options.SwaggerDoc("delivery-v1", new Microsoft.OpenApi.Models.OpenApiInfo
     {
         Title = "Delivery API",
         Version = "v1"
     });
-
     options.DocInclusionPredicate((docName, apiDesc) =>
     {
         return apiDesc.GroupName == docName;
@@ -80,6 +76,7 @@ builder.Services.Configure<TwilioSettings>(
     builder.Configuration.GetSection("TwilioSettings"));
 builder.Services.AddScoped<ISmsService, SmsService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+
 
 builder.Services.Configure<MailSettings>(
     builder.Configuration.GetSection("MailSettings"));
@@ -171,7 +168,6 @@ app.MapGet("/", () => Results.Redirect("/swagger"));
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();
