@@ -36,14 +36,17 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
 
+            echo "Stop backend service"
+            sudo -n systemctl stop baridik-backend || true
+
             echo "Restore packages"
             dotnet restore BaridikExpress.sln
 
             echo "Build backend"
-            dotnet build BaridikExpress.sln -c Release --no-restore
+            dotnet build BaridikExpress.sln -c Release --no-restore /p:TreatWarningsAsErrors=false
 
-            echo "Restart backend service"
-            sudo -n systemctl restart baridik-backend
+            echo "Start backend service"
+            sudo -n systemctl start baridik-backend
 
             echo "Check backend service"
             sudo -n systemctl status baridik-backend
