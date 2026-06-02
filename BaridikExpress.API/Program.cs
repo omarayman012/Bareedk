@@ -1,4 +1,3 @@
-```csharp
 using Api;
 using BaridikExpress.API.Extensions;
 using BaridikExpress.API.Middlewares;
@@ -171,4 +170,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-```
