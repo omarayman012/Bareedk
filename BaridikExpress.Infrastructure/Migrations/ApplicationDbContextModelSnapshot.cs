@@ -1379,7 +1379,7 @@ namespace BaridikExpress.Infrastructure.Migrations
 
                     b.HasIndex("UpdatedById");
 
-                    b.ToTable("ShipmentAttachment");
+                    b.ToTable("ShipmentAttachments");
                 });
 
             modelBuilder.Entity("BaridikExpress.Domain.Entities.Shipments.ShipmentService", b =>
