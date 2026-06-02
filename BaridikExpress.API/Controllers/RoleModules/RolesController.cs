@@ -41,8 +41,8 @@ public class RolesController(IMediator mediator) : ControllerBase
         return StatusCode(result.StatusCode, result);
     }
 
-    // GET: api/roles/{roleId}/permissions
-    [HttpGet("{roleId}/permissions")]
+    // GET: api/roles/permissions/{roleId}
+    [HttpGet("permissions/{roleId}")]
     [HasPermission(Permissions.RolesRead)]
     public async Task<IActionResult> GetPermissionsByRole(
         string roleId)
