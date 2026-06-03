@@ -54,7 +54,7 @@ public sealed class CreateServiceCommandHandler(
             service.Id,
             new LocalizedDto { EN = service.NameEn, AR = service.NameAr },
             service.Price,
-            service.Currency,
+            service.Currency.ToString(),
             service.ImageUrl,
             service.IsActive,
             service.CreatedBy?.FullName,

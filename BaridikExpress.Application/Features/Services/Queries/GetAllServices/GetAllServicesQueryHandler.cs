@@ -44,7 +44,7 @@ public sealed class GetAllServicesQueryHandler(
                 x.Id,
                 new LocalizedDto { EN = x.NameEn, AR = x.NameAr },
                 x.Price,
-                x.Currency,
+                x.Currency.ToString(),
                 x.ImageUrl,
                 x.IsActive,
                 x.CreatedBy != null ? x.CreatedBy.FullName : null,
