@@ -1,4 +1,5 @@
-﻿using BaridikExpress.Application.Features.SystemManagement.DTOs;
+﻿using BaridikExpress.Application.DTOs;
+using BaridikExpress.Application.Features.SystemManagement.DTOs;
 using BaridikExpress.Domain.Entities.SystemManagment;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,7 +12,6 @@ public sealed class GetSystemManagementQueryHandler<T>(
     where T : BaseSystemManagementEntity, new()
 {
     #region Handle
-
     public async Task<Result<SystemManagementResponse>> Handle(
         GetSystemManagementQuery<T> request,
         CancellationToken cancellationToken)
@@ -19,32 +19,30 @@ public sealed class GetSystemManagementQueryHandler<T>(
         var entityName = typeof(T).Name;
 
         #region Fetch Entity
-
         var entity = await db.Set<T>()
             .AsNoTracking()
-            .Include(x => x.UpdatedBy)  
+            .Include(x => x.UpdatedBy)
             .FirstOrDefaultAsync(cancellationToken);
 
         if (entity is null)
             return Result<SystemManagementResponse>
                 .Failure(localizer[$"{entityName}NotFound"], 404);
-
         #endregion
 
         #region Map Response
-
         var response = new SystemManagementResponse(
             entity.Id,
-            entity.DescriptionAr,
-            entity.DescriptionEn,
+            new LocalizeLang
+            {
+                AR = entity.DescriptionAr ?? string.Empty,
+                EN = entity.DescriptionEn ?? string.Empty
+            },
             entity.UpdatedBy?.FullName,
             entity.UpdatedAt);
-
         #endregion
 
         return Result<SystemManagementResponse>
             .Success(response, localizer[$"{entityName}RetrievedSuccessfully"]);
     }
-
     #endregion
 }
