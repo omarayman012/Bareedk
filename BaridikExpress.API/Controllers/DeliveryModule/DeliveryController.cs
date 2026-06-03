@@ -1,5 +1,5 @@
-﻿using BaridikExpress.Application.Features.AuthClientModule.Command;
-using BaridikExpress.Application.Features.AuthDeliveryModule.Command;
+﻿using BaridikExpress.Application.Features.AuthDeliveryModule.Command;
+using BaridikExpress.Application.Features.DeliveryModule.Command;
 using BaridikExpress.Application.Features.DeliveryModule.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,28 +18,8 @@ namespace BaridikExpress.API.Controllers.AuthDeliveryModule
             _mediator = mediator;
         }
 
-    
 
-
-        [Authorize("SuperAdmin")]
-        [HttpPatch("ApproveDelivery/{id}")]
-        public async Task<IActionResult> ApproveDelivery(Guid id)
-        {
-            var command = new ApproveDeliveryCommand
-            {
-                DeliveryId = id
-            };
-
-            var result = await _mediator.Send(command);
-
-            if (!result.IsSuccess)
-                return StatusCode(result.StatusCode, result);
-
-            return StatusCode(result.StatusCode, result);
-        }
-
-
-        [Authorize("SuperAdmin")]
+        [Authorize(Roles = "SuperAdmin")]
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetAll(
              [FromQuery] string? search = null,
@@ -77,9 +57,9 @@ namespace BaridikExpress.API.Controllers.AuthDeliveryModule
             return Ok(result);
         }
 
-        [Authorize("SuperAdmin")]
+        [Authorize(Roles = "SuperAdmin")]
         [HttpGet("GetById/{id}")]
-        public async Task<IActionResult> GetById(Guid id)
+        public async Task<IActionResult> GetById(string id)
         {
             var result = await _mediator.Send(
                 new GetDeliveryByIdQuery
@@ -93,6 +73,62 @@ namespace BaridikExpress.API.Controllers.AuthDeliveryModule
             return Ok(result);
         }
 
-  
+        [Authorize(Roles = "SuperAdmin")]
+        [HttpPut("Update")]
+        public async Task<IActionResult> Update(
+             [FromForm] UpdateDeliveryCommand command)
+        {
+            var result = await _mediator.Send(command);
+
+            if (!result.IsSuccess)
+                return StatusCode(result.StatusCode, result);
+
+            return Ok(result);
+        }
+
+        [Authorize]
+        [HttpDelete("Delete")]
+        public async Task<IActionResult> Delete(
+         [FromBody] DeleteDeliveryCommand command)
+        {
+            var result = await _mediator.Send(command);
+
+            if (!result.IsSuccess)
+                return StatusCode(result.StatusCode, result);
+
+            return Ok(result);
+        }
+
+        [Authorize(Roles = "SuperAdmin")]
+        [HttpPost("CreateByAdmin")]
+        public async Task<IActionResult> CreateByAdmin(
+           [FromForm] CreateDeliveryByAdminCommand command)
+        {
+            var result = await _mediator.Send(command);
+
+            if (!result.IsSuccess)
+                return StatusCode(result.StatusCode, result);
+
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [Authorize(Roles = "SuperAdmin")]
+        [HttpPatch("ApproveDelivery/{id}")]
+        public async Task<IActionResult> ApproveDelivery(string id)
+        {
+
+            var command = new ApproveDeliveryCommand
+            {
+                DeliveryId = id
+            };
+
+            var result = await _mediator.Send(command);
+
+            if (!result.IsSuccess)
+                return StatusCode(result.StatusCode, result);
+
+            return StatusCode(result.StatusCode, result);
+        }
+
     }
 }

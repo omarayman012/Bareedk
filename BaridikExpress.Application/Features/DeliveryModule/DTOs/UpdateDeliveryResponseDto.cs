@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BaridikExpress.Application.DTOs.DeliveryModule
+namespace BaridikExpress.Application.Features.DeliveryModule.DTOs
 {
-    public class GetAllDeliveriesDto
+    public class UpdateDeliveryResponseDto
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         public string FullName { get; set; }
 
@@ -18,19 +18,6 @@ namespace BaridikExpress.Application.DTOs.DeliveryModule
 
         public DateTime DateOfBirth { get; set; }
 
-        // VEHICLE
-        public string PlateNo { get; set; }
-
-        public string VehType { get; set; }
-
-        // APPROVAL
-        public bool IsApproved { get; set; }
-
-        public DateTime? ApprovedAt { get; set; }
-
-        public string CreateType { get; set; }
-
-        // ADDRESS
         public string? Country { get; set; }
 
         public string? Gov { get; set; }
@@ -45,11 +32,9 @@ namespace BaridikExpress.Application.DTOs.DeliveryModule
 
         public string? Apt { get; set; }
 
-        // OPTIONAL
-        public string? Edu { get; set; }
+        public string PlateNo { get; set; }
 
-        // FILES
-        public string ProfileImg { get; set; }
+        public string VehType { get; set; }
 
         public string NidImg { get; set; }
 
@@ -61,9 +46,10 @@ namespace BaridikExpress.Application.DTOs.DeliveryModule
 
         public string PlateImg { get; set; }
 
-        // TERMS
-        public bool TermsAccepted { get; set; }
+        public bool IsApproved { get; set; }
 
-        public bool PrivacyAccepted { get; set; }
+        public DateTime? ApprovedAt { get; set; }
+
+        public string CreateType { get; set; }
     }
 }
