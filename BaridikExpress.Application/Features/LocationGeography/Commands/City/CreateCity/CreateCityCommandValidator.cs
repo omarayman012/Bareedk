@@ -28,6 +28,8 @@ public class CreateCityCommandValidator
 
         RuleFor(x => x.GovernmentId)
             .NotEmpty()
-            .WithMessage(localizer["GovernmentIdRequired"]);
+            .WithMessage(localizer["GovernmentIdRequired"])
+            .NotEqual(Guid.Empty)
+            .WithMessage(localizer["GovernmentIdMustBeValid"]);
     }
 }

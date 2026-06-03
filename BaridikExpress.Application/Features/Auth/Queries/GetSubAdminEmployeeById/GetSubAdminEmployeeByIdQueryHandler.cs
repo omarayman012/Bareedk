@@ -20,6 +20,8 @@ public class GetSubAdminEmployeeByIdQueryHandler(
         var subAdmin = await _context.SubAdminEmployees
             .Include(x => x.User)
             .Include(x => x.Role)
+            .Include(x => x.CreatedBy) 
+            .Include(x => x.UpdatedBy)  
             .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
         if (subAdmin is null)

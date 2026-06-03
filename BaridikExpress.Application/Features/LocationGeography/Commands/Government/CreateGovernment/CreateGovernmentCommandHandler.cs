@@ -47,6 +47,7 @@ public class CreateGovernmentCommandHandler(
             .AddAsync(government, cancellationToken);
 
         await _application.SaveChangesAsync(cancellationToken);
+
         var response = await _application.Governments
             .AsNoTracking()
             .Include(x => x.Country)
@@ -70,13 +71,13 @@ public class CreateGovernmentCommandHandler(
 
                 CreatedBy = x.CreatedBy != null
                     ? x.CreatedBy.FullName
-                    : "",
+                    : string.Empty, 
 
                 CreatedAt = x.CreatedAt,
 
                 UpdatedBy = x.UpdatedBy != null
                     ? x.UpdatedBy.FullName
-                    : x.UpdatedById,
+                    : string.Empty,  
 
                 UpdatedAt = x.UpdatedAt,
 

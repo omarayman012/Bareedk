@@ -9,6 +9,7 @@ using BaridikExpress.Domain.Entities.Location;
 using BaridikExpress.Domain.Entities.Nationality;
 using BaridikExpress.Domain.Entities.RoleModule;
 using BaridikExpress.Domain.Entities.Services;
+using BaridikExpress.Domain.Entities.Shipments;
 using BaridikExpress.Domain.Entities.SystemManagment;
 using BaridikExpress.Domain.Entities.Vehicles;
 using Microsoft.AspNetCore.Identity;
@@ -16,7 +17,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace BaridikExpress.Application.Interfaces;
-
 
 public interface IApplicationDbContext
 {
@@ -58,6 +58,16 @@ public interface IApplicationDbContext
 
     #endregion
 
+    #region Shipments
+
+    DbSet<Shipment> Shipments { get; set; }
+    DbSet<ShipmentAddress> ShipmentAddresses { get; set; }
+    DbSet<ShipmentAttachment> ShipmentAttachments { get; set; }
+    DbSet<ShipmentService> ShipmentServices { get; set; }
+    DbSet<ShipmentStatusHistory> ShipmentStatusHistories { get; set; }
+
+    #endregion
+
     #region Core Business
 
     DbSet<CareerField> CareerFields { get; set; }
@@ -81,8 +91,8 @@ public interface IApplicationDbContext
     DbSet<FAQ> FAQs { get; set; }
 
     #endregion
-     DbSet<Client> Clients { get; set; }
 
+    DbSet<Client> Clients { get; set; }
 
     DatabaseFacade Database { get; }
     DbSet<TEntity> Set<TEntity>() where TEntity : class;

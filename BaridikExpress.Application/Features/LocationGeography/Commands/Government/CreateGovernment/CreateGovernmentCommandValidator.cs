@@ -22,6 +22,13 @@ public class CreateGovernmentCommandValidator
 
         RuleFor(x => x.CountryId)
             .NotEmpty()
-            .WithMessage(localizer["CountryIdRequired"]);
+            .WithMessage(localizer["CountryIdRequired"])
+            .Must(BeValidGuid)
+            .WithMessage(localizer["CountryIdMustBeValid"]);
+    }
+
+    private static bool BeValidGuid(Guid countryId)
+    {
+        return countryId != Guid.Empty;
     }
 }
