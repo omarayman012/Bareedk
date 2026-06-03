@@ -14,13 +14,13 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
     {
         private readonly IApplicationDbContext _context;
         private readonly IFileStorageService _fileStorage;
-        private readonly IStringLocalizer<UpdateDeliveryHandler> _localizer;
+        private readonly IStringLocalizer _localizer;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public UpdateDeliveryHandler(
             IApplicationDbContext context,
             IFileStorageService fileStorage,
-            IStringLocalizer<UpdateDeliveryHandler> localizer,
+            IStringLocalizer localizer,
             IHttpContextAccessor httpContextAccessor)
         {
             _context = context;

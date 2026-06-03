@@ -1,25 +1,25 @@
 ﻿using BaridikExpress.Application.Features.Auth.Command;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace BaridikExpress.Application.Features.Auth.AuthHandler
 {
     public class ResendEmailOtpHandler
-     : IRequestHandler<ResendEmailOtpCommand, Result<string>>
+        : IRequestHandler<ResendEmailOtpCommand, Result<string>>
     {
         private readonly UserManager<User> _userManager;
         private readonly IEmailService _emailService;
+        private readonly IStringLocalizer _localizer;
 
         public ResendEmailOtpHandler(
             UserManager<User> userManager,
-            IEmailService emailService)
+            IEmailService emailService,
+            IStringLocalizer localizer)
         {
             _userManager = userManager;
             _emailService = emailService;
+            _localizer = localizer;
         }
 
         public async Task<Result<string>> Handle(
@@ -29,19 +29,29 @@ namespace BaridikExpress.Application.Features.Auth.AuthHandler
             var email = request.Email.Trim().ToUpper();
 
             var user = await _userManager.Users
-                .FirstOrDefaultAsync(x => x.NormalizedEmail == email, cancellationToken);
+                .FirstOrDefaultAsync(
+                    x => x.NormalizedEmail == email,
+                    cancellationToken);
 
             if (user == null)
-                return Result<string>.Failure("User not found", 404);
+            {
+                return Result<string>.Failure(
+                    _localizer["UserNotFound"],
+                    404);
+            }
 
             if (user.EmailConfirmed)
-                return Result<string>.Failure("Email already confirmed", 400);
+            {
+                return Result<string>.Failure(
+                    _localizer["EmailAlreadyConfirmed"],
+                    400);
+            }
 
             if (user.EmailOtpLastSentAt.HasValue &&
                 user.EmailOtpLastSentAt.Value.AddMinutes(2) > DateTime.UtcNow)
             {
                 return Result<string>.Failure(
-                    "Please wait 2 minutes before requesting another OTP",
+                    _localizer["OtpResendTooSoon"],
                     400);
             }
 
@@ -55,8 +65,10 @@ namespace BaridikExpress.Application.Features.Auth.AuthHandler
 
             await _emailService.SendConfirmationEmail(user, otp);
 
-            return Result<string>.Success("OTP resent successfully", "Success", 200);
+            return Result<string>.Success(
+                _localizer["OtpResentSuccessfully"],
+                _localizer["Success"],
+                200);
         }
     }
-
 }

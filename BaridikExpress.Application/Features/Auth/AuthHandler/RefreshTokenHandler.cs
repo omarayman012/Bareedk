@@ -2,37 +2,47 @@
 using BaridikExpress.Application.Features.Auth.Command;
 using BaridikExpress.Application.Interfaces.Auth;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace BaridikExpress.Application.Features.Auth.AuthHandler
 {
     public class RefreshTokenHandler
-     : IRequestHandler<RefreshTokenCommand, Result<LoginResponseDto>>
+        : IRequestHandler<RefreshTokenCommand, Result<LoginResponseDto>>
     {
         private readonly UserManager<User> _userManager;
         private readonly IJwtService _jwtService;
+        private readonly IStringLocalizer _localizer;
 
-        public RefreshTokenHandler(UserManager<User> userManager, IJwtService jwtService)
+        public RefreshTokenHandler(
+            UserManager<User> userManager,
+            IJwtService jwtService,
+            IStringLocalizer localizer)
         {
             _userManager = userManager;
             _jwtService = jwtService;
+            _localizer = localizer;
         }
 
-        public async Task<Result<LoginResponseDto>> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
+        public async Task<Result<LoginResponseDto>> Handle(
+            RefreshTokenCommand request,
+            CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByIdAsync(request.UserId);
 
             if (user == null)
-                return Result<LoginResponseDto>.Failure("User not found", 404);
+            {
+                return Result<LoginResponseDto>.Failure(
+                    _localizer["UserNotFound"],
+                    404);
+            }
 
             if (user.RefreshToken != request.RefreshToken ||
                 user.RefreshTokenExpireAt < DateTime.UtcNow)
             {
-                return Result<LoginResponseDto>.Failure("Invalid refresh token", 401);
+                return Result<LoginResponseDto>.Failure(
+                    _localizer["InvalidRefreshToken"],
+                    401);
             }
 
             var roles = await _userManager.GetRolesAsync(user);
@@ -46,16 +56,17 @@ namespace BaridikExpress.Application.Features.Auth.AuthHandler
 
             await _userManager.UpdateAsync(user);
 
-            return Result<LoginResponseDto>.Success(new LoginResponseDto
-            {
-                UserId = user.Id,
-                FullName = user.FullName,
-                Role = role,
-                Token = newToken,
-                RefreshToken = newRefreshToken
-            }, "Token refreshed", 200);
+            return Result<LoginResponseDto>.Success(
+                new LoginResponseDto
+                {
+                    UserId = user.Id,
+                    FullName = user.FullName,
+                    Role = role,
+                    Token = newToken,
+                    RefreshToken = newRefreshToken
+                },
+                _localizer["TokenRefreshedSuccessfully"],
+                200);
         }
-
-
     }
 }

@@ -6,10 +6,6 @@ using BaridikExpress.Domain.Enum;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
-using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace BaridikExpress.Application.Features.DeliveryModule.Handler
 {
@@ -51,10 +47,7 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
             }
 
             // ================= CHECK EMAIL =================
-            var emailExists = await _userManager.Users
-                .AnyAsync(x => x.Email == request.Email, cancellationToken);
-
-            if (emailExists)
+            if (await _userManager.Users.AnyAsync(x => x.Email == request.Email, cancellationToken))
             {
                 return Result<RegisterDeliveryResponseDto>.Failure(
                     _localizer["EmailAlreadyExists"],
@@ -62,10 +55,7 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
             }
 
             // ================= CHECK PHONE =================
-            var phoneExists = await _userManager.Users
-                .AnyAsync(x => x.PhoneNumber == request.Phone, cancellationToken);
-
-            if (phoneExists)
+            if (await _userManager.Users.AnyAsync(x => x.PhoneNumber == request.Phone, cancellationToken))
             {
                 return Result<RegisterDeliveryResponseDto>.Failure(
                     _localizer["PhoneAlreadyExists"],
@@ -82,83 +72,32 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
                 EmailConfirmed = true
             };
 
-            var createUserResult = await _userManager.CreateAsync(
-                userEntity,
-                request.Password);
+            var createUserResult = await _userManager.CreateAsync(userEntity, request.Password);
 
             if (!createUserResult.Succeeded)
             {
-                var errors = string.Join(" , ",
+                var errors = string.Join(", ",
                     createUserResult.Errors.Select(x => x.Description));
 
-                return Result<RegisterDeliveryResponseDto>.Failure(
-                    errors,
-                    400);
+                return Result<RegisterDeliveryResponseDto>.Failure(errors, 400);
             }
 
-            // ================= SAVE FILES =================
-            string? profileImg = null;
-            string? nidImg = null;
-            string? licImg = null;
-            string? vehImg = null;
-            string? policeImg = null;
-            string? plateImg = null;
-
-            if (request.ProfileImg != null)
+            // ================= FILE UPLOADS =================
+            async Task<string?> Save(IFormFile? file, string folder)
             {
-                profileImg = await _fileStorage.SaveFileAsync(
-                    request.ProfileImg.OpenReadStream(),
-                    request.ProfileImg.FileName,
-                    "deliveries/profile");
+                if (file == null) return null;
+
+                return await _fileStorage.SaveFileAsync(
+                    file.OpenReadStream(),
+                    file.FileName,
+                    folder);
             }
 
-            if (request.NidImg != null)
-            {
-                nidImg = await _fileStorage.SaveFileAsync(
-                    request.NidImg.OpenReadStream(),
-                    request.NidImg.FileName,
-                    "deliveries/nid");
-            }
-
-            if (request.LicImg != null)
-            {
-                licImg = await _fileStorage.SaveFileAsync(
-                    request.LicImg.OpenReadStream(),
-                    request.LicImg.FileName,
-                    "deliveries/license");
-            }
-
-            if (request.VehImg != null)
-            {
-                vehImg = await _fileStorage.SaveFileAsync(
-                    request.VehImg.OpenReadStream(),
-                    request.VehImg.FileName,
-                    "deliveries/vehicle");
-            }
-
-            if (request.PoliceCertImg != null)
-            {
-                policeImg = await _fileStorage.SaveFileAsync(
-                    request.PoliceCertImg.OpenReadStream(),
-                    request.PoliceCertImg.FileName,
-                    "deliveries/police");
-            }
-
-            if (request.PlateImg != null)
-            {
-                plateImg = await _fileStorage.SaveFileAsync(
-                    request.PlateImg.OpenReadStream(),
-                    request.PlateImg.FileName,
-                    "deliveries/plate");
-            }
-
-            // ================= CREATE DELIVERY =================
             var delivery = new Delivery
             {
                 UserId = userEntity.Id,
 
                 DateOfBirth = request.DateOfBirth,
-
                 PlateNo = request.PlateNo,
                 VehType = request.VehType,
 
@@ -172,12 +111,12 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
 
                 Edu = request.Edu,
 
-                ProfileImg = profileImg,
-                NidImg = nidImg,
-                LicImg = licImg,
-                VehImg = vehImg,
-                PoliceCertImg = policeImg,
-                PlateImg = plateImg,
+                ProfileImg = await Save(request.ProfileImg, "deliveries/profile"),
+                NidImg = await Save(request.NidImg, "deliveries/nid"),
+                LicImg = await Save(request.LicImg, "deliveries/license"),
+                VehImg = await Save(request.VehImg, "deliveries/vehicle"),
+                PoliceCertImg = await Save(request.PoliceCertImg, "deliveries/police"),
+                PlateImg = await Save(request.PlateImg, "deliveries/plate"),
 
                 TermsAccepted = true,
                 PrivacyAccepted = true,
@@ -200,7 +139,6 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
                 Phone = userEntity.PhoneNumber!,
 
                 DateOfBirth = delivery.DateOfBirth,
-
                 PlateNo = delivery.PlateNo,
                 VehType = delivery.VehType.ToString(),
 

@@ -1,21 +1,22 @@
 ﻿using BaridikExpress.Application.Features.Auth.Command;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace BaridikExpress.Application.Features.Auth.AuthHandler
 {
     public class ConfirmResetPasswordEmailHandler
-    : IRequestHandler<ConfirmResetPasswordEmailCommand, Result<string>>
+        : IRequestHandler<ConfirmResetPasswordEmailCommand, Result<string>>
     {
         private readonly UserManager<User> _userManager;
+        private readonly IStringLocalizer _localizer;
 
-        public ConfirmResetPasswordEmailHandler(UserManager<User> userManager)
+        public ConfirmResetPasswordEmailHandler(
+            UserManager<User> userManager,
+            IStringLocalizer localizer)
         {
             _userManager = userManager;
+            _localizer = localizer;
         }
 
         public async Task<Result<string>> Handle(
@@ -25,18 +26,35 @@ namespace BaridikExpress.Application.Features.Auth.AuthHandler
             var email = request.Email.Trim().ToUpper();
 
             var user = await _userManager.Users
-                .FirstOrDefaultAsync(x => x.NormalizedEmail == email, cancellationToken);
+                .FirstOrDefaultAsync(
+                    x => x.NormalizedEmail == email,
+                    cancellationToken);
 
             if (user == null)
-                return Result<string>.Failure("User not found", 404);
+            {
+                return Result<string>.Failure(
+                    _localizer["UserNotFound"],
+                    404);
+            }
 
             if (user.ResetPasswordOtp != request.Otp)
-                return Result<string>.Failure("Invalid OTP", 400);
+            {
+                return Result<string>.Failure(
+                    _localizer["InvalidOtp"],
+                    400);
+            }
 
             if (user.ResetPasswordOtpExpireAt < DateTime.UtcNow)
-                return Result<string>.Failure("OTP expired", 400);
+            {
+                return Result<string>.Failure(
+                    _localizer["OtpExpired"],
+                    400);
+            }
 
-            return Result<string>.Success("OTP confirmed", "Success", 200);
+            return Result<string>.Success(
+                _localizer["OtpConfirmedSuccessfully"],
+                _localizer["Success"],
+                200);
         }
     }
 }

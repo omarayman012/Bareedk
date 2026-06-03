@@ -2353,3 +2353,24 @@
    at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
    at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
    at BaridikExpress.API.Middlewares.ExceptionHandlingMiddleware.Invoke(HttpContext context) in C:\Users\omar\Desktop\Dr Code\baridik-express-project-back-end\BaridikExpress.API\Middlewares\ExceptionHandlingMiddleware.cs:line 19
+2026-06-03 14:10:06 | ValidationException | Validation failed: 
+ -- Email: البريد الإلكتروني غير صحيح. Severity: Error
+ -- Phone: رقم الهاتف غير صحيح. Severity: Error
+ -- Password: كلمة المرور يجب أن تحتوي على حرف كبير وصغير ورقم ورمز. Severity: Error
+ -- CareerFieldId: مجال العمل غير موجود. Severity: Error
+ -- CompanyLink: رابط الشركة غير صحيح Severity: Error |    at BaridikExpress.Application.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in C:\Users\omar\Desktop\Dr Code\baridik-express-project-back-end\BaridikExpress.Application\Behaviors\ValidationBehavior.cs:line 37
+   at BaridikExpress.API.Controllers.AuthModules.AuthController.Register(RegisterClientCommand command) in C:\Users\omar\Desktop\Dr Code\baridik-express-project-back-end\BaridikExpress.API\Controllers\AuthModules\AuthController.cs:line 21
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at BaridikExpress.API.Middlewares.ExceptionHandlingMiddleware.Invoke(HttpContext context) in C:\Users\omar\Desktop\Dr Code\baridik-express-project-back-end\BaridikExpress.API\Middlewares\ExceptionHandlingMiddleware.cs:line 19

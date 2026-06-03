@@ -2,9 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace BaridikExpress.Application.Features.DeliveryModule.Handler
 {
@@ -13,13 +10,13 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
     {
         private readonly IApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
-        private readonly IStringLocalizer<DeleteDeliveryHandler> _localizer;
+        private readonly IStringLocalizer _localizer;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public DeleteDeliveryHandler(
             IApplicationDbContext context,
             UserManager<User> userManager,
-            IStringLocalizer<DeleteDeliveryHandler> localizer,
+            IStringLocalizer localizer,
             IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
@@ -33,16 +30,16 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
             CancellationToken cancellationToken)
         {
             // ================= AUTH CHECK =================
-            var user = _httpContextAccessor.HttpContext?.User;
+            var currentUser = _httpContextAccessor.HttpContext?.User;
 
-            if (user == null || !user.Identity?.IsAuthenticated == true)
+            if (currentUser == null || !currentUser.Identity?.IsAuthenticated == true)
             {
                 return Result<string>.Failure(
                     _localizer["Unauthorized"],
                     401);
             }
 
-            // ================= PASSWORD CHECK =================
+            // ================= PASSWORD CONFIRM =================
             if (request.Password != request.ConfirmPassword)
             {
                 return Result<string>.Failure(
@@ -75,11 +72,10 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
                     400);
             }
 
-            // ================= DELETE DELIVERY =================
+            // ================= DELETE =================
             _context.Deliveries.Remove(delivery);
 
-            var deleteUserResult =
-                await _userManager.DeleteAsync(delivery.User);
+            var deleteUserResult = await _userManager.DeleteAsync(delivery.User);
 
             if (!deleteUserResult.Succeeded)
             {
@@ -91,8 +87,8 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
             await _context.SaveChangesAsync(cancellationToken);
 
             return Result<string>.Success(
-                "Deleted Successfully",
                 _localizer["DeliveryDeletedSuccessfully"],
+                _localizer["Success"],
                 200);
         }
     }

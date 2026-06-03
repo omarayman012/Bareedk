@@ -1,10 +1,7 @@
 ﻿using BaridikExpress.Application.Features.Auth.Command;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace BaridikExpress.Application.Features.Auth.AuthHandler
 {
@@ -12,10 +9,13 @@ namespace BaridikExpress.Application.Features.Auth.AuthHandler
         : IRequestHandler<ResetPasswordEmailCommand, Result<string>>
     {
         private readonly UserManager<User> _userManager;
+        private readonly IStringLocalizer _localizer;
 
-        public ResetPasswordEmailHandler(UserManager<User> userManager)
+        public ResetPasswordEmailHandler(UserManager<User> userManager,
+            IStringLocalizer localizer)
         {
             _userManager = userManager;
+            _localizer = localizer;
         }
 
         public async Task<Result<string>> Handle(
@@ -25,29 +25,43 @@ namespace BaridikExpress.Application.Features.Auth.AuthHandler
             var email = request.Email.Trim().ToUpper();
 
             var user = await _userManager.Users
-                .FirstOrDefaultAsync(x => x.NormalizedEmail == email, cancellationToken);
+                .FirstOrDefaultAsync(
+                    x => x.NormalizedEmail == email,
+                    cancellationToken);
 
             if (user == null)
-                return Result<string>.Failure("User not found", 404);
+            {
+                return Result<string>.Failure(
+                    _localizer["UserNotFound"],
+                    404);
+            }
 
-            // 🔥 لازم يكون OTP موجود (confirmed step)
             if (user.ResetPasswordOtp == null)
-                return Result<string>.Failure("OTP not verified", 400);
+            {
+                return Result<string>.Failure(
+                    _localizer["OtpNotVerified"],
+                    400);
+            }
 
-            // check password match
             if (request.NewPassword != request.ConfirmPassword)
-                return Result<string>.Failure("Passwords do not match", 400);
+            {
+                return Result<string>.Failure(
+                    _localizer["PasswordsDoNotMatch"],
+                    400);
+            }
 
-            // check expiry
             if (user.ResetPasswordOtpExpireAt < DateTime.UtcNow)
-                return Result<string>.Failure("OTP expired", 400);
+            {
+                return Result<string>.Failure(
+                    _localizer["OtpExpired"],
+                    400);
+            }
 
-            // 🔥 تغيير الباسورد
+            // 🔥 Change password safely
             var hasher = new PasswordHasher<User>();
-
             user.PasswordHash = hasher.HashPassword(user, request.NewPassword);
 
-            // 🔥 تنظيف البيانات بعد الاستخدام
+            // 🔥 clear OTP data
             user.ResetPasswordOtp = null;
             user.ResetPasswordOtpExpireAt = null;
             user.ResetPasswordOtpLastSentAt = null;
@@ -55,8 +69,8 @@ namespace BaridikExpress.Application.Features.Auth.AuthHandler
             await _userManager.UpdateAsync(user);
 
             return Result<string>.Success(
-                "Password reset successfully",
-                "Success",
+                _localizer["PasswordResetSuccessfully"],
+                _localizer["Success"],
                 200);
         }
     }

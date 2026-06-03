@@ -1,9 +1,6 @@
 ﻿using BaridikExpress.Application.Features.AuthDeliveryModule.Command;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace BaridikExpress.Application.Features.DeliveryModule.Handler
 {
@@ -11,12 +8,12 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
        : IRequestHandler<ApproveDeliveryCommand, Result<string>>
     {
         private readonly IApplicationDbContext _context;
-        private readonly IStringLocalizer<ApproveDeliveryHandler> _localizer;
+        private readonly IStringLocalizer _localizer;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public ApproveDeliveryHandler(
             IApplicationDbContext context,
-            IStringLocalizer<ApproveDeliveryHandler> localizer,
+            IStringLocalizer localizer,
             IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
@@ -40,7 +37,9 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
 
             // ================= GET DELIVERY =================
             var delivery = await _context.Deliveries
-                .FirstOrDefaultAsync(x => x.UserId == request.DeliveryId, cancellationToken);
+                .FirstOrDefaultAsync(
+                    x => x.UserId == request.DeliveryId,
+                    cancellationToken);
 
             if (delivery == null)
             {
@@ -66,8 +65,8 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
             await _context.SaveChangesAsync(cancellationToken);
 
             return Result<string>.Success(
-                "Approved Successfully",
                 _localizer["DeliveryApprovedSuccessfully"],
+                _localizer["Success"],
                 200);
         }
     }

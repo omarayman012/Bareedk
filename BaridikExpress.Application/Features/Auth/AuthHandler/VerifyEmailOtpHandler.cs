@@ -1,6 +1,7 @@
 ﻿using BaridikExpress.Application.Features.Auth.Command;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace BaridikExpress.Application.Features.Auth.AuthHandler
 {
@@ -8,10 +9,14 @@ namespace BaridikExpress.Application.Features.Auth.AuthHandler
         : IRequestHandler<VerifyEmailOtpCommand, Result<string>>
     {
         private readonly UserManager<User> _userManager;
+        private readonly IStringLocalizer _localizer;
 
-        public VerifyEmailOtpHandler(UserManager<User> userManager)
+        public VerifyEmailOtpHandler(
+            UserManager<User> userManager,
+            IStringLocalizer localizer)
         {
             _userManager = userManager;
+            _localizer = localizer;
         }
 
         public async Task<Result<string>> Handle(
@@ -28,28 +33,28 @@ namespace BaridikExpress.Application.Features.Auth.AuthHandler
             if (user == null)
             {
                 return Result<string>.Failure(
-                    "User not found",
+                    _localizer["UserNotFound"],
                     404);
             }
 
             if (string.IsNullOrWhiteSpace(user.EmailOtp))
             {
                 return Result<string>.Failure(
-                    "OTP not found",
+                    _localizer["OtpNotFound"],
                     400);
             }
 
             if (string.IsNullOrWhiteSpace(request.OTP))
             {
                 return Result<string>.Failure(
-                    "OTP is required",
+                    _localizer["OtpRequired"],
                     400);
             }
 
             if (!string.Equals(user.EmailOtp, request.OTP))
             {
                 return Result<string>.Failure(
-                    "Invalid OTP",
+                    _localizer["InvalidOtp"],
                     400);
             }
 
@@ -57,7 +62,7 @@ namespace BaridikExpress.Application.Features.Auth.AuthHandler
                 user.EmailOtpExpireAt.Value < DateTime.UtcNow)
             {
                 return Result<string>.Failure(
-                    "OTP expired",
+                    _localizer["OtpExpired"],
                     400);
             }
 
@@ -72,13 +77,13 @@ namespace BaridikExpress.Application.Features.Auth.AuthHandler
             if (!result.Succeeded)
             {
                 return Result<string>.Failure(
-                    "Failed to verify email",
+                    _localizer["EmailVerificationFailed"],
                     500);
             }
 
             return Result<string>.Success(
-                "Email verified successfully",
-                "Success",
+                _localizer["EmailVerifiedSuccessfully"],
+                _localizer["Success"],
                 200);
         }
     }

@@ -3,9 +3,6 @@ using BaridikExpress.Application.Features.ClientModule.Queries;
 using BaridikExpress.Application.Features.CommanDTO.Localizes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace BaridikExpress.Application.Features.ClientModule.Handler
 {
@@ -44,7 +41,9 @@ namespace BaridikExpress.Application.Features.ClientModule.Handler
             var client = await _context.Clients
                 .Include(c => c.User)
                 .Include(c => c.CareerField)
-                .FirstOrDefaultAsync(c => c.UserId == request.Id, cancellationToken);
+                .FirstOrDefaultAsync(
+                    c => c.UserId == request.Id,
+                    cancellationToken);
 
             if (client == null)
             {

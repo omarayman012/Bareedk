@@ -1,21 +1,22 @@
 ﻿using BaridikExpress.Application.Features.Auth.Command;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace BaridikExpress.Application.Features.Auth.AuthHandler
 {
     public class ConfirmResetPasswordPhoneHandler
-      : IRequestHandler<ConfirmResetPasswordPhoneCommand, Result<string>>
+        : IRequestHandler<ConfirmResetPasswordPhoneCommand, Result<string>>
     {
         private readonly UserManager<User> _userManager;
+        private readonly IStringLocalizer _localizer;
 
-        public ConfirmResetPasswordPhoneHandler(UserManager<User> userManager)
+        public ConfirmResetPasswordPhoneHandler(
+            UserManager<User> userManager,
+            IStringLocalizer localizer)
         {
             _userManager = userManager;
+            _localizer = localizer;
         }
 
         public async Task<Result<string>> Handle(
@@ -28,15 +29,30 @@ namespace BaridikExpress.Application.Features.Auth.AuthHandler
                     cancellationToken);
 
             if (user == null)
-                return Result<string>.Failure("User not found", 404);
+            {
+                return Result<string>.Failure(
+                    _localizer["UserNotFound"],
+                    404);
+            }
 
             if (user.ResetPasswordOtp != request.Otp)
-                return Result<string>.Failure("Invalid OTP", 400);
+            {
+                return Result<string>.Failure(
+                    _localizer["InvalidOtp"],
+                    400);
+            }
 
             if (user.ResetPasswordOtpExpireAt < DateTime.UtcNow)
-                return Result<string>.Failure("OTP expired", 400);
+            {
+                return Result<string>.Failure(
+                    _localizer["OtpExpired"],
+                    400);
+            }
 
-            return Result<string>.Success("OTP confirmed", "Success", 200);
+            return Result<string>.Success(
+                _localizer["OtpConfirmedSuccessfully"],
+                _localizer["Success"],
+                200);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using BaridikExpress.Application.Features.Auth.Command;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace BaridikExpress.Application.Features.Auth.AuthHandler
 {
@@ -8,11 +9,14 @@ namespace BaridikExpress.Application.Features.Auth.AuthHandler
         : IRequestHandler<VerifyPhoneOtpCommand, Result<string>>
     {
         private readonly UserManager<User> _userManager;
+        private readonly IStringLocalizer _localizer;
 
         public VerifyPhoneOtpHandler(
-            UserManager<User> userManager)
+            UserManager<User> userManager,
+            IStringLocalizer localizer)
         {
             _userManager = userManager;
+            _localizer = localizer;
         }
 
         public async Task<Result<string>> Handle(
@@ -27,28 +31,29 @@ namespace BaridikExpress.Application.Features.Auth.AuthHandler
             if (user == null)
             {
                 return Result<string>.Failure(
-                    "User not found",
+                    _localizer["UserNotFound"],
                     404);
             }
 
             if (string.IsNullOrWhiteSpace(user.PhoneOtp))
             {
                 return Result<string>.Failure(
-                    "OTP not found",
+                    _localizer["OtpNotFound"],
                     400);
             }
 
-            if (user.PhoneOtp != request.Otp)
+            if (!string.Equals(user.PhoneOtp, request.Otp))
             {
                 return Result<string>.Failure(
-                    "Invalid OTP",
+                    _localizer["InvalidOtp"],
                     400);
             }
 
-            if (user.PhoneOtpExpireAt < DateTime.UtcNow)
+            if (!user.PhoneOtpExpireAt.HasValue ||
+                user.PhoneOtpExpireAt.Value < DateTime.UtcNow)
             {
                 return Result<string>.Failure(
-                    "OTP expired",
+                    _localizer["OtpExpired"],
                     400);
             }
 
@@ -63,13 +68,13 @@ namespace BaridikExpress.Application.Features.Auth.AuthHandler
             if (!result.Succeeded)
             {
                 return Result<string>.Failure(
-                    "Failed to verify phone",
+                    _localizer["PhoneVerificationFailed"],
                     500);
             }
 
             return Result<string>.Success(
-                "Phone verified successfully",
-                "Success",
+                _localizer["PhoneVerifiedSuccessfully"],
+                _localizer["Success"],
                 200);
         }
     }

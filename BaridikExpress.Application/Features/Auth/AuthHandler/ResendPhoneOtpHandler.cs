@@ -1,11 +1,8 @@
 ﻿using BaridikExpress.Application.Features.Auth.Command;
 using BaridikExpress.Application.Interfaces.Auth;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace BaridikExpress.Application.Features.Auth.AuthHandler
 {
@@ -14,13 +11,16 @@ namespace BaridikExpress.Application.Features.Auth.AuthHandler
     {
         private readonly UserManager<User> _userManager;
         private readonly ISmsService _smsService;
+        private readonly IStringLocalizer _localizer;
 
         public ResendPhoneOtpHandler(
             UserManager<User> userManager,
-            ISmsService smsService)
+            ISmsService smsService,
+            IStringLocalizer localizer)
         {
             _userManager = userManager;
             _smsService = smsService;
+            _localizer = localizer;
         }
 
         public async Task<Result<string>> Handle(
@@ -33,16 +33,24 @@ namespace BaridikExpress.Application.Features.Auth.AuthHandler
                     cancellationToken);
 
             if (user == null)
-                return Result<string>.Failure("User not found", 404);
+            {
+                return Result<string>.Failure(
+                    _localizer["UserNotFound"],
+                    404);
+            }
 
             if (user.PhoneNumberConfirmed)
-                return Result<string>.Failure("Phone already confirmed", 400);
+            {
+                return Result<string>.Failure(
+                    _localizer["PhoneAlreadyConfirmed"],
+                    400);
+            }
 
             if (user.PhoneOtpLastSentAt.HasValue &&
                 user.PhoneOtpLastSentAt.Value.AddMinutes(2) > DateTime.UtcNow)
             {
                 return Result<string>.Failure(
-                    "Please wait 2 minutes before requesting another OTP",
+                    _localizer["OtpResendTooSoon"],
                     400);
             }
 
@@ -56,9 +64,13 @@ namespace BaridikExpress.Application.Features.Auth.AuthHandler
 
             await _smsService.SendSmsAsync(
                 user.PhoneNumber!,
-                $"Your OTP code is: {otp}");
+                $"{_localizer["PhoneOtpPrefix"]}: {otp}"
+            );
 
-            return Result<string>.Success("OTP resent successfully", "Success", 200);
+            return Result<string>.Success(
+                _localizer["OtpResentSuccessfully"],
+                _localizer["Success"],
+                200);
         }
     }
 }

@@ -1,26 +1,26 @@
 ﻿using BaridikExpress.Application.Features.Auth.Command;
 using BaridikExpress.Application.Interfaces.Auth;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace BaridikExpress.Application.Features.Auth.AuthHandler
 {
     public class ForgotPasswordByPhoneHandler
-     : IRequestHandler<ForgotPasswordByPhoneCommand, Result<string>>
+        : IRequestHandler<ForgotPasswordByPhoneCommand, Result<string>>
     {
         private readonly UserManager<User> _userManager;
         private readonly ISmsService _smsService;
+        private readonly IStringLocalizer _localizer;
 
         public ForgotPasswordByPhoneHandler(
             UserManager<User> userManager,
-            ISmsService smsService)
+            ISmsService smsService,
+            IStringLocalizer localizer)
         {
             _userManager = userManager;
             _smsService = smsService;
+            _localizer = localizer;
         }
 
         public async Task<Result<string>> Handle(
@@ -33,7 +33,11 @@ namespace BaridikExpress.Application.Features.Auth.AuthHandler
                     cancellationToken);
 
             if (user == null)
-                return Result<string>.Failure("User not found", 404);
+            {
+                return Result<string>.Failure(
+                    _localizer["UserNotFound"],
+                    404);
+            }
 
             var otp = Random.Shared.Next(100000, 999999).ToString();
 
@@ -45,9 +49,13 @@ namespace BaridikExpress.Application.Features.Auth.AuthHandler
 
             await _smsService.SendSmsAsync(
                 user.PhoneNumber!,
-                $"Reset Password OTP: {otp}");
+                $"{_localizer["ResetPasswordOtpPrefix"]}: {otp}"
+            );
 
-            return Result<string>.Success("OTP sent to phone", "Success", 200);
+            return Result<string>.Success(
+                _localizer["OtpSentToPhone"],
+                _localizer["Success"],
+                200);
         }
     }
 }

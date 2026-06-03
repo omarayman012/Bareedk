@@ -4,105 +4,92 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using System;
-using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace BaridikExpress.Application.Features.DeliveryModule.Validator
 {
     public class CreateDeliveryByAdminValidator
-       : AbstractValidator<CreateDeliveryByAdminCommand>
+        : AbstractValidator<CreateDeliveryByAdminCommand>
     {
         private readonly UserManager<User> _userManager;
+        private readonly IStringLocalizer _localizer;
 
-        public CreateDeliveryByAdminValidator(UserManager<User> userManager)
+        public CreateDeliveryByAdminValidator(
+            UserManager<User> userManager,
+            IStringLocalizer localizer)
         {
             _userManager = userManager;
+            _localizer = localizer;
 
             // ================= BASIC INFO =================
 
             RuleFor(x => x.FullName)
-                .NotEmpty().WithMessage("FullName is required")
-                .MaximumLength(100);
+                .NotEmpty().WithMessage(_localizer["FullNameRequired"])
+                .MaximumLength(100).WithMessage(_localizer["FullNameMaxLength"]);
 
             RuleFor(x => x.DateOfBirth)
-                .NotEmpty()
+                .NotEmpty().WithMessage(_localizer["DateOfBirthRequired"])
                 .Must(BeAtLeast18YearsOld)
-                .WithMessage("User must be at least 18 years old");
+                .WithMessage(_localizer["InvalidAge"]);
 
             // ================= VEHICLE =================
 
             RuleFor(x => x.PlateNo)
-                .NotEmpty().WithMessage("Plate number is required")
-                .MaximumLength(20);
+                .NotEmpty().WithMessage(_localizer["PlateRequired"])
+                .MaximumLength(20).WithMessage(_localizer["PlateMaxLength"]);
 
             RuleFor(x => x.VehType)
-                .IsInEnum().WithMessage("Invalid vehicle type");
+                .IsInEnum().WithMessage(_localizer["InvalidVehicleType"]);
 
-            // ================= ADDRESS (optional but safe rules) =================
+            // ================= ADDRESS =================
 
-            RuleFor(x => x.Country)
-                .MaximumLength(100);
-
-            RuleFor(x => x.Gov)
-                .MaximumLength(100);
-
-            RuleFor(x => x.City)
-                .MaximumLength(100);
-
-            RuleFor(x => x.Village)
-                .MaximumLength(100);
-
-            RuleFor(x => x.Address)
-                .MaximumLength(200);
-
-            RuleFor(x => x.Floor)
-                .MaximumLength(20);
-
-            RuleFor(x => x.Apt)
-                .MaximumLength(20);
+            RuleFor(x => x.Country).MaximumLength(100);
+            RuleFor(x => x.Gov).MaximumLength(100);
+            RuleFor(x => x.City).MaximumLength(100);
+            RuleFor(x => x.Village).MaximumLength(100);
+            RuleFor(x => x.Address).MaximumLength(200);
+            RuleFor(x => x.Floor).MaximumLength(20);
+            RuleFor(x => x.Apt).MaximumLength(20);
 
             // ================= FILES =================
 
             RuleFor(x => x.ProfileImg)
-                .NotNull().WithMessage("Profile image is required");
+                .NotNull().WithMessage(_localizer["ProfileImageRequired"]);
 
             RuleFor(x => x.NidImg)
-                .NotNull().WithMessage("National ID image is required");
+                .NotNull().WithMessage(_localizer["NationalIdRequired"]);
 
             RuleFor(x => x.LicImg)
-                .NotNull().WithMessage("License image is required");
+                .NotNull().WithMessage(_localizer["LicenseRequired"]);
 
             RuleFor(x => x.PlateImg)
-                .NotNull().WithMessage("Plate image is required");
+                .NotNull().WithMessage(_localizer["PlateImageRequired"]);
 
-            // VehImg & PoliceCert optional (حسب كودك الحالي)
             RuleFor(x => x.VehImg)
-                .NotNull().WithMessage("Vehicle image is required");
+                .NotNull().WithMessage(_localizer["VehicleImageRequired"]);
 
             RuleFor(x => x.PoliceCertImg)
-                .NotNull().WithMessage("Police certificate image is required");
+                .NotNull().WithMessage(_localizer["PoliceCertRequired"]);
 
             // ================= AUTH =================
 
             RuleFor(x => x.Email)
-                .NotEmpty()
-                .EmailAddress().WithMessage("Invalid email format")
+                .NotEmpty().WithMessage(_localizer["EmailRequired"])
+                .EmailAddress().WithMessage(_localizer["InvalidEmail"])
                 .MustAsync(BeUniqueEmail)
-                .WithMessage("Email already exists");
+                .WithMessage(_localizer["EmailAlreadyExists"]);
 
             RuleFor(x => x.Phone)
-                .NotEmpty()
+                .NotEmpty().WithMessage(_localizer["PhoneRequired"])
                 .MinimumLength(8)
                 .MustAsync(BeUniquePhone)
-                .WithMessage("Phone already exists");
+                .WithMessage(_localizer["PhoneAlreadyExists"]);
 
             RuleFor(x => x.Password)
-                .NotEmpty()
+                .NotEmpty().WithMessage(_localizer["PasswordRequired"])
                 .MinimumLength(6)
-                .WithMessage("Password must be at least 6 characters");
+                .WithMessage(_localizer["PasswordMinLength"]);
         }
 
         // ================= AGE VALIDATION =================
@@ -112,7 +99,8 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Validator
             var today = DateTime.UtcNow;
             var age = today.Year - date.Year;
 
-            if (date.Date > today.AddYears(-age)) age--;
+            if (date.Date > today.AddYears(-age))
+                age--;
 
             return age >= 18;
         }

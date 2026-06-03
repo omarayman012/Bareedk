@@ -12,12 +12,12 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
         : IRequestHandler<GetDeliveryByIdQuery, Result<GetDeliveryByIdDto>>
     {
         private readonly IApplicationDbContext _context;
-        private readonly IStringLocalizer<GetDeliveryByIdHandler> _localizer;
+        private readonly IStringLocalizer _localizer;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public GetDeliveryByIdHandler(
             IApplicationDbContext context,
-            IStringLocalizer<GetDeliveryByIdHandler> localizer,
+            IStringLocalizer localizer,
             IHttpContextAccessor httpContextAccessor)
         {
             _context = context;

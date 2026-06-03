@@ -2,6 +2,7 @@
 using BaridikExpress.Application.Interfaces.Auth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace BaridikExpress.Application.Features.Auth.AuthHandler
 {
@@ -10,13 +11,16 @@ namespace BaridikExpress.Application.Features.Auth.AuthHandler
     {
         private readonly UserManager<User> _userManager;
         private readonly ISmsService _smsService;
+        private readonly IStringLocalizer _localizer;
 
         public SendPhoneOtpHandler(
             UserManager<User> userManager,
-            ISmsService smsService)
+            ISmsService smsService,
+            IStringLocalizer localizer)
         {
             _userManager = userManager;
             _smsService = smsService;
+            _localizer = localizer;
         }
 
         public async Task<Result<string>> Handle(
@@ -31,33 +35,29 @@ namespace BaridikExpress.Application.Features.Auth.AuthHandler
             if (user == null)
             {
                 return Result<string>.Failure(
-                    "User not found",
+                    _localizer["UserNotFound"],
                     404);
             }
 
             if (user.PhoneNumberConfirmed)
             {
                 return Result<string>.Failure(
-                    "Phone already confirmed",
+                    _localizer["PhoneAlreadyConfirmed"],
                     400);
             }
 
-            // لازم يستنى دقيقتين بين كل OTP
             if (user.PhoneOtpLastSentAt.HasValue &&
                 user.PhoneOtpLastSentAt.Value.AddMinutes(2) > DateTime.UtcNow)
             {
                 return Result<string>.Failure(
-                    "Please wait 2 minutes before requesting another OTP",
+                    _localizer["OtpResendTooSoon"],
                     400);
             }
 
             var otp = Random.Shared.Next(100000, 999999).ToString();
 
             user.PhoneOtp = otp;
-
-            // الكود صالح 5 دقايق
             user.PhoneOtpExpireAt = DateTime.UtcNow.AddMinutes(5);
-
             user.PhoneOtpLastSentAt = DateTime.UtcNow;
 
             var result = await _userManager.UpdateAsync(user);
@@ -65,7 +65,7 @@ namespace BaridikExpress.Application.Features.Auth.AuthHandler
             if (!result.Succeeded)
             {
                 return Result<string>.Failure(
-                    "Failed to save OTP",
+                    _localizer["OtpSavedFailed"],
                     500);
             }
 
@@ -73,18 +73,18 @@ namespace BaridikExpress.Application.Features.Auth.AuthHandler
             {
                 await _smsService.SendSmsAsync(
                     user.PhoneNumber!,
-                    $"Your OTP code is: {otp}");
+                    $"{_localizer["PhoneOtpPrefix"]}: {otp}");
             }
             catch
             {
                 return Result<string>.Failure(
-                    "Failed to send OTP SMS",
+                    _localizer["OtpSmsSendFailed"],
                     500);
             }
 
             return Result<string>.Success(
-                "OTP sent successfully",
-                "Success",
+                _localizer["OtpSentSuccessfully"],
+                _localizer["Success"],
                 200);
         }
     }
