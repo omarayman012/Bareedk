@@ -10,13 +10,11 @@ public sealed class GetServiceByIdQueryHandler(
     : IRequestHandler<GetServiceByIdQuery, Result<ServiceResponse>>
 {
     #region Handle
-
     public async Task<Result<ServiceResponse>> Handle(
         GetServiceByIdQuery request,
         CancellationToken cancellationToken)
     {
         #region Query & Map
-
         var response = await db.Services
             .AsNoTracking()
             .Where(x => x.Id == request.Id)
@@ -24,6 +22,7 @@ public sealed class GetServiceByIdQueryHandler(
                 x.Id,
                 new LocalizedDto { EN = x.NameEn, AR = x.NameAr },
                 x.Price,
+                x.Currency,
                 x.ImageUrl,
                 x.IsActive,
                 x.CreatedBy != null ? x.CreatedBy.FullName : null,
@@ -31,7 +30,6 @@ public sealed class GetServiceByIdQueryHandler(
                 x.UpdatedBy != null ? x.UpdatedBy.FullName : null,
                 x.UpdatedAt))
             .FirstOrDefaultAsync(cancellationToken);
-
         #endregion
 
         if (response is null)
@@ -39,6 +37,5 @@ public sealed class GetServiceByIdQueryHandler(
 
         return Result<ServiceResponse>.Success(response, localizer["ServiceRetrievedSuccessfully"]);
     }
-
     #endregion
 }

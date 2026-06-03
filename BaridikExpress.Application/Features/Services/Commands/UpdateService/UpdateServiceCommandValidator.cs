@@ -7,7 +7,6 @@ public sealed class UpdateServiceCommandValidator : AbstractValidator<UpdateServ
     public UpdateServiceCommandValidator(IStringLocalizer localizer)
     {
         #region Name (if sent)
-
         When(x => x.NameEn is not null || x.NameAr is not null, () =>
         {
             RuleFor(x => x)
@@ -21,21 +20,21 @@ public sealed class UpdateServiceCommandValidator : AbstractValidator<UpdateServ
             When(x => !string.IsNullOrWhiteSpace(x.NameAr), () =>
                 RuleFor(x => x.NameAr).MaximumLength(200).WithMessage(localizer["NameArMaxLength"]));
         });
-
         #endregion
 
         #region Price (if sent)
-
         When(x => x.Price.HasValue, () =>
-        {
             RuleFor(x => x.Price)
-                .GreaterThan(0).WithMessage(localizer["PriceMustBeGreaterThanZero"]);
-        });
+                .GreaterThan(0).WithMessage(localizer["PriceMustBeGreaterThanZero"]));
+        #endregion
 
+        #region Currency (if sent)
+        When(x => x.Currency.HasValue, () =>
+            RuleFor(x => x.Currency)
+                .IsInEnum().WithMessage(localizer["InvalidCurrency"]));
         #endregion
 
         #region Image (if sent)
-
         When(x => x.Image is not null, () =>
         {
             RuleFor(x => x.Image)
@@ -45,7 +44,6 @@ public sealed class UpdateServiceCommandValidator : AbstractValidator<UpdateServ
                 .WithMessage(localizer["InvalidImageFormat"])
                 .Must(f => f!.Length <= 5 * 1024 * 1024).WithMessage(localizer["ImageMaxSize"]);
         });
-
         #endregion
     }
 }

@@ -31,6 +31,7 @@ public class ServiceController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("GetAll")]
+    [AllowAnonymous]
     public async Task<IActionResult> GetAll([FromQuery] GetAllServicesQuery query)
     {
         var result = await mediator.Send(query);
@@ -38,6 +39,7 @@ public class ServiceController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("GetById/{id}")]
+    [AllowAnonymous]
     public async Task<IActionResult> GetById(Guid id)
     {
         var result = await mediator.Send(new GetServiceByIdQuery(id));
