@@ -21,9 +21,12 @@ public sealed class GetSelectMenuQueryHandler<T>(
 
         #region Fetch Entities
         var entities = await db.Set<T>()
-                               .AsNoTracking()
-                               .Where(x => request.ParentId == null || x.ParentId == request.ParentId) 
-                               .ToListAsync(cancellationToken);
+         .AsNoTracking()
+         .Where(x => request.ParentId == null || x.ParentId == request.ParentId)
+         .Where(x => request.Name == null ||
+                     x.NameAr!.Contains(request.Name) ||
+                     x.NameEn!.Contains(request.Name)) 
+         .ToListAsync(cancellationToken);
 
         if (!entities.Any())
             return Result<IEnumerable<SelectMenuResponse>>
