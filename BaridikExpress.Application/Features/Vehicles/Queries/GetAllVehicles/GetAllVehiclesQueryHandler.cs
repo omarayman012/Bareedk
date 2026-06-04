@@ -1,6 +1,10 @@
 using BaridikExpress.Application.Common.Extensions;
+using BaridikExpress.Application.Common.Helpers;
 using BaridikExpress.Application.Features.CommanDTO.Localizes;
 using BaridikExpress.Application.Features.Vehicles.DTO;
+using BaridikExpress.Application.Interfaces.IRepository;
+using BaridikExpress.Domain.Entities.Vehicles;
+using BaridikExpress.Domain.Enum;
 using Microsoft.EntityFrameworkCore;
 
 namespace BaridikExpress.Application.Features.Vehicles.Queries.GetAllVehicles;
@@ -31,39 +35,43 @@ public sealed class GetAllVehiclesQueryHandler(
 
         #endregion
 
-        #region Projection
+        #region Projection & Pagination
 
         var projected = query
             .OrderByDescending(x => x.CreatedAt)
             .Select(x => new GetAllVehiclesDto
             {
                 Id = x.Id,
-                Name = new LocalizedDto { EN = x.NameEn, AR = x.NameAr },
+                Name = new LocalizedDto
+                {
+                    EN = x.NameEn,
+                    AR = x.NameAr
+                },
                 ImageUrl = x.ImageUrl,
-                LoadCapacityFrom = $"{x.LoadCapacityFrom} Tons",
-                LoadCapacityTo = $"{x.LoadCapacityTo} Tons",
-                PricePerTon = $"{x.PricePerTon} SAR/Ton",
-                TotalPrice = x.IsPriceCalculationEnabled
-                    ? $"{x.PricePerTon} * {x.LoadCapacityTo} = {x.PricePerTon * x.LoadCapacityTo} SAR"
-                    : "0",
+                LoadCapacityFrom = x.LoadCapacityFrom,
+                LoadCapacityTo = x.LoadCapacityTo,
+                PricePerTon = x.PricePerTon,
+                TotalPrice = x.IsPriceCalculationEnabled ? x.TotalPrice : 0,
+                Currency = x.Currency.ToLocalizedDto(),
+                CapacityUnit = new LocalizedDto
+                {
+                    EN = "Ton",
+                    AR = "طن"
+                },
                 IsPriceCalculationEnabled = x.IsPriceCalculationEnabled,
                 IsActive = x.IsActive,
                 CreatedBy = x.CreatedBy != null ? x.CreatedBy.FullName : null,
                 CreatedAt = x.CreatedAt,
                 UpdatedBy = x.UpdatedBy != null ? x.UpdatedBy.FullName : null,
-                UpdatedAt = x.UpdatedAt,
+                UpdatedAt = x.UpdatedAt
             });
 
-        #endregion
-
-        #region Paginate
-
-        var result = await PaginatedList<GetAllVehiclesDto>
+        var paginatedResult = await PaginatedList<GetAllVehiclesDto>
             .CreateAsync(projected, request.PageNumber, request.PageSize);
 
         #endregion
 
         return Result<PaginatedList<GetAllVehiclesDto>>
-            .Success(result, localizer["OperationCompletedSuccessfully"]);
+            .Success(paginatedResult, localizer["OperationCompletedSuccessfully"]);
     }
 }

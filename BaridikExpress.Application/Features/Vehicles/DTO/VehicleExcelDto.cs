@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BaridikExpress.Domain.Enum;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +19,8 @@ namespace BaridikExpress.Application.Features.Vehicles.DTO
 
             public decimal PricePerTon { get; set; }
 
-            public string? ImageUrl { get; set; }
+             public Currency Currency    { get; set; }
+             public string? ImageUrl { get; set; }
 
             public bool IsPriceCalculationEnabled { get; set; }
         }

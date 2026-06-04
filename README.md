@@ -5,13 +5,14 @@
 <img src="https://img.shields.io/badge/Pattern-Clean%20Architecture-green?style=for-the-badge" />
 <img src="https://img.shields.io/badge/Status-Active-brightgreen?style=for-the-badge" />
 
+  
 # 📦 BaridikExpress — Delivery Platform
 
 > **Smart & Reliable Shipping Platform** — Empowering delivery companies to manage orders, track shipments, and coordinate logistics with high efficiency.
 
 </div>  
--- 
-  
+--   
+   
 ## 🗂️ Table of Contents 
 
 - [📌 Overview](#-overview)

@@ -4,6 +4,7 @@ using BaridikExpress.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BaridikExpress.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260604112746_Add Currency in Vechicles")]
+    partial class AddCurrencyinVechicles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -848,9 +851,6 @@ namespace BaridikExpress.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<Guid>("CountryId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
@@ -876,8 +876,6 @@ namespace BaridikExpress.Infrastructure.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("CityId");
-
-                    b.HasIndex("CountryId");
 
                     b.HasIndex("CreatedById");
 
@@ -917,11 +915,6 @@ namespace BaridikExpress.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
-
-                    b.Property<string>("PhoneCode")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -999,9 +992,6 @@ namespace BaridikExpress.Infrastructure.Migrations
                     b.Property<Guid>("CityId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CountryId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
@@ -1010,9 +1000,6 @@ namespace BaridikExpress.Infrastructure.Migrations
                     b.Property<string>("CreatedById")
                         .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<Guid>("GovernmentId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
@@ -1040,11 +1027,7 @@ namespace BaridikExpress.Infrastructure.Migrations
 
                     b.HasIndex("CityId");
 
-                    b.HasIndex("CountryId");
-
                     b.HasIndex("CreatedById");
-
-                    b.HasIndex("GovernmentId");
 
                     b.HasIndex("UpdatedById");
 
@@ -2421,12 +2404,6 @@ namespace BaridikExpress.Infrastructure.Migrations
 
             modelBuilder.Entity("BaridikExpress.Domain.Entities.Location.City", b =>
                 {
-                    b.HasOne("BaridikExpress.Domain.Entities.Location.Country", "Country")
-                        .WithMany()
-                        .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("BaridikExpress.Domain.Entities.AuthModules.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
@@ -2442,8 +2419,6 @@ namespace BaridikExpress.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.NoAction);
-
-                    b.Navigation("Country");
 
                     b.Navigation("CreatedBy");
 
@@ -2502,22 +2477,10 @@ namespace BaridikExpress.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("BaridikExpress.Domain.Entities.Location.Country", "Country")
-                        .WithMany()
-                        .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("BaridikExpress.Domain.Entities.AuthModules.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("BaridikExpress.Domain.Entities.Location.Government", "Government")
-                        .WithMany()
-                        .HasForeignKey("GovernmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.HasOne("BaridikExpress.Domain.Entities.AuthModules.User", "UpdatedBy")
                         .WithMany()
@@ -2526,11 +2489,7 @@ namespace BaridikExpress.Infrastructure.Migrations
 
                     b.Navigation("City");
 
-                    b.Navigation("Country");
-
                     b.Navigation("CreatedBy");
-
-                    b.Navigation("Government");
 
                     b.Navigation("UpdatedBy");
                 });

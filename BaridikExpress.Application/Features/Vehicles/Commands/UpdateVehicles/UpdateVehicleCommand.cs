@@ -1,3 +1,5 @@
+using BaridikExpress.Domain.Enum;
+
 namespace BaridikExpress.Application.Features.Vehicles.Commands.UpdateVehicles
 {
     public record UpdateVehicleCommand(
@@ -7,6 +9,7 @@ namespace BaridikExpress.Application.Features.Vehicles.Commands.UpdateVehicles
         decimal ?LoadCapacityFrom,
         decimal ?LoadCapacityTo,
         decimal ?PricePerTon,
+        Currency ?Currency,
         IFormFile? ImageUrl,
         bool IsPriceCalculationEnabled
     ) : IRequest<Result<bool>>;
