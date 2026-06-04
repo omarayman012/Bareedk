@@ -4,7 +4,7 @@ using BaridikExpress.Domain.Common;
 using BaridikExpress.Domain.Entities.Base;
 using Microsoft.EntityFrameworkCore;
 
-namespace BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu;
+namespace BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.Location;
 
 public sealed class GetSelectMenuQueryHandler<T>(
     IApplicationDbContext db,

@@ -3,7 +3,7 @@ using BaridikExpress.Application.Common.Abstractions;
 using BaridikExpress.Application.Common.Mapping;
 using BaridikExpress.Application.Features.Auth.Commands.CreateAccount;
 using BaridikExpress.Application.Features.SelectMenu.DTOs;
-using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu;
+using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.Location;
 using BaridikExpress.Application.Features.SystemManagement.Commands.UpdateSystemManagement;
 using BaridikExpress.Application.Features.SystemManagement.DTOs;
 using BaridikExpress.Application.Features.SystemManagement.Queries.GetSystemManagement;

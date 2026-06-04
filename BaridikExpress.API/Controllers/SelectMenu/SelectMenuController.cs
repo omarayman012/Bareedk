@@ -1,5 +1,6 @@
 ﻿using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu;
-using BaridikExpress.Application.Features.Shared.SelectMenus.Nationalities.Queries;
+using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.Location;
+using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.Nationalities;
 using BaridikExpress.Domain.Entities.Location;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
