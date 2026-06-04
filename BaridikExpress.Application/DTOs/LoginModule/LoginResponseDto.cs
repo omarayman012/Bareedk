@@ -13,5 +13,6 @@ namespace BaridikExpress.Application.DTOs.LoginModule
         public string UserId { get; set; } = default!;
         public string FullName { get; set; } = default!;
         public string Role { get; set; } = default!;
+        public List<string> Permissions { get; set; } = new();
     }
 }
