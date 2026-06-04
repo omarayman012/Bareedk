@@ -1,4 +1,5 @@
 ﻿using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu;
+using BaridikExpress.Application.Features.Shared.SelectMenus.Nationalities.Queries;
 using BaridikExpress.Domain.Entities.Location;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -54,5 +55,16 @@ public class SelectMenuController(IMediator mediator) : ControllerBase
             cancellationToken);
 
         return StatusCode(result.StatusCode, result);
+    }
+    [HttpGet("nationalities")]
+    public async Task<IActionResult> GetNationalities(
+       [FromQuery] string? name,
+       CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new GetNationalitiesSelectMenuQuery(name),
+            cancellationToken);
+
+        return Ok(result);
     }
 }
