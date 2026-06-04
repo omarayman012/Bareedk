@@ -1,4 +1,5 @@
-﻿using BaridikExpress.Application.Features.CommanDTO.Localizes;
+﻿using BaridikExpress.Application.Common.Extensions;
+using BaridikExpress.Application.Features.CommanDTO.Localizes;
 using BaridikExpress.Application.Features.LocationGeography.Dto.Government;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,30 +19,22 @@ public class GetAllGovernmentQueryHandler(
         CancellationToken cancellationToken)
     {
         var query = _applicationDb.Governments
-            .AsNoTracking()
-            .Include(x => x.Country)
-            .AsQueryable();
+     .AsNoTracking()
+     .Include(x => x.Country)
+     .AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(request.Name))
         {
             var name = request.Name.Trim().ToLower();
-
             query = query.Where(x =>
                 x.GovernmentNameAr.ToLower().Contains(name) ||
                 x.GovernmentNameEn.ToLower().Contains(name));
         }
 
         if (request.CountryId.HasValue)
-        {
-            query = query.Where(x =>
-                x.CountryId == request.CountryId.Value);
-        }
+            query = query.Where(x => x.CountryId == request.CountryId.Value);
 
-        if (request.IsActive.HasValue)
-        {
-            query = query.Where(x =>
-                x.IsActive == request.IsActive.Value);
-        }
+        query = query.ApplyCommonFilters(request);
 
         var governmentsQuery = query
             .Select(x => new GovernmentDto
