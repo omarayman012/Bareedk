@@ -445,7 +445,8 @@
   "AddressTooLong": "العنوان يجب أن لا يتجاوز 500 حرف",
   "InvalidLatitude": "خط العرض غير صالح",
   "InvalidLongitude": "خط الطول غير صالح",
-  "InvalidCurrency" : "العملة غير صالحة",
-
+  "InvalidCurrency": "العملة غير صالحة",
+  "ExcelFileRequired": "ملف Excel مطلوب",
+  "ExcelInvalidType" : "نوع ملف Excel غير صالح، يجب أن يكون .xlsx",
 }
 

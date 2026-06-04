@@ -363,5 +363,7 @@
   "AddressTooLong": "Address must not exceed 500 characters",
   "InvalidLatitude": "Invalid latitude value",
   "InvalidLongitude": "Invalid longitude value",
-  "InvalidCurrency" : "Invalid currency code",
+  "InvalidCurrency": "Invalid currency code",
+  "ExcelFileRequired": "Excel file is required",
+  "ExcelInvalidType": "Invalid Excel file type, must be .xlsx"
 }
