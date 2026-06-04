@@ -1,11 +1,11 @@
-﻿namespace BaridikExpress.Application.Features.SystemManagement.DTOs;
+﻿using BaridikExpress.Application.DTOs;
+
+namespace BaridikExpress.Application.Features.SystemManagement.DTOs;
 
 public sealed record FAQResponse(
     Guid Id,
-    string QuestionAr,
-    string QuestionEn,
-    string AnswerAr,
-    string AnswerEn,
+    LocalizeLang Question,
+    LocalizeLang Answer,
     string? CreatedBy,
     DateTime CreatedAt,
     string? UpdatedBy,

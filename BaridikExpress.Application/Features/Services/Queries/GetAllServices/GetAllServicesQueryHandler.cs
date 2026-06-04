@@ -10,19 +10,15 @@ public sealed class GetAllServicesQueryHandler(
     : IRequestHandler<GetAllServicesQuery, Result<PaginatedList<ServiceResponse>>>
 {
     #region Handle
-
     public async Task<Result<PaginatedList<ServiceResponse>>> Handle(
         GetAllServicesQuery request,
         CancellationToken cancellationToken)
     {
         #region Build Query
-
         var query = db.Services.AsNoTracking().AsQueryable();
-
         #endregion
 
         #region Filters
-
         if (!string.IsNullOrWhiteSpace(request.Name))
             query = query.Where(x =>
                 x.NameEn.Contains(request.Name) ||
@@ -39,35 +35,30 @@ public sealed class GetAllServicesQueryHandler(
 
         if (request.ToDate.HasValue)
             query = query.Where(x => x.CreatedAt <= request.ToDate.Value);
-
         #endregion
 
         #region Projection
-
         var projected = query
             .OrderByDescending(x => x.CreatedAt)
             .Select(x => new ServiceResponse(
                 x.Id,
                 new LocalizedDto { EN = x.NameEn, AR = x.NameAr },
                 x.Price,
+                x.Currency.ToString(),
                 x.ImageUrl,
                 x.IsActive,
                 x.CreatedBy != null ? x.CreatedBy.FullName : null,
                 x.CreatedAt,
                 x.UpdatedBy != null ? x.UpdatedBy.FullName : null,
                 x.UpdatedAt));
-
         #endregion
 
         #region Paginate
-
         var result = await PaginatedList<ServiceResponse>
             .CreateAsync(projected, request.PageNumber, request.PageSize);
-
         #endregion
 
         return Result<PaginatedList<ServiceResponse>>.Success(result, localizer["ServicesRetrievedSuccessfully"]);
     }
-
     #endregion
 }

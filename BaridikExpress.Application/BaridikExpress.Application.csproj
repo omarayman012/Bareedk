@@ -21,4 +21,8 @@
 		<ProjectReference Include="..\BaridikExpress.Domain\BaridikExpress.Domain.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Features\Shared\" />
+	</ItemGroup>
+
 </Project>

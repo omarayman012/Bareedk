@@ -8,7 +8,7 @@ namespace BaridikExpress.Application.DTOs.DeliveryModule
 {
     public class GetDeliveryByIdDto
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
 
         public string FullName { get; set; }
 

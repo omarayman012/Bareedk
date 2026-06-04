@@ -19,6 +19,9 @@ namespace BaridikExpress.Application.Behaviors
             RequestHandlerDelegate<TResponse> next,
             CancellationToken cancellationToken)
         {
+            if (request is null)
+                throw new ArgumentNullException(nameof(request));
+
             if (_validators.Any())
             {
                 var context = new ValidationContext<TRequest>(request);

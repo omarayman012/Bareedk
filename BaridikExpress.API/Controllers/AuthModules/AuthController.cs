@@ -1,4 +1,5 @@
-﻿using BaridikExpress.Application.Features.AuthClientModule.Command;
+﻿using BaridikExpress.Application.Features.Auth.AuthCommand;
+using BaridikExpress.Application.Features.Auth.Command;
 using BaridikExpress.Application.Features.AuthClientModule.Queries;
 using BaridikExpress.Application.Features.AuthDeliveryModule.Command;
 using BaridikExpress.Application.Features.DeliveryModule.Queries;
@@ -28,6 +29,7 @@ namespace BaridikExpress.API.Controllers.AuthModules
             var result = await _mediator.Send(command);
             return StatusCode(result.StatusCode, result);
         }
+
         [AllowAnonymous]
         [HttpPost("verify-email-otp")]
         public async Task<IActionResult> VerifyEmailOtp([FromBody] VerifyEmailOtpCommand command)
@@ -35,6 +37,7 @@ namespace BaridikExpress.API.Controllers.AuthModules
             var result = await _mediator.Send(command);
             return StatusCode(result.StatusCode, result);
         }
+
         [AllowAnonymous]
         [HttpPost("resend-email-otp")]
         public async Task<IActionResult> ResendEmailOtp([FromBody] ResendEmailOtpCommand command)
@@ -50,6 +53,7 @@ namespace BaridikExpress.API.Controllers.AuthModules
             var result = await _mediator.Send(command);
             return StatusCode(result.StatusCode, result);
         }
+
         [AllowAnonymous]
         [HttpPost("verify-phone-otp")]
         public async Task<IActionResult> VerifyPhoneOtp([FromBody] VerifyPhoneOtpCommand command)
@@ -57,6 +61,7 @@ namespace BaridikExpress.API.Controllers.AuthModules
             var result = await _mediator.Send(command);
             return StatusCode(result.StatusCode, result);
         }
+
         [AllowAnonymous]
         [HttpPost("resend-phone-otp")]
         public async Task<IActionResult> ResendPhoneOtp([FromBody] ResendPhoneOtpCommand command)
@@ -72,7 +77,6 @@ namespace BaridikExpress.API.Controllers.AuthModules
             var result = await _mediator.Send(command);
             return StatusCode(result.StatusCode, result);
         }
-
 
         [AllowAnonymous]
         [HttpPost("forgot-password-phone")]
@@ -90,7 +94,6 @@ namespace BaridikExpress.API.Controllers.AuthModules
             return StatusCode(result.StatusCode, result);
         }
 
-
         [AllowAnonymous]
         [HttpPost("confirm-reset-phone-otp")]
         public async Task<IActionResult> ConfirmResetPhoneOtp([FromBody] ConfirmResetPasswordPhoneCommand command)
@@ -106,6 +109,7 @@ namespace BaridikExpress.API.Controllers.AuthModules
             var result = await _mediator.Send(command);
             return StatusCode(result.StatusCode, result);
         }
+
         [AllowAnonymous]
         [HttpPost("reset-password-email")]
         public async Task<IActionResult> ResetPasswordEmail([FromBody] ResetPasswordEmailCommand command)
@@ -113,6 +117,7 @@ namespace BaridikExpress.API.Controllers.AuthModules
             var result = await _mediator.Send(command);
             return StatusCode(result.StatusCode, result);
         }
+
         [Authorize]
         [HttpPost("change-password")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordCommand command)
@@ -120,6 +125,7 @@ namespace BaridikExpress.API.Controllers.AuthModules
             var result = await _mediator.Send(command);
             return StatusCode(result.StatusCode, result);
         }
+
         [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginCommand command)
@@ -127,6 +133,7 @@ namespace BaridikExpress.API.Controllers.AuthModules
             var result = await _mediator.Send(command);
             return StatusCode(result.StatusCode, result);
         }
+
         [Authorize]
         [HttpPost("refresh-token")]
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenCommand command)
@@ -146,36 +153,15 @@ namespace BaridikExpress.API.Controllers.AuthModules
             return StatusCode(result.StatusCode, result);
         }
 
-        [Authorize("SuperAdmin")]
-        [HttpPost("CreateByAdmin")]
-        public async Task<IActionResult> CreateByAdmin(
-             [FromForm] CreateDeliveryByAdminCommand command)
-        {
-            var result = await _mediator.Send(command);
-
-            if (!result.IsSuccess)
-                return StatusCode(result.StatusCode, result);
-
-            return StatusCode(result.StatusCode, result);
-        }
-        [Authorize("SuperAdmin")]
-        [HttpPatch("ApproveDelivery/{id}")]
-        public async Task<IActionResult> ApproveDelivery(Guid id)
-        {
-            var command = new ApproveDeliveryCommand
-            {
-                DeliveryId = id
-            };
-
-            var result = await _mediator.Send(command);
-
-            if (!result.IsSuccess)
-                return StatusCode(result.StatusCode, result);
-
-            return StatusCode(result.StatusCode, result);
-        }
       
-       
-   
+
+        [Authorize]
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout([FromBody] LogoutCommand command)
+        {
+            var result = await _mediator.Send(command);
+            return StatusCode(result.StatusCode, result);
+        }
+
     }
 }

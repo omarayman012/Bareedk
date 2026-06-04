@@ -1,4 +1,5 @@
 using BaridikExpress.Application.Features.Vehicles.DTO;
+using BaridikExpress.Domain.Enum;
 
 namespace BaridikExpress.Application.Features.Vehicles.Commands.CreateVehicles
 {
@@ -8,6 +9,7 @@ namespace BaridikExpress.Application.Features.Vehicles.Commands.CreateVehicles
         decimal LoadCapacityFrom,
         decimal LoadCapacityTo,
         decimal PricePerTon,
+        Currency Currency,
        IFormFile ImageUrl,
         bool IsPriceCalculationEnabled
     ) : IRequest<Result<CreateVehicleResponse>>;

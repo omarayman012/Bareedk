@@ -2,12 +2,18 @@
 
 namespace BaridikExpress.Domain.Entities.Location;
 
-public class Government:BaseEntity
+public class Government : BaseEntity, ISelectMenuEntity
 {
     public Guid GovernmentId { get; set; }
     public string GovernmentNameAr { get; set; } = string.Empty;
     public string GovernmentNameEn { get; set; } = string.Empty;
-     public Guid CountryId { get; set; }
-     public Country? Country { get; set; }
+    public string? NameAr => GovernmentNameAr;
+    public string? NameEn => GovernmentNameEn;
+    public Guid? ParentId => CountryId;
+
+    public Guid Id => GovernmentId;
+    public Guid CountryId { get; set; }
+    public Country? Country { get; set; }
+
     public ICollection<City>? Cities { get; set; }
 }

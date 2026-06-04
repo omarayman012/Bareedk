@@ -2,9 +2,12 @@
 using BaridikExpress.Application.Common.Abstractions;
 using BaridikExpress.Application.Common.Mapping;
 using BaridikExpress.Application.Features.Auth.Commands.CreateAccount;
+using BaridikExpress.Application.Features.SelectMenu.DTOs;
+using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.Location;
 using BaridikExpress.Application.Features.SystemManagement.Commands.UpdateSystemManagement;
 using BaridikExpress.Application.Features.SystemManagement.DTOs;
 using BaridikExpress.Application.Features.SystemManagement.Queries.GetSystemManagement;
+using BaridikExpress.Domain.Entities.Location;
 using BaridikExpress.Domain.Entities.SystemManagment;
 using FluentValidation;
 using MediatR;
@@ -85,6 +88,25 @@ public static class DepedencyInjection
 
         #endregion
 
+        #region Select Menu Handlers
+
+        services.AddTransient<
+            IRequestHandler<GetSelectMenuQuery<Country>, Result<IEnumerable<SelectMenuResponse>>>,
+            GetSelectMenuQueryHandler<Country>>();
+
+        services.AddTransient<
+            IRequestHandler<GetSelectMenuQuery<Government>, Result<IEnumerable<SelectMenuResponse>>>,
+            GetSelectMenuQueryHandler<Government>>();
+
+        services.AddTransient<
+            IRequestHandler<GetSelectMenuQuery<City>, Result<IEnumerable<SelectMenuResponse>>>,
+            GetSelectMenuQueryHandler<City>>();
+
+        services.AddTransient<
+            IRequestHandler<GetSelectMenuQuery<Village>, Result<IEnumerable<SelectMenuResponse>>>,
+            GetSelectMenuQueryHandler<Village>>();
+
+        #endregion
         return services;
     }
 }

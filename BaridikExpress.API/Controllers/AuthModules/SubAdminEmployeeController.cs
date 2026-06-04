@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BaridikExpress.API.Controllers.Auth;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/v1/[controller]")]
 [Authorize]
 [ApiExplorerSettings(GroupName = "auth-v1")]
 [Tags("Sub Admin Employees")]

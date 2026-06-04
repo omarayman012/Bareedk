@@ -1,6 +1,7 @@
 ﻿using BaridikExpress.Domain.Entities.AuthModules;
 using BaridikExpress.Domain.Entities.Base;
 using BaridikExpress.Domain.Entities.CareerFields;
+using BaridikExpress.Domain.Entities.Shipments;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,5 +24,6 @@ namespace BaridikExpress.Domain.Entities.ClientModule
 
         public bool AcceptTerms { get; set; }
         public bool AcceptPrivacy { get; set; }
+        public ICollection<Shipment> Shipments { get; set; } = new List<Shipment>();
     }
 }

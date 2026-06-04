@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BaridikExpress.API.Controllers.RoleModules;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/v1/[controller]")]
 [Authorize]
 [ApiExplorerSettings(GroupName = "admin-v1")]
 [Tags("Roles")]
@@ -41,8 +41,8 @@ public class RolesController(IMediator mediator) : ControllerBase
         return StatusCode(result.StatusCode, result);
     }
 
-    // GET: api/roles/{roleId}/permissions
-    [HttpGet("{roleId}/permissions")]
+    // GET: api/roles/permissions/{roleId}
+    [HttpGet("permissions/{roleId}")]
     [HasPermission(Permissions.RolesRead)]
     public async Task<IActionResult> GetPermissionsByRole(
         string roleId)
@@ -77,8 +77,8 @@ public class RolesController(IMediator mediator) : ControllerBase
         return StatusCode(result.StatusCode, result);
     }
 
-    // PUT: api/roles/{roleId}/permissions
-    [HttpPut("{roleId}/permissions")]
+    // PUT: api/roles/permissions/{roleId}
+    [HttpPut("permissions/{roleId}")]
     [HasPermission(Permissions.RolesUpdate)]
     public async Task<IActionResult> UpdateRolePermissions(
         string roleId,

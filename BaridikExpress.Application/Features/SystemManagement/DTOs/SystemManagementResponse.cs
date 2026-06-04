@@ -1,9 +1,10 @@
-﻿namespace BaridikExpress.Application.Features.SystemManagement.DTOs;
+﻿using BaridikExpress.Application.DTOs;
+
+namespace BaridikExpress.Application.Features.SystemManagement.DTOs;
 
 public sealed record SystemManagementResponse(
     Guid Id,
-    string? DescriptionAr,
-    string? DescriptionEn,
+    LocalizeLang? Description,
     string? UpdatedBy,
     DateTime? UpdatedAt
 );

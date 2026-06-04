@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Options;
+﻿using BaridikExpress.API.Converters;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
@@ -14,25 +14,29 @@ namespace Api
                 .AddControllersConfig()
                 .AddJwtAuthentication(configuration)
                 .AddSwaggerWithAuth();
-
             return services;
         }
 
         private static IServiceCollection AddControllersConfig(this IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(new EmptyStringGuidConverter());
+                });
+
             // To Stop automatic model state validation and use custom response instead
             services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.SuppressModelStateInvalidFilter = true;
             });
+
             return services;
         }
 
         private static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
             var key = Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!);
-
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -46,24 +50,19 @@ namespace Api
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-
                     ValidIssuer = configuration["Jwt:Issuer"],
                     ValidAudience = configuration["Jwt:Audience"],
                     IssuerSigningKey = new SymmetricSecurityKey(key),
-
                     ClockSkew = TimeSpan.Zero
                 };
             });
-
             services.AddAuthorization();
-
             return services;
         }
 
         private static IServiceCollection AddSwaggerWithAuth(this IServiceCollection services)
         {
             services.AddEndpointsApiExplorer();
-
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new OpenApiInfo
@@ -71,7 +70,6 @@ namespace Api
                     Title = "BaridikExpress.API",
                     Version = "v1"
                 });
-
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
@@ -81,7 +79,6 @@ namespace Api
                     In = ParameterLocation.Header,
                     Description = "Enter token only (without \"Bearer\"). It will be added automatically."
                 });
-
                 options.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     {
@@ -95,14 +92,10 @@ namespace Api
                         },
                         Array.Empty<string>()
                     }
-
                 });
                 options.OperationFilter<AcceptLanguageHeaderOperationFilter>();
-
                 options.CustomSchemaIds(type => type.FullName);
-           
             });
-
             return services;
         }
     }
