@@ -1,3 +1,4 @@
+using BaridikExpress.Application.Common.Extensions;
 using BaridikExpress.Application.Features.CommanDTO.Localizes;
 using BaridikExpress.Application.Features.Vehicles.DTO;
 using BaridikExpress.Application.Interfaces.IRepository;
@@ -32,16 +33,18 @@ namespace BaridikExpress.Application.Features.Vehicles.Queries.GetVehicleById
                     EN = vehicle.NameEn,
                     AR = vehicle.NameAr
                 },
-                LoadCapacityFrom =
-                        $"{vehicle.LoadCapacityFrom} Tons",
-                LoadCapacityTo =
-                        $"{vehicle.LoadCapacityTo} Tons",
-                PricePerTon =
-                        $"{vehicle.PricePerTon} SAR/Ton",
-                TotalPrice =
-                        vehicle.IsPriceCalculationEnabled
-                            ? $"{vehicle.PricePerTon} * {vehicle.LoadCapacityTo} = {vehicle.TotalPrice} SAR"
-                            : "0",
+                LoadCapacityFrom = vehicle.LoadCapacityFrom,
+                LoadCapacityTo = vehicle.LoadCapacityTo,
+                PricePerTon = vehicle.PricePerTon,
+                TotalPrice = vehicle.IsPriceCalculationEnabled
+                    ? vehicle.TotalPrice
+                    : 0,
+                Currency = vehicle.Currency.ToLocalizedDto(),
+                CapacityUnit = new LocalizedDto
+                {
+                    EN = "Ton",
+                    AR = "??"
+                },
                 ImageUrl = vehicle.ImageUrl,
                 IsPriceCalculationEnabled = vehicle.IsPriceCalculationEnabled,
                 IsActive = vehicle.IsActive
