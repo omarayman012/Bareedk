@@ -1,10 +1,8 @@
 ﻿namespace BaridikExpress.Application.Features.LocationGeography.Commands.Villiage.UpdateVillage;
 
-public class UpdateVillageCommandValidator
-    : AbstractValidator<UpdateVillageCommand>
+public class UpdateVillageCommandValidator : AbstractValidator<UpdateVillageCommand>
 {
-    public UpdateVillageCommandValidator(
-        IStringLocalizer localizer)
+    public UpdateVillageCommandValidator(IStringLocalizer localizer)
     {
         RuleFor(x => x.Id)
             .NotEmpty()
@@ -14,7 +12,9 @@ public class UpdateVillageCommandValidator
             .Must(x =>
                 !string.IsNullOrWhiteSpace(x.NameAr) ||
                 !string.IsNullOrWhiteSpace(x.NameEn) ||
-                x.CityId.HasValue)
+                x.CityId.HasValue ||
+                x.GovernmentId.HasValue ||
+                x.CountryId.HasValue)
             .WithMessage(localizer["AtLeastOneFieldRequired"]);
 
         RuleFor(x => x.NameAr)
@@ -33,5 +33,15 @@ public class UpdateVillageCommandValidator
             .NotEmpty()
             .WithMessage(localizer["CityIdRequired"])
             .When(x => x.CityId.HasValue);
+
+        RuleFor(x => x.GovernmentId)
+            .NotEmpty()
+            .WithMessage(localizer["GovernmentIdRequired"])
+            .When(x => x.GovernmentId.HasValue);
+
+        RuleFor(x => x.CountryId)
+            .NotEmpty()
+            .WithMessage(localizer["CountryIdRequired"])
+            .When(x => x.CountryId.HasValue);
     }
 }

@@ -1,11 +1,9 @@
 using BaridikExpress.Application.Common.Extensions;
-using BaridikExpress.Application.Common.Helpers;
 using BaridikExpress.Application.Features.CommanDTO.Localizes;
 using BaridikExpress.Application.Features.Vehicles.DTO;
-using BaridikExpress.Application.Interfaces.IRepository;
 using BaridikExpress.Domain.Entities.Vehicles;
-using BaridikExpress.Domain.Enum;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace BaridikExpress.Application.Features.Vehicles.Queries.GetAllVehicles;
 
@@ -18,9 +16,9 @@ public sealed class GetAllVehiclesQueryHandler(
         GetAllVehiclesQuery request,
         CancellationToken cancellationToken)
     {
-        var query = db.Vehicles.AsNoTracking().AsQueryable();
-
-        #region Filters
+        var query = db.Vehicles
+            .AsNoTracking()
+            .ApplyCommonFilters(request);
 
         if (!string.IsNullOrWhiteSpace(request.Name))
             query = query.Where(x =>
@@ -31,47 +29,46 @@ public sealed class GetAllVehiclesQueryHandler(
             query = query.Where(x =>
                 x.IsPriceCalculationEnabled == request.IsPriceCalculationEnabled.Value);
 
-        query = query.ApplyCommonFilters(request);
-
-        #endregion
-
-        #region Projection & Pagination
-
         var projected = query
             .OrderByDescending(x => x.CreatedAt)
-            .Select(x => new GetAllVehiclesDto
-            {
-                Id = x.Id,
-                Name = new LocalizedDto
-                {
-                    EN = x.NameEn,
-                    AR = x.NameAr
-                },
-                ImageUrl = x.ImageUrl,
-                LoadCapacityFrom = x.LoadCapacityFrom,
-                LoadCapacityTo = x.LoadCapacityTo,
-                PricePerTon = x.PricePerTon,
-                TotalPrice = x.IsPriceCalculationEnabled ? x.TotalPrice : 0,
-                Currency = x.Currency.ToLocalizedDto(),
-                CapacityUnit = new LocalizedDto
-                {
-                    EN = "Ton",
-                    AR = "طن"
-                },
-                IsPriceCalculationEnabled = x.IsPriceCalculationEnabled,
-                IsActive = x.IsActive,
-                CreatedBy = x.CreatedBy != null ? x.CreatedBy.FullName : null,
-                CreatedAt = x.CreatedAt,
-                UpdatedBy = x.UpdatedBy != null ? x.UpdatedBy.FullName : null,
-                UpdatedAt = x.UpdatedAt
-            });
+            .Select(Projection);
 
-        var paginatedResult = await PaginatedList<GetAllVehiclesDto>
+        var result = await PaginatedList<GetAllVehiclesDto>
             .CreateAsync(projected, request.PageNumber, request.PageSize);
 
-        #endregion
-
         return Result<PaginatedList<GetAllVehiclesDto>>
-            .Success(paginatedResult, localizer["OperationCompletedSuccessfully"]);
+            .Success(result, localizer["OperationCompletedSuccessfully"]);
     }
+
+    private static readonly Expression<Func<Vehicle, GetAllVehiclesDto>> Projection = x =>
+        new GetAllVehiclesDto
+        {
+            Id = x.Id,
+            Name = new LocalizedDto
+            {
+                EN = x.NameEn,
+                AR = x.NameAr
+            },
+            ImageUrl = x.ImageUrl,
+            LoadCapacityFrom = x.LoadCapacityFrom,
+            LoadCapacityTo = x.LoadCapacityTo,
+            PricePerTon = x.PricePerTon,
+            TotalPrice = x.IsPriceCalculationEnabled ? x.TotalPrice : 0,
+            Currency = x.Currency.ToLocalizedDto(),
+            CapacityUnit = new LocalizedDto
+            {
+                EN = "Ton",
+                AR = "طن"
+            },
+            IsPriceCalculationEnabled = x.IsPriceCalculationEnabled,
+            IsActive = x.IsActive,
+            CreatedBy = x.CreatedBy != null
+                ? x.CreatedBy.FullName
+                : "",
+            CreatedAt = x.CreatedAt,
+            UpdatedBy = x.UpdatedBy != null
+                ? x.UpdatedBy.FullName
+                : "",
+            UpdatedAt = x.UpdatedAt
+        };
 }
