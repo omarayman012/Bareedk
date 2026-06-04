@@ -25,6 +25,7 @@ public class GetCountryByIdQueryHandler(
                     AR = x.CountryNameAr,
                     EN = x.CountryNameEn
                 },
+                PhoneCode = x.PhoneCode,
                 CreatedBy = x.CreatedBy != null ? x.CreatedBy.FullName : x.CreatedById,
                 CreatedAt = x.CreatedAt,
                 UpdatedBy = x.UpdatedBy != null ? x.UpdatedBy.FullName : x.UpdatedById,

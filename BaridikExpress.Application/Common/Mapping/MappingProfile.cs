@@ -17,7 +17,9 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.CountryNameAr,
                 opt => opt.MapFrom(src => src.NameAr))
             .ForMember(dest => dest.CountryNameEn,
-                opt => opt.MapFrom(src => src.NameEn));
+                opt => opt.MapFrom(src => src.NameEn))
+            .ForMember(dest => dest.PhoneCode,
+                opt => opt.MapFrom(src => src.PhoneCode));
 
         CreateMap<Domain.Entities.Location.Country, CreateCountryResponse>()
             .ForMember(dest => dest.Id,
@@ -28,6 +30,8 @@ public class MappingProfile : Profile
                     AR = src.CountryNameAr,
                     EN = src.CountryNameEn
                 }))
+                .ForMember(dest => dest.PhoneCode,
+                opt => opt.MapFrom(src => src.PhoneCode))
             .ForMember(dest => dest.CreatedBy,
                 opt => opt.MapFrom(src =>
                     src.CreatedBy != null

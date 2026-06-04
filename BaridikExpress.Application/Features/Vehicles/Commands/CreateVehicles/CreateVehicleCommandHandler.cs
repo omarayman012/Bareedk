@@ -47,6 +47,7 @@ namespace BaridikExpress.Application.Features.Vehicles.Commands.CreateVehicles
                 request.LoadCapacityFrom,
                 request.LoadCapacityTo,
                 request.PricePerTon,
+                request.Currency,
                imagePath,
                 request.IsPriceCalculationEnabled);
 

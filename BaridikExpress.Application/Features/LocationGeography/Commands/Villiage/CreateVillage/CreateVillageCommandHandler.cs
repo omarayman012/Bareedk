@@ -53,7 +53,9 @@ public class CreateVillageCommandHandler(
         {
             VillageNameAr = nameAr ?? string.Empty,
             VillageNameEn = nameEn ?? string.Empty,
-            CityId = request.CityId
+            CityId = city.CityId,
+            GovernmentId = city.GovernmentId,
+            CountryId = city.Government!.CountryId
         };
 
         await _application.Villages

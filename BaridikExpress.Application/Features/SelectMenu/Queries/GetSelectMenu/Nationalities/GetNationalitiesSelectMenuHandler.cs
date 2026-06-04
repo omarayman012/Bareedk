@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BaridikExpress.Application.Features.Shared.SelectMenus.Nationalities.DTOs;
 
-namespace BaridikExpress.Application.Features.Shared.SelectMenus.Nationalities.Queries
+namespace BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.Nationalities
 {
     public sealed class GetNationalitiesSelectMenuHandler
         : IRequestHandler<

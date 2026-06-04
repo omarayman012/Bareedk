@@ -1,4 +1,5 @@
 ﻿using BaridikExpress.Domain.Entities.Base;
+using BaridikExpress.Domain.Enum;
 
 namespace BaridikExpress.Domain.Entities.Vehicles
 {
@@ -10,6 +11,7 @@ namespace BaridikExpress.Domain.Entities.Vehicles
         public decimal LoadCapacityFrom { get; private set; }
         public decimal LoadCapacityTo { get; private set; }
         public decimal PricePerTon { get; private set; }
+        public Currency Currency { get; private set; }
         public decimal? TotalPrice
             => IsPriceCalculationEnabled
                 ? PricePerTon * LoadCapacityTo
@@ -27,6 +29,7 @@ namespace BaridikExpress.Domain.Entities.Vehicles
             decimal loadCapacityFrom,
             decimal loadCapacityTo,
             decimal pricePerTon,
+             Currency currency,
             string imageUrl,
             bool isPriceCalculationEnabled)
         {
@@ -36,6 +39,7 @@ namespace BaridikExpress.Domain.Entities.Vehicles
                 loadCapacityFrom,
                 loadCapacityTo);
             SetPricePerTon(pricePerTon);
+            Currency = currency;
             ImageUrl = imageUrl;
             IsPriceCalculationEnabled = isPriceCalculationEnabled;
         }
@@ -46,6 +50,7 @@ namespace BaridikExpress.Domain.Entities.Vehicles
             decimal ?loadCapacityFrom,
             decimal ?loadCapacityTo,
             decimal ?pricePerTon,
+            Currency ?currency,
             string ?imageUrl,
             bool ?isPriceCalculationEnabled)
         {
@@ -57,8 +62,8 @@ namespace BaridikExpress.Domain.Entities.Vehicles
             var resolvedLoadTo = loadCapacityTo ?? LoadCapacityTo;
             SetLoadCapacity(resolvedLoadFrom, resolvedLoadTo);
             SetPricePerTon(pricePerTon ?? PricePerTon);
+            Currency = currency??Currency;
             ImageUrl = imageUrl ?? ImageUrl;
-
             IsPriceCalculationEnabled = isPriceCalculationEnabled ?? IsPriceCalculationEnabled;
         }
 

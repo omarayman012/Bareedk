@@ -25,6 +25,7 @@ namespace BaridikExpress.Application.Features.Vehicles.Commands.UploadVehicles
                         dto.LoadCapacityFrom,
                         dto.LoadCapacityTo,
                         dto.PricePerTon,
+                       dto.Currency,
                         dto.ImageUrl,
                         dto.IsPriceCalculationEnabled),
 

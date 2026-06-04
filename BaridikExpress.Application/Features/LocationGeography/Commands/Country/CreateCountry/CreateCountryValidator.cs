@@ -19,5 +19,13 @@ public class CreateCountryValidator : AbstractValidator<CreateCountryCommand>
             .MaximumLength(100)
             .WithMessage(localizer["CountryNameEnMaxLength"])
             .When(x => !string.IsNullOrWhiteSpace(x.NameEn));
+
+        RuleFor(x => x.PhoneCode)
+            .NotEmpty()
+            .WithMessage(localizer["PhoneCodeRequired"])
+            .MaximumLength(10)
+            .WithMessage(localizer["PhoneCodeMaxLength"])
+            .Matches(@"^\+?[0-9]+$")
+            .WithMessage(localizer["InvalidPhoneCode"]);
     }
 }

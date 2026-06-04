@@ -1,93 +1,74 @@
 using BaridikExpress.Application.Common.Extensions;
-using BaridikExpress.Application.Common.Helpers;
 using BaridikExpress.Application.Features.CommanDTO.Localizes;
 using BaridikExpress.Application.Features.Vehicles.DTO;
-using BaridikExpress.Application.Interfaces.IRepository;
 using BaridikExpress.Domain.Entities.Vehicles;
+using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
-namespace BaridikExpress.Application.Features.Vehicles.Queries.GetAllVehicles
+namespace BaridikExpress.Application.Features.Vehicles.Queries.GetAllVehicles;
+
+public sealed class GetAllVehiclesQueryHandler(
+    IApplicationDbContext db,
+    IStringLocalizer localizer)
+    : IRequestHandler<GetAllVehiclesQuery, Result<PaginatedList<GetAllVehiclesDto>>>
 {
-    public class GetAllVehiclesQueryHandler(
-        IGenericRepository<Vehicle> repo,
-        IStringLocalizer localizer
-    ) : IRequestHandler< GetAllVehiclesQuery,
-            Result<PaginatedList<GetAllVehiclesDto>>>
+    public async Task<Result<PaginatedList<GetAllVehiclesDto>>> Handle(
+        GetAllVehiclesQuery request,
+        CancellationToken cancellationToken)
     {
-        private readonly IGenericRepository<Vehicle> _repo = repo;
-        private readonly IStringLocalizer _localizer = localizer;
+        var query = db.Vehicles
+            .AsNoTracking()
+            .ApplyCommonFilters(request);
 
-        public async Task<Result<PaginatedList<GetAllVehiclesDto>>> Handle(
-            GetAllVehiclesQuery request,
-            CancellationToken cancellationToken)
-        {
-            var query = _repo.Query();
+        if (!string.IsNullOrWhiteSpace(request.Name))
+            query = query.Where(x =>
+                x.NameEn.Contains(request.Name) ||
+                x.NameAr.Contains(request.Name));
 
-            if (!string.IsNullOrWhiteSpace(request.Name))
-            {
-                var (nameAr, nameEn) =
-                    NormalizeHelper.Normalize(
-                        request.Name,
-                        request.Name);
+        if (request.IsPriceCalculationEnabled.HasValue)
+            query = query.Where(x =>
+                x.IsPriceCalculationEnabled == request.IsPriceCalculationEnabled.Value);
 
-                query = query.Where(x =>
-                    x.NameEn.Contains(nameEn) ||
-                    x.NameAr.Contains(nameAr));
-            }
+        var projected = query
+            .OrderByDescending(x => x.CreatedAt)
+            .Select(Projection);
 
-            if (request.IsPriceCalculationEnabled.HasValue)
-            {
-                query = query.Where(x =>
-                    x.IsPriceCalculationEnabled ==
-                    request.IsPriceCalculationEnabled.Value);
-            }
+        var result = await PaginatedList<GetAllVehiclesDto>
+            .CreateAsync(projected, request.PageNumber, request.PageSize);
 
-            query = query.ApplyCommonFilters(request);
-            var result = query
-                .OrderByDescending(x => x.CreatedAt)
-                .Select(x => new GetAllVehiclesDto
-                {
-                    Id = x.Id,
-                    Name = new LocalizedDto
-                    {
-                        EN = x.NameEn,
-                        AR = x.NameAr
-                    },
-
-                    ImageUrl = x.ImageUrl,
-                    LoadCapacityFrom =
-                        $"{x.LoadCapacityFrom} Tons",
-                    LoadCapacityTo =
-                        $"{x.LoadCapacityTo} Tons",
-                    PricePerTon =
-                        $"{x.PricePerTon} SAR/Ton",
-                    TotalPrice =
-                        x.IsPriceCalculationEnabled
-                            ? $"{x.PricePerTon} * {x.LoadCapacityTo} = {x.TotalPrice} SAR"
-                            : "0",
-
-                    CreatedBy = x.CreatedBy!.FullName,
-                    CreatedAt = x.CreatedAt,
-                    UpdatedBy = x.UpdatedBy != null
-                        ? x.UpdatedBy.FullName
-                        : null,
-
-                    UpdatedAt = x.UpdatedAt,
-                    IsPriceCalculationEnabled =
-                        x.IsPriceCalculationEnabled,
-                    IsActive = x.IsActive
-                });
-
-            var paginatedResult =
-                await PaginatedList<GetAllVehiclesDto>
-                    .CreateAsync(
-                        result,
-                        request.PageNumber,
-                        request.PageSize);
-
-            return Result<PaginatedList<GetAllVehiclesDto>>
-                .Success(
-                    paginatedResult,
-                    _localizer["OperationCompletedSuccessfully"]);
-        }
+        return Result<PaginatedList<GetAllVehiclesDto>>
+            .Success(result, localizer["OperationCompletedSuccessfully"]);
     }
+
+    private static readonly Expression<Func<Vehicle, GetAllVehiclesDto>> Projection = x =>
+        new GetAllVehiclesDto
+        {
+            Id = x.Id,
+            Name = new LocalizedDto
+            {
+                EN = x.NameEn,
+                AR = x.NameAr
+            },
+            ImageUrl = x.ImageUrl,
+            LoadCapacityFrom = x.LoadCapacityFrom,
+            LoadCapacityTo = x.LoadCapacityTo,
+            PricePerTon = x.PricePerTon,
+            TotalPrice = x.IsPriceCalculationEnabled ? x.TotalPrice : 0,
+            Currency = x.Currency.ToLocalizedDto(),
+            CapacityUnit = new LocalizedDto
+            {
+                EN = "Ton",
+                AR = "طن"
+            },
+            IsPriceCalculationEnabled = x.IsPriceCalculationEnabled,
+            IsActive = x.IsActive,
+            CreatedBy = x.CreatedBy != null
+                ? x.CreatedBy.FullName
+                : "",
+            CreatedAt = x.CreatedAt,
+            UpdatedBy = x.UpdatedBy != null
+                ? x.UpdatedBy.FullName
+                : "",
+            UpdatedAt = x.UpdatedAt
+        };
 }

@@ -8,7 +8,6 @@ public sealed class GetFAQByIdQueryHandler(
     IStringLocalizer localizer)
     : IRequestHandler<GetFAQByIdQuery, Result<FAQResponse>>
 {
-    #region Handle
     public async Task<Result<FAQResponse>> Handle(
         GetFAQByIdQuery request,
         CancellationToken cancellationToken)
@@ -20,9 +19,10 @@ public sealed class GetFAQByIdQueryHandler(
                 x.Id,
                 new LocalizeLang { AR = x.QuestionAr, EN = x.QuestionEn },
                 new LocalizeLang { AR = x.AnswerAr, EN = x.AnswerEn },
-                x.CreatedBy != null ? x.CreatedBy.FullName : null,
+                x.IsActive,
+                x.CreatedBy!.FullName,
                 x.CreatedAt,
-                x.UpdatedBy != null ? x.UpdatedBy.FullName : null,
+                x.UpdatedBy!.FullName,
                 x.UpdatedAt))
             .FirstOrDefaultAsync(cancellationToken);
 
@@ -31,5 +31,4 @@ public sealed class GetFAQByIdQueryHandler(
 
         return Result<FAQResponse>.Success(response, localizer["FAQRetrievedSuccessfully"]);
     }
-    #endregion
 }

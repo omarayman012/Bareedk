@@ -3,11 +3,9 @@ using Microsoft.Extensions.Localization;
 
 namespace BaridikExpress.Application.Features.LocationGeography.Commands.Villiage.CreateVillage;
 
-public class CreateVillageCommandValidator
-    : AbstractValidator<CreateVillageCommand>
+public class CreateVillageCommandValidator : AbstractValidator<CreateVillageCommand>
 {
-    public CreateVillageCommandValidator(
-        IStringLocalizer localizer)
+    public CreateVillageCommandValidator(IStringLocalizer localizer)
     {
         RuleFor(x => x)
             .Must(x =>
@@ -29,13 +27,13 @@ public class CreateVillageCommandValidator
 
         RuleFor(x => x.CityId)
             .NotEmpty()
-            .WithMessage(localizer["CityIdRequired"])
-            .Must(BeValidGuid)
-            .WithMessage(localizer["CityIdMustBeValid"]);
-    }
-
-    private static bool BeValidGuid(Guid cityId)
-    {
-        return cityId != Guid.Empty;
+            .WithMessage(localizer["CityIdRequired"]);
+        RuleFor(x => x.GovernmentId)
+           .NotEmpty()
+           .WithMessage(localizer["GovernmentIdRequired"]);
+          
+        RuleFor(x => x.CountryId)
+            .NotEmpty()
+            .WithMessage(localizer["CountryIdRequired"]);
     }
 }

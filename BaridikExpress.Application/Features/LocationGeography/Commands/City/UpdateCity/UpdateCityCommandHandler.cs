@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Localization;
 
 namespace BaridikExpress.Application.Features.LocationGeography.Commands.City.UpdateCity;
 
@@ -14,12 +13,15 @@ public class UpdateCityCommandHandler(
         UpdateCityCommand request,
         CancellationToken cancellationToken)
     {
+        #region Check City
         var city = await _application.Cities
             .FirstOrDefaultAsync(x => x.CityId == request.Id, cancellationToken);
 
         if (city is null)
             return Result<bool>.Failure(_localizer["CityNotFound"], 404);
+        #endregion
 
+        #region Check Government
         if (request.GovernmentId != Guid.Empty && request.GovernmentId != city.GovernmentId)
         {
             var governmentExists = await _application.Governments
@@ -30,7 +32,22 @@ public class UpdateCityCommandHandler(
 
             city.GovernmentId = request.GovernmentId;
         }
+        #endregion
 
+        #region Check Country
+        if (request.CountryId.HasValue && request.CountryId != city.CountryId)
+        {
+            var countryExists = await _application.Countries
+                .AnyAsync(x => x.CountryId == request.CountryId.Value && x.IsActive, cancellationToken);
+
+            if (!countryExists)
+                return Result<bool>.Failure(_localizer["CountryNotFound"], 404);
+
+            city.CountryId = request.CountryId.Value;
+        }
+        #endregion
+
+        #region Check Duplicate
         if (!string.IsNullOrWhiteSpace(request.NameAr) || !string.IsNullOrWhiteSpace(request.NameEn))
         {
             var exists = await _application.Cities
@@ -48,6 +65,7 @@ public class UpdateCityCommandHandler(
             if (!string.IsNullOrWhiteSpace(request.NameEn))
                 city.CityNameEn = request.NameEn;
         }
+        #endregion
 
         await _application.SaveChangesAsync(cancellationToken);
 
