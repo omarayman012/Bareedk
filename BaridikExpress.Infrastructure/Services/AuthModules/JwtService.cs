@@ -21,22 +21,25 @@ namespace BaridikExpress.Infrastructure.Services.AuthModules
             _config = config;
         }
 
-        public Task<string> GenerateToken(User user, string role)
+        public Task<string> GenerateToken(User user, string role, IEnumerable<string> permissions)
         {
-            var claims = new[]
+            var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.NameIdentifier, user.Id),
+            new Claim(ClaimTypes.Name, user.FullName),
+            new Claim(ClaimTypes.Email, user.Email ?? ""),
+            new Claim(ClaimTypes.Role, role)
+        };
+
+            foreach (var permission in permissions)
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id),
-                new Claim(ClaimTypes.Name, user.FullName),
-                new Claim(ClaimTypes.Email, user.Email ?? ""),
-                new Claim(ClaimTypes.Role, role)
-            };
+                claims.Add(new Claim("permission", permission));
+            }
 
             var key = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
 
-            var creds = new SigningCredentials(
-                key,
-                SecurityAlgorithms.HmacSha256);
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
                 issuer: _config["Jwt:Issuer"],

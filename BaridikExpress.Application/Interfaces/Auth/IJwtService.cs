@@ -8,6 +8,6 @@ namespace BaridikExpress.Application.Interfaces.Auth
 {
     public interface IJwtService
     {
-        Task<string> GenerateToken(User user, string role);
+        Task<string> GenerateToken(User user, string role, IEnumerable<string> permissions);
     }
 }
