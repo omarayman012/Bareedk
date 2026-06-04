@@ -33,6 +33,9 @@ namespace BaridikExpress.Application.Features.Vehicles.Commands.CreateVehicles
                 .GreaterThan(0)
                 .WithMessage(localizer["PricePerTonInvalid"]);
 
+            RuleFor(x => x.Currency)
+                .IsInEnum()
+                .WithMessage(localizer["InvalidCurrency"]);
             RuleFor(x => x.ImageUrl)
                     .NotNull()
                      .WithMessage(localizer["ImageRequired"])
