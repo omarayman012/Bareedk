@@ -3,8 +3,7 @@ using Microsoft.Extensions.Localization;
 
 namespace BaridikExpress.Application.Features.LocationGeography.Commands.City.CreateCity;
 
-public class CreateCityCommandValidator
-    : AbstractValidator<CreateCityCommand>
+public class CreateCityCommandValidator : AbstractValidator<CreateCityCommand>
 {
     public CreateCityCommandValidator(IStringLocalizer localizer)
     {
@@ -31,5 +30,11 @@ public class CreateCityCommandValidator
             .WithMessage(localizer["GovernmentIdRequired"])
             .NotEqual(Guid.Empty)
             .WithMessage(localizer["GovernmentIdMustBeValid"]);
+
+        RuleFor(x => x.CountryId) 
+            .NotEmpty()
+            .WithMessage(localizer["CountryIdRequired"])
+            .NotEqual(Guid.Empty)
+            .WithMessage(localizer["CountryIdMustBeValid"]);
     }
 }
