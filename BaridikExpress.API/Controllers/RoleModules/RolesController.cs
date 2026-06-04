@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BaridikExpress.API.Controllers.RoleModules;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/v1/[controller]")]
 [Authorize]
 [ApiExplorerSettings(GroupName = "admin-v1")]
 [Tags("Roles")]

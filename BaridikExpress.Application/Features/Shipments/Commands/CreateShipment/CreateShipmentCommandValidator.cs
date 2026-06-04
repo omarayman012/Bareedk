@@ -1,4 +1,5 @@
 ﻿using BaridikExpress.Application.Features.Shipments.DTOs;
+using Microsoft.AspNetCore.Http;
 
 namespace BaridikExpress.Application.Features.Shipments.Commands.CreateShipment;
 
@@ -13,71 +14,74 @@ public sealed class CreateShipmentCommandValidator
 
     private static readonly HashSet<string> AllowedExtensions =
         new(StringComparer.OrdinalIgnoreCase)
-        { ".jpg", ".jpeg", ".png", ".pdf", ".mp4" };
+        { ".jpg", ".jpeg", ".png", ".pdf", ".mp4", ".mov", ".avi", ".webm" };
 
-    public CreateShipmentCommandValidator(
-        IStringLocalizer<CreateShipmentCommandValidator> localizer)
+    public CreateShipmentCommandValidator(IStringLocalizer localizer)
     {
-        #region Client
-        RuleFor(x => x.ClientId)
-            .NotEmpty()
-            .WithMessage(localizer["ClientIdRequired"]);
-        #endregion
-
         #region Addresses
+
         RuleFor(x => x.SenderAddress)
-            .NotNull()
-            .WithMessage(localizer["SenderAddressRequired"])
+            .NotNull().WithMessage(localizer["SenderAddressRequired"])
             .SetValidator(new ShipmentAddressDtoValidator(localizer));
 
         RuleFor(x => x.ReceiverAddress)
-            .NotNull()
-            .WithMessage(localizer["ReceiverAddressRequired"])
+            .NotNull().WithMessage(localizer["ReceiverAddressRequired"])
             .SetValidator(new ShipmentAddressDtoValidator(localizer));
+
         #endregion
 
         #region Weight & Pieces
+
         RuleFor(x => x.TotalWeight)
-            .GreaterThan(0)
-            .WithMessage(localizer["TotalWeightMustBePositive"])
-            .LessThanOrEqualTo(MaxWeight)
-            .WithMessage(localizer["TotalWeightExceeded"]);
+            .GreaterThan(0).WithMessage(localizer["TotalWeightMustBePositive"])
+            .LessThanOrEqualTo(MaxWeight).WithMessage(localizer["TotalWeightExceeded"]);
 
         RuleFor(x => x.NumberOfPieces)
-            .GreaterThan(0)
-            .WithMessage(localizer["NumberOfPiecesMustBePositive"])
-            .LessThanOrEqualTo(9999)
-            .WithMessage(localizer["NumberOfPiecesExceeded"]);
+            .GreaterThan(0).WithMessage(localizer["NumberOfPiecesMustBePositive"])
+            .LessThanOrEqualTo(9999).WithMessage(localizer["NumberOfPiecesExceeded"]);
+
         #endregion
 
         #region Vehicle & Delivery
+
         RuleFor(x => x.VehicleId)
-            .NotEmpty()
-            .WithMessage(localizer["VehicleIdRequired"]);
+            .NotEmpty().WithMessage(localizer["VehicleIdRequired"]);
 
         RuleFor(x => x.DeliveryTypeId)
-            .NotEmpty()
-            .WithMessage(localizer["DeliveryTypeIdRequired"]);
+            .NotEmpty().WithMessage(localizer["DeliveryTypeIdRequired"]);
+
         #endregion
 
         #region Payment
+
         RuleFor(x => x.TotalAmount)
-            .GreaterThan(0)
-            .WithMessage(localizer["TotalAmountMustBePositive"])
-            .LessThanOrEqualTo(MaxAmount)
-            .WithMessage(localizer["TotalAmountExceeded"]);
+            .GreaterThan(0).WithMessage(localizer["TotalAmountMustBePositive"])
+            .LessThanOrEqualTo(MaxAmount).WithMessage(localizer["TotalAmountExceeded"]);
 
         RuleFor(x => x.PaymentMethod)
-            .IsInEnum()
-            .WithMessage(localizer["InvalidPaymentMethod"]);
+            .IsInEnum().WithMessage(localizer["InvalidPaymentMethod"]);
+
+        #endregion
+
+        #region Content Type
+
+        RuleFor(x => x.ContentType)
+            .IsInEnum().WithMessage(localizer["InvalidContentType"]);
+
+        #endregion
+
+        #region Terms
+
+        RuleFor(x => x.AcceptTermsAndConditions)
+            .Equal(true).WithMessage(localizer["MustAcceptTermsAndConditions"]);
+
         #endregion
 
         #region Services
+
         RuleFor(x => x.Services)
-            .NotEmpty()
-            .WithMessage(localizer["ServicesRequired"])
-            .Must(s => s.Count <= MaxServices)
-            .WithMessage(localizer["ServicesCountExceeded"]);
+            .NotEmpty().WithMessage(localizer["ServicesRequired"])
+            .Must(s => s.Count <= MaxServices).WithMessage(localizer["ServicesCountExceeded"]);
 
         RuleForEach(x => x.Services)
             .SetValidator(new ShipmentServiceDtoValidator(localizer));
@@ -85,9 +89,11 @@ public sealed class CreateShipmentCommandValidator
         RuleFor(x => x.Services)
             .Must(s => s.Select(x => x.ServiceId).Distinct().Count() == s.Count)
             .WithMessage(localizer["DuplicateServicesNotAllowed"]);
+
         #endregion
 
         #region Attachments
+
         When(x => x.Attachments is { Count: > 0 }, () =>
         {
             RuleFor(x => x.Attachments!)
@@ -95,21 +101,22 @@ public sealed class CreateShipmentCommandValidator
                 .WithMessage(localizer["AttachmentsCountExceeded"]);
 
             RuleForEach(x => x.Attachments!)
-                .SetValidator(new ShipmentAttachmentDtoValidator(
-                    localizer, AllowedExtensions, MaxFileSizeBytes));
+                .SetValidator(new IFormFileValidator(localizer, AllowedExtensions, MaxFileSizeBytes));
         });
+
         #endregion
 
         #region Optional Fields
+
         When(x => x.Notes is not null, () =>
             RuleFor(x => x.Notes!)
-                .MaximumLength(1000)
-                .WithMessage(localizer["NotesTooLong"]));
+                .MaximumLength(1000).WithMessage(localizer["NotesTooLong"]));
 
         When(x => x.ExpectedSendingDate.HasValue, () =>
             RuleFor(x => x.ExpectedSendingDate!.Value)
                 .GreaterThanOrEqualTo(DateOnly.FromDateTime(DateTime.UtcNow))
                 .WithMessage(localizer["ExpectedDateInPast"]));
+
         #endregion
     }
 }
@@ -117,8 +124,7 @@ public sealed class CreateShipmentCommandValidator
 internal sealed class ShipmentAddressDtoValidator
     : AbstractValidator<ShipmentAddressDto>
 {
-    public ShipmentAddressDtoValidator(
-        IStringLocalizer localizer)
+    public ShipmentAddressDtoValidator(IStringLocalizer localizer)
     {
         RuleFor(x => x.FullName)
             .NotEmpty().WithMessage(localizer["FullNameRequired"])
@@ -142,12 +148,10 @@ internal sealed class ShipmentAddressDtoValidator
             .MaximumLength(500).WithMessage(localizer["AddressTooLong"]);
 
         RuleFor(x => x.Latitude)
-            .InclusiveBetween(-90, 90)
-            .WithMessage(localizer["InvalidLatitude"]);
+            .InclusiveBetween(-90, 90).WithMessage(localizer["InvalidLatitude"]);
 
         RuleFor(x => x.Longitude)
-            .InclusiveBetween(-180, 180)
-            .WithMessage(localizer["InvalidLongitude"]);
+            .InclusiveBetween(-180, 180).WithMessage(localizer["InvalidLongitude"]);
     }
 }
 
@@ -165,10 +169,10 @@ internal sealed class ShipmentServiceDtoValidator
     }
 }
 
-internal sealed class ShipmentAttachmentDtoValidator
-    : AbstractValidator<ShipmentAttachmentDto>
+internal sealed class IFormFileValidator
+    : AbstractValidator<IFormFile>
 {
-    public ShipmentAttachmentDtoValidator(
+    public IFormFileValidator(
         IStringLocalizer localizer,
         HashSet<string> allowedExt,
         long maxSize)
@@ -178,12 +182,8 @@ internal sealed class ShipmentAttachmentDtoValidator
             .Must(f => allowedExt.Contains(Path.GetExtension(f)))
             .WithMessage(localizer["InvalidFileExtension"]);
 
-        RuleFor(x => x.FileStream)
-            .NotNull().WithMessage(localizer["FileStreamRequired"])
-            .Must(s => s.Length <= maxSize)
-            .WithMessage(localizer["FileSizeExceeded"]);
-
-        RuleFor(x => x.Type)
-            .IsInEnum().WithMessage(localizer["InvalidAttachmentType"]);
+        RuleFor(x => x.Length)
+            .GreaterThan(0).WithMessage(localizer["FileStreamRequired"])
+            .LessThanOrEqualTo(maxSize).WithMessage(localizer["FileSizeExceeded"]);
     }
 }

@@ -1,45 +1,119 @@
 ﻿using BaridikExpress.Application.Features.Shipments.DTOs;
-using BaridikExpress.Application.Features.Shipments.Mappings;
 using BaridikExpress.Application.Interfaces.File;
 using BaridikExpress.Domain.Entities.Shipments;
+using BaridikExpress.Domain.Enum;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace BaridikExpress.Application.Features.Shipments.Commands.CreateShipment;
 
 public sealed class CreateShipmentCommandHandler(
     IApplicationDbContext db,
-    IStringLocalizer<CreateShipmentCommandHandler> localizer,
-    IFileStorageService fileStorage)
-    : IRequestHandler<CreateShipmentCommand, Result<ShipmentResponse>>
+    IStringLocalizer localizer,
+    IFileStorageService fileStorage,
+    IHttpContextAccessor httpContextAccessor)
+    : IRequestHandler<CreateShipmentCommand, Result<ShipmentCreateResponse>>
 {
-    public async Task<Result<ShipmentResponse>> Handle(
+    public async Task<Result<ShipmentCreateResponse>> Handle(
         CreateShipmentCommand request,
         CancellationToken cancellationToken)
     {
-        var fkError = await ValidateForeignKeysAsync(request, cancellationToken);
-        if (fkError is not null)
-            return fkError;
+        #region Get Current User
+
+        var userId = httpContextAccessor.HttpContext?.User?
+            .FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(userId))
+            return Result<ShipmentCreateResponse>.Failure(localizer["Unauthorized"], 401);
+
+        #endregion
+
+        #region Validate Foreign Keys
+
+        if (!await db.ApplicationUsers.AnyAsync(x => x.Id == userId, cancellationToken))
+            return Result<ShipmentCreateResponse>.Failure(localizer["UserNotFound"], 404);
+
+        if (!await db.Vehicles.AnyAsync(x => x.Id == request.VehicleId, cancellationToken))
+            return Result<ShipmentCreateResponse>.Failure(localizer["VehicleNotFound"], 404);
+
+        if (!await db.DeliveryTypes.AnyAsync(x => x.Id == request.DeliveryTypeId, cancellationToken))
+            return Result<ShipmentCreateResponse>.Failure(localizer["DeliveryTypeNotFound"], 404);
+
+        #endregion
+
+        #region Validate Address Location FKs
+
+        var addressError = await ValidateAddressAsync(request.SenderAddress, cancellationToken);
+        if (addressError is not null)
+            return Result<ShipmentCreateResponse>.Failure(addressError);
+
+        addressError = await ValidateAddressAsync(request.ReceiverAddress, cancellationToken);
+        if (addressError is not null)
+            return Result<ShipmentCreateResponse>.Failure(addressError);
+
+        #endregion
+
+        #region Validate & Fetch Services
 
         var serviceIds = request.Services.Select(s => s.ServiceId).ToHashSet();
+
         var dbServices = await db.Services
             .Where(s => serviceIds.Contains(s.Id) && s.IsActive)
-            .ToDictionaryAsync(
-                s => s.Id,
-                s => (dynamic)
-                cancellationToken
-            );
+            .ToDictionaryAsync(s => s.Id, s => s.Price, cancellationToken);
 
         if (dbServices.Count != serviceIds.Count)
-            return Result<ShipmentResponse>.Failure(localizer["OneOrMoreServicesNotFound"]);
+            return Result<ShipmentCreateResponse>.Failure(localizer["OneOrMoreServicesNotFound"]);
+
+        #endregion
+
+        #region Create Addresses
 
         var senderAddress = MapAddress(request.SenderAddress);
         var receiverAddress = MapAddress(request.ReceiverAddress);
 
-        var attachments = await UploadAttachmentsAsync(request.Attachments, cancellationToken);
-        if (attachments is null)
-            return Result<ShipmentResponse>.Failure(localizer["AttachmentUploadFailed"], 400);
+        db.ShipmentAddresses.Add(senderAddress);
+        db.ShipmentAddresses.Add(receiverAddress);
+        await db.SaveChangesAsync(cancellationToken);
+
+        #endregion
+
+        #region Upload Attachments
+
+        var attachments = new List<ShipmentAttachment>();
+
+        if (request.Attachments is { Count: > 0 })
+        {
+            foreach (var file in request.Attachments)
+            {
+                var ext = Path.GetExtension(file.FileName).ToLower();
+
+                var type = ext is ".mp4" or ".mov" or ".avi" or ".webm"
+                    ? AttachmentType.Video
+                    : AttachmentType.Image;
+
+                var url = await fileStorage.SaveFileAsync(
+                    file.OpenReadStream(),
+                    file.FileName,
+                    "shipment-attachments");
+
+                if (url is null)
+                    return Result<ShipmentCreateResponse>.Failure(localizer["AttachmentUploadFailed"], 400);
+
+                attachments.Add(new ShipmentAttachment
+                {
+                    Id = Guid.NewGuid(),
+                    FileUrl = url,
+                    Type = type
+                });
+            }
+        }
+
+        #endregion
+
+        #region Create Shipment
 
         var shipment = Shipment.Create(
-            clientId: request.ClientId,
+            userId: userId,
             senderAddressId: senderAddress.Id,
             receiverAddressId: receiverAddress.Id,
             vehicleId: request.VehicleId,
@@ -48,47 +122,66 @@ public sealed class CreateShipmentCommandHandler(
             numberOfPieces: request.NumberOfPieces,
             totalAmount: request.TotalAmount,
             paymentMethod: request.PaymentMethod,
+            contentType: request.ContentType,
             expectedSendingDate: request.ExpectedSendingDate,
             notes: request.Notes,
             hasDimensions: request.HasDimensions);
 
+        #endregion
+
+        #region Add Services
+
         foreach (var item in request.Services)
         {
-            shipment.ShipmentServices.Add(new ShipmentService
+            shipment.AddService(new ShipmentService
             {
                 ShipmentId = shipment.Id,
                 ServiceId = item.ServiceId,
                 Quantity = item.Quantity,
-                UnitPrice = dbServices[item.ServiceId].Price
+                UnitPrice = dbServices[item.ServiceId]
             });
         }
 
-        foreach (var att in attachments)
-            shipment.Attachments.Add(att);
+        #endregion
 
-        db.ShipmentAddresses.Add(senderAddress);
-        db.ShipmentAddresses.Add(receiverAddress);
+        #region Add Attachments
+
+        foreach (var att in attachments)
+            shipment.AddAttachment(att);
+
+        #endregion
+
+        #region Save
+
         db.Shipments.Add(shipment);
         await db.SaveChangesAsync(cancellationToken);
 
-        return Result<ShipmentResponse>.Success(
-            shipment.ToResponse(dbServices),
+        #endregion
+
+        return Result<ShipmentCreateResponse>.Success(
+            new ShipmentCreateResponse(shipment.Id, shipment.TrackingId!),
             localizer["ShipmentCreatedSuccessfully"],
             201);
     }
 
-    private async Task<Result<ShipmentResponse>?> ValidateForeignKeysAsync(
-        CreateShipmentCommand request,
+    #region Helpers
+
+    private async Task<string?> ValidateAddressAsync(
+        ShipmentAddressDto dto,
         CancellationToken ct)
     {
-        if (!await db.Clients.AnyAsync(x => x.Id == request.ClientId, ct))
-            return Result<ShipmentResponse>.Failure(localizer["ClientNotFound"], 404);
+        if (!await db.Countries.AnyAsync(x => x.CountryId == dto.CountryId, ct))
+            return localizer["CountryNotFound"];
 
-        if (!await db.Vehicles.AnyAsync(x => x.Id == request.VehicleId, ct))
-            return Result<ShipmentResponse>.Failure(localizer["VehicleNotFound"], 404);
+        if (!await db.Governments.AnyAsync(x => x.GovernmentId == dto.GovernmentId, ct))
+            return localizer["GovernmentNotFound"];
 
-        if (!await db.DeliveryTypes.AnyAsync(x => x.Id == request.DeliveryTypeId, ct))
-            return Result<ShipmentResponse>.Failure(localizer["DeliveryTypeNotFound"], 404);
+        if (!await db.Cities.AnyAsync(x => x.CityId == dto.CityId, ct))
+            return localizer["CityNotFound"];
+
+        if (dto.VillageId.HasValue &&
+            !await db.Villages.AnyAsync(x => x.VillageId == dto.VillageId.Value, ct))
+            return localizer["VillageNotFound"];
 
         return null;
     }
@@ -97,47 +190,20 @@ public sealed class CreateShipmentCommandHandler(
         new()
         {
             Id = Guid.NewGuid(),
-            FullName = dto.FullName,
-            PhoneNumber = dto.PhoneNumber,
+            FullName = dto.FullName.Trim(),
+            PhoneNumber = dto.PhoneNumber.Trim(),
             CountryId = dto.CountryId,
             GovernmentId = dto.GovernmentId,
             CityId = dto.CityId,
             VillageId = dto.VillageId,
-            Address = dto.Address,
-            FloorNumber = dto.FloorNumber,
-            ApartmentNumber = dto.ApartmentNumber,
-            Landmark = dto.Landmark,
-            PostalCode = dto.PostalCode,
+            Address = dto.Address.Trim(),
+            FloorNumber = dto.FloorNumber?.Trim(),
+            ApartmentNumber = dto.ApartmentNumber?.Trim(),
+            Landmark = dto.Landmark?.Trim(),
+            PostalCode = dto.PostalCode?.Trim(),
             Latitude = dto.Latitude,
             Longitude = dto.Longitude
         };
-    private async Task<List<ShipmentAttachment>?> UploadAttachmentsAsync(
-        IReadOnlyList<ShipmentAttachmentDto>? attachments,
-        CancellationToken ct)
-    {
-        var result = new List<ShipmentAttachment>();
-        if (attachments is null or { Count: 0 })
-            return result;
 
-        foreach (var att in attachments)
-        {
-            if (att.FileStream == null) continue;
-
-            var url = await fileStorage.SaveFileAsync(
-                att.FileStream,
-                att.FileName,
-                "shipment-attachments"); 
-
-            if (url is null) return null;
-
-            result.Add(new ShipmentAttachment
-            {
-                Id = Guid.NewGuid(),
-                FileUrl = url,
-                Type = att.Type
-            });
-        }
-
-        return result;
-    }
+    #endregion
 }

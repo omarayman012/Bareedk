@@ -1,5 +1,6 @@
 ﻿using BaridikExpress.Domain.Entities.Enums;
 using BaridikExpress.Domain.Enum;
+using Microsoft.AspNetCore.Http;
 
 namespace BaridikExpress.Application.Features.Shipments.DTOs;
 
@@ -22,10 +23,9 @@ public sealed record ShipmentServiceDto(
     Guid ServiceId,
     int Quantity);
 
-public sealed record ShipmentAttachmentDto(
-    Stream FileStream,
-    string FileName,
-    AttachmentType Type);
+public sealed record ShipmentCreateResponse(
+    Guid Id,
+    string TrackingId);
 
 public sealed record ShipmentResponse(
     Guid Id,
@@ -40,6 +40,7 @@ public sealed record ShipmentResponse(
     DateOnly? ExpectedSendingDate,
     string? Notes,
     IReadOnlyList<ShipmentServiceSummary> Services,
+    IReadOnlyList<string> AttachmentUrls,
     DateTime CreatedAt);
 
 public sealed record ShipmentAddressSummary(

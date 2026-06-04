@@ -1,4 +1,5 @@
-﻿using BaridikExpress.Domain.Entities.Shipments;
+﻿using BaridikExpress.Domain.Entities.AuthModules;
+using BaridikExpress.Domain.Entities.Shipments;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -9,13 +10,14 @@ public class ShipmentConfiguration : IEntityTypeConfiguration<Shipment>
     public void Configure(EntityTypeBuilder<Shipment> builder)
     {
         builder.ToTable("Shipments");
-
         builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id).ValueGeneratedNever();
+
+        #region Properties
 
         builder.Property(x => x.TrackingId)
             .HasMaxLength(50)
             .IsRequired(false);
-
         builder.HasIndex(x => x.TrackingId)
             .IsUnique();
 
@@ -35,6 +37,11 @@ public class ShipmentConfiguration : IEntityTypeConfiguration<Shipment>
             .HasMaxLength(30)
             .IsRequired();
 
+        builder.Property(x => x.ContentType)
+            .HasConversion<string>()
+            .HasMaxLength(20)
+            .IsRequired();
+
         builder.Property(x => x.Status)
             .HasConversion<string>()
             .HasMaxLength(30)
@@ -50,11 +57,13 @@ public class ShipmentConfiguration : IEntityTypeConfiguration<Shipment>
         builder.Property(x => x.HasDimensions)
             .HasDefaultValue(false);
 
-        // ── Relationships ────────────────────────────────────────────────────
+        #endregion
 
-        builder.HasOne(x => x.Client)
-            .WithMany(x => x.Shipments)
-            .HasForeignKey(x => x.ClientId)
+        #region Relationships
+
+        builder.HasOne<User>(x => x.User)
+            .WithMany()
+            .HasForeignKey(x => x.UserId)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(x => x.SenderAddress)
@@ -91,5 +100,7 @@ public class ShipmentConfiguration : IEntityTypeConfiguration<Shipment>
             .WithOne(x => x.Shipment)
             .HasForeignKey(x => x.ShipmentId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        #endregion
     }
 }

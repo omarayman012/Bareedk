@@ -1,5 +1,6 @@
-﻿using BaridikExpress.Domain.Entities.Base;
-using BaridikExpress.Domain.Entities.ClientModule;
+﻿using System.Net.Mime;
+using BaridikExpress.Domain.Entities.AuthModules;
+using BaridikExpress.Domain.Entities.Base;
 using BaridikExpress.Domain.Entities.DeliveryType;
 using BaridikExpress.Domain.Entities.Enums;
 using BaridikExpress.Domain.Entities.Vehicles;
@@ -11,41 +12,60 @@ public class Shipment : BaseEntity
 {
     public Guid Id { get; private set; }
 
-    // ── Client ──────────────────────────────────────────────────────────────
-    public Guid ClientId { get; private set; }
-    public Client Client { get; private set; } = null!;
+    #region User
 
-    // ── Addresses ───────────────────────────────────────────────────────────
+    public string UserId { get; private set; } = string.Empty;
+    public User User { get; private set; } = null!;
+
+    #endregion
+
+    #region Addresses
+
     public Guid SenderAddressId { get; private set; }
     public ShipmentAddress SenderAddress { get; private set; } = null!;
 
     public Guid ReceiverAddressId { get; private set; }
     public ShipmentAddress ReceiverAddress { get; private set; } = null!;
 
-    // ── Shipment details ────────────────────────────────────────────────────
+    #endregion
+
+    #region Shipment Details
+
     public string? TrackingId { get; private set; }
     public string? Notes { get; private set; }
     public DateOnly? ExpectedSendingDate { get; private set; }
-
     public decimal TotalWeight { get; private set; }
     public int NumberOfPieces { get; private set; }
     public bool HasDimensions { get; private set; }
+    public AttachmentType ContentType { get; private set; }
 
-    // ── Vehicle & Delivery ──────────────────────────────────────────────────
+    #endregion
+
+    #region Vehicle & Delivery
+
     public Guid VehicleId { get; private set; }
     public Vehicle Vehicle { get; private set; } = null!;
 
     public Guid DeliveryTypeId { get; private set; }
     public DeliveryType.DeliveryType DeliveryType { get; private set; } = null!;
 
-    // ── Payment ─────────────────────────────────────────────────────────────
+    #endregion
+
+    #region Payment
+
     public decimal TotalAmount { get; private set; }
     public PaymentMethod PaymentMethod { get; private set; }
 
-    // ── Status ──────────────────────────────────────────────────────────────
+    #endregion
+
+    #region Status
+
     public ShipmentStatus Status { get; private set; } = ShipmentStatus.Processing;
 
-    // ── Collections ─────────────────────────────────────────────────────────
+    #endregion
+
+    #region Collections
+
     public ICollection<ShipmentAttachment> Attachments { get; private set; }
         = new List<ShipmentAttachment>();
 
@@ -55,9 +75,14 @@ public class Shipment : BaseEntity
     public ICollection<ShipmentStatusHistory> StatusHistory { get; private set; }
         = new List<ShipmentStatusHistory>();
 
-    // ── Factory method ──────────────────────────────────────────────────────
+    #endregion
+
+    private Shipment() { }
+
+    #region Factory Method
+
     public static Shipment Create(
-        Guid clientId,
+        string userId,
         Guid senderAddressId,
         Guid receiverAddressId,
         Guid vehicleId,
@@ -66,14 +91,33 @@ public class Shipment : BaseEntity
         int numberOfPieces,
         decimal totalAmount,
         PaymentMethod paymentMethod,
+        AttachmentType contentType,
         DateOnly? expectedSendingDate = null,
         string? notes = null,
         bool hasDimensions = false)
     {
+        if (string.IsNullOrWhiteSpace(userId))
+            throw new ArgumentException("UserId is required.", nameof(userId));
+
+        if (senderAddressId == Guid.Empty)
+            throw new ArgumentException("SenderAddressId is required.", nameof(senderAddressId));
+
+        if (receiverAddressId == Guid.Empty)
+            throw new ArgumentException("ReceiverAddressId is required.", nameof(receiverAddressId));
+
+        if (totalWeight <= 0)
+            throw new ArgumentOutOfRangeException(nameof(totalWeight), "Total weight must be greater than zero.");
+
+        if (numberOfPieces <= 0)
+            throw new ArgumentOutOfRangeException(nameof(numberOfPieces), "Number of pieces must be greater than zero.");
+
+        if (totalAmount < 0)
+            throw new ArgumentOutOfRangeException(nameof(totalAmount), "Total amount cannot be negative.");
+
         var shipment = new Shipment
         {
             Id = Guid.NewGuid(),
-            ClientId = clientId,
+            UserId = userId,
             SenderAddressId = senderAddressId,
             ReceiverAddressId = receiverAddressId,
             VehicleId = vehicleId,
@@ -82,8 +126,9 @@ public class Shipment : BaseEntity
             NumberOfPieces = numberOfPieces,
             TotalAmount = totalAmount,
             PaymentMethod = paymentMethod,
+            ContentType = contentType,
             ExpectedSendingDate = expectedSendingDate,
-            Notes = notes,
+            Notes = notes?.Trim(),
             HasDimensions = hasDimensions,
             Status = ShipmentStatus.Processing,
             TrackingId = GenerateTrackingId()
@@ -101,7 +146,10 @@ public class Shipment : BaseEntity
         return shipment;
     }
 
-    // ── Behaviour ────────────────────────────────────────────────────────────
+    #endregion
+
+    #region Behaviour
+
     public void UpdateStatus(ShipmentStatus newStatus, string? note = null)
     {
         Status = newStatus;
@@ -117,9 +165,34 @@ public class Shipment : BaseEntity
 
     public void UpdateTotalAmount(decimal amount)
     {
+        if (amount < 0)
+            throw new ArgumentOutOfRangeException(nameof(amount), "Amount cannot be negative.");
+
         TotalAmount = amount;
     }
 
+    public void AddService(ShipmentService service)
+    {
+        ShipmentServices.Add(service);
+    }
+
+    public void AddAttachment(ShipmentAttachment attachment)
+    {
+        Attachments.Add(attachment);
+    }
+
+    #endregion
+
+    #region Helpers
+
     private static string GenerateTrackingId()
         => $"BRD-{DateTime.UtcNow:yyyyMMdd}-{Guid.NewGuid().ToString()[..6].ToUpper()}";
+
+    public bool CanBeCancelled()
+        => Status == ShipmentStatus.Processing;
+
+    public bool IsDelivered()
+        => Status == ShipmentStatus.Delivered;
+
+    #endregion
 }

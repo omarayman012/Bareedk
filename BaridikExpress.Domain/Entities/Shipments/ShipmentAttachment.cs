@@ -1,5 +1,5 @@
 ﻿using BaridikExpress.Domain.Entities.Base;
-using BaridikExpress.Domain.Entities.Enums;
+using BaridikExpress.Domain.Enum;
 
 namespace BaridikExpress.Domain.Entities.Shipments;
 

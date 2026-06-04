@@ -1,4 +1,4 @@
-﻿namespace BaridikExpress.Domain.Entities.Enums;
+﻿namespace BaridikExpress.Domain.Enum;
 
 public enum AttachmentType
 {
