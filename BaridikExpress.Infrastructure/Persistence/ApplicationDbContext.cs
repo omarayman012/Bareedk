@@ -10,6 +10,7 @@ using BaridikExpress.Domain.Entities.DeliveryModule;
 using BaridikExpress.Domain.Entities.DeliveryType;
 using BaridikExpress.Domain.Entities.Location;
 using BaridikExpress.Domain.Entities.Nationality;
+using BaridikExpress.Domain.Entities.PublishingHouseModule;
 using BaridikExpress.Domain.Entities.RoleModule;
 using BaridikExpress.Domain.Entities.Services;
 using BaridikExpress.Domain.Entities.Shipments;
@@ -91,6 +92,7 @@ public class ApplicationDbContext : IdentityDbContext<User>, IApplicationDbConte
     public DbSet<Vehicle> Vehicles { get; set; }
     public DbSet<Service> Services { get; set; }
     public DbSet<ContactUs> ContactUs { get; set; }
+    public DbSet<PublishingHouse> PublishingHouses { get; set; }
 
     #endregion
 
@@ -211,4 +213,5 @@ public class ApplicationDbContext : IdentityDbContext<User>, IApplicationDbConte
         TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, _appTimeZone);
 
     #endregion
+
 }

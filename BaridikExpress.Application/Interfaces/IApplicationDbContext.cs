@@ -7,6 +7,7 @@ using BaridikExpress.Domain.Entities.DeliveryModule;
 using BaridikExpress.Domain.Entities.DeliveryType;
 using BaridikExpress.Domain.Entities.Location;
 using BaridikExpress.Domain.Entities.Nationality;
+using BaridikExpress.Domain.Entities.PublishingHouseModule;
 using BaridikExpress.Domain.Entities.RoleModule;
 using BaridikExpress.Domain.Entities.Services;
 using BaridikExpress.Domain.Entities.Shipments;
@@ -93,6 +94,7 @@ public interface IApplicationDbContext
     #endregion
 
     DbSet<Client> Clients { get; set; }
+    DbSet<PublishingHouse> PublishingHouses { get; set; }
 
     DatabaseFacade Database { get; }
     DbSet<TEntity> Set<TEntity>() where TEntity : class;
