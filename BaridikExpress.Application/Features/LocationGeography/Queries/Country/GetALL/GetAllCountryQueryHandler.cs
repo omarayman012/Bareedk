@@ -39,7 +39,15 @@ public class GetAllCountryQueryHandler(
             query = query.Where(x =>
                 x.CreatedById == request.CreatedById);
         }
+        if (request.FromDate.HasValue)
+        {
+            query = query.Where(x => x.CreatedAt >= request.FromDate.Value);
+        }
 
+        if (request.ToDate.HasValue)
+        {
+            query = query.Where(x => x.CreatedAt <= request.ToDate.Value.AddDays(1).AddTicks(-1));
+        }
         var countriesQuery = query.Select(x => new GetCountryResponse
         {
             Id = x.CountryId,
