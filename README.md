@@ -4,6 +4,7 @@
 <img src="https://img.shields.io/badge/Architecture-CQRS-orange?style=for-the-badge" />
 <img src="https://img.shields.io/badge/Pattern-Clean%20Architecture-green?style=for-the-badge" />
 <img src="https://img.shields.io/badge/Status-Active-brightgreen?style=for-the-badge" />
+
  
 # 📦 BaridikExpress — Delivery Platform
 
