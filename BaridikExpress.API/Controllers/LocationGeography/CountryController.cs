@@ -10,15 +10,17 @@ using Microsoft.AspNetCore.Authorization;
 namespace BaridikExpress.API.Controllers.LocationGeography;
 
 [ApiController]
-[Route("api/[controller]")]
-[Authorize]
+[Route("api/v1/[controller]")]
 [ApiExplorerSettings(GroupName = "admin-v1")]
+[Authorize]
 public class CountryController(ISender sender) : ControllerBase
 {
     private readonly ISender _sender = sender;
 
     // GET api/country?pageNumber=1&pageSize=10
     [HttpGet]
+    [AllowAnonymous]
+
     public async Task<IActionResult> GetAll([FromQuery] GetAllCountryQuery query)
     {
         var result = await _sender.Send(query);
@@ -29,6 +31,7 @@ public class CountryController(ISender sender) : ControllerBase
 
     // GET api/country/{id}
     [HttpGet("{id:guid}")]
+    [AllowAnonymous]
     public async Task<IActionResult> GetById(Guid id)
     {
         var result = await _sender.Send(new GetCountryByIdQuery { Id = id });
@@ -47,10 +50,11 @@ public class CountryController(ISender sender) : ControllerBase
             : StatusCode(result.StatusCode, result);
     }
 
-    // PUT api/country
-    [HttpPut]
-    public async Task<IActionResult> Update([FromBody] UpdateCountryCommand command)
+    // PUT api/country/Id
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateCountryCommand command)
     {
+        command = command with { Id = id };
         var result = await _sender.Send(command);
         return result.IsSuccess
             ? Ok(result)

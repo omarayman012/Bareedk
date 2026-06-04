@@ -21,8 +21,10 @@ public class CreateCountryCommandHandler(
         var (nameAr, nameEn) = NormalizeHelper.Normalize(request.NameAr, request.NameEn);
 
         var exists = await _application.Countries
-            .AnyAsync(x => x.CountryNameEn == nameEn || x.CountryNameAr == nameAr,
-                      cancellationToken);
+      .AnyAsync(x => x.CountryNameEn == nameEn ||
+                     x.CountryNameAr == nameAr ||
+                     x.PhoneCode == request.PhoneCode,  
+                cancellationToken);
 
         if (exists)
             return Result<CreateCountryResponse>.Failure(_localizer["CountryAlreadyExists"]);

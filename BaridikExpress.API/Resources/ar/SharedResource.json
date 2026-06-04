@@ -440,11 +440,13 @@
     "PhoneNumberRequired": "رقم الهاتف مطلوب",
     "InvalidPhoneNumber": "رقم الهاتف غير صالح",
     "CountryIdRequired": "الدولة مطلوبة",
- 
+
     "AddressRequired": "العنوان مطلوب",
     "AddressTooLong": "العنوان يجب أن لا يتجاوز 500 حرف",
     "InvalidLatitude": "خط العرض غير صالح",
-    "InvalidLongitude": "خط الطول غير صالح"
+    "InvalidLongitude": "خط الطول غير صالح",
+    "CountryRetrievedSuccessfully": "تم جلب الدول بنجاح",
+    "PhoneCodeMaxLength": "كود الهاتف يجب أن لا يتجاوز 10 حرف"
 
 }
 
