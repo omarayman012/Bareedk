@@ -1,18 +1,19 @@
 using BaridikExpress.Application.Interfaces.IRepository;
 using BaridikExpress.Application.Interfaces.Services;
+using BaridikExpress.Domain.Entities.ClientModule;
 using BaridikExpress.Domain.Entities.Customers;
 
-namespace BaridikExpress.Application.Features.CustomerAddresses.Commands.UpdateAddress;
+namespace BaridikExpress.Application.Features.ClientAddresses.Commands.UpdateAddress;
 
 public class UpdateAddressCommandHandler(
-    IGenericRepository<BaridikExpress.Domain.Entities.Customers.Customer> customerRepo,
+    IGenericRepository<Client> ClientRepo,
     IGenericRepository<CustomerAddress> addressRepo,
     IStringLocalizer localizer,
     IMapService mapService,
     IGetCurrentUserRepository currentUserRepository
 ) : IRequestHandler<UpdateAddressCommand, Result<bool>>
 {
-    private readonly IGenericRepository<BaridikExpress.Domain.Entities.Customers.Customer> _customerRepo = customerRepo;
+    private readonly IGenericRepository<Client> _ClientRepo = ClientRepo;
     private readonly IGenericRepository<CustomerAddress> _addressRepo = addressRepo;
     private readonly IStringLocalizer _localizer = localizer;
     private readonly IMapService _mapService = mapService;
@@ -31,7 +32,7 @@ public class UpdateAddressCommandHandler(
                 401);
         }
 
-        var customer = await _customerRepo.FirstOrDefaultAsync(
+        var customer = await _ClientRepo.FirstOrDefaultAsync(
             x => x.UserId == userId,
             cancellationToken);
 
@@ -59,8 +60,16 @@ public class UpdateAddressCommandHandler(
         if (request.Latitude.HasValue &&
             request.Longitude.HasValue)
         {
-            location =
-                await _mapService.GetAddressFromCoordinatesAsync(
+            var existingAddress = await _addressRepo.FirstOrDefaultAsync(
+               x => x.CustomerId != customer.Id &&
+             x.Latitude == request.Latitude &&
+             x.Longitude == request.Longitude, cancellationToken);
+
+            if (existingAddress is not null)
+                return Result<bool>.Failure(_localizer["AddressAlreadyExists"], 409);
+
+
+            location = await _mapService.GetAddressFromCoordinatesAsync(
                     request.Latitude.Value,
                     request.Longitude.Value,
                     cancellationToken);
@@ -68,8 +77,7 @@ public class UpdateAddressCommandHandler(
 
         if (request.IsDefault == true)
         {
-            var defaultAddresses =
-                await _addressRepo.FindAsync(
+            var defaultAddresses =await _addressRepo.FindAsync(
                     x => x.CustomerId == customer.Id &&
                          x.IsDefault &&
                          x.Id != address.Id,

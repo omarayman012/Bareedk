@@ -1,6 +1,6 @@
 using BaridikExpress.Application.Common.Helpers;
 
-namespace BaridikExpress.Application.Features.CustomerAddresses.DTOs;
+namespace BaridikExpress.Application.Features.ClientAddresses.DTOs;
 
 public class GetAllAddressesDto
 {

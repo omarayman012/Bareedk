@@ -1,9 +1,8 @@
 using BaridikExpress.Domain.Enum;
 
-namespace BaridikExpress.Application.Features.CustomerAddresses.Commands.UpdateAddress;
+namespace BaridikExpress.Application.Features.ClientAddresses.Commands.CreateAddress;
 
-public record UpdateAddressCommand(
-    Guid Id,
+public record CreateAddressCommand(
     AddressType? AddressType,
     string? RecipientName,
     string? Email,
@@ -21,5 +20,5 @@ public record UpdateAddressCommand(
     string? ZipCode,
     decimal? Latitude,
     decimal? Longitude,
-    bool? IsDefault
-) : IRequest<Result<bool>>;
+    bool IsDefault = false
+) : IRequest<Result<Guid>>;

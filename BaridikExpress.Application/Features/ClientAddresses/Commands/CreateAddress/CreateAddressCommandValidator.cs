@@ -1,7 +1,4 @@
-using FluentValidation;
-using Microsoft.Extensions.Localization;
-
-namespace BaridikExpress.Application.Features.CustomerAddresses.Commands.CreateAddress;
+namespace BaridikExpress.Application.Features.ClientAddresses.Commands.CreateAddress;
 
 public class CreateAddressCommandValidator : AbstractValidator<CreateAddressCommand>
 {

@@ -1,7 +1,4 @@
-using FluentValidation;
-using Microsoft.Extensions.Localization;
-
-namespace BaridikExpress.Application.Features.CustomerAddresses.Commands.UpdateAddress;
+namespace BaridikExpress.Application.Features.ClientAddresses.Commands.UpdateAddress;
 
 public class UpdateAddressCommandValidator : AbstractValidator<UpdateAddressCommand>
 {

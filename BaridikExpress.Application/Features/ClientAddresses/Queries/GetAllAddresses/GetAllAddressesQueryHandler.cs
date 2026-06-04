@@ -1,12 +1,8 @@
-using BaridikExpress.Application.Features.CustomerAddresses.DTOs;
-using BaridikExpress.Application.Interfaces;
 using BaridikExpress.Application.Common.Helpers;
 using BaridikExpress.Application.DTOs;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Localization;
-using System.Linq;
+using BaridikExpress.Application.Features.ClientAddresses.DTOs;
 
-namespace BaridikExpress.Application.Features.CustomerAddresses.Queries.GetAllAddresses;
+namespace BaridikExpress.Application.Features.ClientAddresses.Queries.GetAllAddresses;
 
 public class GetAllAddressesQueryHandler(
     IApplicationDbContext db,
@@ -24,7 +20,7 @@ public class GetAllAddressesQueryHandler(
         if (string.IsNullOrWhiteSpace(userId))
             return Result<PaginatedList<GetAllAddressesDto>>.Failure(_localizer["Unauthorized"], 401);
 
-        var customer = await _db.Customers
+        var customer = await _db.Clients
             .FirstOrDefaultAsync(c => c.UserId == userId, cancellationToken);
 
         if (customer is null)

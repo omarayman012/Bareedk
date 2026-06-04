@@ -1,4 +1,5 @@
 ﻿using BaridikExpress.Domain.Entities.Base;
+using BaridikExpress.Domain.Entities.ClientModule;
 using BaridikExpress.Domain.Entities.Location;
 using BaridikExpress.Domain.Enum;
 
@@ -54,8 +55,6 @@ namespace BaridikExpress.Domain.Entities.Customers
         public Guid CustomerId { get; private set; }
         public Customer Customer { get; private set; } = default!;
         private CustomerAddress() { }
-
-
 
         #region Address Creation and Update Methods For Dashboard not include Recipient Information + Map Information
         public static CustomerAddress Create(
@@ -130,8 +129,6 @@ namespace BaridikExpress.Domain.Entities.Customers
             if (isDefault is not null) IsDefault = isDefault.Value;
         }
         #endregion
-
-
         #region Recipient Information + Address Information + Map Information in Screen Mobile
         public static CustomerAddress CreateAddress(
             Guid customerId,

@@ -54,7 +54,7 @@ namespace BaridikExpress.Infrastructure
             services.AddScoped<IExcelService, ExcelService>();
             services.AddScoped<IBaseUrlService, BaseUrlService>();
             services.AddScoped<IJwtService, JwtService>();
-            services.AddScoped<IMapService, MapService>();
+            services.AddHttpClient<IMapService, MapService>();
             return services;
         }
 

@@ -1,9 +1,9 @@
-using BaridikExpress.Application.Features.CustomerAddresses.DTOs;
 using BaridikExpress.Domain.Enum;
 
-namespace BaridikExpress.Application.Features.CustomerAddresses.Commands.CreateAddress;
+namespace BaridikExpress.Application.Features.ClientAddresses.Commands.UpdateAddress;
 
-public record CreateAddressCommand(
+public record UpdateAddressCommand(
+    Guid Id,
     AddressType? AddressType,
     string? RecipientName,
     string? Email,
@@ -21,5 +21,5 @@ public record CreateAddressCommand(
     string? ZipCode,
     decimal? Latitude,
     decimal? Longitude,
-    bool IsDefault = false
-) : IRequest<Result<Guid>>;
+    bool? IsDefault
+) : IRequest<Result<bool>>;
