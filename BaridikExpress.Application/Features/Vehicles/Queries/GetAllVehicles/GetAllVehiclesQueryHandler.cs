@@ -6,6 +6,7 @@ using BaridikExpress.Application.Interfaces.IRepository;
 using BaridikExpress.Domain.Entities.Vehicles;
 using BaridikExpress.Domain.Enum;
 
+
 namespace BaridikExpress.Application.Features.Vehicles.Queries.GetAllVehicles
 {
     public class GetAllVehiclesQueryHandler(
