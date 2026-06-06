@@ -445,7 +445,9 @@
     "AddressTooLong": "العنوان يجب أن لا يتجاوز 500 حرف",
     "InvalidLatitude": "خط العرض غير صالح",
     "InvalidLongitude": "خط الطول غير صالح",
-    "CountryRetrievedSuccessfully": "تم جلب الدول بنجاح"
+    "CountryRetrievedSuccessfully": "تم جلب الدول بنجاح",
+    "GovernmentRetrievedSuccessfully": "تم جلب المحافظات بنجاح",
+    "CityRetrievedSuccessfully": "تم جلب المدن بنجاح"
 
 }
 

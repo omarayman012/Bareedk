@@ -1,21 +1,31 @@
-﻿using BaridikExpress.Application.Features.Auth.DTO.Auth;
+﻿using BaridikExpress.Application.Common.Abstractions;
+using BaridikExpress.Application.Features.Auth.DTO.Auth;
 
 namespace BaridikExpress.Application.Features.Auth.Queries.GetRoles;
 
 public class GetRolesQueryHandler(
     IApplicationDbContext context,
     IStringLocalizer localizer
-) : IRequestHandler<GetRolesQuery, Result<List<RoleDto>>>
+) : IRequestHandler<GetRolesQuery, Result<PaginatedList<RoleDto>>>
 {
-    public async Task<Result<List<RoleDto>>> Handle(
+    public async Task<Result<PaginatedList<RoleDto>>> Handle(
         GetRolesQuery request,
         CancellationToken cancellationToken)
     {
-        var roles = await context.Roles
-            .Select(r => new RoleDto(r.Id, r.Name!))
-            .ToListAsync(cancellationToken);
+        var rolesQuery = context.Roles
+            .Where(r => string.IsNullOrEmpty(request.Name) ||
+                        r.Name!.Contains(request.Name))
+            .Select(r => new RoleDto(
+                r.Id,
+                r.Name!
+            ));
 
-        return Result<List<RoleDto>>.Success(
+        var roles = await PaginatedList<RoleDto>.CreateAsync(
+            rolesQuery,
+            request.PageNumber,
+            request.PageSize);
+
+        return Result<PaginatedList<RoleDto>>.Success(
             roles,
             localizer["RolesRetrievedSuccessfully"],
             200);
