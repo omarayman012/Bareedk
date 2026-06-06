@@ -10,7 +10,7 @@ public class Country : BaseEntity, ISelectMenuEntity
     public string PhoneCode { get; set; } = string.Empty;
     public string? NameAr => CountryNameAr;
     public string? NameEn => CountryNameEn;
-    public Guid? ParentId => null;
     public Guid Id => CountryId;
+    public Guid? ParentId => null;
     public ICollection<Government>? Governments { get; set; }
 }

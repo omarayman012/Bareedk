@@ -20,13 +20,16 @@ public sealed class GetSelectMenuQueryHandler<T>(
         var entityName = typeof(T).Name;
 
         #region Fetch Entities
-        var entities = await db.Set<T>()
+        var allEntities = await db.Set<T>()
             .AsNoTracking()
-            .Where(x => !request.ParentId.HasValue || x.ParentId == request.ParentId.Value)
-            .Where(x => string.IsNullOrEmpty(request.Name) ||
-                        EF.Functions.Like(x.NameAr!, $"%{request.Name}%") ||
-                        EF.Functions.Like(x.NameEn!, $"%{request.Name}%"))
             .ToListAsync(cancellationToken);
+
+        var entities = allEntities
+            .Where(x => !request.ParentId.HasValue || x.ParentId == request.ParentId)
+            .Where(x => string.IsNullOrEmpty(request.Name) ||
+                        (x.NameAr != null && x.NameAr.Contains(request.Name, StringComparison.OrdinalIgnoreCase)) ||
+                        (x.NameEn != null && x.NameEn.Contains(request.Name, StringComparison.OrdinalIgnoreCase)))
+            .ToList();
 
         if (!entities.Any())
             return Result<IEnumerable<SelectMenuResponse>>
