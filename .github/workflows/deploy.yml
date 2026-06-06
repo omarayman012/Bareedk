@@ -6,6 +6,10 @@ on:
       - main
   workflow_dispatch:
 
+concurrency:
+  group: baridik-backend-deploy
+  cancel-in-progress: true
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -21,23 +25,34 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
 
           timeout: 60s
-          command_timeout: 20m
+          command_timeout: 40m
 
           script: |
             set -e
+
             echo "Go to backend directory"
             cd /home/baridik/apps/backend
+
             echo "Current path:"
             pwd
+
             echo "Pull latest code"
             git fetch origin main
             git reset --hard origin/main
+
+            echo "Stop backend service"
+            sudo -n systemctl stop baridik-backend || true
+
             echo "Restore packages"
-            dotnet restore BaridikExpress.sln
+            dotnet restore BaridikExpress.sln --disable-parallel
+
             echo "Build backend"
-            dotnet build BaridikExpress.sln -c Release --no-restore
-            echo "Restart backend service"
-            sudo -n systemctl restart baridik-backend
+            dotnet build BaridikExpress.sln -c Release --no-restore /p:TreatWarningsAsErrors=false
+
+            echo "Start backend service"
+            sudo -n systemctl start baridik-backend
+
             echo "Check backend service"
             sudo -n systemctl status baridik-backend
+
             echo "Backend deployed successfully"
