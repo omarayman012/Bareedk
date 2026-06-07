@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BaridikExpress.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class intial : Migration
+    public partial class InitialFirst : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -221,6 +221,38 @@ namespace BaridikExpress.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "BlogsCategorys",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    NameAr = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NameEn = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Priorty = table.Column<int>(type: "int", nullable: true),
+                    DescriptionAr = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DescriptionEn = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedById = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedById = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BlogsCategorys", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BlogsCategorys_AspNetUsers_CreatedById",
+                        column: x => x.CreatedById,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_BlogsCategorys_AspNetUsers_UpdatedById",
+                        column: x => x.UpdatedById,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CareerFields",
                 columns: table => new
                 {
@@ -286,6 +318,7 @@ namespace BaridikExpress.Infrastructure.Migrations
                     CountryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CountryNameAr = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     CountryNameEn = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    PhoneCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     CreatedById = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedById = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true),
@@ -639,6 +672,7 @@ namespace BaridikExpress.Infrastructure.Migrations
                     NameEn = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     NameAr = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Currency = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     CreatedById = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -759,6 +793,35 @@ namespace BaridikExpress.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Tags",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    NameAr = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NameEn = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Slug = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedById = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedById = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tags", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Tags_AspNetUsers_CreatedById",
+                        column: x => x.CreatedById,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Tags_AspNetUsers_UpdatedById",
+                        column: x => x.UpdatedById,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TermsAndConditions",
                 columns: table => new
                 {
@@ -796,6 +859,7 @@ namespace BaridikExpress.Infrastructure.Migrations
                     LoadCapacityFrom = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     LoadCapacityTo = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     PricePerTon = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Currency = table.Column<int>(type: "int", nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     IsPriceCalculationEnabled = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     CreatedById = table.Column<string>(type: "nvarchar(450)", nullable: true),
@@ -847,6 +911,45 @@ namespace BaridikExpress.Infrastructure.Migrations
                         column: x => x.PermissionId,
                         principalTable: "Permissions",
                         principalColumn: "PermissionId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BlogsAuthors",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    NameAr = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NameEn = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Gender = table.Column<int>(type: "int", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BlogsCategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedById = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedById = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BlogsAuthors", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BlogsAuthors_AspNetUsers_CreatedById",
+                        column: x => x.CreatedById,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_BlogsAuthors_AspNetUsers_UpdatedById",
+                        column: x => x.UpdatedById,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_BlogsAuthors_BlogsCategorys_BlogsCategoryId",
+                        column: x => x.BlogsCategoryId,
+                        principalTable: "BlogsCategorys",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -979,12 +1082,58 @@ namespace BaridikExpress.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Blogs",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TitleAr = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TitleEn = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DescriptionAr = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DescriptionEn = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BlogsCategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    BlogsAuthorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedById = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedById = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Blogs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Blogs_AspNetUsers_CreatedById",
+                        column: x => x.CreatedById,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Blogs_AspNetUsers_UpdatedById",
+                        column: x => x.UpdatedById,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Blogs_BlogsAuthors_BlogsAuthorId",
+                        column: x => x.BlogsAuthorId,
+                        principalTable: "BlogsAuthors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Blogs_BlogsCategorys_BlogsCategoryId",
+                        column: x => x.BlogsCategoryId,
+                        principalTable: "BlogsCategorys",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Cities",
                 columns: table => new
                 {
                     CityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CityNameAr = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     CityNameEn = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    CountryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     GovernmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedById = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
@@ -1005,6 +1154,12 @@ namespace BaridikExpress.Infrastructure.Migrations
                         column: x => x.UpdatedById,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Cities_Countries_CountryId",
+                        column: x => x.CountryId,
+                        principalTable: "Countries",
+                        principalColumn: "CountryId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Cities_Governments_GovernmentId",
                         column: x => x.GovernmentId,
@@ -1091,12 +1246,168 @@ namespace BaridikExpress.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "BlogComments",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    BlogId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ParentId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CreatedById = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedById = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BlogComments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BlogComments_AspNetUsers_CreatedById",
+                        column: x => x.CreatedById,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_BlogComments_AspNetUsers_UpdatedById",
+                        column: x => x.UpdatedById,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_BlogComments_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BlogComments_BlogComments_ParentId",
+                        column: x => x.ParentId,
+                        principalTable: "BlogComments",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_BlogComments_Blogs_BlogId",
+                        column: x => x.BlogId,
+                        principalTable: "Blogs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BlogReactions",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    BlogId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    CreatedById = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedById = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BlogReactions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BlogReactions_AspNetUsers_CreatedById",
+                        column: x => x.CreatedById,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_BlogReactions_AspNetUsers_UpdatedById",
+                        column: x => x.UpdatedById,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_BlogReactions_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BlogReactions_Blogs_BlogId",
+                        column: x => x.BlogId,
+                        principalTable: "Blogs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BlogSeos",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    BlogId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    MetaTitleAr = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MetaTitleEn = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SlugAr = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SlugEn = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MetaKeywordsAr = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MetaKeywordsEn = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MetaImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MetaDescriptionAr = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MetaDescriptionEn = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedById = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedById = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BlogSeos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BlogSeos_AspNetUsers_CreatedById",
+                        column: x => x.CreatedById,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_BlogSeos_AspNetUsers_UpdatedById",
+                        column: x => x.UpdatedById,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_BlogSeos_Blogs_BlogId",
+                        column: x => x.BlogId,
+                        principalTable: "Blogs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BlogTags",
+                columns: table => new
+                {
+                    BlogId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TagId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BlogTags", x => new { x.BlogId, x.TagId });
+                    table.ForeignKey(
+                        name: "FK_BlogTags_Blogs_BlogId",
+                        column: x => x.BlogId,
+                        principalTable: "Blogs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BlogTags_Tags_TagId",
+                        column: x => x.TagId,
+                        principalTable: "Tags",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Villages",
                 columns: table => new
                 {
                     VillageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     VillageNameAr = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     VillageNameEn = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    CountryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    GovernmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedById = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
@@ -1123,6 +1434,44 @@ namespace BaridikExpress.Infrastructure.Migrations
                         principalTable: "Cities",
                         principalColumn: "CityId",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Villages_Countries_CountryId",
+                        column: x => x.CountryId,
+                        principalTable: "Countries",
+                        principalColumn: "CountryId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Villages_Governments_GovernmentId",
+                        column: x => x.GovernmentId,
+                        principalTable: "Governments",
+                        principalColumn: "GovernmentId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CommentReactions",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CommentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CommentReactions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CommentReactions_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CommentReactions_BlogComments_CommentId",
+                        column: x => x.CommentId,
+                        principalTable: "BlogComments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -1202,6 +1551,72 @@ namespace BaridikExpress.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PublishingHouses",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NameAr = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NameEn = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    WebsiteLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
+                    CountryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    GovernmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CityId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    VillageId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Street = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BuildingNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FloorNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DistinctiveMark = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ZipCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LogoImage = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedById = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedById = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PublishingHouses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PublishingHouses_AspNetUsers_CreatedById",
+                        column: x => x.CreatedById,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_PublishingHouses_AspNetUsers_UpdatedById",
+                        column: x => x.UpdatedById,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_PublishingHouses_Cities_CityId",
+                        column: x => x.CityId,
+                        principalTable: "Cities",
+                        principalColumn: "CityId");
+                    table.ForeignKey(
+                        name: "FK_PublishingHouses_Countries_CountryId",
+                        column: x => x.CountryId,
+                        principalTable: "Countries",
+                        principalColumn: "CountryId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PublishingHouses_Governments_GovernmentId",
+                        column: x => x.GovernmentId,
+                        principalTable: "Governments",
+                        principalColumn: "GovernmentId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PublishingHouses_Villages_VillageId",
+                        column: x => x.VillageId,
+                        principalTable: "Villages",
+                        principalColumn: "VillageId");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ShipmentAddresses",
                 columns: table => new
                 {
@@ -1269,7 +1684,7 @@ namespace BaridikExpress.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ClientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     SenderAddressId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ReceiverAddressId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TrackingId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
@@ -1278,11 +1693,13 @@ namespace BaridikExpress.Infrastructure.Migrations
                     TotalWeight = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     NumberOfPieces = table.Column<int>(type: "int", nullable: false),
                     HasDimensions = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    ContentType = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     VehicleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DeliveryTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TotalAmount = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     PaymentMethod = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Status = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    ClientId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedById = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedById = table.Column<string>(type: "nvarchar(450)", nullable: true),
@@ -1303,11 +1720,16 @@ namespace BaridikExpress.Infrastructure.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
+                        name: "FK_Shipments_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_Shipments_Clients_ClientId",
                         column: x => x.ClientId,
                         principalTable: "Clients",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Shipments_DeliveryTypes_DeliveryTypeId",
                         column: x => x.DeliveryTypeId,
@@ -1481,6 +1903,117 @@ namespace BaridikExpress.Infrastructure.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_BlogComments_BlogId",
+                table: "BlogComments",
+                column: "BlogId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BlogComments_CreatedById",
+                table: "BlogComments",
+                column: "CreatedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BlogComments_ParentId",
+                table: "BlogComments",
+                column: "ParentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BlogComments_UpdatedById",
+                table: "BlogComments",
+                column: "UpdatedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BlogComments_UserId",
+                table: "BlogComments",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BlogReactions_BlogId",
+                table: "BlogReactions",
+                column: "BlogId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BlogReactions_CreatedById",
+                table: "BlogReactions",
+                column: "CreatedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BlogReactions_UpdatedById",
+                table: "BlogReactions",
+                column: "UpdatedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BlogReactions_UserId",
+                table: "BlogReactions",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Blogs_BlogsAuthorId",
+                table: "Blogs",
+                column: "BlogsAuthorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Blogs_BlogsCategoryId",
+                table: "Blogs",
+                column: "BlogsCategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Blogs_CreatedById",
+                table: "Blogs",
+                column: "CreatedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Blogs_UpdatedById",
+                table: "Blogs",
+                column: "UpdatedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BlogsAuthors_BlogsCategoryId",
+                table: "BlogsAuthors",
+                column: "BlogsCategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BlogsAuthors_CreatedById",
+                table: "BlogsAuthors",
+                column: "CreatedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BlogsAuthors_UpdatedById",
+                table: "BlogsAuthors",
+                column: "UpdatedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BlogsCategorys_CreatedById",
+                table: "BlogsCategorys",
+                column: "CreatedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BlogsCategorys_UpdatedById",
+                table: "BlogsCategorys",
+                column: "UpdatedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BlogSeos_BlogId",
+                table: "BlogSeos",
+                column: "BlogId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BlogSeos_CreatedById",
+                table: "BlogSeos",
+                column: "CreatedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BlogSeos_UpdatedById",
+                table: "BlogSeos",
+                column: "UpdatedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BlogTags_TagId",
+                table: "BlogTags",
+                column: "TagId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CareerFields_CreatedById",
                 table: "CareerFields",
                 column: "CreatedById");
@@ -1501,6 +2034,11 @@ namespace BaridikExpress.Infrastructure.Migrations
                 name: "IX_CareerFields_UpdatedById",
                 table: "CareerFields",
                 column: "UpdatedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Cities_CountryId",
+                table: "Cities",
+                column: "CountryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cities_CreatedById",
@@ -1535,6 +2073,16 @@ namespace BaridikExpress.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Clients_UserId",
                 table: "Clients",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CommentReactions_CommentId",
+                table: "CommentReactions",
+                column: "CommentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CommentReactions_UserId",
+                table: "CommentReactions",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -1763,6 +2311,36 @@ namespace BaridikExpress.Infrastructure.Migrations
                 column: "UpdatedById");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PublishingHouses_CityId",
+                table: "PublishingHouses",
+                column: "CityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PublishingHouses_CountryId",
+                table: "PublishingHouses",
+                column: "CountryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PublishingHouses_CreatedById",
+                table: "PublishingHouses",
+                column: "CreatedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PublishingHouses_GovernmentId",
+                table: "PublishingHouses",
+                column: "GovernmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PublishingHouses_UpdatedById",
+                table: "PublishingHouses",
+                column: "UpdatedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PublishingHouses_VillageId",
+                table: "PublishingHouses",
+                column: "VillageId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RefreshTokens_CreatedById",
                 table: "RefreshTokens",
                 column: "CreatedById");
@@ -1907,6 +2485,11 @@ namespace BaridikExpress.Infrastructure.Migrations
                 column: "UpdatedById");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Shipments_UserId",
+                table: "Shipments",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Shipments_VehicleId",
                 table: "Shipments",
                 column: "VehicleId");
@@ -1979,6 +2562,16 @@ namespace BaridikExpress.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Tags_CreatedById",
+                table: "Tags",
+                column: "CreatedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tags_UpdatedById",
+                table: "Tags",
+                column: "UpdatedById");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TermsAndConditions_CreatedById",
                 table: "TermsAndConditions",
                 column: "CreatedById");
@@ -2015,9 +2608,19 @@ namespace BaridikExpress.Infrastructure.Migrations
                 column: "CityId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Villages_CountryId",
+                table: "Villages",
+                column: "CountryId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Villages_CreatedById",
                 table: "Villages",
                 column: "CreatedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Villages_GovernmentId",
+                table: "Villages",
+                column: "GovernmentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Villages_UpdatedById",
@@ -2045,6 +2648,18 @@ namespace BaridikExpress.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "BlogReactions");
+
+            migrationBuilder.DropTable(
+                name: "BlogSeos");
+
+            migrationBuilder.DropTable(
+                name: "BlogTags");
+
+            migrationBuilder.DropTable(
+                name: "CommentReactions");
 
             migrationBuilder.DropTable(
                 name: "ContactUs");
@@ -2077,6 +2692,9 @@ namespace BaridikExpress.Infrastructure.Migrations
                 name: "PrivacyPolicies");
 
             migrationBuilder.DropTable(
+                name: "PublishingHouses");
+
+            migrationBuilder.DropTable(
                 name: "RefreshTokens");
 
             migrationBuilder.DropTable(
@@ -2107,6 +2725,12 @@ namespace BaridikExpress.Infrastructure.Migrations
                 name: "TermsAndConditions");
 
             migrationBuilder.DropTable(
+                name: "Tags");
+
+            migrationBuilder.DropTable(
+                name: "BlogComments");
+
+            migrationBuilder.DropTable(
                 name: "Customers");
 
             migrationBuilder.DropTable(
@@ -2120,6 +2744,9 @@ namespace BaridikExpress.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Blogs");
 
             migrationBuilder.DropTable(
                 name: "Nationalities");
@@ -2137,10 +2764,16 @@ namespace BaridikExpress.Infrastructure.Migrations
                 name: "Vehicles");
 
             migrationBuilder.DropTable(
+                name: "BlogsAuthors");
+
+            migrationBuilder.DropTable(
                 name: "CareerFields");
 
             migrationBuilder.DropTable(
                 name: "Villages");
+
+            migrationBuilder.DropTable(
+                name: "BlogsCategorys");
 
             migrationBuilder.DropTable(
                 name: "Cities");

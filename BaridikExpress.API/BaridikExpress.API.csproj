@@ -25,6 +25,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Folder Include="Controllers\BlogsAuthor\" />
 		<Folder Include="Logs\" />
 		<Folder Include="wwwroot\deliveries\license\" />
 		<Folder Include="wwwroot\deliveries\nid\" />

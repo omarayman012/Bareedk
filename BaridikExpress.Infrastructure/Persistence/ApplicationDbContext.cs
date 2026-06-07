@@ -2,6 +2,7 @@ using BaridikExpress.Application.Interfaces;
 using BaridikExpress.Domain.Entities.AuthModule;
 using BaridikExpress.Domain.Entities.AuthModules;
 using BaridikExpress.Domain.Entities.Base;
+using BaridikExpress.Domain.Entities.BlogsModules;
 using BaridikExpress.Domain.Entities.CareerFields;
 using BaridikExpress.Domain.Entities.ClientModule;
 using BaridikExpress.Domain.Entities.ContactUs;
@@ -93,6 +94,18 @@ public class ApplicationDbContext : IdentityDbContext<User>, IApplicationDbConte
     public DbSet<Service> Services { get; set; }
     public DbSet<ContactUs> ContactUs { get; set; }
     public DbSet<PublishingHouse> PublishingHouses { get; set; }
+    public DbSet<Blog> Blogs { get; set; }
+    public DbSet<BlogsCategory> BlogsCategorys { get; set; }
+    public DbSet<BlogComment> BlogComments { get; set; }
+    public DbSet<BlogsAuthor> BlogsAuthors { get; set; }
+    public DbSet<BlogSeo> BlogSeos { get; set; }
+    public DbSet<BlogTag> BlogTags { get; set; }
+    public DbSet<Tag> Tags { get; set; }
+    public DbSet<CommentReaction> CommentReactions { get; set; }
+    public DbSet<BlogReaction> BlogReactions { get; set; }
+
+
+
 
     #endregion
 
@@ -156,6 +169,21 @@ public class ApplicationDbContext : IdentityDbContext<User>, IApplicationDbConte
             .WithMany()
             .HasForeignKey(r => r.UserId)
             .OnDelete(DeleteBehavior.Cascade);
+    
+
+        modelBuilder.Entity<BlogTag>(entity =>
+        {
+            entity.HasKey(x => new { x.BlogId, x.TagId });
+
+            entity.HasOne(x => x.Blog)
+                  .WithMany(x => x.BlogTags)
+                  .HasForeignKey(x => x.BlogId);
+
+            entity.HasOne(x => x.Tag)
+                  .WithMany(x => x.BlogTags)
+                  .HasForeignKey(x => x.TagId);
+        });
+    
     }
 
     #endregion
@@ -193,6 +221,8 @@ public class ApplicationDbContext : IdentityDbContext<User>, IApplicationDbConte
     }
 
     #endregion
+
+
 
     #region Helpers
 
