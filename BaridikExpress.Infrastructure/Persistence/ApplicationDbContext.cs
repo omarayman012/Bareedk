@@ -11,6 +11,7 @@ using BaridikExpress.Domain.Entities.DeliveryModule;
 using BaridikExpress.Domain.Entities.DeliveryType;
 using BaridikExpress.Domain.Entities.Location;
 using BaridikExpress.Domain.Entities.Nationality;
+using BaridikExpress.Domain.Entities.NotificationModules;
 using BaridikExpress.Domain.Entities.PublishingHouseModule;
 using BaridikExpress.Domain.Entities.RoleModule;
 using BaridikExpress.Domain.Entities.Services;
@@ -103,6 +104,7 @@ public class ApplicationDbContext : IdentityDbContext<User>, IApplicationDbConte
     public DbSet<Tag> Tags { get; set; }
     public DbSet<CommentReaction> CommentReactions { get; set; }
     public DbSet<BlogReaction> BlogReactions { get; set; }
+    public DbSet<Notification> Notifications { get; set; }
 
 
 

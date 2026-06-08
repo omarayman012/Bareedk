@@ -1,4 +1,5 @@
 using BaridikExpress.Domain.Entities.AuthModule;
+using BaridikExpress.Domain.Entities.BlogsModules;
 using BaridikExpress.Domain.Entities.CareerFields;
 using BaridikExpress.Domain.Entities.ClientModule;
 using BaridikExpress.Domain.Entities.ContactUs;
@@ -7,6 +8,7 @@ using BaridikExpress.Domain.Entities.DeliveryModule;
 using BaridikExpress.Domain.Entities.DeliveryType;
 using BaridikExpress.Domain.Entities.Location;
 using BaridikExpress.Domain.Entities.Nationality;
+using BaridikExpress.Domain.Entities.NotificationModules;
 using BaridikExpress.Domain.Entities.PublishingHouseModule;
 using BaridikExpress.Domain.Entities.RoleModule;
 using BaridikExpress.Domain.Entities.Services;
@@ -75,6 +77,16 @@ public interface IApplicationDbContext
     DbSet<Vehicle> Vehicles { get; set; }
     DbSet<Service> Services { get; set; }
     DbSet<ContactUs> ContactUs { get; set; }
+    public DbSet<Blog> Blogs { get; set; }
+    public DbSet<BlogsCategory> BlogsCategorys { get; set; }
+    public DbSet<BlogComment> BlogComments { get; set; }
+    public DbSet<BlogsAuthor> BlogsAuthors { get; set; }
+    public DbSet<BlogSeo> BlogSeos { get; set; }
+    public DbSet<BlogTag> BlogTags { get; set; }
+    public DbSet<Tag> Tags { get; set; }
+    public DbSet<CommentReaction> CommentReactions { get; set; }
+    public DbSet<BlogReaction> BlogReactions { get; set; }
+    public DbSet<Notification> Notifications { get; set; }
 
     #endregion
 
@@ -97,6 +109,7 @@ public interface IApplicationDbContext
     DbSet<PublishingHouse> PublishingHouses { get; set; }
 
     DatabaseFacade Database { get; }
+
     DbSet<TEntity> Set<TEntity>() where TEntity : class;
     Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);

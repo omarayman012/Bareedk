@@ -11,15 +11,16 @@ using BaridikExpress.Infrastructure.Data.Seeder.NationalitySeeder;
 using BaridikExpress.Infrastructure.Data.Seeder.SystemManagementSeeder;
 using BaridikExpress.Infrastructure.Persistence;
 using BaridikExpress.Infrastructure.Services.Email;
-using BaridikExpress.Infrastructure.Services.SmsService;
 using BaridikExpress.Infrastructure.Services.File;
+using BaridikExpress.Infrastructure.Services.Realtime.Hubs;
+using BaridikExpress.Infrastructure.Services.SmsService;
 using Infrastructure.Services.File;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
-using System.Globalization;
 using Microsoft.Extensions.FileProviders;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -75,6 +76,7 @@ builder.Services.Configure<TwilioSettings>(
     builder.Configuration.GetSection("TwilioSettings"));
 builder.Services.AddScoped<ISmsService, SmsService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddSignalR();  
 
 
 builder.Services.Configure<MailSettings>(
@@ -163,7 +165,8 @@ app.UseSwaggerUI(options =>
 });
 
 app.MapGet("/", () => Results.Redirect("/swagger"));
-
+app.MapHub<CommentHub>("/hubs/comment");
+app.MapHub<NotificationHub>("/hubs/notification");
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

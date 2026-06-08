@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using BaridikExpress.Application.Features.BlogsModules.DTOs;
+using MediatR;
+
+
+namespace BaridikExpress.Application.Features.BlogsModules.BlogComment.Queries
+{
+    public sealed record GetCommentsExportQuery(Guid BlogId)
+     : IRequest<Result<List<CommentExportDto>>>;
+}
