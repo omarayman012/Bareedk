@@ -1,3 +1,4 @@
+using BaridikExpress.Domain.Entities.Addresses;
 using BaridikExpress.Domain.Entities.AuthModule;
 using BaridikExpress.Domain.Entities.CareerFields;
 using BaridikExpress.Domain.Entities.ClientModule;
@@ -92,8 +93,10 @@ public interface IApplicationDbContext
 
     #endregion
 
+    #region Client
     DbSet<Client> Clients { get; set; }
-
+    DbSet<ClientAddress> ClientAddresses { get; set; }
+    #endregion
     DatabaseFacade Database { get; }
     DbSet<TEntity> Set<TEntity>() where TEntity : class;
     Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;

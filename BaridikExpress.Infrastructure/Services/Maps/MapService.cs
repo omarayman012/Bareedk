@@ -1,13 +1,19 @@
-﻿using System.Text.Json;
-using BaridikExpress.Application.Interfaces.Services;
-namespace BaridikExpress.Infrastructure.Services.Maps;
-public class MapService : IMapService
+﻿using BaridikExpress.Application.Interfaces.Services;
+using BaridikExpress.Infrastructure.Services.Maps;
+using Microsoft.Extensions.Options;
+using System.Text.Json;
+
+public sealed class GoogleGeocodingService : IMapService
 {
     private readonly HttpClient _httpClient;
-    public MapService(HttpClient httpClient)
+    private readonly GoogleMapsOptions _options;
+
+    public GoogleGeocodingService(
+        HttpClient httpClient,
+        IOptions<GoogleMapsOptions> options)
     {
         _httpClient = httpClient;
-        _httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("BaridikExpress");
+        _options = options.Value;
     }
 
     public async Task<string?> GetAddressFromCoordinatesAsync(
@@ -15,26 +21,43 @@ public class MapService : IMapService
         decimal longitude,
         CancellationToken cancellationToken = default)
     {
-        try
-        {
-            var url =$"https://nominatim.openstreetmap.org/reverse?lat={latitude}&lon={longitude}&format=jsonv2";
+        var url =
+            $"https://maps.googleapis.com/maps/api/geocode/json" +
+            $"?latlng={latitude},{longitude}" +
+            $"&key={_options.ApiKey}";
 
-            var response = await _httpClient.GetAsync( url, cancellationToken);
+        var response =
+            await _httpClient.GetAsync(
+                url,
+                cancellationToken);
 
-            if (!response.IsSuccessStatusCode)
-                return null;
-
-            var json = await response.Content.ReadAsStringAsync(cancellationToken);
-
-            using var document = JsonDocument.Parse(json);
-            if (document.RootElement.TryGetProperty("display_name", out var displayName))
-                return displayName.GetString();
-
+        if (!response.IsSuccessStatusCode)
             return null;
-        }
-        catch
-        {
+
+        var json =
+            await response.Content.ReadAsStringAsync(
+                cancellationToken);
+
+        using var document =
+            JsonDocument.Parse(json);
+
+        var status =
+            document.RootElement
+                .GetProperty("status")
+                .GetString();
+
+        if (status != "OK")
             return null;
-        }
+
+        var results =
+            document.RootElement
+                .GetProperty("results");
+
+        if (results.GetArrayLength() == 0)
+            return null;
+
+        return results[0]
+            .GetProperty("formatted_address")
+            .GetString();
     }
 }

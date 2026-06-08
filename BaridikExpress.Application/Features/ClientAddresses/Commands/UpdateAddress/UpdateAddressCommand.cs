@@ -15,7 +15,7 @@ public record UpdateAddressCommand(
     Guid? VillageId,
     string? Street,
     string? BuildingNumber,
-    string? ApartmentNumber,
+    string? FlatNumber,
     string? FloorNumber,
     string? DistinctiveMark,
     string? ZipCode,

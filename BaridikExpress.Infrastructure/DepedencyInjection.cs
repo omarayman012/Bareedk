@@ -54,7 +54,8 @@ namespace BaridikExpress.Infrastructure
             services.AddScoped<IExcelService, ExcelService>();
             services.AddScoped<IBaseUrlService, BaseUrlService>();
             services.AddScoped<IJwtService, JwtService>();
-            services.AddHttpClient<IMapService, MapService>();
+            services.AddHttpClient<IMapService, GoogleGeocodingService>();
+           
             return services;
         }
 
@@ -65,6 +66,8 @@ namespace BaridikExpress.Infrastructure
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
+
+            services.Configure<GoogleMapsOptions>(configuration.GetSection(GoogleMapsOptions.SectionName));
 
             return services;
         }

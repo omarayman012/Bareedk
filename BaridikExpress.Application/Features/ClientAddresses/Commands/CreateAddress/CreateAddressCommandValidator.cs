@@ -53,9 +53,9 @@ public class CreateAddressCommandValidator : AbstractValidator<CreateAddressComm
             .NotEmpty()
             .WithMessage(localizer["BuildingNumberRequired"]);
 
-        RuleFor(x => x.ApartmentNumber)
+        RuleFor(x => x.FlatNumber)
             .NotEmpty()
-            .WithMessage(localizer["ApartmentNumberRequired"]);
+            .WithMessage(localizer["FlatNumberRequired"]);
 
         RuleFor(x => x.Latitude)
             .NotNull()

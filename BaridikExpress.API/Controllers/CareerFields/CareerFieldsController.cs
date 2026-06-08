@@ -13,40 +13,42 @@ namespace BaridikExpress.API.Controllers.CareerFields
     [ApiController]
     [Route("api/v1/[controller]")]
     [ApiExplorerSettings(GroupName = "admin-v1")]
-
-    public class CareerFieldsController(IMediator mediator, IExcelService excelService) : ControllerBase
+    public class CareerFieldsController(
+        IMediator mediator,
+        IExcelService excelService) : ControllerBase
     {
         private readonly IMediator _mediator = mediator;
         private readonly IExcelService _excelService = excelService;
-        [HttpGet]
+
+        [HttpGet("GetAll")]
         [HasPermission(Permissions.CareerFieldsRead)]
         public async Task<IActionResult> GetAll(
-         [FromQuery] GetAllCareerFieldsQuery query)
+            [FromQuery] GetAllCareerFieldsQuery query)
         {
             var result = await _mediator.Send(query);
             return StatusCode(result.StatusCode, result);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("ShowOneDetails/{id}")]
         [HasPermission(Permissions.CareerFieldsRead)]
         public async Task<IActionResult> GetById(Guid id)
         {
             var result = await _mediator.Send(
-                new GetCareerFieldByIdQuery(id)
-            );
+                new GetCareerFieldByIdQuery(id));
+
             return StatusCode(result.StatusCode, result);
         }
 
-
-        [HttpPost]
+        [HttpPost("Create")]
         [HasPermission(Permissions.CareerFieldsCreate)]
         public async Task<IActionResult> Create(
-                [FromBody] CreateCareerFieldCommand command)
+            [FromBody] CreateCareerFieldCommand command)
         {
             var result = await _mediator.Send(command);
             return StatusCode(result.StatusCode, result);
         }
-        [HttpPut]
+
+        [HttpPut("Update")]
         [HasPermission(Permissions.CareerFieldsUpdate)]
         public async Task<IActionResult> Update(
             [FromBody] UpdateCareerFieldCommand command)
@@ -55,30 +57,32 @@ namespace BaridikExpress.API.Controllers.CareerFields
             return StatusCode(result.StatusCode, result);
         }
 
-        [HttpDelete]
+        [HttpDelete("Delete")]
         [HasPermission(Permissions.CareerFieldsDelete)]
-        public async Task<IActionResult> Delete(DeleteCareerFieldsCommand command)
+        public async Task<IActionResult> Delete(
+            [FromBody] DeleteCareerFieldsCommand command)
         {
             var result = await _mediator.Send(command);
             return StatusCode(result.StatusCode, result);
         }
 
-        [HttpPatch("{id}/toggle-status")]
+        [HttpPatch("ToggleStatus/{id}")]
         [HasPermission(Permissions.CareerFieldsUpdate)]
         public async Task<IActionResult> ToggleStatus(Guid id)
         {
             var result = await _mediator.Send(
-                new ToggleCareerFieldStatusCommand(id)
-            );
+                new ToggleCareerFieldStatusCommand(id));
 
             return StatusCode(result.StatusCode, result);
         }
 
-        [HttpGet("export")]
+        [HttpGet("Export")]
         [HasPermission(Permissions.CareerFieldsRead)]
-        public async Task<IActionResult> ExportData([FromQuery] GetAllCareerFieldsQuery query)
+        public async Task<IActionResult> ExportData(
+            [FromQuery] GetAllCareerFieldsQuery query)
         {
             var result = await _mediator.Send(query);
+
             var file = await _excelService.DownloadDataAsync<GetAllCareerFieldsDto>(
                 result.Data!.Items);
 
@@ -87,12 +91,18 @@ namespace BaridikExpress.API.Controllers.CareerFields
                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                 "CareerFields.xlsx");
         }
-        [HttpPost("upload")]
-        public async Task<IActionResult> UploadExcel(IFormFile file, CancellationToken cancellationToken)
+
+        [HttpPost("Upload")]
+        [HasPermission(Permissions.CareerFieldsCreate)]
+        public async Task<IActionResult> UploadExcel(
+            IFormFile file,
+            CancellationToken cancellationToken)
         {
-            var result = await _mediator.Send(new UploadCareerFieldsCommand(file), cancellationToken);
+            var result = await _mediator.Send(
+                new UploadCareerFieldsCommand(file),
+                cancellationToken);
+
             return StatusCode(result.StatusCode, result);
         }
     }
 }
-

@@ -447,6 +447,21 @@
   "InvalidLongitude": "خط الطول غير صالح",
   "InvalidCurrency": "العملة غير صالحة",
   "ExcelFileRequired": "ملف Excel مطلوب",
-  "ExcelInvalidType" : "نوع ملف Excel غير صالح، يجب أن يكون .xlsx",
+  "ExcelInvalidType": "نوع ملف Excel غير صالح، يجب أن يكون .xlsx",
+  "AddressIdRequired": "معرف العنوان مطلوب",
+  "AddressNotFound": "العنوان غير موجود",
+  "AddressAlreadyExists": "العنوان موجود بالفعل",
+  "SomeAddressesNotFound": "بعض العناوين غير موجودة",
+  "AddressTypeRequired": "نوع العنوان مطلوب",
+  "RecipientNameRequired": "اسم المستلم مطلوب",
+  "CountryRequired": "الدولة مطلوبة",
+  "GovernmentRequired": "المحافظة مطلوبة",
+  "CityRequired": "المدينة مطلوبة",
+  "StreetRequired": "الشارع مطلوب",
+  "BuildingNumberRequired": "رقم المبنى مطلوب",
+  "FlatNumberRequired": "رقم الشقة مطلوب",
+  "LatitudeRequired": "خط العرض مطلوب",
+  "LongitudeRequired": "خط الطول مطلوب"
+
 }
 

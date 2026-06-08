@@ -1,4 +1,5 @@
 using BaridikExpress.Application.Interfaces;
+using BaridikExpress.Domain.Entities.Addresses;
 using BaridikExpress.Domain.Entities.AuthModule;
 using BaridikExpress.Domain.Entities.AuthModules;
 using BaridikExpress.Domain.Entities.Base;
@@ -56,6 +57,10 @@ public class ApplicationDbContext : IdentityDbContext<User>, IApplicationDbConte
     public DbSet<Village> Villages { get; set; }
     public DbSet<Nationality> Nationalities { get; set; }
 
+    #endregion
+
+    #region DbSets - Client
+    public DbSet<ClientAddress>  ClientAddresses { get; set; }
     #endregion
 
     #region DbSets - Customers
