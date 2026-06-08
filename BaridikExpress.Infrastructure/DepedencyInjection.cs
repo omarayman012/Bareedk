@@ -1,17 +1,21 @@
 using BaridikExpress.Application.Interfaces;
 using BaridikExpress.Application.Interfaces.Auth;
+using BaridikExpress.Application.Interfaces.BlogModules;
 using BaridikExpress.Application.Interfaces.File;
 using BaridikExpress.Application.Interfaces.IRepository;
+using BaridikExpress.Application.Interfaces.Realtime;
 using BaridikExpress.Application.Interfaces.Services;
 using BaridikExpress.Domain.Entities.AuthModules;
 using BaridikExpress.Infrastructure.Localizer;
 using BaridikExpress.Infrastructure.Persistence;
 using BaridikExpress.Infrastructure.Repositories;
 using BaridikExpress.Infrastructure.Services.AuthModules;
+using BaridikExpress.Infrastructure.Services.BlogModules;
 using BaridikExpress.Infrastructure.Services.Email;
 using BaridikExpress.Infrastructure.Services.File;
 using BaridikExpress.Infrastructure.Services.Hasher;
 using BaridikExpress.Infrastructure.Services.Maps;
+using BaridikExpress.Infrastructure.Services.Realtime;
 using Infrastructure.Services.File;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -54,8 +58,14 @@ namespace BaridikExpress.Infrastructure
             services.AddScoped<IExcelService, ExcelService>();
             services.AddScoped<IBaseUrlService, BaseUrlService>();
             services.AddScoped<IJwtService, JwtService>();
+
             services.AddHttpClient<IMapService, GoogleGeocodingService>();
-           
+
+            services.AddScoped<IMapService, MapService>();
+            services.AddScoped<ICommentRealtimeService, CommentRealtimeService>();
+            services.AddScoped<INotificationService, NotificationService>();
+            services.AddScoped<IBlogService, BlogService>();
+
             return services;
         }
 

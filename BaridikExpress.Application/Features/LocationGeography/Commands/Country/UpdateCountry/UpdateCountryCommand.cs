@@ -1,10 +1,8 @@
 ﻿namespace BaridikExpress.Application.Features.LocationGeography.Commands.Country.UpdateCountry;
 
-public class UpdateCountryCommand:IRequest<Result<bool>>
-{
-    public Guid Id { get; set; }
-    public string? NameAr { get; set; }
-    public string?NameEn { get; set; }
-
-
-}
+public sealed record UpdateCountryCommand(
+    Guid Id,
+    string? NameAr,
+    string? NameEn,
+    string? PhoneCode
+) : IRequest<Result<bool>>;

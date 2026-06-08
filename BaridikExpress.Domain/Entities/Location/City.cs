@@ -11,9 +11,8 @@ public class City : BaseEntity, ISelectMenuEntity
 
     public string? NameAr => CityNameAr;
     public string? NameEn => CityNameEn;
-    public Guid? ParentId => GovernmentId;  
-
     public Guid Id => CityId;
+    public Guid? ParentId => GovernmentId;
 
     public Guid CountryId { get; set; }
     public Country? Country { get; set; }

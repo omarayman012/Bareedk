@@ -20,63 +20,64 @@ public class UpdateVillageCommandHandler(
                 cancellationToken);
 
         if (village is null)
-        {
-            return Result<bool>
-                .Failure(_localizer["VillageNotFound"], 404);
-        }
+            return Result<bool>.Failure(_localizer["VillageNotFound"], 404);
 
         var nameAr = request.NameAr?.Trim();
         var nameEn = request.NameEn?.Trim();
 
         var exists = await _application.Villages
             .AnyAsync(x =>
-                    x.VillageId != request.Id &&
-                    (
-                        (!string.IsNullOrWhiteSpace(nameAr) &&
-                         x.VillageNameAr == nameAr)
-                        ||
-                        (!string.IsNullOrWhiteSpace(nameEn) &&
-                         x.VillageNameEn == nameEn)
-                    ),
+                x.VillageId != request.Id &&
+                (
+                    (!string.IsNullOrWhiteSpace(nameAr) && x.VillageNameAr == nameAr) ||
+                    (!string.IsNullOrWhiteSpace(nameEn) && x.VillageNameEn == nameEn)
+                ),
                 cancellationToken);
 
         if (exists)
-        {
-            return Result<bool>
-                .Failure(_localizer["VillageAlreadyExists"], 409);
-        }
+            return Result<bool>.Failure(_localizer["VillageAlreadyExists"], 409);
 
         if (!string.IsNullOrWhiteSpace(nameAr))
-        {
             village.VillageNameAr = nameAr;
-        }
 
         if (!string.IsNullOrWhiteSpace(nameEn))
-        {
             village.VillageNameEn = nameEn;
-        }
 
         if (request.CityId.HasValue)
         {
             var cityExists = await _application.Cities
-                .AnyAsync(
-                    x => x.CityId == request.CityId.Value
-                         && x.IsActive,
-                    cancellationToken);
+                .AnyAsync(x => x.CityId == request.CityId.Value && x.IsActive, cancellationToken);
 
             if (!cityExists)
-            {
-                return Result<bool>
-                    .Failure(_localizer["CityNotFound"], 404);
-            }
+                return Result<bool>.Failure(_localizer["CityNotFound"], 404);
 
             village.CityId = request.CityId.Value;
         }
 
+        if (request.GovernmentId.HasValue)
+        {
+            var governmentExists = await _application.Governments
+                .AnyAsync(x => x.GovernmentId == request.GovernmentId.Value && x.IsActive, cancellationToken);
+
+            if (!governmentExists)
+                return Result<bool>.Failure(_localizer["GovernmentNotFound"], 404);
+
+            village.GovernmentId = request.GovernmentId.Value;
+        }
+
+        if (request.CountryId.HasValue)
+        {
+            var countryExists = await _application.Countries
+                .AnyAsync(x => x.CountryId == request.CountryId.Value && x.IsActive, cancellationToken);
+
+            if (!countryExists)
+                return Result<bool>.Failure(_localizer["CountryNotFound"], 404);
+
+            village.CountryId = request.CountryId.Value;
+        }
+
         await _application.SaveChangesAsync(cancellationToken);
 
-        return Result<bool>.Success(
-            true,
-            _localizer["VillageUpdatedSuccessfully"]);
+        return Result<bool>.Success(true, _localizer["VillageUpdatedSuccessfully"]);
     }
 }

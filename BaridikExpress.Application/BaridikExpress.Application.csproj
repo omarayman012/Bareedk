@@ -22,6 +22,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="Features\BlogsModules\BlogComment\Validator\" />
+	  <Folder Include="Features\BlogsModules\BlogsAuthor\Validator\" />
+	  <Folder Include="Features\BlogsModules\BlogsCategoryModules\Validator\" />
+	  <Folder Include="Features\BlogsModules\Blogs\Validator\" />
 	  <Folder Include="Features\Shared\" />
 	</ItemGroup>
 

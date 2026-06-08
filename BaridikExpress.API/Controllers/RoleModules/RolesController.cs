@@ -24,10 +24,13 @@ public class RolesController(IMediator mediator) : ControllerBase
     // GET: api/roles
     [HttpGet]
     [HasPermission(Permissions.RolesRead)]
-    public async Task<IActionResult> GetRoles()
+    public async Task<IActionResult> GetRoles(
+        [FromQuery] int pageNumber = 1,
+        [FromQuery] int pageSize = 10,
+        [FromQuery] string? name = null)
     {
-        var result = await _mediator.Send(new GetRolesQuery());
-
+        var result = await _mediator.Send(
+            new GetRolesQuery(pageNumber, pageSize, name));
         return StatusCode(result.StatusCode, result);
     }
 

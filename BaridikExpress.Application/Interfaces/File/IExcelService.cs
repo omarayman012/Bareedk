@@ -19,6 +19,7 @@ namespace BaridikExpress.Application.Interfaces.File
                 CancellationToken cancellationToken = default)
                 where TExcel : class, new()
                 where TEntity : class;
+
             
     }
 }

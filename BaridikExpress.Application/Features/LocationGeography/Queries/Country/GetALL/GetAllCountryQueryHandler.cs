@@ -2,6 +2,7 @@
 using BaridikExpress.Application.Features.CommanDTO.Localizes;
 using BaridikExpress.Application.Features.LocationGeography.Dto.Country;
 using Microsoft.EntityFrameworkCore;
+using ServiceStack.Text;
 
 namespace BaridikExpress.Application.Features.LocationGeography.Queries.Country.GetALL;
 
@@ -33,7 +34,20 @@ public class GetAllCountryQueryHandler(
         {
             query = query.Where(x => x.IsActive == request.IsActive.Value);
         }
+        if (!string.IsNullOrWhiteSpace(request.CreatedById))
+        {
+            query = query.Where(x =>
+                x.CreatedById == request.CreatedById);
+        }
+        if (request.FromDate.HasValue)
+        {
+            query = query.Where(x => x.CreatedAt >= request.FromDate.Value);
+        }
 
+        if (request.ToDate.HasValue)
+        {
+            query = query.Where(x => x.CreatedAt <= request.ToDate.Value.AddDays(1).AddTicks(-1));
+        }
         var countriesQuery = query.Select(x => new GetCountryResponse
         {
             Id = x.CountryId,
@@ -42,6 +56,7 @@ public class GetAllCountryQueryHandler(
                 AR = x.CountryNameAr,
                 EN = x.CountryNameEn
             },
+            PhoneCode= x.PhoneCode,
             CreatedBy = x.CreatedBy != null
                 ? x.CreatedBy.FullName
                 : x.CreatedById,

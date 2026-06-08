@@ -9,9 +9,8 @@ public class Government : BaseEntity, ISelectMenuEntity
     public string GovernmentNameEn { get; set; } = string.Empty;
     public string? NameAr => GovernmentNameAr;
     public string? NameEn => GovernmentNameEn;
-    public Guid? ParentId => CountryId;
-
     public Guid Id => GovernmentId;
+    public Guid? ParentId => CountryId;
     public Guid CountryId { get; set; }
     public Country? Country { get; set; }
 

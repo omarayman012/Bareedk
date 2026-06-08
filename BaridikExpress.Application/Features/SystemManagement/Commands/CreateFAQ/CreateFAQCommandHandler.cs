@@ -41,11 +41,11 @@ public sealed class CreateFAQCommandHandler(
             201);
     }
     #endregion
-
     private static FAQResponse MapToResponse(FAQ f) =>
         new(f.Id,
             new LocalizeLang { AR = f.QuestionAr, EN = f.QuestionEn },
             new LocalizeLang { AR = f.AnswerAr, EN = f.AnswerEn },
+            f.IsActive,
             f.CreatedBy?.FullName,
             f.CreatedAt,
             f.UpdatedBy?.FullName,

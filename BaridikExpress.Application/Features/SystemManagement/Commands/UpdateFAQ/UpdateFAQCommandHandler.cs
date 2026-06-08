@@ -41,11 +41,12 @@ public sealed class UpdateFAQCommandHandler(
     #endregion
 
     private static FAQResponse MapToResponse(FAQ f) =>
-        new(f.Id,
-            new LocalizeLang { AR = f.QuestionAr, EN = f.QuestionEn },
-            new LocalizeLang { AR = f.AnswerAr, EN = f.AnswerEn },
-            f.CreatedBy?.FullName,
-            f.CreatedAt,
-            f.UpdatedBy?.FullName,
-            f.UpdatedAt);
+       new(f.Id,
+           new LocalizeLang { AR = f.QuestionAr, EN = f.QuestionEn },
+           new LocalizeLang { AR = f.AnswerAr, EN = f.AnswerEn },
+           f.IsActive,
+           f.CreatedBy?.FullName,
+           f.CreatedAt,
+           f.UpdatedBy?.FullName,
+           f.UpdatedAt);
 }

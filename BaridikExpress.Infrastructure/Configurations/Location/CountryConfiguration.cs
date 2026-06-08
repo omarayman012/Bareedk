@@ -10,18 +10,17 @@ namespace BaridikExpress.Infrastructure.Configurations.Location
         public override void Configure(EntityTypeBuilder<Country> builder)
         {
             base.Configure(builder);
-
             builder.ToTable("Countries");
             builder.HasKey(c => c.CountryId);
-
             builder.Property(c => c.CountryNameAr)
                 .IsRequired()
                 .HasMaxLength(100);
-
             builder.Property(c => c.CountryNameEn)
                 .IsRequired()
                 .HasMaxLength(100);
-
+            builder.Property(c => c.PhoneCode)  
+                .IsRequired()
+                .HasMaxLength(10);
             builder.HasMany(c => c.Governments)
                 .WithOne(g => g.Country)
                 .HasForeignKey(g => g.CountryId)

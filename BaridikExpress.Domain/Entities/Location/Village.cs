@@ -11,9 +11,8 @@ public class Village : BaseEntity, ISelectMenuEntity
 
     public string? NameAr => VillageNameAr;
     public string? NameEn => VillageNameEn;
-    public Guid? ParentId => GovernmentId;
-
-    public Guid Id => CityId;
+    public Guid Id => VillageId;  
+    public Guid? ParentId => CityId;
 
     public Guid CountryId { get; set; }
     public Country? Country { get; set; }
