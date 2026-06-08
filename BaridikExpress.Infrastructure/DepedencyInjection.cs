@@ -61,7 +61,6 @@ namespace BaridikExpress.Infrastructure
 
             services.AddHttpClient<IMapService, GoogleGeocodingService>();
 
-            services.AddScoped<IMapService, MapService>();
             services.AddScoped<ICommentRealtimeService, CommentRealtimeService>();
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<IBlogService, BlogService>();
