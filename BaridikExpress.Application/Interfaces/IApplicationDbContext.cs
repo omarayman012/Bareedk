@@ -1,3 +1,4 @@
+using BaridikExpress.Domain.Entities.Addresses;
 using BaridikExpress.Domain.Entities.AuthModule;
 using BaridikExpress.Domain.Entities.BlogsModules;
 using BaridikExpress.Domain.Entities.CareerFields;
@@ -105,8 +106,14 @@ public interface IApplicationDbContext
 
     #endregion
 
+    #region Client
     DbSet<Client> Clients { get; set; }
+
+    DbSet<ClientAddress> ClientAddresses { get; set; }
+    #endregion
+
     DbSet<PublishingHouse> PublishingHouses { get; set; }
+
 
     DatabaseFacade Database { get; }
 

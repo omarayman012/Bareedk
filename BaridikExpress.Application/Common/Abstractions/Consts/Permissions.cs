@@ -24,10 +24,16 @@
         public const string CareerFieldsRead = "CareerFields.Read";
         public const string CareerFieldsDelete = "CareerFields.Delete";
 
-        public const string VehiclesRead =   "Permissions.Vehicles.Read";
-        public const string VehiclesCreate = "Permissions.Vehicles.Create";
-        public const string VehiclesUpdate = "Permissions.Vehicles.Update";
-        public const string VehiclesDelete = "Permissions.Vehicles.Delete";
+        public const string VehiclesRead =   "Vehicles.Read";
+        public const string VehiclesCreate = "Vehicles.Create";
+        public const string VehiclesUpdate = "Vehicles.Update";
+        public const string VehiclesDelete = "Vehicles.Delete";
+
+
+        public const string ClientAddressesRead = "ClientAddresses.Read";
+        public const string ClientAddressesCreate = "ClientAddresses.Create";
+        public const string ClientAddressesUpdate = "ClientAddresses.Update";
+        public const string ClientAddressesDelete = "ClientAddresses.Delete";
 
 
     }

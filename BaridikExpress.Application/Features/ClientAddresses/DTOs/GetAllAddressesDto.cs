@@ -1,6 +1,6 @@
 using BaridikExpress.Application.Common.Helpers;
 
-namespace BaridikExpress.Application.Features.CustomerAddresses.DTOs;
+namespace BaridikExpress.Application.Features.ClientAddresses.DTOs;
 
 public class GetAllAddressesDto
 {
@@ -15,7 +15,7 @@ public class GetAllAddressesDto
     public LocalizedEntityDto? Village { get; set; }
     public string? Street { get; set; }
     public string? BuildingNumber { get; set; }
-    public string? ApartmentNumber { get; set; }
+    public string? FlatNumber { get; set; }
     public string? FloorNumber { get; set; }
     public string? DistinctiveMark { get; set; }
     public string? ZipCode { get; set; }

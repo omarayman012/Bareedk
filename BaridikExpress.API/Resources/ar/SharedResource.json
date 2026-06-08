@@ -1026,6 +1026,25 @@
   "CustomerFetchedSuccessfully": "تم جلب  بيانات العميل بنجاح",
   "TRNAlreadyExists": "الرقم الضريبي موجود بالفعل",
   "InvalidCurrency": "العملة غير صالحة",
+
+  "ExcelFileRequired": "ملف Excel مطلوب",
+  "ExcelInvalidType": "نوع ملف Excel غير صالح، يجب أن يكون .xlsx",
+  "AddressIdRequired": "معرف العنوان مطلوب",
+  "AddressNotFound": "العنوان غير موجود",
+  "AddressAlreadyExists": "العنوان موجود بالفعل",
+  "SomeAddressesNotFound": "بعض العناوين غير موجودة",
+  "AddressTypeRequired": "نوع العنوان مطلوب",
+  "RecipientNameRequired": "اسم المستلم مطلوب",
+  "CountryRequired": "الدولة مطلوبة",
+  "GovernmentRequired": "المحافظة مطلوبة",
+  "CityRequired": "المدينة مطلوبة",
+  "StreetRequired": "الشارع مطلوب",
+  "BuildingNumberRequired": "رقم المبنى مطلوب",
+  "FlatNumberRequired": "رقم الشقة مطلوب",
+  "LatitudeRequired": "خط العرض مطلوب",
+  "LongitudeRequired": "خط الطول مطلوب"
+
+
   "OpeningBalanceDateInvalid": "تاريخ الرصيد الافتتاحي لا يمكن أن يكون في المستقبل",
   "FailedToCreateCustomer": "فشل في إنشاء العميل",
   "FailedToUpdateCustomer": "فشل في تحديث بيانات العميل",
@@ -1159,5 +1178,6 @@
   "CodeAlreadyExists": "الكود مستخدم بالفعل.",
   "ArabicNameRequired": "الاسم العربي مطلوب.",
   "exceeded": "يجب ألا يتجاوز حجم الصورة 5 ميجابايت."
+
 }
 

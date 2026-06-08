@@ -366,6 +366,22 @@
   "InvalidCurrency": "Invalid currency code",
   "ExcelFileRequired": "Excel file is required",
   "ExcelInvalidType": "Invalid Excel file type, must be .xlsx",
+
+  "AddressIdRequired": "Address ID is required",
+  "AddressNotFound": "Address not found",
+  "SomeAddressesNotFound": "Some addresses were not found",
+  "AddressAlreadyExists": "Address already exists",
+  "AddressTypeRequired": "Address type is required",
+  "RecipientNameRequired": "Recipient name is required",
+  "CountryRequired": "Country is required",
+  "GovernmentRequired": "Government is required",
+  "CityRequired": "City is required",
+  "StreetRequired": "Street is required",
+  "BuildingNumberRequired": "Building number is required",
+  "FlatNumberRequired": "Flat number is required",
+  "LatitudeRequired": "Latitude is required",
+  "LongitudeRequired": "Longitude is required"
+
   "MainCategoryNameAlreadyExists": "Main category name already exists, please choose another name.",
   "MainCategoryCreatedSuccessfully": "Main category created successfully.",
   "FailedToCreateMainCategory": "An unexpected error occurred while creating the main category, please try again later.",
@@ -1063,4 +1079,5 @@
   "PublishingHouseUpdatedSuccessfully": "Publishing house updated successfully.",
   "FailedToUpdatePublishingHouse": "Failed to update publishing house: {0}",
   "exceeded": "Image size must not exceed 5 MB."
+
 }

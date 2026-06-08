@@ -1,7 +1,4 @@
-using FluentValidation;
-using Microsoft.Extensions.Localization;
-
-namespace BaridikExpress.Application.Features.CustomerAddresses.Commands.CreateAddress;
+namespace BaridikExpress.Application.Features.ClientAddresses.Commands.CreateAddress;
 
 public class CreateAddressCommandValidator : AbstractValidator<CreateAddressCommand>
 {
@@ -56,9 +53,9 @@ public class CreateAddressCommandValidator : AbstractValidator<CreateAddressComm
             .NotEmpty()
             .WithMessage(localizer["BuildingNumberRequired"]);
 
-        RuleFor(x => x.ApartmentNumber)
+        RuleFor(x => x.FlatNumber)
             .NotEmpty()
-            .WithMessage(localizer["ApartmentNumberRequired"]);
+            .WithMessage(localizer["FlatNumberRequired"]);
 
         RuleFor(x => x.Latitude)
             .NotNull()
