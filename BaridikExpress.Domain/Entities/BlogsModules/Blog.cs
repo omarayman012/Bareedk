@@ -24,7 +24,7 @@ namespace BaridikExpress.Domain.Entities.BlogsModules
         public BlogsAuthor Author { get; set; }
         public BlogSeo? Seo { get; set; }
         public ICollection<BlogTag> BlogTags { get; set; } = new List<BlogTag>();
-        public ICollection<BlogReaction> Reactions { get; set; } = new List<BlogReaction>();
+        public ICollection<BlogReaction> Reactions { get; set; } = new List<BlogReaction>(); 
         public ICollection<BlogComment> Comments { get; set; } = new List<BlogComment>();
     }
 }
