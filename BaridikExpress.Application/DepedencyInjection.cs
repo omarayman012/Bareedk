@@ -8,6 +8,7 @@ using BaridikExpress.Application.Features.SystemManagement.Commands.UpdateSystem
 using BaridikExpress.Application.Features.SystemManagement.DTOs;
 using BaridikExpress.Application.Features.SystemManagement.Queries.GetSystemManagement;
 using BaridikExpress.Domain.Entities.Location;
+using BaridikExpress.Domain.Entities.NotificationModules;
 using BaridikExpress.Domain.Entities.SystemManagment;
 using FluentValidation;
 using MediatR;
@@ -85,6 +86,11 @@ public static class DepedencyInjection
         services.AddTransient<
             IRequestHandler<GetSystemManagementQuery<CustomerRegistration>, Result<SystemManagementResponse>>,
             GetSystemManagementQueryHandler<CustomerRegistration>>();
+        services.AddTransient<IRequestHandler<UpdateSystemManagementCommand<MessageNotification>, Result<SystemManagementResponse>>,
+           UpdateSystemManagementCommandHandler<MessageNotification>>();
+        services.AddTransient<
+    IRequestHandler<GetSystemManagementQuery<MessageNotification>, Result<SystemManagementResponse>>,
+    GetSystemManagementQueryHandler<MessageNotification>>();
 
         #endregion
 

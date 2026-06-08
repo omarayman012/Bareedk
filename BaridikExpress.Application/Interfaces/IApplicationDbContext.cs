@@ -114,6 +114,9 @@ public interface IApplicationDbContext
 
     DbSet<PublishingHouse> PublishingHouses { get; set; }
 
+    public DbSet<SendNotification> SendNotifications { get; set; }
+    public DbSet<NotificationRecipient> NotificationRecipients { get; set; }
+    public DbSet<MessageNotification> MessageNotifications { get; set; }
 
     DatabaseFacade Database { get; }
 
