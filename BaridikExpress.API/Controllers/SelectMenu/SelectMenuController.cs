@@ -1,4 +1,5 @@
-﻿using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu;
+﻿using BaridikExpress.Application.Features.SelectMenu.Queries.GetRolesSelectMenu;
+using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu;
 using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.Nationalities;
 using BaridikExpress.Domain.Entities.Location;
 using MediatR;
@@ -19,12 +20,8 @@ public class SelectMenuController(IMediator mediator) : ControllerBase
         CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
-            new GetSelectMenuQuery<Country>
-            {
-                Name = name
-            },
+            new GetSelectMenuQuery<Country> { Name = name },
             cancellationToken);
-
         return StatusCode(result.StatusCode, result);
     }
 
@@ -36,13 +33,8 @@ public class SelectMenuController(IMediator mediator) : ControllerBase
         CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
-            new GetSelectMenuQuery<Government>
-            {
-                ParentId = parentId,
-                Name = name
-            },
+            new GetSelectMenuQuery<Government> { ParentId = parentId, Name = name },
             cancellationToken);
-
         return StatusCode(result.StatusCode, result);
     }
 
@@ -54,13 +46,8 @@ public class SelectMenuController(IMediator mediator) : ControllerBase
         CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
-            new GetSelectMenuQuery<City>
-            {
-                ParentId = parentId,
-                Name = name
-            },
+            new GetSelectMenuQuery<City> { ParentId = parentId, Name = name },
             cancellationToken);
-
         return StatusCode(result.StatusCode, result);
     }
 
@@ -72,26 +59,30 @@ public class SelectMenuController(IMediator mediator) : ControllerBase
         CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
-            new GetSelectMenuQuery<Village>
-            {
-                ParentId = parentId,
-                Name = name
-            },
+            new GetSelectMenuQuery<Village> { ParentId = parentId, Name = name },
             cancellationToken);
-
         return StatusCode(result.StatusCode, result);
     }
 
     [HttpGet("nationalities")]
     [AllowAnonymous]
     public async Task<IActionResult> GetNationalities(
-      [FromQuery] string? name,
-      CancellationToken cancellationToken)
+        [FromQuery] string? name,
+        CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
             new GetNationalitiesSelectMenuQuery(name),
             cancellationToken);
-
         return Ok(result);
+    }
+
+    [HttpGet("roles")]
+    [Authorize]
+    public async Task<IActionResult> GetRoles(CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new GetRolesSelectMenuQuery(),
+            cancellationToken);
+        return StatusCode(result.StatusCode, result);
     }
 }
