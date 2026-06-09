@@ -1,9 +1,7 @@
-
-using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu;
-using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.GenericSelectMenu;
-
 using BaridikExpress.Application.Features.SelectMenu.Queries.GetRolesSelectMenu;
 using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu;
+using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.Currency;
+using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.GenericSelectMenu;
 using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.Nationalities;
 using BaridikExpress.Domain.Entities.CareerFields;
 using BaridikExpress.Domain.Entities.Location;
@@ -86,35 +84,37 @@ public class SelectMenuController(IMediator mediator) : ControllerBase
     [HttpGet("CareerField")]
     [AllowAnonymous]
     public async Task<IActionResult> GetCareerFieldes(
-  [FromQuery] string? name,
-  CancellationToken cancellationToken)
+        [FromQuery] string? name,
+        CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
-           new GetSelectMenubaseQuery<CareerField>
-           {
-               Name = name
-           },
+           new GetSelectMenubaseQuery<CareerField> { Name = name },
            cancellationToken);
 
         return Ok(result);
     }
 
-
     [HttpGet("vehicles")]
     [AllowAnonymous]
     public async Task<IActionResult> GetVehicles(
-[FromQuery] string? name,
-CancellationToken cancellationToken)
+        [FromQuery] string? name,
+        CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
-           new GetSelectMenubaseQuery<Vehicle>
-           {
-               Name = name
-           },
+           new GetSelectMenubaseQuery<Vehicle> { Name = name },
            cancellationToken);
 
         return Ok(result);
+    }
 
+    [HttpGet("currencies")]
+    [AllowAnonymous] 
+    public async Task<IActionResult> GetCurrencies(CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new GetCurrenciesQuery(),
+            cancellationToken);
+        return StatusCode(result.StatusCode, result);
     }
     [HttpGet("banners")]
     [AllowAnonymous]
@@ -141,6 +141,5 @@ CancellationToken cancellationToken)
             new GetRolesSelectMenuQuery(),
             cancellationToken);
         return StatusCode(result.StatusCode, result);
-
     }
 }
