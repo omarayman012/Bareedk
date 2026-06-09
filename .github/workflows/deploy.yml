@@ -66,7 +66,8 @@ jobs:
             sleep 10
 
             echo "Check backend service"
-            sudo -n systemctl --no-pager status "$SERVICE_NAME"
+            systemctl is-active --quiet "$SERVICE_NAME"
+            systemctl status "$SERVICE_NAME" --no-pager || true
 
             echo "Check local backend port"
             ss -tulpn | grep 5055
