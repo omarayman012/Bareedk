@@ -16,11 +16,13 @@ public class GetAllSubAdminEmployeesQueryHandler(
     private readonly IStringLocalizer _localizer = localizer;
 
     public async Task<Result<PaginatedList<SubAdminEmployeeResponse>>> Handle(
-        GetAllSubAdminEmployeesQuery request, CancellationToken cancellationToken)
+     GetAllSubAdminEmployeesQuery request, CancellationToken cancellationToken)
     {
         var query = _context.SubAdminEmployees
             .Include(x => x.User)
             .Include(x => x.Role)
+            .Include(x => x.CreatedBy)
+            .Include(x => x.UpdatedBy)
             .AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(request.Name))
@@ -38,29 +40,35 @@ public class GetAllSubAdminEmployeesQueryHandler(
         if (request.ToDate.HasValue)
             query = query.Where(x => x.CreatedAt <= request.ToDate.Value);
 
-        var mapped = query
-            .OrderByDescending(x => x.CreatedAt)
-            .Select(x => new SubAdminEmployeeResponse
-            {
-                Id = x.Id,
-                Name = x.User.FullName,
-                Image = x.User.ProfileImageUrl,
-                Email = x.User.Email!,
-                PhoneNumber = x.User.PhoneNumber,
-                Role = x.Role != null ? x.Role.Name! : string.Empty,
-                Gender=x.Gender,
-                CreatedBy = x.CreatedBy != null ? x.CreatedBy.FullName : string.Empty,
-                CreatedAt = x.CreatedAt,
-                UpdatedBy = x.UpdatedBy != null ? x.UpdatedBy.FullName : null,
-                UpdatedAt = x.UpdatedAt,
-                IsActive = x.IsActive,
-            });
+        var totalCount = await query.CountAsync(cancellationToken);
 
-        var result = await PaginatedList<SubAdminEmployeeResponse>.CreateAsync(
-            mapped,
-            request.PageNumber,
-            request.PageSize
-        );
+        var items = await query
+            .OrderByDescending(x => x.CreatedAt)
+            .Skip((request.PageNumber - 1) * request.PageSize)
+            .Take(request.PageSize)
+            .ToListAsync(cancellationToken);
+
+        var mapped = items.Select(x => new SubAdminEmployeeResponse
+        {
+            Id = x.Id,
+            Name = x.User.FullName,
+            Image = x.User.ProfileImageUrl,
+            Email = x.User.Email!,
+            PhoneNumber = x.User.PhoneNumber,
+            Role = new RoleDto
+            {
+                Id = x.Role != null ? x.Role.Id : string.Empty,
+                Name = x.Role != null ? x.Role.Name : string.Empty,
+            },
+            Gender = x.Gender,
+            CreatedBy = x.CreatedBy != null ? x.CreatedBy.FullName : string.Empty,
+            CreatedAt = x.CreatedAt,
+            UpdatedBy = x.UpdatedBy != null ? x.UpdatedBy.FullName : null,
+            UpdatedAt = x.UpdatedAt,
+            IsActive = x.IsActive,
+        }).ToList();
+
+        var result = new PaginatedList<SubAdminEmployeeResponse>(mapped, totalCount, request.PageNumber, request.PageSize);
 
         return Result<PaginatedList<SubAdminEmployeeResponse>>.Success(result, _localizer["EmployeesRetrievedSuccessfully"]);
     }

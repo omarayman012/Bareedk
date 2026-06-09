@@ -5,6 +5,7 @@ using BaridikExpress.Domain.Entities.AuthModules;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
+using ServiceStack;
 
 namespace BaridikExpress.Application.Features.Auth.Commands.CreateSubAdminEmployee;
 
@@ -97,15 +98,18 @@ public class CreateSubAdminEmployeeCommandHandler
             Image = user.ProfileImageUrl,
             Email = user.Email!,
             PhoneNumber = user.PhoneNumber,
-            Role = role.Name!,
-            Gender=subAdmin.Gender,
+            Role = new RoleDto
+            {
+                Id = role.Id,       
+                Name = role.Name!,   
+            },
+            Gender = subAdmin.Gender,
             CreatedBy = user.CreatedById ?? string.Empty,
             CreatedAt = user.CreatedAt,
             UpdatedBy = null,
             UpdatedAt = null,
             IsActive = true,
         };
-
         return Result<SubAdminEmployeeResponse>.Success(response, _localizer["EmployeeCreatedSuccessfully"], 201);
     }
 }

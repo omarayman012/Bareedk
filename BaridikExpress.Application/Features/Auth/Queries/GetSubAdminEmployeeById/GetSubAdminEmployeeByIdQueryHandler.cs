@@ -20,8 +20,8 @@ public class GetSubAdminEmployeeByIdQueryHandler(
         var subAdmin = await _context.SubAdminEmployees
             .Include(x => x.User)
             .Include(x => x.Role)
-            .Include(x => x.CreatedBy) 
-            .Include(x => x.UpdatedBy)  
+            .Include(x => x.CreatedBy)
+            .Include(x => x.UpdatedBy)
             .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
         if (subAdmin is null)
@@ -34,8 +34,12 @@ public class GetSubAdminEmployeeByIdQueryHandler(
             Image = subAdmin.User.ProfileImageUrl,
             Email = subAdmin.User.Email!,
             PhoneNumber = subAdmin.User.PhoneNumber,
-            Role = subAdmin.Role?.Name ?? string.Empty,
-            Gender=subAdmin.Gender,
+            Role = new RoleDto
+            {
+                Id = subAdmin.Role?.Id ?? string.Empty,     
+                Name = subAdmin.Role?.Name ?? string.Empty,  
+            },
+            Gender = subAdmin.Gender,
             CreatedBy = subAdmin.CreatedBy?.FullName ?? string.Empty,
             CreatedAt = subAdmin.CreatedAt,
             UpdatedBy = subAdmin.UpdatedBy?.FullName,
