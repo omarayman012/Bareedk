@@ -1,7 +1,7 @@
 ﻿using BaridikExpress.Application.Features.CommanDTO.Localizes;
+using BaridikExpress.Domain.Enum;
 
 namespace BaridikExpress.Application.Features.DeliveryTypes.DTO;
-
 public sealed record DeliveryTypeResponse(
     Guid Id,
     LocalizedDto Name,
@@ -9,6 +9,7 @@ public sealed record DeliveryTypeResponse(
     int DaysTo,
     decimal PricePerShipment,
     decimal PricePerTotal,
+    string Currency,
     bool IsSwitchActive,
     string? ImageUrl,
     LocalizedDto? Description,
@@ -16,4 +17,8 @@ public sealed record DeliveryTypeResponse(
     DateTime CreatedAt,
     string? UpdatedBy,
     DateTime? UpdatedAt
-);
+)
+{
+    public string PricePerShipmentWithCurrency => $"{PricePerShipment} {Currency}";
+    public string PricePerTotalWithCurrency => $"{PricePerTotal} {Currency}";
+}

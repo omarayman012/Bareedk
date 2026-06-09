@@ -1,3 +1,4 @@
+using System.Reflection;
 using BaridikExpress.Application.Interfaces;
 using BaridikExpress.Application.Interfaces.Auth;
 using BaridikExpress.Application.Interfaces.BlogModules;
@@ -9,6 +10,7 @@ using BaridikExpress.Domain.Entities.AuthModules;
 using BaridikExpress.Infrastructure.Localizer;
 using BaridikExpress.Infrastructure.Persistence;
 using BaridikExpress.Infrastructure.Repositories;
+using BaridikExpress.Infrastructure.Services;
 using BaridikExpress.Infrastructure.Services.AuthModules;
 using BaridikExpress.Infrastructure.Services.BlogModules;
 using BaridikExpress.Infrastructure.Services.Email;
@@ -57,8 +59,11 @@ namespace BaridikExpress.Infrastructure
             services.AddScoped<IExcelService, ExcelService>();
             services.AddScoped<IBaseUrlService, BaseUrlService>();
             services.AddScoped<IJwtService, JwtService>();
-
+            var apiAssembly = Assembly.Load("BaridikExpress.API");
+            services.AddSingleton<IAutoPermissionScanner>(
+                new AutoPermissionScanner([apiAssembly]));
             services.AddHttpClient<IMapService, GoogleGeocodingService>();
+
             services.AddScoped<ICommentRealtimeService, CommentRealtimeService>();
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<IBlogService, BlogService>();

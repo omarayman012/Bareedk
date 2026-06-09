@@ -110,6 +110,9 @@ public class ApplicationDbContext : IdentityDbContext<User>, IApplicationDbConte
     public DbSet<CommentReaction> CommentReactions { get; set; }
     public DbSet<BlogReaction> BlogReactions { get; set; }
     public DbSet<Notification> Notifications { get; set; }
+    public DbSet<SendNotification> SendNotifications { get; set; }
+    public DbSet<NotificationRecipient> NotificationRecipients { get; set; }
+    public DbSet<MessageNotification> MessageNotifications { get; set; }
 
 
 

@@ -4,6 +4,7 @@ using BaridikExpress.Application.Features.Customer.Commands.ToggleCustomerStatus
 using BaridikExpress.Application.Features.Customer.Commands.UpdateCustomer;
 using BaridikExpress.Application.Features.Customer.Queries.GetAllCustomers;
 using BaridikExpress.Application.Features.Customer.Queries.GetCustomerById;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BaridikExpress.API.Controllers.CustomerModule
@@ -11,6 +12,7 @@ namespace BaridikExpress.API.Controllers.CustomerModule
     [ApiController]
     [Route("api/v1/[controller]")]
     [ApiExplorerSettings(GroupName = "admin-v1")]
+    [Authorize]
     public class CustomerController(IMediator mediator) : ControllerBase
     {
         [HttpPost("Create")]

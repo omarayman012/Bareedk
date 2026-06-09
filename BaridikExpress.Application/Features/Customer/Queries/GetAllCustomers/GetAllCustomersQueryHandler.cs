@@ -4,7 +4,8 @@ using Microsoft.EntityFrameworkCore;
 namespace BaridikExpress.Application.Features.Customer.Queries.GetAllCustomers;
 
 public sealed class GetAllCustomersQueryHandler(
-    IApplicationDbContext db)
+    IApplicationDbContext db,
+    IStringLocalizer localizer)
     : IRequestHandler<GetAllCustomersQuery, Result<PaginatedList<CustomerListItemResponse>>>
 {
     #region Handle
@@ -16,6 +17,7 @@ public sealed class GetAllCustomersQueryHandler(
         #region Build Query
 
         var query = db.Customers
+
             .AsNoTracking()
             .AsQueryable();
 
@@ -69,11 +71,9 @@ public sealed class GetAllCustomersQueryHandler(
                     .Where(x => x.IsPrimary)
                     .Select(x => x.WhatsAppCountryCode + x.WhatsAppNumber)
                     .FirstOrDefault(),
-
                 Location = c.Addresses
-                    .Where(a => a.IsDefault)
-                    .Select(a => a.Location)
-                    .FirstOrDefault(),
+                 .Select(a => a.Location)
+                 .FirstOrDefault(),
             });
 
         #endregion
@@ -86,7 +86,7 @@ public sealed class GetAllCustomersQueryHandler(
         #endregion
 
         return Result<PaginatedList<CustomerListItemResponse>>
-            .Success(result);
+           .Success(result, localizer["CustomersRetrievedSuccessfully"]);
     }
 
     #endregion
