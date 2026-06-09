@@ -7,6 +7,15 @@ public sealed record NotificationResponse(
     LocalizedDto Title,
     LocalizedDto Description,
     string? ImageUrl,
-    int RecipientsCount,
-    DateTime CreatedAt
+    int TotalRecipientsCount,
+    int ClientsCount,
+    int ClientsCreatedByAdminCount,
+    int ClientsExternalCount,
+    int DeliveriesCount,
+    int DeliveriesCreatedByAdminCount,
+    int DeliveriesExternalCount,
+    string? CreatedBy,
+    DateTime CreatedAt,
+    string? UpdatedBy,
+    DateTime? UpdatedAt
 );

@@ -38,14 +38,23 @@ public sealed class GetAllNotificationsQueryHandler(
         #region Projection
 
         var projected = query
-            .OrderByDescending(x => x.CreatedAt)
-            .Select(x => new NotificationResponse(
-                x.Id,
-                new LocalizedDto { AR = x.TitleAr, EN = x.TitleEn },
-                new LocalizedDto { AR = x.DescriptionAr, EN = x.DescriptionEn },
-                x.ImageUrl,
-                x.Recipients.Count,
-                x.CreatedAt));
+        .OrderByDescending(x => x.CreatedAt)
+        .Select(x => new NotificationResponse(
+            x.Id,
+            new LocalizedDto { AR = x.TitleAr, EN = x.TitleEn },
+            new LocalizedDto { AR = x.DescriptionAr, EN = x.DescriptionEn },
+            x.ImageUrl,
+            x.Recipients.Count,
+            x.Recipients.Count(r => db.Clients.Any(c => c.UserId == r.UserId)),
+            x.Recipients.Count(r => db.Clients.Any(c => c.UserId == r.UserId && c.CreatedById != null)),
+            x.Recipients.Count(r => db.Clients.Any(c => c.UserId == r.UserId && c.CreatedById == null)),
+            x.Recipients.Count(r => db.Deliveries.Any(d => d.UserId == r.UserId)),
+            x.Recipients.Count(r => db.Deliveries.Any(d => d.UserId == r.UserId && d.CreatedById != null)),
+            x.Recipients.Count(r => db.Deliveries.Any(d => d.UserId == r.UserId && d.CreatedById == null)),
+            x.CreatedBy != null ? x.CreatedBy.FullName : null,
+            x.CreatedAt,
+            x.UpdatedBy != null ? x.UpdatedBy.FullName : null,
+            x.UpdatedAt));
 
         #endregion
 
