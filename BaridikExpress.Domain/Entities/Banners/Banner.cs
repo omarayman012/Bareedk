@@ -2,7 +2,7 @@
 
 namespace BaridikExpress.Domain.Entities.Banners
 {
-    public class Banner : BaseEntity
+    public class Banner : BaseEntity,ISelectMenuEntity
     {
         public Guid Id { get; private set; }
         public string ?TitleEn { get;private set; } = default!;
@@ -12,6 +12,15 @@ namespace BaridikExpress.Domain.Entities.Banners
         public string ?DescriptionAr { get; private set; } = default!;
 
         public string ImageUrl { get; private set; } = default!;
+
+        #region ISelectMenuEntity Implementation
+        public string? NameAr => TitleAr;
+
+        public string? NameEn => TitleEn;
+
+        public Guid? ParentId => null;
+        #endregion
+
         private Banner(){}
         public Banner(
             string titleEn,

@@ -11,6 +11,7 @@ using BaridikExpress.Domain.Entities.Vehicles;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using BaridikExpress.Domain.Entities.Banners;
 
 namespace BaridikExpress.API.Controllers.SelectMenu;
 
@@ -115,6 +116,23 @@ CancellationToken cancellationToken)
         return Ok(result);
 
     }
+    [HttpGet("banners")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetBanners(
+[FromQuery] string? name,
+CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+           new GetSelectMenubaseQuery<Banner>
+           {
+               Name = name
+           },
+           cancellationToken);
+
+        return Ok(result);
+
+    }
+
     [HttpGet("roles")]
     [Authorize]
     public async Task<IActionResult> GetRoles(CancellationToken cancellationToken)
