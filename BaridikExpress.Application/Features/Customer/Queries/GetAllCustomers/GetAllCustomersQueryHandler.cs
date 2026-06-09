@@ -16,6 +16,7 @@ public sealed class GetAllCustomersQueryHandler(
         #region Build Query
 
         var query = db.Customers
+
             .AsNoTracking()
             .AsQueryable();
 
@@ -69,11 +70,9 @@ public sealed class GetAllCustomersQueryHandler(
                     .Where(x => x.IsPrimary)
                     .Select(x => x.WhatsAppCountryCode + x.WhatsAppNumber)
                     .FirstOrDefault(),
-
                 Location = c.Addresses
-                    .Where(a => a.IsDefault)
-                    .Select(a => a.Location)
-                    .FirstOrDefault(),
+                 .Select(a => a.Location)
+                 .FirstOrDefault(),
             });
 
         #endregion
