@@ -35,6 +35,10 @@
         public const string ClientAddressesUpdate = "ClientAddresses.Update";
         public const string ClientAddressesDelete = "ClientAddresses.Delete";
 
+        public const string BannersCreate = "Banners.Create";
+        public const string BannersUpdate = "Banners.Update";
+        public const string BannersDelete = "Banners.Delete";
+        public const string BannersRead = "Banners.Read";
 
     }
 }

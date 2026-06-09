@@ -380,7 +380,7 @@
   "BuildingNumberRequired": "Building number is required",
   "FlatNumberRequired": "Flat number is required",
   "LatitudeRequired": "Latitude is required",
-  "LongitudeRequired": "Longitude is required"
+  "LongitudeRequired": "Longitude is required",
 
   "MainCategoryNameAlreadyExists": "Main category name already exists, please choose another name.",
   "MainCategoryCreatedSuccessfully": "Main category created successfully.",
@@ -494,7 +494,7 @@
   "InvalidMainCategoryIds": "Invalid main category ids",
   "SubCategoryNameAlreadyExists": "Sub category name already exists",
   "SubCategoryNameEnRequired": "Sub category name in English is required",
-  "SubCategoryNameArRequired": "Sub category name in Arabic is required", 
+  "SubCategoryNameArRequired": "Sub category name in Arabic is required",
   "SubCategoryNameEnLength": "Sub category name in English must be between 3 and 100 characters",
   "SubCategoryNameArLength": "Sub category name in Arabic must be between 3 and 100 characters",
   "SubCategoryDescriptionEnMaxLength": "Sub category description in English must not exceed 500 characters",
@@ -1078,6 +1078,19 @@
   "FailedToGetData": "Failed to get data: {0}",
   "PublishingHouseUpdatedSuccessfully": "Publishing house updated successfully.",
   "FailedToUpdatePublishingHouse": "Failed to update publishing house: {0}",
-  "exceeded": "Image size must not exceed 5 MB."
+  "exceeded": "Image size must not exceed 5 MB.",
+
+  "BannerTitleRequired": "Banner title in Arabic or English is required.",
+  "BannerTitleAlreadyExists": "A banner with this title already exists.",
+  "BannerTitleMaxLength": "Banner title must not exceed 200 characters.",
+  "BannerDescriptionMaxLength": "Banner description must not exceed 2000 characters.",
+  "BannerCreatedSuccessfully": "Banner created successfully.",
+  "BannerUpdatedSuccessfully": "Banner updated successfully.",
+  "BannerNotFound": "Banner not found.",
+  "BannersNotFound": "Banners not found.",
+  "SomeBannersNotFound": "Some banners were not found.",
+  "BannersDeletedSuccessfully": "Banners deleted successfully.",
+  "CareerFieldRetrievedSuccessfully": "Career field retrieved successfully.",
+  "VehicleRetrievedSuccessfully": "Vehicle retrieved successfully.",
 
 }

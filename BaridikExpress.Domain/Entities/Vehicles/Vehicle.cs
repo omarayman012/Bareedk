@@ -3,7 +3,7 @@ using BaridikExpress.Domain.Enum;
 
 namespace BaridikExpress.Domain.Entities.Vehicles
 {
-    public class Vehicle : BaseEntity
+    public class Vehicle : BaseEntity, ISelectMenuEntity
     {
         public Guid Id { get; private set; }
         public string NameEn { get; private set; } = default!;
@@ -18,6 +18,10 @@ namespace BaridikExpress.Domain.Entities.Vehicles
                 : 0;
         public string ImageUrl { get; private set; }
         public bool IsPriceCalculationEnabled { get; private set; }
+
+        #region ISelectMenuEntity Implementation Mapping
+        public Guid? ParentId => null;
+        #endregion
 
         private Vehicle()
         {

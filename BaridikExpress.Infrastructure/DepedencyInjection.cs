@@ -18,7 +18,6 @@ using BaridikExpress.Infrastructure.Services.File;
 using BaridikExpress.Infrastructure.Services.Hasher;
 using BaridikExpress.Infrastructure.Services.Maps;
 using BaridikExpress.Infrastructure.Services.Realtime;
-using Infrastructure.Services.File;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
