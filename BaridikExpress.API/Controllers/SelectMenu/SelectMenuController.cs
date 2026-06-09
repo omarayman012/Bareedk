@@ -1,5 +1,6 @@
 ﻿using BaridikExpress.Application.Features.SelectMenu.Queries.GetRolesSelectMenu;
 using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu;
+using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.Currency;
 using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.Nationalities;
 using BaridikExpress.Domain.Entities.Location;
 using MediatR;
@@ -82,6 +83,15 @@ public class SelectMenuController(IMediator mediator) : ControllerBase
     {
         var result = await mediator.Send(
             new GetRolesSelectMenuQuery(),
+            cancellationToken);
+        return StatusCode(result.StatusCode, result);
+    }
+    [HttpGet("currencies")]
+    [AllowAnonymous] 
+    public async Task<IActionResult> GetCurrencies(CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new GetCurrenciesQuery(),
             cancellationToken);
         return StatusCode(result.StatusCode, result);
     }
