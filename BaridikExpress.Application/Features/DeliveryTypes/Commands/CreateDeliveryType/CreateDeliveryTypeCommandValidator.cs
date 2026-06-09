@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using BaridikExpress.Domain.Enum;
 
 namespace BaridikExpress.Application.Features.DeliveryTypes.Commands.CreateDeliveryType;
 
@@ -42,6 +43,13 @@ public class CreateDeliveryTypeCommandValidator : AbstractValidator<CreateDelive
 
         RuleFor(x => x.PricePerShipment)
             .GreaterThan(0).WithMessage(localizer["PricePerShipmentMustBeGreaterThanZero"]);
+
+        #endregion
+
+        #region Currency
+
+        RuleFor(x => x.Currency)
+            .IsInEnum().WithMessage(localizer["InvalidCurrency"]);
 
         #endregion
 

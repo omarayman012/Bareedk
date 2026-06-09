@@ -1,4 +1,5 @@
 ﻿using BaridikExpress.Domain.Entities.Base;
+using BaridikExpress.Domain.Enum;
 
 namespace BaridikExpress.Domain.Entities.DeliveryType;
 
@@ -14,6 +15,7 @@ public class DeliveryType : BaseEntity
     public string? ImageUrl { get; private set; }
     public string? DescriptionEn { get; private set; }
     public string? DescriptionAr { get; private set; }
+    public Currency Currency { get; private set; }
     public decimal PricePerTotal => DaysTo * PricePerShipment;
 
     private DeliveryType() { }
@@ -25,6 +27,7 @@ public class DeliveryType : BaseEntity
         int daysTo,
         decimal pricePerShipment,
         bool isSwitchActive,
+        Currency currency,
         string? imageUrl = null,
         string? descriptionEn = null,
         string? descriptionAr = null)
@@ -38,6 +41,7 @@ public class DeliveryType : BaseEntity
             DaysTo = daysTo,
             PricePerShipment = pricePerShipment,
             IsSwitchActive = isSwitchActive,
+            Currency = currency,
             ImageUrl = imageUrl,
             DescriptionEn = descriptionEn,
             DescriptionAr = descriptionAr,
@@ -51,6 +55,7 @@ public class DeliveryType : BaseEntity
         int? daysTo = null,
         decimal? pricePerShipment = null,
         bool? isSwitchActive = null,
+        Currency? currency = null,
         string? imageUrl = null,
         string? descriptionEn = null,
         string? descriptionAr = null)
@@ -61,6 +66,7 @@ public class DeliveryType : BaseEntity
         if (daysTo.HasValue) DaysTo = daysTo.Value;
         if (pricePerShipment.HasValue) PricePerShipment = pricePerShipment.Value;
         if (isSwitchActive.HasValue) IsSwitchActive = isSwitchActive.Value;
+        if (currency.HasValue) Currency = currency.Value;
         if (!string.IsNullOrWhiteSpace(imageUrl)) ImageUrl = imageUrl;
         if (!string.IsNullOrWhiteSpace(descriptionEn)) DescriptionEn = descriptionEn;
         if (!string.IsNullOrWhiteSpace(descriptionAr)) DescriptionAr = descriptionAr;
