@@ -3,13 +3,16 @@ using BaridikExpress.Application.Common.Abstractions;
 using BaridikExpress.Application.Common.Mapping;
 using BaridikExpress.Application.Features.Auth.Commands.CreateAccount;
 using BaridikExpress.Application.Features.SelectMenu.DTOs;
+using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.GenericSelectMenu;
 using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.Location;
 using BaridikExpress.Application.Features.SystemManagement.Commands.UpdateSystemManagement;
 using BaridikExpress.Application.Features.SystemManagement.DTOs;
 using BaridikExpress.Application.Features.SystemManagement.Queries.GetSystemManagement;
+using BaridikExpress.Domain.Entities.CareerFields;
 using BaridikExpress.Domain.Entities.Location;
 using BaridikExpress.Domain.Entities.NotificationModules;
 using BaridikExpress.Domain.Entities.SystemManagment;
+using BaridikExpress.Domain.Entities.Vehicles;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -112,6 +115,13 @@ public static class DepedencyInjection
             IRequestHandler<GetSelectMenuQuery<Village>, Result<IEnumerable<SelectMenuResponse>>>,
             GetSelectMenuQueryHandler<Village>>();
 
+        services.AddTransient<
+            IRequestHandler<GetSelectMenubaseQuery<CareerField>, Result<IEnumerable<SelectMenuResponse>>>,
+            GetSelectMenuBaseQueryHandler<CareerField>>();
+
+        services.AddTransient<
+            IRequestHandler<GetSelectMenubaseQuery<Vehicle>, Result<IEnumerable<SelectMenuResponse>>>,
+            GetSelectMenuBaseQueryHandler<Vehicle>>();
         #endregion
         return services;
     }

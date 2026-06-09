@@ -1,6 +1,7 @@
 using BaridikExpress.Application.Common.Extensions;
 using BaridikExpress.Application.Features.CommanDTO.Localizes;
 using BaridikExpress.Application.Features.Vehicles.DTO;
+using BaridikExpress.Application.Interfaces.IRepository;
 using BaridikExpress.Domain.Entities.Vehicles;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -8,17 +9,15 @@ using System.Linq.Expressions;
 namespace BaridikExpress.Application.Features.Vehicles.Queries.GetAllVehicles;
 
 public sealed class GetAllVehiclesQueryHandler(
-    IApplicationDbContext db,
+  IGenericRepository<Vehicle> repo,
     IStringLocalizer localizer)
     : IRequestHandler<GetAllVehiclesQuery, Result<PaginatedList<GetAllVehiclesDto>>>
 {
     public async Task<Result<PaginatedList<GetAllVehiclesDto>>> Handle(
-        GetAllVehiclesQuery request,
-        CancellationToken cancellationToken)
+         GetAllVehiclesQuery request,
+         CancellationToken cancellationToken)
     {
-        var query = db.Vehicles
-            .AsNoTracking()
-            .ApplyCommonFilters(request);
+        var query = repo.Query().ApplyCommonFilters(request);
 
         if (!string.IsNullOrWhiteSpace(request.Name))
             query = query.Where(x =>
