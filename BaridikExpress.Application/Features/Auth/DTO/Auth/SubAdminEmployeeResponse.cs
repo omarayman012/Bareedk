@@ -9,7 +9,7 @@ namespace BaridikExpress.Application.Features.Auth.DTO.Auth
         public string Email { get; set; } = string.Empty;
         public string? PhoneNumber { get; set; }
         public string? Gender { get; set; }
-        public RoleDto Role { get; set; } = new(); 
+        public Role_Dto Role { get; set; } = new(); 
         public string CreatedBy { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
         public string? UpdatedBy { get; set; }
@@ -17,7 +17,7 @@ namespace BaridikExpress.Application.Features.Auth.DTO.Auth
         public bool IsActive { get; set; }
     }
 
-    public class RoleDto
+    public class Role_Dto
     {
         public string Id { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
