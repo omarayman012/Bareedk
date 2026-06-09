@@ -54,7 +54,7 @@
 
 | 👤 Name | 🎯 Role |
 |--------|--------|
-| **Omar Ayman** | Flutter Developer |
+| **Omar Ayman** | Backend Team Lead |
 | **Mohammed Khaled** | Backend Developer |
 | **Ahmed Momtaz** | Backend Developer |
 
