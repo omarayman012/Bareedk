@@ -1,4 +1,4 @@
-﻿using BaridikExpress.Domain.Entities.AuthModules;
+﻿// SendNotification.cs
 using BaridikExpress.Domain.Entities.Base;
 
 namespace BaridikExpress.Domain.Entities.NotificationModules;
@@ -47,5 +47,19 @@ public sealed class SendNotification : BaseEntity
         }
 
         return notification;
+    }
+
+    public void Update(
+        string? titleAr = null,
+        string? titleEn = null,
+        string? descriptionAr = null,
+        string? descriptionEn = null,
+        string? imageUrl = null)
+    {
+        if (!string.IsNullOrWhiteSpace(titleAr)) TitleAr = titleAr;
+        if (!string.IsNullOrWhiteSpace(titleEn)) TitleEn = titleEn;
+        if (!string.IsNullOrWhiteSpace(descriptionAr)) DescriptionAr = descriptionAr;
+        if (!string.IsNullOrWhiteSpace(descriptionEn)) DescriptionEn = descriptionEn;
+        if (!string.IsNullOrWhiteSpace(imageUrl)) ImageUrl = imageUrl;
     }
 }
