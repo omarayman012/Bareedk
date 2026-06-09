@@ -627,7 +627,7 @@
   "EmployeeRoleRequired": "الدور مطلوب",
   "DiscountPercentageInvalid": "نسبة الخصم يجب أن تكون بين 0 و 100",
   "DiscountPercentageRequired": "يجب تحديد نسبة الخصم عند تفعيل صلاحية الخصم",
- 
+
   "FailedToCreateEmployee": "فشل إنشاء الموظف",
   "FailedToUpdateEmployee": "فشل تحديث الموظف",
   "FailedToDeleteEmployee": "فشل حذف الموظف",
@@ -1042,7 +1042,7 @@
   "BuildingNumberRequired": "رقم المبنى مطلوب",
   "FlatNumberRequired": "رقم الشقة مطلوب",
   "LatitudeRequired": "خط العرض مطلوب",
-  "LongitudeRequired": "خط الطول مطلوب"
+  "LongitudeRequired": "خط الطول مطلوب",
 
 
   "OpeningBalanceDateInvalid": "تاريخ الرصيد الافتتاحي لا يمكن أن يكون في المستقبل",
@@ -1177,7 +1177,19 @@
   "CodeRequired": "الكود مطلوب.",
   "CodeAlreadyExists": "الكود مستخدم بالفعل.",
   "ArabicNameRequired": "الاسم العربي مطلوب.",
-  "exceeded": "يجب ألا يتجاوز حجم الصورة 5 ميجابايت."
+  "exceeded": "يجب ألا يتجاوز حجم الصورة 5 ميجابايت.",
 
+  "BannerTitleRequired": "عنوان الشعار بالعربية أو الإنجليزية مطلوب.",
+  "BannerTitleAlreadyExists": "يوجد شعار بنفس العنوان بالفعل.",
+  "BannerTitleMaxLength": "يجب ألا يتجاوز عنوان الشعار 200 حرف.",
+  "BannerDescriptionMaxLength": "يجب ألا يتجاوز وصف الشعار 2000 حرف.",
+  "BannerCreatedSuccessfully": "تم إنشاء الشعار بنجاح.",
+  "BannerUpdatedSuccessfully": "تم تحديث الشعار بنجاح.",
+  "BannerNotFound": "الشعار غير موجود.",
+  "BannersNotFound": "الشعارات غير موجودة.",
+  "SomeBannersNotFound": "بعض الشعارات غير موجودة.",
+  "BannersDeletedSuccessfully": "تم حذف الشعارات بنجاح.",
+  "CareerFieldRetrievedSuccessfully": "تم جلب مجال العمل بنجاح",
+  "VehicleRetrievedSuccessfully" : "تم جلب المركبة بنجاح",
 }
 

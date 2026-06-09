@@ -16,7 +16,6 @@ using BaridikExpress.Infrastructure.Services.File;
 using BaridikExpress.Infrastructure.Services.Hasher;
 using BaridikExpress.Infrastructure.Services.Maps;
 using BaridikExpress.Infrastructure.Services.Realtime;
-using Infrastructure.Services.File;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -60,8 +59,6 @@ namespace BaridikExpress.Infrastructure
             services.AddScoped<IJwtService, JwtService>();
 
             services.AddHttpClient<IMapService, GoogleGeocodingService>();
-
-            services.AddScoped<IMapService, MapService>();
             services.AddScoped<ICommentRealtimeService, CommentRealtimeService>();
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<IBlogService, BlogService>();

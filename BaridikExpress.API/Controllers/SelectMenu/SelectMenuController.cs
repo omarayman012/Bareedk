@@ -1,6 +1,9 @@
 ﻿using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu;
+using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.GenericSelectMenu;
 using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.Nationalities;
+using BaridikExpress.Domain.Entities.CareerFields;
 using BaridikExpress.Domain.Entities.Location;
+using BaridikExpress.Domain.Entities.Vehicles;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -91,6 +94,39 @@ public class SelectMenuController(IMediator mediator) : ControllerBase
         var result = await mediator.Send(
             new GetNationalitiesSelectMenuQuery(name),
             cancellationToken);
+
+        return Ok(result);
+    }
+
+    [HttpGet("CareerField")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetCareerFieldes(
+  [FromQuery] string? name,
+  CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+           new GetSelectMenubaseQuery<CareerField>
+           {
+               Name = name
+           },
+           cancellationToken);
+
+        return Ok(result);
+    }
+
+
+    [HttpGet("vehicles")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetVehicles(
+[FromQuery] string? name,
+CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+           new GetSelectMenubaseQuery<Vehicle>
+           {
+               Name = name
+           },
+           cancellationToken);
 
         return Ok(result);
     }
