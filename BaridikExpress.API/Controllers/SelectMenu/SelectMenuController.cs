@@ -1,8 +1,11 @@
-﻿using BaridikExpress.Application.Features.SelectMenu.Queries.GetRolesSelectMenu;
+using BaridikExpress.Application.Features.SelectMenu.Queries.GetRolesSelectMenu;
 using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu;
 using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.Currency;
+using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.GenericSelectMenu;
 using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.Nationalities;
+using BaridikExpress.Domain.Entities.CareerFields;
 using BaridikExpress.Domain.Entities.Location;
+using BaridikExpress.Domain.Entities.Vehicles;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -77,21 +80,48 @@ public class SelectMenuController(IMediator mediator) : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet("roles")]
-    [Authorize]
-    public async Task<IActionResult> GetRoles(CancellationToken cancellationToken)
+    [HttpGet("CareerField")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetCareerFieldes(
+        [FromQuery] string? name,
+        CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
-            new GetRolesSelectMenuQuery(),
-            cancellationToken);
-        return StatusCode(result.StatusCode, result);
+           new GetSelectMenubaseQuery<CareerField> { Name = name },
+           cancellationToken);
+
+        return Ok(result);
     }
+
+    [HttpGet("vehicles")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetVehicles(
+        [FromQuery] string? name,
+        CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+           new GetSelectMenubaseQuery<Vehicle> { Name = name },
+           cancellationToken);
+
+        return Ok(result);
+    }
+
     [HttpGet("currencies")]
     [AllowAnonymous] 
     public async Task<IActionResult> GetCurrencies(CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
             new GetCurrenciesQuery(),
+            cancellationToken);
+        return StatusCode(result.StatusCode, result);
+    }
+
+    [HttpGet("roles")]
+    [Authorize]
+    public async Task<IActionResult> GetRoles(CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new GetRolesSelectMenuQuery(),
             cancellationToken);
         return StatusCode(result.StatusCode, result);
     }

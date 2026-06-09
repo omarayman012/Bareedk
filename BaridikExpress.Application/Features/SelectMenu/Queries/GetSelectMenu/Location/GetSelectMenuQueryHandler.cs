@@ -1,5 +1,6 @@
 ﻿using BaridikExpress.Application.DTOs;
 using BaridikExpress.Application.Features.SelectMenu.DTOs;
+using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.GenericSelectMenu;
 using BaridikExpress.Domain.Common;
 using BaridikExpress.Domain.Entities.Base;
 using Microsoft.EntityFrameworkCore;
