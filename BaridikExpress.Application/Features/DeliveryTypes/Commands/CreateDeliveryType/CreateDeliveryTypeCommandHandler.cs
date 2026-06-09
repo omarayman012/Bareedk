@@ -88,7 +88,7 @@ public sealed class CreateDeliveryTypeCommandHandler(
             deliveryType.DaysTo,
             deliveryType.PricePerShipment,
             deliveryType.PricePerTotal,
-            deliveryType.Currency,
+            deliveryType.Currency.ToString(),
             deliveryType.IsSwitchActive,
             deliveryType.ImageUrl,
             new LocalizedDto { EN = deliveryType.DescriptionEn, AR = deliveryType.DescriptionAr },

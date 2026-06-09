@@ -9,7 +9,7 @@ public sealed record DeliveryTypeResponse(
     int DaysTo,
     decimal PricePerShipment,
     decimal PricePerTotal,
-    Currency Currency,
+    string Currency,
     bool IsSwitchActive,
     string? ImageUrl,
     LocalizedDto? Description,
