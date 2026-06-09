@@ -28,10 +28,14 @@ jobs:
           command_timeout: 40m
 
           script: |
-            set -e
+            set -euo pipefail
+
+            APP_DIR="/home/baridik/apps/backend"
+            SERVICE_NAME="baridik-backend"
+            HEALTH_URL="http://127.0.0.1:5055"
 
             echo "Go to backend directory"
-            cd /home/baridik/apps/backend
+            cd "$APP_DIR"
 
             echo "Current path:"
             pwd
@@ -41,7 +45,7 @@ jobs:
             git reset --hard origin/main
 
             echo "Stop backend service"
-            sudo -n systemctl stop baridik-backend || true
+            sudo -n systemctl stop "$SERVICE_NAME" || true
 
             echo "Restore packages"
             dotnet restore BaridikExpress.sln --disable-parallel
@@ -49,10 +53,25 @@ jobs:
             echo "Build backend"
             dotnet build BaridikExpress.sln -c Release --no-restore /p:TreatWarningsAsErrors=false
 
+            echo "Run database migrations"
+            export PATH="$PATH:$HOME/.dotnet/tools"
+            dotnet ef database update \
+              --project BaridikExpress.Infrastructure \
+              --startup-project BaridikExpress.API
+
             echo "Start backend service"
-            sudo -n systemctl start baridik-backend
+            sudo -n systemctl start "$SERVICE_NAME"
+
+            echo "Wait for backend to listen"
+            sleep 10
 
             echo "Check backend service"
-            sudo -n systemctl status baridik-backend
+            sudo -n systemctl --no-pager status "$SERVICE_NAME"
+
+            echo "Check local backend port"
+            ss -tulpn | grep 5055
+
+            echo "Health check"
+            curl -I "$HEALTH_URL" || true
 
             echo "Backend deployed successfully"
