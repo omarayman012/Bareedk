@@ -1350,6 +1350,9 @@ namespace BaridikExpress.Infrastructure.Migrations
                     b.Property<string>("CreatedById")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("Currency")
+                        .HasColumnType("int");
+
                     b.Property<int>("DaysFrom")
                         .HasColumnType("int");
 
@@ -1661,10 +1664,44 @@ namespace BaridikExpress.Infrastructure.Migrations
                     b.ToTable("Nationalities");
                 });
 
+            modelBuilder.Entity("BaridikExpress.Domain.Entities.NotificationModules.MessageNotification", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("DescriptionAr")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DescriptionEn")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("UpdatedById");
+
+                    b.ToTable("MessageNotifications", (string)null);
+                });
+
             modelBuilder.Entity("BaridikExpress.Domain.Entities.NotificationModules.Notification", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("BlogId")
@@ -1687,11 +1724,13 @@ namespace BaridikExpress.Infrastructure.Migrations
 
                     b.Property<string>("Message")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -1701,6 +1740,7 @@ namespace BaridikExpress.Infrastructure.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
+                        .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -1711,7 +1751,89 @@ namespace BaridikExpress.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Notifications");
+                    b.ToTable("Notifications", (string)null);
+                });
+
+            modelBuilder.Entity("BaridikExpress.Domain.Entities.NotificationModules.NotificationRecipient", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("NotificationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("ReadAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("NotificationId", "UserId")
+                        .IsUnique();
+
+                    b.ToTable("NotificationRecipients", (string)null);
+                });
+
+            modelBuilder.Entity("BaridikExpress.Domain.Entities.NotificationModules.SendNotification", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("DescriptionAr")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("DescriptionEn")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("ImageUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("TitleAr")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("TitleEn")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("UpdatedById");
+
+                    b.ToTable("SendNotifications", (string)null);
                 });
 
             modelBuilder.Entity("BaridikExpress.Domain.Entities.PublishingHouseModule.PublishingHouse", b =>
@@ -3577,6 +3699,23 @@ namespace BaridikExpress.Infrastructure.Migrations
                     b.Navigation("UpdatedBy");
                 });
 
+            modelBuilder.Entity("BaridikExpress.Domain.Entities.NotificationModules.MessageNotification", b =>
+                {
+                    b.HasOne("BaridikExpress.Domain.Entities.AuthModules.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("BaridikExpress.Domain.Entities.AuthModules.User", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("UpdatedBy");
+                });
+
             modelBuilder.Entity("BaridikExpress.Domain.Entities.NotificationModules.Notification", b =>
                 {
                     b.HasOne("BaridikExpress.Domain.Entities.AuthModules.User", "CreatedBy")
@@ -3600,6 +3739,42 @@ namespace BaridikExpress.Infrastructure.Migrations
                     b.Navigation("UpdatedBy");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BaridikExpress.Domain.Entities.NotificationModules.NotificationRecipient", b =>
+                {
+                    b.HasOne("BaridikExpress.Domain.Entities.NotificationModules.SendNotification", "Notification")
+                        .WithMany("Recipients")
+                        .HasForeignKey("NotificationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BaridikExpress.Domain.Entities.AuthModules.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Notification");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BaridikExpress.Domain.Entities.NotificationModules.SendNotification", b =>
+                {
+                    b.HasOne("BaridikExpress.Domain.Entities.AuthModules.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("BaridikExpress.Domain.Entities.AuthModules.User", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("UpdatedBy");
                 });
 
             modelBuilder.Entity("BaridikExpress.Domain.Entities.PublishingHouseModule.PublishingHouse", b =>
@@ -4175,6 +4350,11 @@ namespace BaridikExpress.Infrastructure.Migrations
             modelBuilder.Entity("BaridikExpress.Domain.Entities.Location.Government", b =>
                 {
                     b.Navigation("Cities");
+                });
+
+            modelBuilder.Entity("BaridikExpress.Domain.Entities.NotificationModules.SendNotification", b =>
+                {
+                    b.Navigation("Recipients");
                 });
 
             modelBuilder.Entity("BaridikExpress.Domain.Entities.RoleModule.Permission", b =>

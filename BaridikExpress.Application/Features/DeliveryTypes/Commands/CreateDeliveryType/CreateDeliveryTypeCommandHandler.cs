@@ -3,6 +3,7 @@ using BaridikExpress.Application.Features.CommanDTO.Localizes;
 using BaridikExpress.Application.Features.DeliveryTypes.DTO;
 using BaridikExpress.Application.Interfaces.File;
 using BaridikExpress.Domain.Entities.DeliveryType;
+using BaridikExpress.Domain.Enum;
 
 namespace BaridikExpress.Application.Features.DeliveryTypes.Commands.CreateDeliveryType;
 
@@ -68,6 +69,7 @@ public sealed class CreateDeliveryTypeCommandHandler(
             request.DaysTo,
             request.PricePerShipment,
             request.IsSwitchActive,
+            request.Currency,
             imageUrl,
             descriptionEn,
             descriptionAr);
@@ -86,6 +88,7 @@ public sealed class CreateDeliveryTypeCommandHandler(
             deliveryType.DaysTo,
             deliveryType.PricePerShipment,
             deliveryType.PricePerTotal,
+            deliveryType.Currency.ToString(),
             deliveryType.IsSwitchActive,
             deliveryType.ImageUrl,
             new LocalizedDto { EN = deliveryType.DescriptionEn, AR = deliveryType.DescriptionAr },

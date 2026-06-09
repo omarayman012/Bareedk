@@ -1,6 +1,7 @@
 ﻿using BaridikExpress.Application.Features.CommanDTO.Localizes;
 using BaridikExpress.Application.Features.DeliveryTypes.DTO;
 using Microsoft.EntityFrameworkCore;
+using BaridikExpress.Domain.Enum;
 
 namespace BaridikExpress.Application.Features.DeliveryTypes.Queries.GetDeliveryTypeById;
 
@@ -27,6 +28,7 @@ public sealed class GetDeliveryTypeByIdQueryHandler(
                 x.DaysTo,
                 x.PricePerShipment,
                 x.DaysTo * x.PricePerShipment,
+                x.Currency.ToString(),
                 x.IsSwitchActive,
                 x.ImageUrl,
                 new LocalizedDto { EN = x.DescriptionEn, AR = x.DescriptionAr },

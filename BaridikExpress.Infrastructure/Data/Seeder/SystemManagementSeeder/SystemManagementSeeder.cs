@@ -1,4 +1,5 @@
-﻿using BaridikExpress.Domain.Entities.SystemManagment;
+﻿using BaridikExpress.Domain.Entities.NotificationModules;
+using BaridikExpress.Domain.Entities.SystemManagment;
 using BaridikExpress.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -46,6 +47,10 @@ public static class SystemManagementSeeder
                 context.CustomerRegistrationTerms,
                 "شروط تسجيل العميل.",
                 "Customer registration terms.");
+            await SeedSystemManagementEntityAsync<MessageNotification>(
+                   context.MessageNotifications,
+                   "قوالب الإشعارات الخاصة ببريدك إكسبريس.",
+                   "Notification templates of Baridik Express.");
 
             await SeedSocialMediaLinksAsync(context);
             await SeedFAQsAsync(context);

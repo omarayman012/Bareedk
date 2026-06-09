@@ -1,5 +1,6 @@
 ﻿using BaridikExpress.Application.Interfaces.File;
 using Microsoft.EntityFrameworkCore;
+using BaridikExpress.Domain.Enum;
 
 namespace BaridikExpress.Application.Features.DeliveryTypes.Commands.UpdateDeliveryType;
 
@@ -78,6 +79,7 @@ public sealed class UpdateDeliveryTypeCommandHandler(
             request.DaysTo,
             request.PricePerShipment,
             request.IsSwitchActive,
+            request.Currency,
             imageUrl,
             descriptionEn,
             descriptionAr);

@@ -30,3 +30,4 @@ obj/
 packages/
 *.nuget.targets
 *.nuget.props
+/BaridikExpress.Infrastructure/Migrations

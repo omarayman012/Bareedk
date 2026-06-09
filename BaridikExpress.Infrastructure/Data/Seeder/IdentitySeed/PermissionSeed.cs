@@ -1,25 +1,47 @@
-﻿using BaridikExpress.Application.Common.Abstractions.Consts;
+﻿using System.Reflection;
+using BaridikExpress.Application.Common.Abstractions.Consts;
+using BaridikExpress.Application.Interfaces;
 using BaridikExpress.Domain.Entities.RoleModule;
 using BaridikExpress.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace BaridikExpress.Infrastructure.Data.Seeder.IdentitySeed
 {
     public static class PermissionSeed
     {
-        public static async Task SeedAsync(ApplicationDbContext context)
+        public static async Task SeedAsync(
+            ApplicationDbContext context,
+            IAutoPermissionScanner scanner) 
         {
-            if (context.Permissions.Any()) return;
+            var manualPermissions = typeof(Permissions)
+                .GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)
+                .Select(x => x.GetValue(null)!.ToString()!)
+                .ToList();
 
-            var permissions = typeof(Permissions)
-                .GetFields()
-                .Select(x => new Permission
+            var autoPermissions = scanner.ScanPermissions().ToList();
+
+            var allPermissions = manualPermissions
+                .Union(autoPermissions)
+                .Distinct()
+                .ToList();
+
+            var existingDbPermissions = await context.Permissions
+                .Select(p => p.PermissionName)
+                .ToListAsync();
+
+            var newPermissionsToSeed = allPermissions
+                .Where(p => !existingDbPermissions.Contains(p))
+                .Select(p => new Permission
                 {
                     PermissionId = Guid.NewGuid(),
-                    PermissionName = x.GetValue(null)!.ToString()!
+                    PermissionName = p
                 }).ToList();
 
-            await context.Permissions.AddRangeAsync(permissions);
-            await context.SaveChangesAsync();
+            if (newPermissionsToSeed.Any())
+            {
+                await context.Permissions.AddRangeAsync(newPermissionsToSeed);
+                await context.SaveChangesAsync();
+            }
         }
     }
 }

@@ -53,6 +53,8 @@ public class DeliveryTypeConfiguration : IEntityTypeConfiguration<DeliveryType>
         builder.Property(x => x.DescriptionAr)
             .HasMaxLength(1000)
             .IsRequired(false);
+        builder.Property(x => x.Currency)
+           .IsRequired();
 
         builder.Ignore(x => x.PricePerTotal);
     }

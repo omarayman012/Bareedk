@@ -1,7 +1,6 @@
 ﻿using BaridikExpress.Application.Features.CommanDTO.Localizes;
 
 namespace BaridikExpress.Application.Features.Services.DTOs;
-
 public sealed record ServiceResponse(
     Guid Id,
     LocalizedDto Name,
@@ -13,4 +12,7 @@ public sealed record ServiceResponse(
     DateTime CreatedAt,
     string? UpdatedBy,
     DateTime? UpdatedAt
-);
+)
+{
+    public string PriceWithCurrency => $"{Price} {Currency}";
+}
