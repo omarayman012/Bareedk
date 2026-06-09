@@ -19,7 +19,6 @@ namespace BaridikExpress.Infrastructure.Services.AuthModules
 {
     public class TokenService : ITokenService
     {
-
         private readonly UserManager<User> _userManager;
         private readonly ApplicationDbContext _context;
         private readonly IConfiguration _configuration;
@@ -43,25 +42,17 @@ namespace BaridikExpress.Infrastructure.Services.AuthModules
             var roles = await _userManager.GetRolesAsync(user);
 
             var claims = new List<Claim>
-    {
-        new Claim(JwtRegisteredClaimNames.Sub, user.Id),
-        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-        new Claim(ClaimTypes.Name, user.FullName ?? string.Empty),
-        new Claim(ClaimTypes.Email, user.Email ?? string.Empty),
-        new Claim(ClaimTypes.MobilePhone, user.PhoneNumber ?? string.Empty)
-    };
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.Name, user.FullName ?? string.Empty),
+                new Claim(ClaimTypes.Email, user.Email ?? string.Empty),
+                new Claim(ClaimTypes.MobilePhone, user.PhoneNumber ?? string.Empty)
+            };
 
             foreach (var role in roles)
                 claims.Add(new Claim(ClaimTypes.Role, role));
 
-            var roleName = roles.FirstOrDefault() ?? "";
-            var permissions = await _context.RolePermissions
-                .Where(rp => rp.Role.Name == roleName)
-                .Select(rp => rp.Permission.PermissionName)
-                .ToListAsync();
-
-            foreach (var permission in permissions)
-                claims.Add(new Claim("permission", permission));
 
             var expiryMinutes = int.Parse(_configuration["Jwt:ExpiryMinutes"] ?? "60");
             var expiresAt = DateTime.Now.AddMinutes(expiryMinutes);
@@ -111,7 +102,5 @@ namespace BaridikExpress.Infrastructure.Services.AuthModules
                 .Where(x => x.Token == token)
                 .ExecuteUpdateAsync(s => s.SetProperty(r => r.RevokedOn, DateTime.Now));
         }
-
-       
     }
 }
