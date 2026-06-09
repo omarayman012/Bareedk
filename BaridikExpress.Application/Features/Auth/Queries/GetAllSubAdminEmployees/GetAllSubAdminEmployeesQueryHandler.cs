@@ -55,7 +55,7 @@ public class GetAllSubAdminEmployeesQueryHandler(
             Image = x.User.ProfileImageUrl,
             Email = x.User.Email!,
             PhoneNumber = x.User.PhoneNumber,
-            Role = new RoleDto
+            Role = new Role_Dto
             {
                 Id = x.Role != null ? x.Role.Id : string.Empty,
                 Name = x.Role != null ? x.Role.Name : string.Empty,

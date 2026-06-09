@@ -34,7 +34,7 @@ public class GetSubAdminEmployeeByIdQueryHandler(
             Image = subAdmin.User.ProfileImageUrl,
             Email = subAdmin.User.Email!,
             PhoneNumber = subAdmin.User.PhoneNumber,
-            Role = new RoleDto
+            Role = new Role_Dto
             {
                 Id = subAdmin.Role?.Id ?? string.Empty,     
                 Name = subAdmin.Role?.Name ?? string.Empty,  
