@@ -7,6 +7,7 @@ using BaridikExpress.Application.Features.Vehicles.DTO;
 using BaridikExpress.Application.Features.Vehicles.Queries.GetAllVehicles;
 using BaridikExpress.Application.Features.Vehicles.Queries.GetVehicleById;
 using BaridikExpress.Application.Interfaces.File;
+using BaridikExpress.Domain.Enum;
 
 namespace BaridikExpress.API.Controllers.Vehicles
 {
@@ -80,13 +81,39 @@ namespace BaridikExpress.API.Controllers.Vehicles
         [HttpGet("Export")]
         [HasPermission(Permissions.VehiclesRead)]
         public async Task<IActionResult> ExportData(
-            [FromQuery] GetAllVehiclesQuery query)
+           [FromQuery] GetAllVehiclesQuery query)
         {
             var result = await _mediator.Send(query);
 
+            var exportData = result.Data!.Items
+                .Select(x => new VehicleExcelExportDto
+                {
+                    NameAr = x.Name.AR,
+                    NameEn = x.Name.EN,
+
+                    LoadCapacityFrom = x.LoadCapacityFrom,
+                    LoadCapacityTo = x.LoadCapacityTo,
+
+                    PricePerTon = x.PricePerTon,
+
+                    Currency = Enum.Parse<Currency>(x.Currency.EN),
+
+                    ImageUrl = x.ImageUrl,
+
+                    IsPriceCalculationEnabled =
+                        x.IsPriceCalculationEnabled,
+
+                    IsActive = x.IsActive,
+
+                    CreatedBy = x.CreatedBy,
+                    CreatedAt = x.CreatedAt,
+
+                    UpdatedBy = x.UpdatedBy,
+                    UpdatedAt = x.UpdatedAt
+                });
+
             var file = await _excelService
-                .DownloadDataAsync<GetAllVehiclesDto>(
-                    result.Data!.Items);
+                .DownloadDataAsync<VehicleExcelExportDto>(exportData);
 
             return File(
                 file,

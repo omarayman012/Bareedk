@@ -1,5 +1,6 @@
 using BaridikExpress.Domain.Entities.Addresses;
 using BaridikExpress.Domain.Entities.AuthModule;
+using BaridikExpress.Domain.Entities.Banners;
 using BaridikExpress.Domain.Entities.BlogsModules;
 using BaridikExpress.Domain.Entities.CareerFields;
 using BaridikExpress.Domain.Entities.ClientModule;
@@ -111,7 +112,9 @@ public interface IApplicationDbContext
 
     DbSet<ClientAddress> ClientAddresses { get; set; }
     #endregion
+    
 
+    DbSet<Banner>  Banners { get; set; }
     DbSet<PublishingHouse> PublishingHouses { get; set; }
 
     public DbSet<SendNotification> SendNotifications { get; set; }

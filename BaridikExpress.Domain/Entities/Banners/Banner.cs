@@ -5,11 +5,11 @@ namespace BaridikExpress.Domain.Entities.Banners
     public class Banner : BaseEntity
     {
         public Guid Id { get; private set; }
-        public string TitleEn { get;private set; } = default!;
-        public string TitleAr { get; private set; } = default!;
+        public string ?TitleEn { get;private set; } = default!;
+        public string ?TitleAr { get; private set; } = default!;
 
-        public string DescriptionEn { get; private set; } = default!;
-        public string DescriptionAr { get; private set; } = default!;
+        public string ?DescriptionEn { get; private set; } = default!;
+        public string ?DescriptionAr { get; private set; } = default!;
 
         public string ImageUrl { get; private set; } = default!;
         private Banner(){}

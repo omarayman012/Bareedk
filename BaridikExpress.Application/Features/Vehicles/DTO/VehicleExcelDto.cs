@@ -23,6 +23,7 @@ namespace BaridikExpress.Application.Features.Vehicles.DTO
              public string? ImageUrl { get; set; }
 
             public bool IsPriceCalculationEnabled { get; set; }
+
         }
     
 }
