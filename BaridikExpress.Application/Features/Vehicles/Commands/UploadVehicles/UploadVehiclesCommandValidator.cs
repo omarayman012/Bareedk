@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BaridikExpress.Application.Features.Vehicles.Commands.UploadCareerFields
+namespace BaridikExpress.Application.Features.Vehicles.Commands.UploadVehicles
 {
     public class UploadVehiclesCommandValidator:AbstractValidator<UploadVehiclesCommand>
     {
