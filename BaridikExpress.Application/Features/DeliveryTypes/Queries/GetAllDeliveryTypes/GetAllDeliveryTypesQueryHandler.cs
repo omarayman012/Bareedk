@@ -54,8 +54,9 @@ public sealed class GetAllDeliveryTypesQueryHandler(
                 x.DaysFrom,
                 x.DaysTo,
                 x.PricePerShipment,
+
                 x.DaysTo * x.PricePerShipment,
-                x.Currency,
+                x.Currency.ToString(),
                 x.IsSwitchActive,
                 x.ImageUrl,
                 new LocalizedDto { EN = x.DescriptionEn, AR = x.DescriptionAr },

@@ -16,6 +16,7 @@ public class DeliveryType : BaseEntity
     public string? DescriptionEn { get; private set; }
     public string? DescriptionAr { get; private set; }
     public Currency Currency { get; private set; }
+
     public decimal PricePerTotal => DaysTo * PricePerShipment;
 
     private DeliveryType() { }
