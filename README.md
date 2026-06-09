@@ -1,24 +1,27 @@
 <div align="center">
+
 <img src="https://img.shields.io/badge/version-1.0.0-blue?style=for-the-badge" />
 <img src="https://img.shields.io/badge/.NET-9.0-512BD4?style=for-the-badge&logo=dotnet" />
 <img src="https://img.shields.io/badge/Architecture-CQRS-orange?style=for-the-badge" />
 <img src="https://img.shields.io/badge/Pattern-Clean%20Architecture-green?style=for-the-badge" />
 <img src="https://img.shields.io/badge/Status-Active-brightgreen?style=for-the-badge" />
 
+<br/><br/>
 
-   
-# 📦 BaridikExpress — Delivery Platform
+<h1>📦 BaridikExpress — Delivery Platform</h1>
 
-> **Smart & Reliable Shipping Platform** — Empowering delivery companies to manage orders, track shipments, and coordinate logistics with high efficiency.
+<p><strong>Smart & Reliable Shipping Platform</strong> — Empowering delivery companies to manage orders, track shipments, and coordinate logistics with high efficiency.</p>
 
-</div>  
---    
-   
-## 🗂️ Table of Contents 
+</div>
+
+---
+
+## 🗂️ Table of Contents
 
 - [📌 Overview](#-overview)
+- [👥 Team](#-team)
 - [🏗️ Architecture](#️-architecture)
-- [⚙️ CQRS Pattern Deep Dive](#️-cqrs-pattern-deep-dive)
+- [⚙️ CQRS Pattern](#️-cqrs-pattern-deep-dive)
 - [🚀 Tech Stack](#-tech-stack)
 - [📁 Project Structure](#-project-structure)
 - [🔧 Getting Started](#-getting-started)
@@ -34,14 +37,28 @@
 
 **BaridikExpress** is a robust, scalable delivery management platform built for logistics and shipping companies. It provides a comprehensive API to manage:
 
-- 🚚 **Delivery Management** — Register drivers, approve, track, and manage deliveries
-- 👤 **Customer Management** — Full customer lifecycle with contacts, addresses, and accounts
-- 🔐 **Auth & Identity** — JWT-based authentication with role & permission system
-- 🗺️ **Location & Geography** — Countries, Governments, Cities, Villages hierarchy
-- ⚙️ **System Management** — Policies, terms, social media links, FAQs, and more
-- 🛵 **Delivery Types & Services** — Configurable delivery types with pricing and services
+| Module | Description |
+|--------|-------------|
+| 🚚 **Delivery Management** | Register drivers, approve, track, and manage deliveries |
+| 👤 **Customer Management** | Full customer lifecycle with contacts, addresses, and accounts |
+| 🔐 **Auth & Identity** | JWT-based authentication with role & permission system |
+| 🗺️ **Location & Geography** | Countries, Governments, Cities, Villages hierarchy |
+| ⚙️ **System Management** | Policies, terms, social media links, FAQs, and more |
+| 🛵 **Delivery Types & Services** | Configurable delivery types with pricing and services |
 
-The system is designed with **reliability**, **scalability**, and **clean separation of concerns** at its core using the CQRS pattern powered by **MediatR**.
+---
+
+## 👥 Team
+
+<div align="center">
+
+| 👤 Name | 🎯 Role |
+|--------|--------|
+| **Omar Ayman** | Flutter Developer |
+| **Mohammed Khaled** | Backend Developer |
+| **Ahmed Momtaz** | Backend Developer |
+
+</div>
 
 ---
 
@@ -51,17 +68,17 @@ BaridikExpress follows **Clean Architecture** principles with a strict layered s
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                        Presentation Layer                    │
-│                    (API Controllers / Minimal API)           │
+│                     Presentation Layer                       │
+│                 (API Controllers / Minimal API)              │
 └────────────────────────┬────────────────────────────────────┘
                          │
 ┌────────────────────────▼────────────────────────────────────┐
-│                      Application Layer                       │
+│                     Application Layer                        │
 │         (CQRS Commands / Queries / Handlers / DTOs)          │
 └────────────────────────┬────────────────────────────────────┘
                          │
 ┌────────────────────────▼────────────────────────────────────┐
-│                       Domain Layer                           │
+│                      Domain Layer                            │
 │          (Entities / Value Objects / Domain Events)          │
 └────────────────────────┬────────────────────────────────────┘
                          │
@@ -71,10 +88,10 @@ BaridikExpress follows **Clean Architecture** principles with a strict layered s
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### Design Principles Applied
+### Design Principles
 
 | Principle | Implementation |
-|-----------|---------------|
+|-----------|----------------|
 | **Single Responsibility** | Each Command/Query has one dedicated Handler |
 | **Open/Closed** | New features via new Commands, no modifying existing |
 | **Dependency Inversion** | All dependencies injected via interfaces |
@@ -84,9 +101,7 @@ BaridikExpress follows **Clean Architecture** principles with a strict layered s
 
 ## ⚙️ CQRS Pattern Deep Dive
 
-**CQRS (Command Query Responsibility Segregation)** separates read and write operations into distinct models, improving performance, scalability, and maintainability.
-
-### How We Implement CQRS
+**CQRS (Command Query Responsibility Segregation)** separates read and write operations into distinct models.
 
 ```
 User Request
@@ -94,9 +109,9 @@ User Request
      ▼
   Controller
      │
-     ├──── Write Operation ──► Command ──► CommandHandler ──► Database (Write)
+     ├──── Write ──► Command ──► CommandHandler ──► Database (Write)
      │
-     └──── Read Operation  ──► Query  ──►  QueryHandler  ──► Database (Read)
+     └──── Read  ──► Query  ──►  QueryHandler  ──► Database (Read)
 ```
 
 ### Pipeline Behaviors (MediatR)
@@ -106,7 +121,7 @@ Request ──► ValidationBehavior ──► LoggingBehavior ──► Handler
 ```
 
 | Behavior | Responsibility |
-|----------|---------------|
+|----------|----------------|
 | `ValidationBehavior` | Auto-validates using FluentValidation before handler runs |
 | `LoggingBehavior` | Logs request/response with timing |
 
@@ -125,17 +140,12 @@ Request ──► ValidationBehavior ──► LoggingBehavior ──► Handler
 | **FluentValidation** | 11.x | Input Validation |
 | **Swagger / Swashbuckle** | 6.x | API Documentation |
 
-### Database
+### Database & Security
 
 | Technology | Purpose |
 |------------|---------|
 | **SQL Server** | Primary Database |
 | **EF Core Migrations** | Schema Management |
-
-### Security & Auth
-
-| Technology | Purpose |
-|------------|---------|
 | **ASP.NET Core Identity** | User Management |
 | **JWT Bearer Tokens** | Stateless Authentication |
 | **Role & Permission-Based Authorization** | Fine-grained Access Control |
@@ -243,7 +253,7 @@ dotnet ef database update \
 dotnet run --project BaridikExpress.API
 ```
 
-Swagger UI available at: `https://localhost:7240/swagger`
+> 🌐 Swagger UI: `https://localhost:7240/swagger`
 
 ---
 
@@ -371,7 +381,7 @@ The API is split into multiple Swagger groups:
 | `GET/POST/PUT/DELETE` | `/api/v1/CareerFields` | Career Fields CRUD |
 | `PATCH` | `/api/v1/CareerFields/{id}/toggle-status` | Toggle status |
 | `GET` | `/api/v1/CareerFields/export` | Export |
-| `POST` | `/api/v1/CareerFields/upload` | Upload |
+| `POST` | `/api/v1/CareerFields/upload` | Upload Excel |
 | `GET/POST/PUT/DELETE` | `/api/v1/Vehicles` | Vehicles CRUD |
 | `PATCH` | `/api/v1/Vehicles/{id}/toggle-status` | Toggle status |
 
@@ -391,8 +401,6 @@ The API is split into multiple Swagger groups:
 
 ## 🔐 Authentication & Authorization
 
-We use **JWT Bearer Authentication** with a custom **Permission-based** access control system.
-
 ### Roles
 
 | Role | Description |
@@ -409,8 +417,6 @@ curl -X POST https://localhost:7240/api/v1/auth/Auth/Login \
   -d '{"email": "admin@baridikexpress.com", "password": "your-password"}'
 ```
 
-Response:
-
 ```json
 {
   "isSuccess": true,
@@ -424,44 +430,33 @@ Response:
 
 ### Using the Token
 
-Add the token to Swagger UI via the **Authorize** button, or pass it in requests:
-
 ```bash
 curl -H "Authorization: Bearer {token}" https://localhost:7240/api/v1/Customer/GetAll
 ```
 
 ### Language Support
 
-All endpoints support `Accept-Language` header:
-
 ```
-Accept-Language: ar   → Arabic responses
-Accept-Language: en   → English responses (default)
+Accept-Language: ar   →  Arabic responses
+Accept-Language: en   →  English responses (default)
 ```
 
 ---
 
 ## 🗃️ Database & Migrations
 
-### Create a New Migration
-
 ```bash
+# Create new migration
 dotnet ef migrations add MigrationName \
   --project BaridikExpress.Infrastructure \
   --startup-project BaridikExpress.API
-```
 
-### Apply Migrations
-
-```bash
+# Apply migrations
 dotnet ef database update \
   --project BaridikExpress.Infrastructure \
   --startup-project BaridikExpress.API
-```
 
-### Rollback Migration
-
-```bash
+# Rollback migration
 dotnet ef database update PreviousMigrationName \
   --project BaridikExpress.Infrastructure \
   --startup-project BaridikExpress.API
@@ -471,24 +466,23 @@ dotnet ef database update PreviousMigrationName \
 
 ## 🤝 Contributing
 
-1. Fork the repo
-2. Create your feature branch: `git checkout -b feature/AmazingFeature`
-3. Commit your changes: `git commit -m 'feat: add amazing feature'`
-4. Push to the branch: `git push origin feature/AmazingFeature`
-5. Open a Pull Request
+```bash
+git checkout -b feature/AmazingFeature
+git commit -m 'feat: add amazing feature'
+git push origin feature/AmazingFeature
+# Then open a Pull Request
+```
 
 ### Commit Convention
 
-We follow **Conventional Commits**:
-
-```
-feat:     New feature
-fix:      Bug fix
-docs:     Documentation changes
-refactor: Code refactor
-test:     Adding tests
-chore:    Build/tooling changes
-```
+| Prefix | Usage |
+|--------|-------|
+| `feat:` | New feature |
+| `fix:` | Bug fix |
+| `docs:` | Documentation changes |
+| `refactor:` | Code refactor |
+| `test:` | Adding tests |
+| `chore:` | Build/tooling changes |
 
 ---
 
@@ -496,6 +490,8 @@ chore:    Build/tooling changes
 
 **Built with ❤️ by the BaridikExpress Team**
 
-*Delivering excellence, one shipment at a time.*
+*Omar Ayman · Mohammed Khaled · Ahmed Momtaz*
+
+*Delivering excellence, one shipment at a time. 🚀*
 
 </div>
