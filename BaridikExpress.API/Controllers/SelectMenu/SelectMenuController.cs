@@ -114,6 +114,7 @@ CancellationToken cancellationToken)
 
         return Ok(result);
 
+    }
     [HttpGet("roles")]
     [Authorize]
     public async Task<IActionResult> GetRoles(CancellationToken cancellationToken)
