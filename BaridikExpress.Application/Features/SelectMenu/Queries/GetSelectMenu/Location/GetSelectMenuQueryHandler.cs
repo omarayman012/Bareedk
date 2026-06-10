@@ -1,9 +1,6 @@
 ﻿using BaridikExpress.Application.DTOs;
 using BaridikExpress.Application.Features.SelectMenu.DTOs;
-using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.GenericSelectMenu;
-using BaridikExpress.Domain.Common;
 using BaridikExpress.Domain.Entities.Base;
-using Microsoft.EntityFrameworkCore;
 
 namespace BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.Location;
 
@@ -11,7 +8,7 @@ public sealed class GetSelectMenuQueryHandler<T>(
     IApplicationDbContext db,
     IStringLocalizer localizer)
     : IRequestHandler<GetSelectMenuQuery<T>, Result<IEnumerable<SelectMenuResponse>>>
-       where T : BaseEntity, ISelectMenuEntity, new()
+       where T : BaseEntity, ISelectMenuEntity
 {
     #region Handle
     public async Task<Result<IEnumerable<SelectMenuResponse>>> Handle(
