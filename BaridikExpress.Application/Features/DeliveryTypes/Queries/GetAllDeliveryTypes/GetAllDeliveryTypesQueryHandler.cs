@@ -49,21 +49,21 @@ public sealed class GetAllDeliveryTypesQueryHandler(
         var projected = query
             .OrderByDescending(x => x.CreatedAt)
             .Select(x => new DeliveryTypeResponse(
-                x.Id,
-                new LocalizedDto { EN = x.NameEn, AR = x.NameAr },
-                x.DaysFrom,
-                x.DaysTo,
-                x.PricePerShipment,
-
-                x.DaysTo * x.PricePerShipment,
-                x.Currency.ToString(),
-                x.IsSwitchActive,
-                x.ImageUrl,
-                new LocalizedDto { EN = x.DescriptionEn, AR = x.DescriptionAr },
-                x.CreatedBy != null ? x.CreatedBy.FullName : null,
-                x.CreatedAt,
-                x.UpdatedBy != null ? x.UpdatedBy.FullName : null,
-                x.UpdatedAt));
+                       x.Id,
+                       new LocalizedDto { EN = x.NameEn, AR = x.NameAr },
+                       x.DaysFrom,
+                       x.DaysTo,
+                       x.PricePerShipment,
+                       x.DaysTo * x.PricePerShipment,
+                       x.Currency.ToString(),
+                       x.IsSwitchActive,
+                       x.IsActive,
+                       x.ImageUrl,
+                       new LocalizedDto { EN = x.DescriptionEn, AR = x.DescriptionAr },
+                       x.CreatedBy != null ? x.CreatedBy.FullName : null,
+                       x.CreatedAt,
+                       x.UpdatedBy != null ? x.UpdatedBy.FullName : null,
+                       x.UpdatedAt));
 
         #endregion
 
