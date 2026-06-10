@@ -1,58 +1,70 @@
-using BaridikExpress.Application.Common.Extensions;
+﻿using BaridikExpress.Application.Common.Extensions;
 using BaridikExpress.Application.Features.CommanDTO.Localizes;
 using BaridikExpress.Application.Features.Vehicles.DTO;
 using BaridikExpress.Application.Interfaces.IRepository;
 using BaridikExpress.Domain.Entities.Vehicles;
-using ServiceStack;
+using Microsoft.EntityFrameworkCore;
 
-namespace BaridikExpress.Application.Features.Vehicles.Queries.GetVehicleById
+namespace BaridikExpress.Application.Features.Vehicles.Queries.GetVehicleById;
+
+public class GetVehicleByIdQueryHandler(
+    IGenericRepository<Vehicle> repo,
+    IStringLocalizer localizer)
+    : IRequestHandler<GetVehicleByIdQuery, Result<GetVehicleByIdDto>>
 {
-    public class GetVehicleByIdQueryHandler(
-        IGenericRepository<Vehicle> repo,
-        IStringLocalizer localizer
-    ) : IRequestHandler<GetVehicleByIdQuery, Result<GetVehicleByIdDto>>
+    private readonly IGenericRepository<Vehicle> _repo = repo;
+    private readonly IStringLocalizer _localizer = localizer;
+
+    public async Task<Result<GetVehicleByIdDto>> Handle(
+        GetVehicleByIdQuery request,
+        CancellationToken cancellationToken)
     {
-        private readonly IGenericRepository<Vehicle> _repo = repo;
-        private readonly IStringLocalizer _localizer = localizer;
-
-        public async Task<Result<GetVehicleByIdDto>> Handle(
-            GetVehicleByIdQuery request,
-            CancellationToken cancellationToken)
-        {
-            var vehicle = await _repo.GetByIdAsync(request.Id);
-
-            if (vehicle is null)
-                return Result<GetVehicleByIdDto>.Failure(
-                    _localizer["VehicleNotFound"]);
-
-            var response = new GetVehicleByIdDto
+        var vehicle = await _repo
+            .Query()
+            .Include(x => x.CreatedBy)
+            .Include(x => x.UpdatedBy)
+            .Where(x => x.Id == request.Id)
+            .Select(x => new GetVehicleByIdDto
             {
-                Id = vehicle.Id,
+                Id = x.Id,
                 Name = new LocalizedDto
                 {
-                    EN = vehicle.NameEn,
-                    AR = vehicle.NameAr
+                    EN = x.NameEn,
+                    AR = x.NameAr
                 },
-                LoadCapacityFrom = vehicle.LoadCapacityFrom,
-                LoadCapacityTo = vehicle.LoadCapacityTo,
-                PricePerTon = vehicle.PricePerTon,
-                TotalPrice = vehicle.IsPriceCalculationEnabled
-                    ? vehicle.TotalPrice
+                LoadCapacityFrom = x.LoadCapacityFrom,
+                LoadCapacityTo = x.LoadCapacityTo,
+                PricePerTon = x.PricePerTon,
+                TotalPrice = x.IsPriceCalculationEnabled
+                    ? x.TotalPrice
                     : 0,
-                Currency = vehicle.Currency.ToLocalizedDto(),
+                Currency = x.Currency.ToLocalizedDto(),
                 CapacityUnit = new LocalizedDto
                 {
                     EN = "Ton",
-                    AR = "??"
+                    AR = "طن"
                 },
-                ImageUrl = vehicle.ImageUrl,
-                IsPriceCalculationEnabled = vehicle.IsPriceCalculationEnabled,
-                IsActive = vehicle.IsActive
-            };
+                ImageUrl = x.ImageUrl,
+                IsPriceCalculationEnabled = x.IsPriceCalculationEnabled,
+                IsActive = x.IsActive,
+                CreatedBy = x.CreatedBy != null
+                    ? x.CreatedBy.FullName
+                    : "",
+                CreatedAt = x.CreatedAt,
+                UpdatedBy = x.UpdatedBy != null
+                    ? x.UpdatedBy.FullName
+                    : null,
+                UpdatedAt = x.UpdatedAt
+            })
+            .FirstOrDefaultAsync(cancellationToken);
 
-            return Result<GetVehicleByIdDto>.Success(
-                response,
-                _localizer["OperationCompletedSuccessfully"]);
-        }
+        if (vehicle is null)
+            return Result<GetVehicleByIdDto>.Failure(
+                _localizer["VehicleNotFound"],
+                404);
+
+        return Result<GetVehicleByIdDto>.Success(
+            vehicle,
+            _localizer["OperationCompletedSuccessfully"]);
     }
 }

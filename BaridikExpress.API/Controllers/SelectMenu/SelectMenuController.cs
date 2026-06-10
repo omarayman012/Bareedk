@@ -9,6 +9,7 @@ using BaridikExpress.Domain.Entities.Vehicles;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using BaridikExpress.Domain.Entities.Banners;
 
 namespace BaridikExpress.API.Controllers.SelectMenu;
 
@@ -114,6 +115,22 @@ public class SelectMenuController(IMediator mediator) : ControllerBase
             new GetCurrenciesQuery(),
             cancellationToken);
         return StatusCode(result.StatusCode, result);
+    }
+    [HttpGet("banners")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetBanners(
+[FromQuery] string? name,
+CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+           new GetSelectMenubaseQuery<Banner>
+           {
+               Name = name
+           },
+           cancellationToken);
+
+        return Ok(result);
+
     }
 
     [HttpGet("roles")]

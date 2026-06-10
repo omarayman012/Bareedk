@@ -8,6 +8,7 @@ using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.Locat
 using BaridikExpress.Application.Features.SystemManagement.Commands.UpdateSystemManagement;
 using BaridikExpress.Application.Features.SystemManagement.DTOs;
 using BaridikExpress.Application.Features.SystemManagement.Queries.GetSystemManagement;
+using BaridikExpress.Domain.Entities.Banners;
 using BaridikExpress.Domain.Entities.CareerFields;
 using BaridikExpress.Domain.Entities.Location;
 using BaridikExpress.Domain.Entities.NotificationModules;
@@ -122,6 +123,10 @@ public static class DepedencyInjection
         services.AddTransient<
             IRequestHandler<GetSelectMenubaseQuery<Vehicle>, Result<IEnumerable<SelectMenuResponse>>>,
             GetSelectMenuBaseQueryHandler<Vehicle>>();
+
+        services.AddTransient<
+            IRequestHandler<GetSelectMenubaseQuery<Banner>, Result<IEnumerable<SelectMenuResponse>>>,
+            GetSelectMenuBaseQueryHandler<Banner>>();
         #endregion
         return services;
     }

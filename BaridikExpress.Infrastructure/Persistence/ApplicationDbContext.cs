@@ -2,6 +2,7 @@ using BaridikExpress.Application.Interfaces;
 using BaridikExpress.Domain.Entities.Addresses;
 using BaridikExpress.Domain.Entities.AuthModule;
 using BaridikExpress.Domain.Entities.AuthModules;
+using BaridikExpress.Domain.Entities.Banners;
 using BaridikExpress.Domain.Entities.Base;
 using BaridikExpress.Domain.Entities.BlogsModules;
 using BaridikExpress.Domain.Entities.CareerFields;
@@ -64,6 +65,9 @@ public class ApplicationDbContext : IdentityDbContext<User>, IApplicationDbConte
 
     #region DbSets - Client
     public DbSet<ClientAddress>  ClientAddresses { get; set; }
+    #endregion
+    #region DbSets - Banners
+    public DbSet<Banner> Banners { get; set; }
     #endregion
 
     #region DbSets - Customers

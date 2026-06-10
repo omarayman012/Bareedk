@@ -1,5 +1,9 @@
-﻿using BaridikExpress.Application.Features.BlogsModules.BlogsCategoryModules.Commands;
+﻿using BaridikExpress.Application.Features.BlogsModules.BlogComment.Commands;
+using BaridikExpress.Application.Features.BlogsModules.BlogComment.Queries;
+using BaridikExpress.Application.Features.BlogsModules.BlogsCategoryModules.Commands;
 using BaridikExpress.Application.Features.BlogsModules.BlogsCategoryModules.Queries;
+using BaridikExpress.Application.Features.BlogsModules.DTOs;
+using BaridikExpress.Application.Interfaces.File;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,123 +14,87 @@ namespace BaridikExpress.API.Controllers.BlogsModules
     [Route("api/v1/[controller]")]
     [ApiExplorerSettings(GroupName = "admin-v1")]
     [Authorize]
-    public class BlogsCategoryController : ControllerBase
+    public class BlogCommentController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly IExcelService _excelService;
 
-        public BlogsCategoryController(IMediator mediator)
+        public BlogCommentController(IMediator mediator, IExcelService excelService)
         {
             _mediator = mediator;
+            _excelService = excelService;
         }
-        [HttpGet("GetAll")]
-        public async Task<IActionResult> GetAll(
-        [FromQuery] string? name,
-        [FromQuery] bool? isActive,
-        [FromQuery] string? createdById,
-        [FromQuery] DateTime? fromDate,
-        [FromQuery] DateTime? toDate,
-        [FromQuery] int? pageSize = 10,
-        [FromQuery] int pageNumber = 1)
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CreateCommentCommand command)
         {
-            var query = new GetAllBlogsCategoriesQuery
+            var result = await _mediator.Send(command);
+            return StatusCode(result.StatusCode, result);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetComments(
+           [FromQuery] Guid blogId,
+           [FromQuery] string? name,
+           [FromQuery] int pageNumber = 1,
+           [FromQuery] int pageSize = 10)
+        {
+            var query = new GetCommentsQuery
             {
+                BlogId = blogId,
                 Name = name,
-                IsActive = isActive,
-                CreatedById = createdById,
-                FromDate = fromDate,
-                ToDate = toDate,
-                pageSize = pageSize,
-                PageNumber = pageNumber
+                PageNumber = pageNumber,
+                PageSize = pageSize
             };
-
             var result = await _mediator.Send(query);
             return StatusCode(result.StatusCode, result);
         }
-        [HttpPost("Create")]
-        public async Task<IActionResult> Create([FromForm] CreateBlogsCategoryCommand command)
+        [HttpGet("comment")]
+        public async Task<IActionResult> GetById([FromQuery] GetCommentByIdQuery query)
         {
-            var result = await _mediator.Send(command);
-            return StatusCode(result.StatusCode, result);
-        }
-
-
-        [HttpPut("Update")]
-        public async Task<IActionResult> Update([FromForm] UpdateBlogsCategoryCommand command)
-        {
-            var result = await _mediator.Send(command);
-            return StatusCode(result.StatusCode, result);
-        }
-
-        [HttpDelete("Delete")]
-        public async Task<IActionResult> Delete([FromBody] DeleteBlogsCategoryCommand command)
-        {
-            var result = await _mediator.Send(command);
-            return StatusCode(result.StatusCode, result);
-        }
-
-        [HttpPatch("togglestatus/{id:guid}")]
-        public async Task<IActionResult> ToggleActiveStatus(Guid id)
-        {
-            var command = new ToggleBlogsCategoryStatusCommand
-            {
-                Id = id
-            };
-
-            var result = await _mediator.Send(command);
-            return StatusCode(result.StatusCode, result);
-        }
-
-        [HttpGet("GetById")]
-        public async Task<IActionResult> GetById(Guid id)
-        {
-            var query = new GetBlogsCategoryByIdQuery
-            {
-                Id = id
-            };
-
             var result = await _mediator.Send(query);
             return StatusCode(result.StatusCode, result);
         }
-
-
-        [HttpPost("importtemplate")]
-        public async Task<IActionResult> Import([FromForm] ImportBlogsCategoriesExcelCommand command)
+        [HttpPost("comment/reaction")]
+        public async Task<IActionResult> React([FromBody] ToggleCommentReactionCommand command)
         {
             var result = await _mediator.Send(command);
             return StatusCode(result.StatusCode, result);
         }
-
-        [HttpGet("exporttemplate")]
-        public async Task<IActionResult> Export()
+        [HttpGet("comment/reactions")]
+        public async Task<IActionResult> GetReactions([FromQuery] GetCommentReactionsQuery query)
         {
-            var result = await _mediator.Send(new ExportBlogsCategoriesExcelQuery());
+            var result = await _mediator.Send(query);
+            return StatusCode(result.StatusCode, result);
+        }
+        [HttpDelete("comments")]
+        public async Task<IActionResult> DeleteComments([FromBody] DeleteCommentsCommand command)
+        {
+            var result = await _mediator.Send(command);
+            return StatusCode(result.StatusCode, result);
+        }
+        [HttpPut("comment")]
+        public async Task<IActionResult> Update([FromBody] UpdateCommentCommand command)
+        {
+            var result = await _mediator.Send(command);
+            return StatusCode(result.StatusCode, result);
+        }
+        [HttpGet("export")]
+        public async Task<IActionResult> Export(
+        [FromQuery] Guid blogId,
+        CancellationToken cancellationToken)
+        {
+            var result = await _mediator.Send(
+                new GetCommentsExportQuery(blogId), cancellationToken);
 
-            if (!result.IsSuccess || result.Data == null)
-            {
-                return StatusCode(result.StatusCode, result);
-            }
+            if (!result.IsSuccess)
+                return Ok(result);
+
+            var file = await _excelService.DownloadDataAsync<CommentExportDto>(result.Data);
 
             return File(
-                result.Data,
+                file,
                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                "BlogsCategories.xlsx");
+                "Comments.xlsx");
         }
-
-        [HttpGet("downloadtemplate")]
-        public async Task<IActionResult> DownloadTemplate()
-        {
-            var result = await _mediator.Send(new DownloadBlogsCategoryTemplateQuery());
-
-            if (!result.IsSuccess || result.Data == null)
-            {
-                return StatusCode(result.StatusCode, result);
-            }
-
-            return File(
-                result.Data,
-                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                "BlogsCategoriesTemplate.xlsx");
-        }
-
     }
 }

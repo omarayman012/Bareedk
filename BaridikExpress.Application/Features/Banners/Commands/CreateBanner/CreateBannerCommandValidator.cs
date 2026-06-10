@@ -6,20 +6,20 @@ namespace BaridikExpress.Application.Features.Banners.Commands.CreateBanner;
 
 public class CreateBannerCommandValidator : AbstractValidator<CreateBannerCommand>
 {
-    private static readonly string[] AllowedImageExtensions = [".jpg", ".jpeg", ".png", ".webp"];
+   
 
     public CreateBannerCommandValidator(IStringLocalizer localizer)
     {
         RuleFor(x => x.Image)
-            .NotNull()
-            .WithMessage(localizer["ImageRequired"])
-            .Must(file => file!.Length > 0)
-            .WithMessage(localizer["InvalidImageFile"])
-            .Must(file => AllowedImageExtensions.Contains(
-                Path.GetExtension(file!.FileName).ToLower()))
-            .WithMessage(localizer["InvalidImageFormat"]);
-
-        RuleFor(x => x.TitleAr)
+        .NotNull()
+         .WithMessage(localizer["ImageRequired"])
+        .Must(file => file!.Length <= 5 * 1024 * 1024)
+        .WithMessage(localizer["ImageMaxSize"])
+        .Must(file => new[] { "image/jpeg", "image/png" }.Contains(file!.ContentType))
+        .WithMessage(localizer["ImageInvalidType"])
+        .When(x => x.Image != null);
+            
+    RuleFor(x => x.TitleAr)
             .MaximumLength(200)
             .WithMessage(localizer["BannerTitleMaxLength"])
             .When(x => x.TitleAr is not null);

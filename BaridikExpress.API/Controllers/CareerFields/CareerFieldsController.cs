@@ -3,6 +3,7 @@ using BaridikExpress.Application.Features.CareerFields.Commands.DeleteCareerFiel
 using BaridikExpress.Application.Features.CareerFields.Commands.ToggleCareerFieldStatus;
 using BaridikExpress.Application.Features.CareerFields.Commands.UpdateCareerFields;
 using BaridikExpress.Application.Features.CareerFields.Commands.UploadCareerFields;
+using BaridikExpress.Application.Features.CareerFields.DTO;
 using BaridikExpress.Application.Features.CareerFields.DTOs;
 using BaridikExpress.Application.Features.CareerFields.Queries.GetAllCareerFields;
 using BaridikExpress.Application.Features.CareerFields.Queries.GetCareerFieldById;
@@ -79,19 +80,33 @@ namespace BaridikExpress.API.Controllers.CareerFields
         [HttpGet("Export")]
         [HasPermission(Permissions.CareerFieldsRead)]
         public async Task<IActionResult> ExportData(
-            [FromQuery] GetAllCareerFieldsQuery query)
+         [FromQuery] GetAllCareerFieldsQuery query)
         {
             var result = await _mediator.Send(query);
 
-            var file = await _excelService.DownloadDataAsync<GetAllCareerFieldsDto>(
-                result.Data!.Items);
+            var exportData = result.Data!.Items
+                .Select(x => new CareerFieldExcelExportDto
+                {
+                    NameAr = x.Name.AR,
+                    NameEn = x.Name.EN,
+
+                    IsActive = x.IsActive,
+
+                    CreatedBy = x.CreatedBy,
+                    CreatedAt = x.CreatedAt,
+
+                    UpdatedBy = x.UpdatedBy,
+                    UpdatedAt = x.UpdatedAt
+                });
+
+            var file = await _excelService
+                .DownloadDataAsync<CareerFieldExcelExportDto>(exportData);
 
             return File(
                 file,
                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                 "CareerFields.xlsx");
         }
-
         [HttpPost("Upload")]
         [HasPermission(Permissions.CareerFieldsCreate)]
         public async Task<IActionResult> UploadExcel(
