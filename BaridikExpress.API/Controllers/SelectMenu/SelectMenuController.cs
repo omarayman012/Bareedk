@@ -110,7 +110,7 @@ public class SelectMenuController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("currencies")]
-    [AllowAnonymous] 
+    [AllowAnonymous]
     public async Task<IActionResult> GetCurrencies(CancellationToken cancellationToken)
     {
         var result = await mediator.Send(

@@ -3061,7 +3061,7 @@ namespace BaridikExpress.Infrastructure.Migrations
                     b.HasOne("BaridikExpress.Domain.Entities.BlogsModules.BlogsCategory", "Category")
                         .WithMany("Blogs")
                         .HasForeignKey("BlogsCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BaridikExpress.Domain.Entities.AuthModules.User", "CreatedBy")
@@ -3246,7 +3246,7 @@ namespace BaridikExpress.Infrastructure.Migrations
                     b.HasOne("BaridikExpress.Domain.Entities.BlogsModules.BlogComment", "Comment")
                         .WithMany("Reactions")
                         .HasForeignKey("CommentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BaridikExpress.Domain.Entities.AuthModules.User", "User")
