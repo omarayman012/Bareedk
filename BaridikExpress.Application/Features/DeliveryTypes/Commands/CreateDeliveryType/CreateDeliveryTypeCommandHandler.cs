@@ -80,7 +80,6 @@ public sealed class CreateDeliveryTypeCommandHandler(
         #endregion
 
         #region Map Response
-
         var response = new DeliveryTypeResponse(
             deliveryType.Id,
             new LocalizedDto { EN = deliveryType.NameEn, AR = deliveryType.NameAr },
@@ -90,13 +89,13 @@ public sealed class CreateDeliveryTypeCommandHandler(
             deliveryType.PricePerTotal,
             deliveryType.Currency.ToString(),
             deliveryType.IsSwitchActive,
+            deliveryType.IsActive,         
             deliveryType.ImageUrl,
             new LocalizedDto { EN = deliveryType.DescriptionEn, AR = deliveryType.DescriptionAr },
-            deliveryType.CreatedBy?.FullName,
+            deliveryType.CreatedBy?.FullName, 
             deliveryType.CreatedAt,
             deliveryType.UpdatedBy?.FullName,
             deliveryType.UpdatedAt);
-
         #endregion
 
         return Result<DeliveryTypeResponse>

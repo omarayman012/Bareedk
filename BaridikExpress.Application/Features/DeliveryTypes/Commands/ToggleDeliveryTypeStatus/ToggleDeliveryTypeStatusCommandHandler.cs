@@ -30,7 +30,7 @@ public sealed class ToggleDeliveryTypeStatusCommandHandler(
 
         #endregion
 
-        var message = deliveryType.IsSwitchActive
+        var message = deliveryType.IsActive
             ? localizer["DeliveryTypeActivatedSuccessfully"]
             : localizer["DeliveryTypeDeactivatedSuccessfully"];
 

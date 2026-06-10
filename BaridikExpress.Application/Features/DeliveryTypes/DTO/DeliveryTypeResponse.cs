@@ -11,6 +11,7 @@ public sealed record DeliveryTypeResponse(
     decimal PricePerTotal,
     string Currency,
     bool IsSwitchActive,
+    bool IsActive,        
     string? ImageUrl,
     LocalizedDto? Description,
     string? CreatedBy,

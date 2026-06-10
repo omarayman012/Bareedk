@@ -73,5 +73,4 @@ public class DeliveryType : BaseEntity
         if (!string.IsNullOrWhiteSpace(descriptionAr)) DescriptionAr = descriptionAr;
     }
 
-    public void ToggleStatus() => IsSwitchActive = !IsSwitchActive;
 }
