@@ -5,8 +5,10 @@ using BaridikExpress.Application.Features.Banners.Commands.UpdateBanner;
 using BaridikExpress.Application.Features.Banners.Commands.UploadBanners;
 using BaridikExpress.Application.Features.Banners.DTO;
 using BaridikExpress.Application.Features.Banners.Queries.GetAllBanners;
+using BaridikExpress.Application.Features.Banners.Queries.GetAllBannersMobile;
 using BaridikExpress.Application.Features.Banners.Queries.GetBannerById;
 using BaridikExpress.Application.Interfaces.File;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BaridikExpress.API.Controllers.Banners;
 
@@ -115,5 +117,18 @@ public class BannersController(IMediator mediator, IExcelService excelService)
         return StatusCode(result.StatusCode, result);
     }
 
+    #region Mobile
+
+    [HttpGet("GetAllBanners")]
+    [AllowAnonymous]
+    [ApiExplorerSettings(GroupName = "client-v1")]
+    public async Task<IActionResult> GetMobileBanners(
+    [FromQuery] GetAllBannersMobileQuery query)
+    {
+        var result = await _mediator.Send(query);
+        return StatusCode(result.StatusCode, result);
+    }
+
+    #endregion
 
 }
