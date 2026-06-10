@@ -30,18 +30,6 @@ public sealed class CreateBannerCommandHandler(
 
         #endregion
 
-        #region Validate Uniqueness
-
-        var titleExists = await repo.AnyAsync(x =>
-            x.TitleEn == titleEn ||
-            x.TitleAr == titleAr,
-            cancellationToken);
-
-        if (titleExists)
-            return Result<Guid>.Failure(localizer["BannerTitleAlreadyExists"], 409);
-
-        #endregion
-
         #region Upload Image
         var imagePath = string.Empty;
         if (request.Image is not null)
