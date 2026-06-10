@@ -1,17 +1,10 @@
-
-using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu;
-using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.GenericSelectMenu;
-
 using BaridikExpress.Application.Features.SelectMenu.Queries.GetRolesSelectMenu;
-using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu;
 using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.Nationalities;
+using BaridikExpress.Domain.Entities.Banners;
 using BaridikExpress.Domain.Entities.CareerFields;
 using BaridikExpress.Domain.Entities.Location;
 using BaridikExpress.Domain.Entities.Vehicles;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using BaridikExpress.Domain.Entities.Banners;
 
 namespace BaridikExpress.API.Controllers.SelectMenu;
 
@@ -90,7 +83,7 @@ public class SelectMenuController(IMediator mediator) : ControllerBase
   CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
-           new GetSelectMenubaseQuery<CareerField>
+           new GetSelectMenuQuery<CareerField>
            {
                Name = name
            },
@@ -107,7 +100,7 @@ public class SelectMenuController(IMediator mediator) : ControllerBase
 CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
-           new GetSelectMenubaseQuery<Vehicle>
+           new GetSelectMenuQuery<Vehicle>
            {
                Name = name
            },
@@ -116,14 +109,14 @@ CancellationToken cancellationToken)
         return Ok(result);
 
     }
-    [HttpGet("banners")]
+    [HttpGet("Banners")]
     [AllowAnonymous]
     public async Task<IActionResult> GetBanners(
 [FromQuery] string? name,
 CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
-           new GetSelectMenubaseQuery<Banner>
+           new GetSelectMenuQuery<Banner>
            {
                Name = name
            },
