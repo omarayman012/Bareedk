@@ -3,7 +3,7 @@
 namespace BaridikExpress.Application.Features.Services.DTOs;
 public sealed record ServiceResponse(
     Guid Id,
-    LocalizedDto Name,
+    LocalizedDto Name,//NAME {AR:   ,EN: }
     decimal Price,
     string Currency,
     string? Image,

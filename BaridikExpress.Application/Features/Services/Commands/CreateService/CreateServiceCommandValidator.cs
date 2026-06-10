@@ -20,7 +20,7 @@ public sealed class CreateServiceCommandValidator : AbstractValidator<CreateServ
         #endregion
 
         #region Price
-        RuleFor(x => x.Price)
+        RuleFor(x => x.Price)//-10 
             .GreaterThan(0).WithMessage(localizer["PriceMustBeGreaterThanZero"]);
         #endregion
 
