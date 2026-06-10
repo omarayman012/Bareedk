@@ -2,6 +2,7 @@
 using BaridikExpress.Domain.Entities.AuthModules;
 using MailKit.Net.Smtp;
 using MailKit.Security;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -82,7 +83,60 @@ public class EmailService : IEmailSender, IEmailService
             }
         }
     }
+    public async Task SendEmailWithAttachmentAsync(
+    string email,
+    string subject,
+    string htmlMessage,
+    IFormFile file)
+    {
+        using var smtp = new SmtpClient();
+        try
+        {
+            smtp.Timeout = 10000;
 
+            var message = new MimeMessage();
+            message.From.Add(
+                new MailboxAddress(
+                    _mailSettings.DisplayName,
+                    _mailSettings.UserName));
+            message.To.Add(
+                MailboxAddress.Parse(email));
+            message.Subject = subject;
+
+            var builder = new BodyBuilder { HtmlBody = htmlMessage };
+            builder.Attachments.Add(
+                file.FileName,
+                file.OpenReadStream(),
+                ContentType.Parse(file.ContentType));
+            message.Body = builder.ToMessageBody();
+
+            await smtp.ConnectAsync(
+                _mailSettings.Host,
+                _mailSettings.Port,
+                SecureSocketOptions.StartTls);
+            await smtp.AuthenticateAsync(
+                _mailSettings.UserName,
+                _mailSettings.Password);
+            await smtp.SendAsync(message);
+
+            _logger.LogInformation(
+                "Email with attachment sent successfully to {Email}",
+                email);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(
+                ex,
+                "Failed to send email with attachment to {Email}",
+                email);
+            throw;
+        }
+        finally
+        {
+            if (smtp.IsConnected)
+                await smtp.DisconnectAsync(true);
+        }
+    }
     public async Task SendResetPasswordEmail(
         User user,
         string otp)
