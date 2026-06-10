@@ -4,30 +4,25 @@
 *.suo
 *.userosscache
 *.sln.docstates
+
+# Build
+bin/
+obj/
 **/bin/
 **/obj/
 
-# Build Folders
-bin/
-obj/
-
-# Rider / IntelliJ
+# Rider
 .idea/
 
-# Visual Studio Code
+# VS Code
 .vscode/
 
-# Logs & temp
+# Logs
 *.log
 *.cache
 
-## .NET
-**/bin/
-**/obj/
-
-# NuGet Packages
+# NuGet
 *.nupkg
 packages/
 *.nuget.targets
 *.nuget.props
-/BaridikExpress.Infrastructure/Migrations
