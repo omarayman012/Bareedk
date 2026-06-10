@@ -1,10 +1,7 @@
 using BaridikExpress.Application.Common.Helpers;
 using BaridikExpress.Application.Interfaces.File;
-using BaridikExpress.Application.Interfaces.File;
 using BaridikExpress.Application.Interfaces.IRepository;
 using BaridikExpress.Domain.Entities.Banners;
-using BaridikExpress.Domain.Entities.Vehicles;
-using Microsoft.EntityFrameworkCore;
 
 namespace BaridikExpress.Application.Features.Banners.Commands.UpdateBanner;
 
