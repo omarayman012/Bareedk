@@ -13,5 +13,6 @@ public record CreateAddressDto(
     string? FloorNumber,
     string? DistinctiveMark,
     string? ZipCode,
-    string? Location
+    string? Location,
+    bool IsDefault = true
 );
