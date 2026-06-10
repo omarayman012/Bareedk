@@ -23,6 +23,8 @@ public class GetCareerFieldByIdQueryHandler(
     {
         var careerField = await _repo
             .Query()
+            .Include(x=>x.CreatedBy)
+            .Include(x=>x.UpdatedBy)
             .Where(x => x.Id == request.Id)
             .Select(x => new GetCareerFieldByIdDto
             {
