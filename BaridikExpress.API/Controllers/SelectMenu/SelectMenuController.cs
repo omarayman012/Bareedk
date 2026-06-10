@@ -1,7 +1,5 @@
 using BaridikExpress.Application.Features.SelectMenu.Queries.GetRolesSelectMenu;
-using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu;
 using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.Currency;
-using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.GenericSelectMenu;
 using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.Nationalities;
 using BaridikExpress.Domain.Entities.Banners;
 using BaridikExpress.Domain.Entities.CareerFields;
@@ -90,7 +88,6 @@ public class SelectMenuController(IMediator mediator) : ControllerBase
            {
                Name = name
            },
-           new GetSelectMenubaseQuery<CareerField> { Name = name },
            cancellationToken);
 
         return Ok(result);
@@ -107,14 +104,13 @@ public class SelectMenuController(IMediator mediator) : ControllerBase
            {
                Name = name
            },
-           new GetSelectMenubaseQuery<Vehicle> { Name = name },
            cancellationToken);
 
         return Ok(result);
     }
 
     [HttpGet("currencies")]
-    [AllowAnonymous] 
+    [AllowAnonymous]
     public async Task<IActionResult> GetCurrencies(CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
