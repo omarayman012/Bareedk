@@ -1,5 +1,4 @@
 using BaridikExpress.Application.Features.SelectMenu.Queries.GetRolesSelectMenu;
-using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu;
 using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.Currency;
 using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.Nationalities;
 using BaridikExpress.Domain.Entities.Banners;
