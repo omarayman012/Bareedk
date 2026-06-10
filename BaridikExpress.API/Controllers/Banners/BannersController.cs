@@ -117,7 +117,9 @@ public class BannersController(IMediator mediator, IExcelService excelService)
         return StatusCode(result.StatusCode, result);
     }
 
-    [HttpGet("Mobile")]
+    #region Mobile
+
+    [HttpGet("GetAllBanners")]
     [AllowAnonymous]
     [ApiExplorerSettings(GroupName = "client-v1")]
     public async Task<IActionResult> GetMobileBanners(
@@ -127,5 +129,6 @@ public class BannersController(IMediator mediator, IExcelService excelService)
         return StatusCode(result.StatusCode, result);
     }
 
+    #endregion
 
 }
