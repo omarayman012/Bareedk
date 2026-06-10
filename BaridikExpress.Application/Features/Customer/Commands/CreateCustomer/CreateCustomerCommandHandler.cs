@@ -223,7 +223,8 @@ public sealed class CreateCustomerCommandHandler(
                         a.DistinctiveMark,
                         a.ZipCode,
                         a.Location,
-                        false))
+                        a.IsDefault
+                        ))
                     .ToList();
 
                 await applicationDb.CustomerAddresses.AddRangeAsync(addresses, cancellationToken);
