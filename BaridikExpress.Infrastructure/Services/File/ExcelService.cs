@@ -546,5 +546,36 @@ namespace BaridikExpress.Infrastructure.Services.File
             return string.Join("|", parts);
         }
 
+        public async Task<byte[]> GenerateTemplateAsync<TDto>()
+           where TDto : class
+        {
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            using var package = new ExcelPackage();
+
+            var worksheet = package.Workbook.Worksheets.Add("Template");
+
+            var properties = typeof(TDto)
+                .GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+            for (int i = 0; i < properties.Length; i++)
+            {
+                worksheet.Cells[1, i + 1].Value = properties[i].Name;
+            }
+
+            using (var range = worksheet.Cells[1, 1, 1, properties.Length])
+            {
+                range.Style.Font.Color.SetColor(Color.White);
+                range.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                range.Style.Fill.BackgroundColor.SetColor(Color.Black);
+
+                range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                range.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            }
+
+            worksheet.Cells.AutoFitColumns();
+
+            return await package.GetAsByteArrayAsync();
+        }
     }
 }
