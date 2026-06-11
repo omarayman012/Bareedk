@@ -4,6 +4,7 @@ using BaridikExpress.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BaridikExpress.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260610224501_AddBackupModule")]
+    partial class AddBackupModule
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -527,12 +530,6 @@ namespace BaridikExpress.Infrastructure.Migrations
                     b.Property<string>("CreatedById")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateOnly?>("CreatedDate")
-                        .HasColumnType("date");
-
-                    b.Property<TimeOnly?>("CreatedTime")
-                        .HasColumnType("time");
-
                     b.Property<string>("DescriptionAr")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -547,9 +544,6 @@ namespace BaridikExpress.Infrastructure.Migrations
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
-
-                    b.Property<Guid?>("PublishingHouseId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("TitleAr")
                         .IsRequired()
@@ -572,8 +566,6 @@ namespace BaridikExpress.Infrastructure.Migrations
                     b.HasIndex("BlogsCategoryId");
 
                     b.HasIndex("CreatedById");
-
-                    b.HasIndex("PublishingHouseId");
 
                     b.HasIndex("UpdatedById");
 
@@ -3213,10 +3205,6 @@ namespace BaridikExpress.Infrastructure.Migrations
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.NoAction);
 
-                    b.HasOne("BaridikExpress.Domain.Entities.PublishingHouseModule.PublishingHouse", "PublishingHouse")
-                        .WithMany()
-                        .HasForeignKey("PublishingHouseId");
-
                     b.HasOne("BaridikExpress.Domain.Entities.AuthModules.User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
@@ -3227,8 +3215,6 @@ namespace BaridikExpress.Infrastructure.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("CreatedBy");
-
-                    b.Navigation("PublishingHouse");
 
                     b.Navigation("UpdatedBy");
                 });

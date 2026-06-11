@@ -1,6 +1,7 @@
 using System.Reflection;
 using BaridikExpress.Application.Interfaces;
 using BaridikExpress.Application.Interfaces.Auth;
+using BaridikExpress.Application.Interfaces.BackUp;
 using BaridikExpress.Application.Interfaces.BlogModules;
 using BaridikExpress.Application.Interfaces.File;
 using BaridikExpress.Application.Interfaces.IRepository;
@@ -12,6 +13,7 @@ using BaridikExpress.Infrastructure.Persistence;
 using BaridikExpress.Infrastructure.Repositories;
 using BaridikExpress.Infrastructure.Services;
 using BaridikExpress.Infrastructure.Services.AuthModules;
+using BaridikExpress.Infrastructure.Services.Backup;
 using BaridikExpress.Infrastructure.Services.BlogModules;
 using BaridikExpress.Infrastructure.Services.Email;
 using BaridikExpress.Infrastructure.Services.File;
@@ -67,7 +69,7 @@ namespace BaridikExpress.Infrastructure
             services.AddScoped<ICommentRealtimeService, CommentRealtimeService>();
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<IBlogService, BlogService>();
-
+            services.AddScoped<IBackupService, SqlServerBackupService>();
             return services;
         }
 
