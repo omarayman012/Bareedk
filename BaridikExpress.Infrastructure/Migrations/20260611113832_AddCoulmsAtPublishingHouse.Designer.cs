@@ -4,6 +4,7 @@ using BaridikExpress.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BaridikExpress.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260611113832_AddCoulmsAtPublishingHouse")]
+    partial class AddCoulmsAtPublishingHouse
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -361,105 +364,6 @@ namespace BaridikExpress.Infrastructure.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("BaridikExpress.Domain.Entities.BackupModules.BackupHistory", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("BackupDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ErrorMessage")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FileName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FilePath")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("FileSizeInBytes")
-                        .HasColumnType("bigint");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UpdatedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatedById");
-
-                    b.HasIndex("UpdatedById");
-
-                    b.ToTable("BackupHistories");
-                });
-
-            modelBuilder.Entity("BaridikExpress.Domain.Entities.BackupModules.BackupSetting", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<TimeOnly>("ExecutionTime")
-                        .HasColumnType("time");
-
-                    b.Property<int>("Frequency")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("NotificationEmail")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("RetentionDays")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("SendEmailNotification")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("StoragePath")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UpdatedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatedById");
-
-                    b.HasIndex("UpdatedById");
-
-                    b.ToTable("BackupSettings");
-                });
-
             modelBuilder.Entity("BaridikExpress.Domain.Entities.Banners.Banner", b =>
                 {
                     b.Property<Guid>("Id")
@@ -527,10 +431,10 @@ namespace BaridikExpress.Infrastructure.Migrations
                     b.Property<string>("CreatedById")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateOnly?>("CreatedDate")
+                    b.Property<DateOnly>("CreatedDate")
                         .HasColumnType("date");
 
-                    b.Property<TimeOnly?>("CreatedTime")
+                    b.Property<TimeOnly>("CreatedTime")
                         .HasColumnType("time");
 
                     b.Property<string>("DescriptionAr")
@@ -548,7 +452,7 @@ namespace BaridikExpress.Infrastructure.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<Guid?>("PublishingHouseId")
+                    b.Property<Guid>("PublishingHouseId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("TitleAr")
@@ -3143,40 +3047,6 @@ namespace BaridikExpress.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("BaridikExpress.Domain.Entities.BackupModules.BackupHistory", b =>
-                {
-                    b.HasOne("BaridikExpress.Domain.Entities.AuthModules.User", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("BaridikExpress.Domain.Entities.AuthModules.User", "UpdatedBy")
-                        .WithMany()
-                        .HasForeignKey("UpdatedById")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.Navigation("CreatedBy");
-
-                    b.Navigation("UpdatedBy");
-                });
-
-            modelBuilder.Entity("BaridikExpress.Domain.Entities.BackupModules.BackupSetting", b =>
-                {
-                    b.HasOne("BaridikExpress.Domain.Entities.AuthModules.User", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("BaridikExpress.Domain.Entities.AuthModules.User", "UpdatedBy")
-                        .WithMany()
-                        .HasForeignKey("UpdatedById")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.Navigation("CreatedBy");
-
-                    b.Navigation("UpdatedBy");
-                });
-
             modelBuilder.Entity("BaridikExpress.Domain.Entities.Banners.Banner", b =>
                 {
                     b.HasOne("BaridikExpress.Domain.Entities.AuthModules.User", "CreatedBy")
@@ -3215,7 +3085,9 @@ namespace BaridikExpress.Infrastructure.Migrations
 
                     b.HasOne("BaridikExpress.Domain.Entities.PublishingHouseModule.PublishingHouse", "PublishingHouse")
                         .WithMany()
-                        .HasForeignKey("PublishingHouseId");
+                        .HasForeignKey("PublishingHouseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("BaridikExpress.Domain.Entities.AuthModules.User", "UpdatedBy")
                         .WithMany()

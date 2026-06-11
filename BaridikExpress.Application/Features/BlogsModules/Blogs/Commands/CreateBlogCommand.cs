@@ -13,6 +13,10 @@ public class CreateBlogCommand : IRequest<Result<BlogDetailsResponse>>
 
     public Guid BlogsCategoryId { get; set; }
     public Guid BlogsAuthorId { get; set; }
+    public Guid? PublishingHouseId { get; set; }
+
+    public DateOnly CreatedDate { get; set; }
+    public TimeOnly CreatedTime { get; set; }
 
     public IFormFile Image { get; set; }
     public bool IsActive { get; set; }

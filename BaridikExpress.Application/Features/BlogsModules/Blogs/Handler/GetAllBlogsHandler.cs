@@ -74,6 +74,16 @@ public class GetAllBlogsHandler : IRequestHandler<GetBlogsQuery, Result<Paginate
                         En = b.Category.NameEn
                     }
                 },
+                PublishingHouse = new LookupDto
+                {
+                    Id = b.PublishingHouse.Id,
+
+                    Name = new NameDto
+                    {
+                        Ar = b.PublishingHouse.NameAr,
+                        En = b.PublishingHouse.NameEn
+                    }
+                },
 
                 Author = new LookupDto
                 {
@@ -110,7 +120,8 @@ public class GetAllBlogsHandler : IRequestHandler<GetBlogsQuery, Result<Paginate
                 UpdatedBy = b.UpdatedBy != null
                     ? b.UpdatedBy.FullName
                     : null,
-
+                CreatedDate = b.CreatedDate ,
+                CreatedTime = b .CreatedTime,
                 Likes = b.Reactions.Count(r => r.Type == ReactionType.Like),
 
                 Dislikes = b.Reactions.Count(r => r.Type == ReactionType.Dislike)

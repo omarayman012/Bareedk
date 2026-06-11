@@ -57,8 +57,17 @@ public class UpdateBlogCommandHandler(
         if (request.BlogsAuthorId.HasValue)
             blog.BlogsAuthorId = request.BlogsAuthorId.Value;
 
+        if (request.PublishingHouseId.HasValue)
+            blog.PublishingHouseId = request.PublishingHouseId.Value;
+
         if (request.IsActive.HasValue)
             blog.IsActive = request.IsActive.Value;
+
+        if (request.CreatedDate != default)
+            blog.CreatedDate = request.CreatedDate;
+
+        if (request.CreatedTime != default)
+            blog.CreatedTime = request.CreatedTime;
     }
 
     private async Task UpdateImageAsync(dynamic blog, UpdateBlogCommand request, CancellationToken cancellationToken)
