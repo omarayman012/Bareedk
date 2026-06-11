@@ -45,7 +45,7 @@ public class CreateCountryCommandHandler(
                 AR = country.CountryNameAr
             },
             PhoneCode = country.PhoneCode,
-            CreatedBy = country.CreatedBy.FullName ?? string.Empty,
+            CreatedBy = country.CreatedBy?.FullName ?? string.Empty,
             CreatedAt = country.CreatedAt,
             UpdatedBy = country.UpdatedBy?.FullName ?? string.Empty,
             UpdatedAt = country.UpdatedAt
