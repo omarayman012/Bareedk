@@ -8,6 +8,8 @@ using BaridikExpress.Domain.Entities.CareerFields;
 using BaridikExpress.Domain.Entities.Location;
 using BaridikExpress.Domain.Entities.Vehicles;
 using Microsoft.AspNetCore.Authorization;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BaridikExpress.API.Controllers.SelectMenu;
 
@@ -158,7 +160,8 @@ public class SelectMenuController(IMediator mediator) : ControllerBase
             cancellationToken);
         return StatusCode(result.StatusCode, result);
     }
-     [HttpGet("blogs-categories")]
+
+    [HttpGet("blogs-categories")]
     [AllowAnonymous]
     public async Task<IActionResult> GetBlogsCategories(
         [FromQuery] string? name,
