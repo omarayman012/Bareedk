@@ -1,3 +1,5 @@
+using BaridikExpress.Application.Features.Blogs.Queries.SelectMenu;
+using BaridikExpress.Application.Features.SelectMenu.Queries.GetBlogCategory;
 using BaridikExpress.Application.Features.SelectMenu.Queries.GetRolesSelectMenu;
 using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.Currency;
 using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.Nationalities;
@@ -118,11 +120,12 @@ public class SelectMenuController(IMediator mediator) : ControllerBase
             cancellationToken);
         return StatusCode(result.StatusCode, result);
     }
+
     [HttpGet("Banners")]
     [AllowAnonymous]
     public async Task<IActionResult> GetBanners(
-[FromQuery] string? name,
-CancellationToken cancellationToken)
+        [FromQuery] string? name,
+        CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
            new GetSelectMenuQuery<Banner>
@@ -132,7 +135,6 @@ CancellationToken cancellationToken)
            cancellationToken);
 
         return Ok(result);
-
     }
 
     [HttpGet("roles")]
@@ -141,6 +143,18 @@ CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
             new GetRolesSelectMenuQuery(),
+            cancellationToken);
+        return StatusCode(result.StatusCode, result);
+    }
+
+    [HttpGet("blogs")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetBlogs(
+        [FromQuery] string? name,
+        CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new GetBlogsSelectMenuQuery(name),
             cancellationToken);
         return StatusCode(result.StatusCode, result);
     }

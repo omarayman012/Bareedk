@@ -2,6 +2,7 @@ using BaridikExpress.Application.Interfaces;
 using BaridikExpress.Domain.Entities.Addresses;
 using BaridikExpress.Domain.Entities.AuthModule;
 using BaridikExpress.Domain.Entities.AuthModules;
+using BaridikExpress.Domain.Entities.BackupModules;
 using BaridikExpress.Domain.Entities.Banners;
 using BaridikExpress.Domain.Entities.Base;
 using BaridikExpress.Domain.Entities.BlogsModules;
@@ -118,7 +119,8 @@ public class ApplicationDbContext : IdentityDbContext<User>, IApplicationDbConte
     public DbSet<NotificationRecipient> NotificationRecipients { get; set; }
     public DbSet<MessageNotification> MessageNotifications { get; set; }
 
-
+    public DbSet<BackupSetting>BackupSettings { get; set; }
+    public DbSet<BackupHistory> BackupHistories { get; set; }
 
 
     #endregion
