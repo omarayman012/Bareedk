@@ -158,4 +158,15 @@ public class SelectMenuController(IMediator mediator) : ControllerBase
             cancellationToken);
         return StatusCode(result.StatusCode, result);
     }
+    [HttpGet("blogs-categories")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetBlogsCategories(
+       [FromQuery] string? name,
+       CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new GetBlogsCategoriesSelectMenuQuery(name),
+            cancellationToken);
+        return StatusCode(result.StatusCode, result);
+    }
 }
