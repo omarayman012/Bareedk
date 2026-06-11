@@ -4,6 +4,7 @@ using BaridikExpress.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BaridikExpress.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260611113832_AddCoulmsAtPublishingHouse")]
+    partial class AddCoulmsAtPublishingHouse
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -428,10 +431,10 @@ namespace BaridikExpress.Infrastructure.Migrations
                     b.Property<string>("CreatedById")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateOnly?>("CreatedDate")
+                    b.Property<DateOnly>("CreatedDate")
                         .HasColumnType("date");
 
-                    b.Property<TimeOnly?>("CreatedTime")
+                    b.Property<TimeOnly>("CreatedTime")
                         .HasColumnType("time");
 
                     b.Property<string>("DescriptionAr")
@@ -449,7 +452,7 @@ namespace BaridikExpress.Infrastructure.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<Guid?>("PublishingHouseId")
+                    b.Property<Guid>("PublishingHouseId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("TitleAr")
@@ -3082,7 +3085,9 @@ namespace BaridikExpress.Infrastructure.Migrations
 
                     b.HasOne("BaridikExpress.Domain.Entities.PublishingHouseModule.PublishingHouse", "PublishingHouse")
                         .WithMany()
-                        .HasForeignKey("PublishingHouseId");
+                        .HasForeignKey("PublishingHouseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("BaridikExpress.Domain.Entities.AuthModules.User", "UpdatedBy")
                         .WithMany()

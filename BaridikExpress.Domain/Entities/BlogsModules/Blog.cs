@@ -1,4 +1,5 @@
 ﻿using BaridikExpress.Domain.Entities.Base;
+using BaridikExpress.Domain.Entities.PublishingHouseModule;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,12 +17,16 @@ namespace BaridikExpress.Domain.Entities.BlogsModules
         public string DescriptionEn { get; set; } = string.Empty;
         public Guid BlogsCategoryId { get; set; }
         public Guid BlogsAuthorId { get; set; }
+        public Guid? PublishingHouseId { get; set; }
         public string Image { get; set; }
         public bool IsActive { get; set; }
+        public DateOnly? CreatedDate { get; set; }
+        public TimeOnly? CreatedTime { get; set; }
 
         // Navigation
         public BlogsCategory Category { get; set; } = default!;
         public BlogsAuthor Author { get; set; }
+        public PublishingHouse? PublishingHouse { get; set; }
         public BlogSeo? Seo { get; set; }
         public ICollection<BlogTag> BlogTags { get; set; } = new List<BlogTag>();
         public ICollection<BlogReaction> Reactions { get; set; } = new List<BlogReaction>(); 
