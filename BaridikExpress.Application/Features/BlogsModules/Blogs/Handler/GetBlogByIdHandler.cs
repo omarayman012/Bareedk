@@ -1,6 +1,7 @@
 ﻿
 using BaridikExpress.Application.Features.BlogsModules.Blogs.Queries;
 using BaridikExpress.Application.Features.BlogsModules.DTOs;
+using BaridikExpress.Domain.Entities.PublishingHouseModule;
 using BaridikExpress.Domain.Enum;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -66,6 +67,17 @@ public class GetBlogByIdHandler : IRequestHandler<GetBlogByIdQuery, Result<BlogD
                     b.Author.NameAr,
                     b.Author.NameEn
                 },
+                PublishingHouse =new
+                {
+                    b.PublishingHouse.Id,
+                    b.PublishingHouse.NameAr,
+                    b.PublishingHouse.NameEn
+
+
+                },
+
+                CreatedDate = b.CreatedDate,
+                CreatedTime = b.CreatedTime,
 
                 Tags = b.BlogTags
                     .Where(t => t.Tag != null)
@@ -167,6 +179,8 @@ public class GetBlogByIdHandler : IRequestHandler<GetBlogByIdQuery, Result<BlogD
             UpdatedAt = blog.UpdatedAt,
             CreatedBy = blog.CreatedBy,
             UpdatedBy = blog.UpdatedBy,
+            CreatedTime = blog.CreatedTime,
+            CreatedDate = blog.CreatedDate,
 
             Category = new LookupDto
             {
@@ -185,6 +199,16 @@ public class GetBlogByIdHandler : IRequestHandler<GetBlogByIdQuery, Result<BlogD
                 {
                     Ar = blog.Author.NameAr,
                     En = blog.Author.NameEn
+                }
+            },
+
+            PublishingHouse = new LookupDto
+            {
+                Id = blog.PublishingHouse.Id,
+                Name = new NameDto
+                {
+                    Ar = blog.PublishingHouse.NameAr,
+                    En = blog.PublishingHouse.NameEn
                 }
             },
 

@@ -8,12 +8,15 @@ public class BlogListResponse
     public string Image { get; set; }
     public LookupDto Category { get; set; }
     public LookupDto Author { get; set; }
+    public LookupDto PublishingHouse { get; set; }
     public int Likes { get; set; }
     public int Dislikes { get; set; }
     public TagsDto Tags { get; set; } = new();
     public DateTime CreatedAt { get; set; }
 
     public DateTime? UpdatedAt { get; set; }
+    public DateOnly? CreatedDate { get; set; }
+    public TimeOnly? CreatedTime { get; set; }
 
     public string CreatedBy { get; set; } = string.Empty;
 

@@ -19,6 +19,7 @@ public class BlogDetailsResponse
 
     public LookupDto Category { get; set; }
     public LookupDto Author { get; set; }
+    public LookupDto PublishingHouse { get; set; }
 
     public TagsDto Tags { get; set; } = new();
     public bool IsActive { get; set; }
@@ -29,6 +30,10 @@ public class BlogDetailsResponse
     public DateTime CreatedAt { get; set; }
 
     public DateTime? UpdatedAt { get; set; }
+
+
+    public DateOnly? CreatedDate { get; set; }
+    public TimeOnly? CreatedTime { get; set; }
 
     public string CreatedBy { get; set; } = string.Empty;
 
