@@ -107,6 +107,21 @@ namespace BaridikExpress.API.Controllers.CareerFields
                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                 "CareerFields.xlsx");
         }
+
+        [HttpGet("GetExcelTemplate")]
+        [HasPermission(Permissions.CareerFieldsRead)]
+        public async Task<IActionResult> GetExcelTemplate()
+        {
+            var file = await _excelService
+                .GenerateTemplateAsync<CareerFieldExcelDto>();
+
+            return File(
+                file,
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "CareerFieldsTemplate.xlsx");
+        }
+
+
         [HttpPost("Upload")]
         [HasPermission(Permissions.CareerFieldsCreate)]
         public async Task<IActionResult> UploadExcel(

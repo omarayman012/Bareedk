@@ -120,6 +120,18 @@ namespace BaridikExpress.API.Controllers.Vehicles
                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                 "Vehicles.xlsx");
         }
+        [HttpGet("GetExcelTemplate")]
+        [HasPermission(Permissions.VehiclesRead)]
+        public async Task<IActionResult> GetExcelTemplate()
+        {
+            var file = await _excelService
+                .GenerateTemplateAsync<VehicleExcelDto>();
+
+            return File(
+                file,
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "VehiclesTemplate.xlsx");
+        }
 
         [HttpPost("Upload")]
         [HasPermission(Permissions.VehiclesCreate)]

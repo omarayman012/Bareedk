@@ -1093,4 +1093,23 @@
   "CareerFieldRetrievedSuccessfully": "Career field retrieved successfully.",
   "VehicleRetrievedSuccessfully": "Vehicle retrieved successfully.",
 
+  "AnnouncementTitleArRequired": "Arabic title is required.",
+  "AnnouncementTitleEnRequired": "English title is required.",
+  "AnnouncementTitleRequired": "Title is required.",
+  "AnnouncementTextColorRequired": "Text color is required.",
+  "AnnouncementBackgroundColorRequired": "Background color is required.",
+  "InvalidColorFormat": "Invalid color format must be a valid hex code.",
+  "AnnouncementCreatedSuccessfully": "Announcement created successfully.",
+  "AnnouncementUpdatedSuccessfully": "Announcement updated successfully.",
+  "AnnouncementDeletedSuccessfully": "Announcement deleted successfully.",
+  "AnnouncementNotFound": "Announcement not found.",
+  "AnnouncementStatusUpdatedSuccessfully": "Announcement status updated successfully.",
+  "AnnouncementAlreadyExists": "Announcement already exists.",
+  "SomeAnnouncementsNotFound": "Some announcements were not found.",
+  "AnnouncementsDeletedSuccessfully": "Announcements deleted successfully.","
+
+  "AnnouncementRetrievedSuccessfully": "Announcement retrieved successfully.",
+  "AnnouncementsRetrievedSuccessfully": "Announcements retrieved successfully."
+
+
 }
