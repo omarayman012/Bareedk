@@ -22,32 +22,26 @@ public sealed class ImportVillagesCommandHandler(
 
         try
         {
-            var countriesTask = context.Countries
+            var countriesLookup = await context.Countries
                 .AsNoTracking()
                 .ToDictionaryAsync(
                     c => c.CountryNameEn.Trim().ToLowerInvariant(),
                     c => c.CountryId,
                     cancellationToken);
 
-            var governmentsTask = context.Governments
+            var governmentsLookup = await context.Governments
                 .AsNoTracking()
                 .ToDictionaryAsync(
                     g => $"{g.CountryId}_{g.GovernmentNameEn.Trim().ToLowerInvariant()}",
                     g => g.GovernmentId,
                     cancellationToken);
 
-            var citiesTask = context.Cities
+            var citiesLookup = await context.Cities
                 .AsNoTracking()
                 .ToDictionaryAsync(
                     c => $"{c.GovernmentId}_{c.CityNameEn.Trim().ToLowerInvariant()}",
                     c => c.CityId,
                     cancellationToken);
-
-            await Task.WhenAll(countriesTask, governmentsTask, citiesTask);
-
-            var countriesLookup = await countriesTask;
-            var governmentsLookup = await governmentsTask;
-            var citiesLookup = await citiesTask;
 
             var result = await excelService.UploadAsync<VillageExcelDto, Village>(
                 request.File,
