@@ -104,6 +104,21 @@ public class BannersController(IMediator mediator, IExcelService excelService)
             "Banners.xlsx");
     }
 
+    [HttpGet("GetExcelTemplate")]
+    [HasPermission(Permissions.BannersRead)]
+    public async Task<IActionResult> GetTemplate()
+    {
+        var file = await _excelService
+            .GenerateTemplateAsync<BannerExcelDto>();
+
+        return File(
+            file,
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            "BannersTemplate.xlsx");
+    }
+
+
+
     [HttpPost("Upload")]
     [HasPermission(Permissions.BannersCreate)]
     public async Task<IActionResult> UploadExcel(
