@@ -4,4 +4,4 @@ using MediatR;
 
 namespace BaridikExpress.Application.Features.Statistics.Queries.GetStatistics;
 
-public record GetStatisticsQuery(StatisticsFilter Filter) : IRequest<StatisticsDto>;
+public record GetStatisticsQuery(StatisticsFilter Filter) : IRequest<Result <StatisticsDto>>;

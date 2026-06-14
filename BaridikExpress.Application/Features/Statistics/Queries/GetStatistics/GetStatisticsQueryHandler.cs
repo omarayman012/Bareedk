@@ -1,22 +1,26 @@
-﻿using BaridikExpress.Application.Features.Statistics.DTO;
+﻿using BaridikExpress.Application.Common.Abstractions;
+using BaridikExpress.Application.Features.Statistics.DTO;
 using BaridikExpress.Application.Interfaces;
 using BaridikExpress.Domain.Entities.Base;
 using BaridikExpress.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace BaridikExpress.Application.Features.Statistics.Queries.GetStatistics;
 
-public class GetStatisticsQueryHandler : IRequestHandler<GetStatisticsQuery, StatisticsDto>
+public class GetStatisticsQueryHandler : IRequestHandler<GetStatisticsQuery, Result<StatisticsDto>>
 {
     private readonly IApplicationDbContext _context;
+    private readonly IStringLocalizer _localizer;
 
-    public GetStatisticsQueryHandler(IApplicationDbContext context)
+    public GetStatisticsQueryHandler(IApplicationDbContext context, IStringLocalizer localizer)
     {
         _context = context;
+        _localizer = localizer;
     }
 
-    public async Task<StatisticsDto> Handle(GetStatisticsQuery request, CancellationToken cancellationToken)
+    public async Task<Result<StatisticsDto>> Handle(GetStatisticsQuery request, CancellationToken cancellationToken)
     {
         var now = DateTime.UtcNow;
 
@@ -32,7 +36,7 @@ public class GetStatisticsQueryHandler : IRequestHandler<GetStatisticsQuery, Sta
             _ => null
         };
 
-        return new StatisticsDto
+        var data = new StatisticsDto
         {
             CareerFields = await Count(_context.CareerFields, from, cancellationToken),
             Vehicles = await Count(_context.Vehicles, from, cancellationToken),
@@ -54,6 +58,8 @@ public class GetStatisticsQueryHandler : IRequestHandler<GetStatisticsQuery, Sta
             FAQs = await Count(_context.FAQs, from, cancellationToken),
             Notifications = await Count(_context.Notifications, from, cancellationToken)
         };
+
+        return Result<StatisticsDto>.Success(data, _localizer["StatisticsRetrievedSuccessfully"]);
     }
 
     private static Task<int> Count<T>(

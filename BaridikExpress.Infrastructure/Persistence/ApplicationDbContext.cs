@@ -8,6 +8,7 @@ using BaridikExpress.Domain.Entities.BlogsModules;
 using BaridikExpress.Domain.Entities.CareerFields;
 using BaridikExpress.Domain.Entities.ClientModule;
 using BaridikExpress.Domain.Entities.ContactUs;
+using BaridikExpress.Domain.Entities.CurrencyModule;
 using BaridikExpress.Domain.Entities.Customers;
 using BaridikExpress.Domain.Entities.DeliveryModule;
 using BaridikExpress.Domain.Entities.DeliveryType;
@@ -135,7 +136,7 @@ public class ApplicationDbContext : IdentityDbContext<User>, IApplicationDbConte
     public DbSet<CustomerRegistration> CustomerRegistrationTerms { get; set; }
     public DbSet<SocialMediaLinks> SocialMediaLinks { get; set; }
     public DbSet<FAQ> FAQs { get; set; }
-
+    public DbSet<Currency> Currencies { get; set; }
     #endregion
 
     #region OnModelCreating
