@@ -5,8 +5,11 @@ using BaridikExpress.Application.Features.Announcements.Commands.UpdateAnnouncem
 using BaridikExpress.Application.Features.Announcements.Commands.UploadAnnouncements;
 using BaridikExpress.Application.Features.Announcements.DTO;
 using BaridikExpress.Application.Features.Announcements.Queries.GetAllAnnouncements;
+using BaridikExpress.Application.Features.Announcements.Queries.GetAllAnnouncementsMobile;
 using BaridikExpress.Application.Features.Announcements.Queries.GetAnnouncementById;
+using BaridikExpress.Application.Features.Banners.Queries.GetAllBannersMobile;
 using BaridikExpress.Application.Interfaces.File;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BaridikExpress.API.Controllers.Announcements;
 
@@ -128,6 +131,19 @@ public class AnnouncementsController(
         return StatusCode(result.StatusCode, result);
     }
 
+    #region Mobile
+
+    [HttpGet("GetAllAnnouncements")]
+    [AllowAnonymous]
+    [ApiExplorerSettings(GroupName = "client-v1")]
+    public async Task<IActionResult> GetMobileAnnouncements(
+    [FromQuery] GetAllAnnouncementsMobileQuery query)
+    {
+        var result = await _mediator.Send(query);
+        return StatusCode(result.StatusCode, result);
+    }
+
+    #endregion
 
 
 }

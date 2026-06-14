@@ -30,6 +30,9 @@ public sealed class GetAllAnnouncementsMobileQueryHandler(
                 IsActive = x.IsActive
             });
 
+
+
+
         var result = await PaginatedList<GetAllAnnouncementsMobileDto>
             .CreateAsync(
                 query,
