@@ -1,4 +1,5 @@
 using BaridikExpress.Domain.Entities.Addresses;
+using BaridikExpress.Domain.Entities.Announcementes;
 using BaridikExpress.Domain.Entities.AuthModule;
 using BaridikExpress.Domain.Entities.Banners;
 using BaridikExpress.Domain.Entities.BlogsModules;
@@ -115,6 +116,7 @@ public interface IApplicationDbContext
     
 
     DbSet<Banner>  Banners { get; set; }
+    DbSet<Announcement>  Announcements { get; set; }
     DbSet<PublishingHouse> PublishingHouses { get; set; }
 
     public DbSet<SendNotification> SendNotifications { get; set; }

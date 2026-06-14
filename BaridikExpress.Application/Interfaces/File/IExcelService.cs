@@ -20,7 +20,8 @@ namespace BaridikExpress.Application.Interfaces.File
                 where TExcel : class, new()
                 where TEntity : class;
 
-            
+        Task<byte[]> GenerateTemplateAsync<TDto>()
+           where TDto : class;
     }
 }
 

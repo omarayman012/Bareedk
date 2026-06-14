@@ -40,5 +40,11 @@
         public const string BannersDelete = "Banners.Delete";
         public const string BannersRead = "Banners.Read";
 
+
+        public const string AnnouncementsCreate = "Announcements.Create";
+        public const string AnnouncementsUpdate = "Announcements.Update";
+        public const string AnnouncementsDelete = "Announcements.Delete";
+        public const string AnnouncementsRead = "Announcements.Read";
+
     }
 }
