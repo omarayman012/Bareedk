@@ -6,7 +6,7 @@
 <img src="https://img.shields.io/badge/Pattern-Clean%20Architecture-green?style=for-the-badge" />
 <img src="https://img.shields.io/badge/Status-Active-brightgreen?style=for-the-badge" />
 
-<br/><br/>  
+<br/><br/> 
    
 <h1>📦 BaridikExpress — Delivery Platform</h1> 
 
