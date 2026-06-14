@@ -139,6 +139,7 @@ public class ApplicationDbContext : IdentityDbContext<User>, IApplicationDbConte
     public DbSet<CustomerRegistration> CustomerRegistrationTerms { get; set; }
     public DbSet<SocialMediaLinks> SocialMediaLinks { get; set; }
     public DbSet<FAQ> FAQs { get; set; }
+    public DbSet<GeneralCompanySettings> GeneralCompanySettings { get; set; }
 
     #endregion
 
