@@ -120,7 +120,7 @@ public interface IApplicationDbContext
     public DbSet<SendNotification> SendNotifications { get; set; }
     public DbSet<NotificationRecipient> NotificationRecipients { get; set; }
     public DbSet<MessageNotification> MessageNotifications { get; set; }
-
+    DbSet<GeneralCompanySettings> GeneralCompanySettings { get; set; }
     DatabaseFacade Database { get; }
 
     DbSet<TEntity> Set<TEntity>() where TEntity : class;

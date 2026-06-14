@@ -47,13 +47,15 @@ public static class SystemManagementSeeder
                 context.CustomerRegistrationTerms,
                 "شروط تسجيل العميل.",
                 "Customer registration terms.");
+
             await SeedSystemManagementEntityAsync<MessageNotification>(
-                   context.MessageNotifications,
-                   "قوالب الإشعارات الخاصة ببريدك إكسبريس.",
-                   "Notification templates of Baridik Express.");
+                context.MessageNotifications,
+                "قوالب الإشعارات الخاصة ببريدك إكسبريس.",
+                "Notification templates of Baridik Express.");
 
             await SeedSocialMediaLinksAsync(context);
             await SeedFAQsAsync(context);
+            await SeedGeneralCompanySettingsAsync(context);
 
             await context.SaveChangesAsync();
 
@@ -172,6 +174,22 @@ public static class SystemManagementSeeder
         };
 
         await context.FAQs.AddRangeAsync(faqs);
+    }
+
+    #endregion
+
+    #region GeneralCompanySettings
+
+    private static async Task SeedGeneralCompanySettingsAsync(ApplicationDbContext context)
+    {
+        if (await context.GeneralCompanySettings.AnyAsync())
+            return;
+
+        var settings = GeneralCompanySettings.Create(
+            workingHoursDuration: 8,
+            numberOfRejectedShipmentsByDelivery: 3);
+
+        await context.GeneralCompanySettings.AddAsync(settings);
     }
 
     #endregion
