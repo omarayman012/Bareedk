@@ -1,15 +1,16 @@
 ﻿using BaridikExpress.Application.Common.Abstractions;
-
 using BaridikExpress.Application.Features.Services.DTOs;
 using BaridikExpress.Application.Interfaces.File;
 using BaridikExpress.Domain.Entities.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace BaridikExpress.Application.Features.Services.Commands.ImportServices;
 
 public sealed class ImportServicesCommandHandler(
     IExcelService excelService,
-    IApplicationDbContext context)
+    IApplicationDbContext context,
+    IStringLocalizer<ImportServicesCommandHandler> localizer)
     : IRequestHandler<ImportServicesCommand,
         Result<ExcelUploadResult<Service>>>
 {
@@ -17,32 +18,50 @@ public sealed class ImportServicesCommandHandler(
         ImportServicesCommand request,
         CancellationToken cancellationToken)
     {
-        var result = await excelService.UploadAsync<
-            ServiceExcelDto,
-            Service>(
-            request.File,
+        if (request.File is null || request.File.Length == 0)
+            return Result<ExcelUploadResult<Service>>
+                .Failure(localizer["FileEmptyOrMissing"]);
 
-            mapper: dto => Service.Create(
-                dto.NameEn,
-                dto.NameAr,
-                dto.Price,
-                dto.Currency,
-                dto.ImageUrl),
+        try
+        {
+            var result = await excelService.UploadAsync<ServiceExcelDto, Service>(
+                request.File,
 
-            existsChecker: async service =>
-                await context.Services
-                    .AsNoTracking()
-                    .AnyAsync(x =>
-                        x.NameEn == service.NameEn ||
-                        x.NameAr == service.NameAr,
-                        cancellationToken),
+                mapper: dto =>
+                {
+                    if (string.IsNullOrWhiteSpace(dto.NameEn) ||
+                        string.IsNullOrWhiteSpace(dto.NameAr))
+                        throw new InvalidOperationException(
+                            localizer["NameEnAndNameArRequired"]);
 
-            inFileKeySelector: service =>
-                $"{service.NameEn}_{service.NameAr}",
+                    return Service.Create(
+                        dto.NameEn,
+                        dto.NameAr,
+                        dto.Price,
+                        dto.Currency,
+                        dto.ImageUrl);
+                },
 
-            cancellationToken: cancellationToken);
+                existsChecker: async service =>
+                    await context.Services
+                        .AsNoTracking()
+                        .AnyAsync(x =>
+                            x.NameEn == service.NameEn ||
+                            x.NameAr == service.NameAr,
+                            cancellationToken),
 
-        return Result<ExcelUploadResult<Service>>
-            .Success(result, "Services imported successfully");
+                inFileKeySelector: service =>
+                    $"{service.NameEn}_{service.NameAr}",
+
+                cancellationToken: cancellationToken);
+
+            return Result<ExcelUploadResult<Service>>
+                .Success(result, localizer["ServicesImportedSuccessfully"]);
+        }
+        catch (Exception ex)
+        {
+            return Result<ExcelUploadResult<Service>>
+                .Failure(localizer["ImportFailed", ex.Message]);
+        }
     }
 }
