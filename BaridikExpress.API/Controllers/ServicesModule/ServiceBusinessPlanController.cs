@@ -1,4 +1,5 @@
 ﻿using BaridikExpress.Application.Features.ServiceBusinessPlans.Commands.Create;
+using BaridikExpress.Application.Features.ServiceBusinessPlans.Commands.Delete;
 using BaridikExpress.Application.Features.ServiceBusinessPlans.Commands.Update;
 using BaridikExpress.Application.Features.ServiceBusinessPlans.Queries.GetAll;
 using BaridikExpress.Application.Features.ServiceBusinessPlans.Queries.GetById;
@@ -52,4 +53,14 @@ public class ServiceBusinessPlanController(IMediator mediator) : ControllerBase
         return StatusCode(result.StatusCode, result);
 
     }
+    [HttpDelete("DeleteList")]
+    public async Task<IActionResult> DeleteList(
+[FromBody] DeleteServiceBusinessPlansCommand command)
+    {
+        var result = await mediator.Send(command);
+
+         return StatusCode(result.StatusCode, result);
+
+    }
+
 }
