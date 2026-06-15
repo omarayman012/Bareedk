@@ -25,6 +25,12 @@ public sealed class GetAllAnnouncementsMobileQueryHandler(
                     EN = x.TitleEn,
                     AR = x.TitleAr
                 },
+                Description = new LocalizedDto
+                {
+                    EN = x.DescriptionEn,
+                    AR = x.DescriptionAr
+                },
+                Discount = x.Discount,
                 BackgroundColor = x.BackgroundColor,
                 TextColor = x.TextColor,
                 IsActive = x.IsActive

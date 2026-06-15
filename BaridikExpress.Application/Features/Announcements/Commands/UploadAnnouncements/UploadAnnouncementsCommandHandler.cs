@@ -22,8 +22,11 @@ public class UploadAnnouncementsCommandHandler(
                 dto => new Announcement(
                     dto.TitleEn,
                     dto.TitleAr,
-                    dto.BackgroundColor,
-                    dto.TextColor),
+                    dto.DescriptionEn,
+                    dto.DescriptionAr,
+                    dto.Discount,
+                    dto.TextColor,
+                    dto.BackgroundColor),
 
                 async entity => await context.Announcements
                     .AsNoTracking()
