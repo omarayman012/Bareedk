@@ -1,7 +1,10 @@
 ﻿using BaridikExpress.Application.Features.ServiceBusinessPlans.Commands.Create;
 using BaridikExpress.Application.Features.ServiceBusinessPlans.Commands.Delete;
+using BaridikExpress.Application.Features.ServiceBusinessPlans.Commands.Import;
 using BaridikExpress.Application.Features.ServiceBusinessPlans.Commands.ToggleStatus;
 using BaridikExpress.Application.Features.ServiceBusinessPlans.Commands.Update;
+using BaridikExpress.Application.Features.ServiceBusinessPlans.Queries.DownloadTemplate;
+using BaridikExpress.Application.Features.ServiceBusinessPlans.Queries.Export;
 using BaridikExpress.Application.Features.ServiceBusinessPlans.Queries.GetAll;
 using BaridikExpress.Application.Features.ServiceBusinessPlans.Queries.GetById;
 using MediatR;
@@ -60,14 +63,51 @@ public class ServiceBusinessPlanController(IMediator mediator) : ControllerBase
     {
         var result = await mediator.Send(command);
 
-         return StatusCode(result.StatusCode, result);
+        return StatusCode(result.StatusCode, result);
 
     }
+
     [HttpPatch("ToggleStatus/{id:guid}")]
     public async Task<IActionResult> ToggleStatus(Guid id)
     {
         var result = await mediator.Send(
         new ToggleServiceBusinessPlanStatusCommand(id));
+
+        return StatusCode(result.StatusCode, result);
+
+    } 
+
+    [HttpGet("Template")]
+    public async Task<IActionResult> DownloadTemplate()
+    {
+        var fileBytes = await mediator.Send(
+        new DownloadServiceBusinessPlanTemplateQuery());
+
+        return File(
+            fileBytes,
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            "ServiceBusinessPlanTemplate.xlsx");
+
+    }
+
+    [HttpGet("Export")]
+    public async Task<IActionResult> Export()
+    {
+        var fileBytes = await mediator.Send(
+        new ExportServiceBusinessPlansQuery());
+
+        return File(
+            fileBytes,
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            "ServiceBusinessPlans.xlsx");
+
+    }
+
+    [HttpPost("Import")]
+    public async Task<IActionResult> Import(
+    [FromForm] ImportServiceBusinessPlansCommand command)
+    {
+        var result = await mediator.Send(command);
 
         return StatusCode(result.StatusCode, result);
 
