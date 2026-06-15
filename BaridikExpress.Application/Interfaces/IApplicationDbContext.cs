@@ -14,6 +14,7 @@ using BaridikExpress.Domain.Entities.Nationality;
 using BaridikExpress.Domain.Entities.NotificationModules;
 using BaridikExpress.Domain.Entities.PublishingHouseModule;
 using BaridikExpress.Domain.Entities.RoleModule;
+using BaridikExpress.Domain.Entities.ServiceModules;
 using BaridikExpress.Domain.Entities.Services;
 using BaridikExpress.Domain.Entities.Shipments;
 using BaridikExpress.Domain.Entities.SystemManagment;
@@ -123,6 +124,7 @@ public interface IApplicationDbContext
     public DbSet<NotificationRecipient> NotificationRecipients { get; set; }
     public DbSet<MessageNotification> MessageNotifications { get; set; }
     DbSet<GeneralCompanySettings> GeneralCompanySettings { get; set; }
+    DbSet<ServiceBusinessPlan> ServiceBusinessPlans {  get; set; }
     DatabaseFacade Database { get; }
 
     DbSet<TEntity> Set<TEntity>() where TEntity : class;
