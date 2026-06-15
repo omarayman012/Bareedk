@@ -30,10 +30,12 @@ public class UpdateCountryCommandValidator : AbstractValidator<UpdateCountryComm
             .WithMessage(localizer["InvalidPostalCode"])
             .When(x => !string.IsNullOrWhiteSpace(x.PostalCode));
         RuleFor(x => x)
-            .Must(x =>
-                !string.IsNullOrWhiteSpace(x.NameAr) ||
-                !string.IsNullOrWhiteSpace(x.NameEn) ||
-                !string.IsNullOrWhiteSpace(x.PhoneCode))
-            .WithMessage(localizer["AtLeastOneFieldRequired"]);
+           .Must(x =>
+               !string.IsNullOrWhiteSpace(x.NameAr) ||
+               !string.IsNullOrWhiteSpace(x.NameEn) ||
+               !string.IsNullOrWhiteSpace(x.PhoneCode) ||
+               x.PostalCode is not null)
+           .WithMessage(localizer["AtLeastOneFieldRequired"]);
+
     }
 }
