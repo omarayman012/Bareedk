@@ -1,4 +1,5 @@
 ﻿using BaridikExpress.Application.Features.ServiceBusinessPlans.Commands.Create;
+using BaridikExpress.Application.Features.ServiceBusinessPlans.Commands.Update;
 using BaridikExpress.Application.Features.ServiceBusinessPlans.Queries.GetAll;
 using BaridikExpress.Application.Features.ServiceBusinessPlans.Queries.GetById;
 using MediatR;
@@ -39,4 +40,16 @@ public class ServiceBusinessPlanController(IMediator mediator) : ControllerBase
        return StatusCode(result.StatusCode, result);
     }
 
+    [HttpPut("Update/{id:guid}")]
+    public async Task<IActionResult> Update(
+             Guid id,
+          [FromForm] UpdateServiceBusinessPlanCommand command)
+    {
+        command.Id = id;
+
+        var result = await mediator.Send(command);
+
+        return StatusCode(result.StatusCode, result);
+
+    }
 }
