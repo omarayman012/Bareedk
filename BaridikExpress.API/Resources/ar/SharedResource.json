@@ -1144,7 +1144,7 @@
     "ImageIsRequired": "الصورة مطلوبة",
     "OnlySvgAllowed": "يُسمح فقط بملفات SVG",
     "NameEnIsRequired": "الاسم بالإنجليزية مطلوب",
-
+    "ServiceBusinessPlansRetrievedSuccessfully": "تم جلب خطط الأعمال بنجاح",
     "ServiceBusinessPlanAlreadyExists": "خطة الأعمال موجودة بالفعل",
     "ServiceBusinessPlanCreatedSuccessfully": "تم إنشاء خطة الأعمال بنجاح"
 }

@@ -1,4 +1,5 @@
 ﻿using BaridikExpress.Application.Features.ServiceBusinessPlans.Commands.Create;
+using BaridikExpress.Application.Features.ServiceBusinessPlans.Queries.GetAll;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,15 @@ namespace BaridikExpress.API.Controllers.ServicesModule;
 [Authorize]
 public class ServiceBusinessPlanController(IMediator mediator) : ControllerBase
 {
+    [HttpGet("GetAll")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetAll(
+        [FromQuery] GetAllServiceBusinessPlansQuery query)
+    {
+        var result = await mediator.Send(query);
+        return StatusCode(result.StatusCode, result);
+    }
+
     [HttpPost("Create")]
     public async Task<IActionResult> Create(
         [FromForm] CreateServiceBusinessPlanCommand command)
