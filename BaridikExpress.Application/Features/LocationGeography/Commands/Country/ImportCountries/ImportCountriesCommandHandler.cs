@@ -35,7 +35,10 @@ public sealed class ImportCountriesCommandHandler(
                         CountryId = Guid.NewGuid(),
                         CountryNameAr = dto.CountryNameAr.Trim(),
                         CountryNameEn = dto.CountryNameEn.Trim(),
-                        PhoneCode = dto.PhoneCode.Trim()
+                        PhoneCode = dto.PhoneCode.Trim(),
+                        PostalCode = string.IsNullOrWhiteSpace(dto.PostalCode)
+                            ? null
+                            : dto.PostalCode.Trim()
                     };
                 },
 
