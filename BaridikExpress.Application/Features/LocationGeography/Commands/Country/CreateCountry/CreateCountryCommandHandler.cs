@@ -31,6 +31,7 @@ public class CreateCountryCommandHandler(
             CountryNameAr = nameAr,
             CountryNameEn = nameEn,
             PhoneCode = request.PhoneCode,
+            PostalCode = request.PostalCode 
         };
 
         await _application.Countries.AddAsync(country, cancellationToken);
@@ -45,6 +46,7 @@ public class CreateCountryCommandHandler(
                 AR = country.CountryNameAr
             },
             PhoneCode = country.PhoneCode,
+            PostalCode = country.PostalCode,
             CreatedBy = country.CreatedBy?.FullName ?? string.Empty,
             CreatedAt = country.CreatedAt,
             UpdatedBy = country.UpdatedBy?.FullName ?? string.Empty,

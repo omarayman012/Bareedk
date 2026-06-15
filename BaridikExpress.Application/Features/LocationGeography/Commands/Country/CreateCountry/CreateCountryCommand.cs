@@ -6,5 +6,6 @@ public class CreateCountryCommand : IRequest<Result<CreateCountryResponse>>
 {
     public string NameAr { get; set; } = string.Empty;
     public string NameEn { get; set; } = string.Empty;
-    public string PhoneCode { get; set; } = string.Empty; 
+    public string PhoneCode { get; set; } = string.Empty;
+    public string? PostalCode { get; set; } 
 }

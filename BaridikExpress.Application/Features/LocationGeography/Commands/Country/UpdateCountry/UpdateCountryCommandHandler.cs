@@ -33,8 +33,15 @@ public class UpdateCountryCommandHandler(
 
         if (!string.IsNullOrWhiteSpace(request.NameEn))
             country.CountryNameEn = request.NameEn;
+
         if (!string.IsNullOrWhiteSpace(request.PhoneCode))
             country.PhoneCode = request.PhoneCode;
+
+
+        if (request.PostalCode is not null)
+            country.PostalCode = string.IsNullOrWhiteSpace(request.PostalCode)
+                ? null
+                : request.PostalCode;
 
         await _application.SaveChangesAsync(cancellationToken);
 
