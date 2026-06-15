@@ -1149,5 +1149,7 @@
     "ServiceBusinessPlanCreatedSuccessfully": "تم إنشاء خطة الأعمال بنجاح",
     "ServiceBusinessPlanNotFound": "خطة الأعمال غير موجودة",
     "ServiceBusinessPlanRetrievedSuccessfully": "تم جلب خطة الأعمال بنجاح",
-    "ServiceBusinessPlanUpdatedSuccessfully": "تم تحديث خطة الأعمال بنجاح"
+    "ServiceBusinessPlanUpdatedSuccessfully": "تم تحديث خطة الأعمال بنجاح",
+    "DuplicateIdsAreNotAllowed": "لا يُسمح بالمعرفات المكررة",
+    "ServiceBusinessPlansDeletedSuccessfully": "تم حذف خطط الأعمال بنجاح"
 }
