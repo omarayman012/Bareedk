@@ -1146,5 +1146,8 @@
     "NameEnIsRequired": "الاسم بالإنجليزية مطلوب",
     "ServiceBusinessPlansRetrievedSuccessfully": "تم جلب خطط الأعمال بنجاح",
     "ServiceBusinessPlanAlreadyExists": "خطة الأعمال موجودة بالفعل",
-    "ServiceBusinessPlanCreatedSuccessfully": "تم إنشاء خطة الأعمال بنجاح"
+    "ServiceBusinessPlanCreatedSuccessfully": "تم إنشاء خطة الأعمال بنجاح",
+    "ServiceBusinessPlanNotFound": "خطة الأعمال غير موجودة",
+    "ServiceBusinessPlanRetrievedSuccessfully": "تم جلب خطة الأعمال بنجاح",
+    "ServiceBusinessPlanUpdatedSuccessfully": "تم تحديث خطة الأعمال بنجاح"
 }
