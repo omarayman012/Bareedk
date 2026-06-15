@@ -1,5 +1,6 @@
 ﻿using BaridikExpress.Application.Features.ServiceBusinessPlans.Commands.Create;
 using BaridikExpress.Application.Features.ServiceBusinessPlans.Queries.GetAll;
+using BaridikExpress.Application.Features.ServiceBusinessPlans.Queries.GetById;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -28,4 +29,14 @@ public class ServiceBusinessPlanController(IMediator mediator) : ControllerBase
         var result = await mediator.Send(command);
         return StatusCode(result.StatusCode, result);
     }
+    [HttpGet("GetById/{id:guid}")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetById(Guid id)
+    {
+        var result = await mediator.Send(
+        new GetServiceBusinessPlanByIdQuery(id));
+
+       return StatusCode(result.StatusCode, result);
+    }
+
 }
