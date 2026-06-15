@@ -93,6 +93,9 @@ public class AnnouncementsController(
                 TitleAr = x.Title.AR ?? string.Empty,
                 TitleEn = x.Title.EN ?? string.Empty,
                 TextColor = x.TextColor ?? string.Empty,
+                DescriptionAr = x.Description.AR ?? string.Empty,
+                DescriptionEn = x.Description.EN ?? string.Empty,
+                Discount = x.Discount ?? string.Empty,
                 BackgroundColor = x.BackgroundColor ?? string.Empty
             });
 
@@ -133,7 +136,7 @@ public class AnnouncementsController(
 
     #region Mobile
 
-    [HttpGet("GetAllAnnouncements")]
+    [HttpGet("mobile/GetAllAnnouncements")]
     [AllowAnonymous]
     [ApiExplorerSettings(GroupName = "client-v1")]
     public async Task<IActionResult> GetMobileAnnouncements(
@@ -143,6 +146,16 @@ public class AnnouncementsController(
         return StatusCode(result.StatusCode, result);
     }
 
+    [HttpGet("mobile/ShowOneDetails/{id}")]
+    [AllowAnonymous]
+    [ApiExplorerSettings(GroupName = "client-v1")]
+    public async Task<IActionResult> GetByIdforMobile(Guid id)
+    {
+        var result = await _mediator.Send(
+            new GetAnnouncementByIdQuery(id));
+
+        return StatusCode(result.StatusCode, result);
+    }
     #endregion
 
 

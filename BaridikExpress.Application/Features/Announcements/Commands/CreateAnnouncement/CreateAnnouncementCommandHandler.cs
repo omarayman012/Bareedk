@@ -14,6 +14,7 @@ public sealed class CreateAnnouncementCommandHandler(
         CancellationToken cancellationToken)
     {
         var (titleAr, titleEn) = NormalizeHelper.Normalize(request.TitleAr, request.TitleEn);
+        var (descriptionAr, descriptionEn) = NormalizeHelper.Normalize(request.DescriptionAr, request.DescriptionEn);
 
         var isExist = await repo.AnyAsync(
             x => x.TitleAr == titleAr || x.TitleEn == titleEn,
@@ -27,6 +28,9 @@ public sealed class CreateAnnouncementCommandHandler(
         var banner = new Announcement(
             titleEn,
             titleAr,
+            descriptionEn,
+            descriptionAr,
+            request.Discount,
             request.TextColor,
             request.BackgroundColor);
 

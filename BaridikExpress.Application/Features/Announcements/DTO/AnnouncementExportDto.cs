@@ -5,9 +5,14 @@ namespace BaridikExpress.Application.Features.Announcements.DTO
     {
         public string TitleAr { get; set; } = default!;
         public string TitleEn { get; set; } = default!;
+        public string? DescriptionEn { get; set; } = default!;
+        public string DescriptionAr { get; set; } = default!;
+            public string? Discount { get; set; }
+
 
         public string TextColor { get; set; } = default!;
         public string BackgroundColor { get; set; } = default!;
+
         public bool IsActive { get; set; }
 
         public string CreatedBy { get; set; } = default!;
