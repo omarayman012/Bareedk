@@ -1,5 +1,6 @@
 ﻿using BaridikExpress.Application.Features.ServiceBusinessPlans.Commands.Create;
 using BaridikExpress.Application.Features.ServiceBusinessPlans.Commands.Delete;
+using BaridikExpress.Application.Features.ServiceBusinessPlans.Commands.ToggleStatus;
 using BaridikExpress.Application.Features.ServiceBusinessPlans.Commands.Update;
 using BaridikExpress.Application.Features.ServiceBusinessPlans.Queries.GetAll;
 using BaridikExpress.Application.Features.ServiceBusinessPlans.Queries.GetById;
@@ -62,5 +63,15 @@ public class ServiceBusinessPlanController(IMediator mediator) : ControllerBase
          return StatusCode(result.StatusCode, result);
 
     }
+    [HttpPatch("ToggleStatus/{id:guid}")]
+    public async Task<IActionResult> ToggleStatus(Guid id)
+    {
+        var result = await mediator.Send(
+        new ToggleServiceBusinessPlanStatusCommand(id));
+
+        return StatusCode(result.StatusCode, result);
+
+    }
+
 
 }

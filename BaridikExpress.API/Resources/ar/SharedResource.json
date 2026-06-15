@@ -1151,5 +1151,7 @@
     "ServiceBusinessPlanRetrievedSuccessfully": "تم جلب خطة الأعمال بنجاح",
     "ServiceBusinessPlanUpdatedSuccessfully": "تم تحديث خطة الأعمال بنجاح",
     "DuplicateIdsAreNotAllowed": "لا يُسمح بالمعرفات المكررة",
-    "ServiceBusinessPlansDeletedSuccessfully": "تم حذف خطط الأعمال بنجاح"
+    "ServiceBusinessPlansDeletedSuccessfully": "تم حذف خطط الأعمال بنجاح",
+    "ServiceBusinessPlanActivatedSuccessfully": "تم تفعيل خطة الأعمال للخدمة بنجاح.",
+    "ServiceBusinessPlanDeactivatedSuccessfully": "تم إلغاء تفعيل خطة الأعمال للخدمة بنجاح."
 }
