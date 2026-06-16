@@ -8,10 +8,10 @@ using BaridikExpress.Application.Features.TalkServices.DTOs;
 namespace BaridikExpress.Application.Features.TalkServices.Queries.GetAll
 {
     public sealed record GetAllTalkServicesQuery(
-      string? Search,
+      string? Name,
       DateTime? FromDate,
       DateTime? ToDate,
       int PageNumber = 1,
       int PageSize = 10)
-      : IRequest<PaginatedList<GetTalkServiceDto>>;
+      : IRequest<Result<PaginatedList<GetTalkServiceDto>>>;
 }

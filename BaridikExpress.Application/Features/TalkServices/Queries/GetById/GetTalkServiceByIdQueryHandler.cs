@@ -1,54 +1,24 @@
-﻿using BaridikExpress.Application.Common.Abstractions;
-using BaridikExpress.Application.Common.Helpers;
+﻿using BaridikExpress.Application.Common.Helpers;
+using BaridikExpress.Application.Common.Models;
 using BaridikExpress.Application.DTOs;
 using BaridikExpress.Application.Features.TalkServices.DTOs;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
-namespace BaridikExpress.Application.Features.TalkServices.Queries.GetAll;
+namespace BaridikExpress.Application.Features.TalkServices.Queries.GetById;
 
-public sealed class GetAllTalkServicesQueryHandler(
-    IApplicationDbContext db, IStringLocalizer localizer)
-    : IRequestHandler<GetAllTalkServicesQuery, Result<PaginatedList<GetTalkServiceDto>>>
+public sealed class GetTalkServiceByIdQueryHandler(
+    IApplicationDbContext db,
+    IStringLocalizer localizer)
+    : IRequestHandler<GetTalkServiceByIdQuery, Result<GetTalkServiceDto>>
 {
-    public async Task<Result<PaginatedList<GetTalkServiceDto>>> Handle(
-        GetAllTalkServicesQuery request,
+    public async Task<Result<GetTalkServiceDto>> Handle(
+        GetTalkServiceByIdQuery request,
         CancellationToken cancellationToken)
     {
-        var query = db.TalkServices
+        var talkService = await db.TalkServices
             .AsNoTracking()
-            .Include(x => x.ServiceBusinessPlan)
-            .Include(x => x.Country)
-            .Include(x => x.Government)
-            .Include(x => x.City)
-            .Include(x => x.Village)
-            .AsQueryable();
-
-        if (!string.IsNullOrWhiteSpace(request.Name))
-        {
-            var name = $"%{request.Name.Trim()}%";
-
-            query = query.Where(x =>
-                EF.Functions.Like(x.FirstName, name) ||
-                EF.Functions.Like(x.LastName, name) ||
-                EF.Functions.Like(x.FirstName + " " + x.LastName, name  ) ||
-                EF.Functions.Like(x.WorkEmail, name) ||
-                EF.Functions.Like(x.PhoneNumber, name));
-        }
-
-        if (request.FromDate.HasValue)
-        {
-            query = query.Where(x =>
-                x.CreatedAt >= request.FromDate.Value);
-        }
-
-        if (request.ToDate.HasValue)
-        {
-            query = query.Where(x =>
-                x.CreatedAt < request.ToDate.Value.AddDays(1));
-        }
-
-        var result = query
-            .OrderByDescending(x => x.CreatedAt)
+            .Where(x => x.Id == request.Id)
             .Select(x => new GetTalkServiceDto
             {
                 Id = x.Id,
@@ -126,17 +96,15 @@ public sealed class GetAllTalkServicesQueryHandler(
                 RequiredDetails = x.AdditionalInformation,
 
                 Status = x.Status,
-
                 CreatedAt = x.CreatedAt
-            });
-        var paginatedResult =
-            await PaginatedList<GetTalkServiceDto>.CreateAsync(
-                result,
-                request.PageNumber,
-                request.PageSize);
+            })
+            .FirstOrDefaultAsync(cancellationToken);
 
-        return Result<PaginatedList<GetTalkServiceDto>>.Success(
-            paginatedResult,
+        if (talkService is null)
+            return Result<GetTalkServiceDto>.Failure(
+                localizer["TalkServiceNotFound"]);
+        return Result<GetTalkServiceDto>.Success(
+            talkService,
             localizer["TalkServiceRetrievedSuccessfully"]);
     }
 }
