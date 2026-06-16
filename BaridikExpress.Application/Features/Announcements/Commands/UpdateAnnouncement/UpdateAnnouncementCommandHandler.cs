@@ -29,17 +29,21 @@ public sealed class UpdateAnnouncementCommandHandler(
         var titleAr = string.IsNullOrWhiteSpace(request.TitleAr) ? banner.TitleAr : request.TitleAr;
         var titleEn = string.IsNullOrWhiteSpace(request.TitleEn) ? banner.TitleEn : request.TitleEn;
 
+        var descriptionAr = string.IsNullOrWhiteSpace(request.DescriptionAr) ? banner.DescriptionAr : request.DescriptionAr;
+        var descriptionEn = string.IsNullOrWhiteSpace(request.DescriptionEn) ? banner.DescriptionEn : request.DescriptionEn;
+
         #endregion
 
         #region Normalize Titles
 
         (titleAr, titleEn) = NormalizeHelper.Normalize(titleAr, titleEn);
+        (descriptionAr, descriptionEn) = NormalizeHelper.Normalize(descriptionAr, descriptionEn);
         #endregion
 
 
         #region Update & Save
 
-        banner.Update(titleEn, titleAr, request.TextColor, request.BackgroundColor);
+        banner.Update(titleEn, titleAr, descriptionEn, descriptionAr, request.Discount, request.TextColor, request.BackgroundColor);
         await repo.UpdateAsync(banner, cancellationToken);
         #endregion
 

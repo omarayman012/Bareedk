@@ -78,5 +78,24 @@ namespace BaridikExpress.API.Controllers.BlogsModules
             var result = await _mediator.Send(new GetBlogReactionsQuery { BlogId = blogId });
             return StatusCode(result.StatusCode, result);
         }
+
+        [HttpGet("favorites")]
+        public async Task<IActionResult> GetFavorites(
+              [FromQuery] GetFavoriteBlogsQuery query)
+        {
+            var result = await _mediator.Send(query);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpGet("details/{id:guid}")]
+        public async Task<IActionResult> GetDetails(Guid id)
+        {
+            var result = await _mediator.Send(new GetBlogDetailsQuery
+            {
+                BlogId = id
+            });
+
+            return StatusCode(result.StatusCode, result);
+        }
     }
 }

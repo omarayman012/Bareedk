@@ -5,8 +5,11 @@ using BaridikExpress.Application.Features.Announcements.Commands.UpdateAnnouncem
 using BaridikExpress.Application.Features.Announcements.Commands.UploadAnnouncements;
 using BaridikExpress.Application.Features.Announcements.DTO;
 using BaridikExpress.Application.Features.Announcements.Queries.GetAllAnnouncements;
+using BaridikExpress.Application.Features.Announcements.Queries.GetAllAnnouncementsMobile;
 using BaridikExpress.Application.Features.Announcements.Queries.GetAnnouncementById;
+using BaridikExpress.Application.Features.Banners.Queries.GetAllBannersMobile;
 using BaridikExpress.Application.Interfaces.File;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BaridikExpress.API.Controllers.Announcements;
 
@@ -90,6 +93,9 @@ public class AnnouncementsController(
                 TitleAr = x.Title.AR ?? string.Empty,
                 TitleEn = x.Title.EN ?? string.Empty,
                 TextColor = x.TextColor ?? string.Empty,
+                DescriptionAr = x.Description.AR ?? string.Empty,
+                DescriptionEn = x.Description.EN ?? string.Empty,
+                Discount = x.Discount ?? string.Empty,
                 BackgroundColor = x.BackgroundColor ?? string.Empty
             });
 
@@ -128,6 +134,29 @@ public class AnnouncementsController(
         return StatusCode(result.StatusCode, result);
     }
 
+    #region Mobile
+
+    [HttpGet("mobile/GetAllAnnouncements")]
+    [AllowAnonymous]
+    [ApiExplorerSettings(GroupName = "client-v1")]
+    public async Task<IActionResult> GetMobileAnnouncements(
+    [FromQuery] GetAllAnnouncementsMobileQuery query)
+    {
+        var result = await _mediator.Send(query);
+        return StatusCode(result.StatusCode, result);
+    }
+
+    [HttpGet("mobile/ShowOneDetails/{id}")]
+    [AllowAnonymous]
+    [ApiExplorerSettings(GroupName = "client-v1")]
+    public async Task<IActionResult> GetByIdforMobile(Guid id)
+    {
+        var result = await _mediator.Send(
+            new GetAnnouncementByIdQuery(id));
+
+        return StatusCode(result.StatusCode, result);
+    }
+    #endregion
 
 
 }

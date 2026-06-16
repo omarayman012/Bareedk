@@ -10,4 +10,15 @@ namespace BaridikExpress.Application.Features.SelectMenu.Queries.GetBlogCategory
 {
     public sealed record GetBlogsSelectMenuQuery(string? Name)
        : IRequest<Result<List<SelectMenuResponse>>>;
+
+
+
+    public sealed record GetBlogsAuthorsSelectMenuQuery(string? Name)
+        : IRequest<Result<List<SelectMenuResponse>>>;
+
+    public sealed record GetTagsSelectMenuQuery(string? Name)
+    : IRequest<Result<List<SelectMenuResponse>>>;
+
+    public sealed record GetPublishingHousesSelectMenuQuery(string? Name)
+        : IRequest<Result<List<SelectMenuResponse>>>;
 }
