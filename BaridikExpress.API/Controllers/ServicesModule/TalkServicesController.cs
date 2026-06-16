@@ -8,7 +8,6 @@ namespace BaridikExpress.API.Controllers.ServicesModule;
 [ApiController]
 [Route("api/v1/[controller]")]
 [ApiExplorerSettings(GroupName = "admin-v1")]
-[Authorize]
 public sealed class TalkServicesController(IMediator mediator) : ControllerBase
 {
     [HttpPost("Create")]
