@@ -246,6 +246,7 @@
   "FailedToResetPassword": "Failed to reset password",
   "Passwordchangedsuccessfully": "Password changed successfully.",
   "PasswordChangedSuccessfully": "Password changed successfully",
+
   "FailedToChangePassword": "Failed to change password",
   "ChangePasswordFailed": "Failed to change password, please check your current password and try again.",
   "Passwordresetinstructionssent": "Password reset instructions sent successfully.",
@@ -1131,5 +1132,11 @@
   "SomeAnnouncementsNotFound": "Some announcements were not found.",
   "AnnouncementsDeletedSuccessfully": "Announcements deleted successfully.",
   "AnnouncementRetrievedSuccessfully": "Announcement retrieved successfully.",
-  "AnnouncementsRetrievedSuccessfully": "Announcements retrieved successfully."
+  "AnnouncementsRetrievedSuccessfully": "Announcements retrieved successfully.",
+  "VerifyEmailAndPhone": "Please verify your email and phone number first",
+  "VerifyEmail": "Please verify your email first",
+  "VerifyPhone": "Please verify your phone number first",
+  "DeliveryProfileNotFound": "Delivery profile not found",
+  "DeliveryNotApproved": "Delivery account is not approved yet",
+  "LoginSuccess": "Login successful"
 }
