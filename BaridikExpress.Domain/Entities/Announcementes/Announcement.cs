@@ -13,7 +13,10 @@ namespace BaridikExpress.Domain.Entities.Announcementes
 
             public string TitleEn { get; private set; } = default!;
             public string TitleAr { get; private set; } = default!;
-            public string TextColor { get; private set; } = default!;
+            public string? DescriptionEn { get; private set; } = default!;
+            public string? DescriptionAr { get; private set; } = default!;
+           public string? Discount { get; private set; }
+              public string TextColor { get; private set; } = default!;
             public string BackgroundColor { get; private set; } = default!;
 
             #region ISelectMenuEntity Implementation
@@ -28,24 +31,36 @@ namespace BaridikExpress.Domain.Entities.Announcementes
             public Announcement(
                 string titleEn,
                 string titleAr,
+                string? descriptionEn,
+                string? descriptionAr,
+                string? discount,
                 string textColor,
                 string backgroundColor)
             {
                 TitleEn = titleEn;
                 TitleAr = titleAr;
-                TextColor = textColor;
+            DescriptionEn = descriptionEn;
+            DescriptionAr = descriptionAr;
+            Discount = discount;
+            TextColor = textColor;
                 BackgroundColor = backgroundColor;
             }
 
             public void Update(
                 string? titleEn,
                 string? titleAr,
+                string? descriptionEn,
+                string? descriptionAr,
+                string? discount,
                 string? textColor,
                 string? backgroundColor)
             {
                 TitleEn = titleEn ?? TitleEn;
                 TitleAr = titleAr ?? TitleAr;
-                TextColor = textColor ?? TextColor;
+                DescriptionEn = descriptionEn ?? DescriptionEn;
+            DescriptionAr = descriptionAr ?? DescriptionAr;
+                    Discount = discount ?? Discount;
+            TextColor = textColor ?? TextColor;
                 BackgroundColor = backgroundColor ?? BackgroundColor;
             }
 
