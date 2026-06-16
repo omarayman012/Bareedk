@@ -126,6 +126,8 @@ public class ApplicationDbContext : IdentityDbContext<User>, IApplicationDbConte
     public DbSet<BackupSetting>BackupSettings { get; set; }
     public DbSet<BackupHistory> BackupHistories { get; set; }
 
+    public DbSet<TalkService> TalkServices { get; set; }
+
 
     #endregion
 
