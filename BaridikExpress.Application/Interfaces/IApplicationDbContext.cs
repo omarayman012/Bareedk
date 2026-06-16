@@ -125,6 +125,7 @@ public interface IApplicationDbContext
     public DbSet<MessageNotification> MessageNotifications { get; set; }
     DbSet<GeneralCompanySettings> GeneralCompanySettings { get; set; }
     DbSet<ServiceBusinessPlan> ServiceBusinessPlans {  get; set; }
+    DbSet<TalkService> TalkServices {  get; set; }
     DatabaseFacade Database { get; }
 
     DbSet<TEntity> Set<TEntity>() where TEntity : class;
