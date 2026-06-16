@@ -1120,6 +1120,45 @@ namespace BaridikExpress.Infrastructure.Migrations
                     b.ToTable("ContactUs", (string)null);
                 });
 
+            modelBuilder.Entity("BaridikExpress.Domain.Entities.CurrencyModule.Currency", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CurrencyCode")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("CurrencySymbol")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("UpdatedById");
+
+                    b.ToTable("Currencies");
+                });
+
             modelBuilder.Entity("BaridikExpress.Domain.Entities.Customers.Customer", b =>
                 {
                     b.Property<Guid>("Id")
@@ -3814,6 +3853,51 @@ namespace BaridikExpress.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("CreatedBy");
+
+                    b.Navigation("UpdatedBy");
+                });
+
+            modelBuilder.Entity("BaridikExpress.Domain.Entities.CurrencyModule.Currency", b =>
+                {
+                    b.HasOne("BaridikExpress.Domain.Entities.AuthModules.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("BaridikExpress.Domain.Entities.AuthModules.User", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.OwnsOne("BaridikExpress.Domain.Entities.ValueObjects.LocalizedString", "Name", b1 =>
+                        {
+                            b1.Property<Guid>("CurrencyId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Ar")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("nvarchar(100)")
+                                .HasColumnName("NameAr");
+
+                            b1.Property<string>("En")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("nvarchar(100)")
+                                .HasColumnName("NameEn");
+
+                            b1.HasKey("CurrencyId");
+
+                            b1.ToTable("Currencies");
+
+                            b1.WithOwner()
+                                .HasForeignKey("CurrencyId");
+                        });
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("Name")
+                        .IsRequired();
 
                     b.Navigation("UpdatedBy");
                 });
