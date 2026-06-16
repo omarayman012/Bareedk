@@ -1,7 +1,7 @@
 ﻿using BaridikExpress.Application.Features.TalkServices.Commands.Create;
+using BaridikExpress.Application.Features.TalkServices.Commands.Delete;
 using BaridikExpress.Application.Features.TalkServices.Queries.GetAll;
 using BaridikExpress.Application.Features.TalkServices.Queries.GetById;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BaridikExpress.API.Controllers.ServicesModule;
@@ -17,8 +17,9 @@ public sealed class TalkServicesController(IMediator mediator) : ControllerBase
     {
         var result = await mediator.Send(query);
 
-        return Ok(result);
+        return StatusCode(result.StatusCode, result);
     }
+
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById(Guid id)
     {
@@ -27,9 +28,19 @@ public sealed class TalkServicesController(IMediator mediator) : ControllerBase
 
         return StatusCode(result.StatusCode, result);
     }
-    [HttpPost("Create")]
+
+    [HttpPost]
     public async Task<IActionResult> Create(
         [FromBody] CreateTalkServiceCommand command)
+    {
+        var result = await mediator.Send(command);
+
+        return StatusCode(result.StatusCode, result);
+    }
+
+    [HttpDelete]
+    public async Task<IActionResult> Delete(
+        [FromBody] DeleteTalkServicesCommand command)
     {
         var result = await mediator.Send(command);
 
