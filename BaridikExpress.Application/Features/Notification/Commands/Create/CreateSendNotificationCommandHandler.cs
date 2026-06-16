@@ -14,85 +14,111 @@ public sealed class CreateSendNotificationCommandHandler(
         CreateSendNotificationCommand request,
         CancellationToken cancellationToken)
     {
-        #region Upload Image
+        var imageUrlResult = await UploadImageAsync(request, cancellationToken);
 
-        string? imageUrl = null;
+        if (!imageUrlResult.IsSuccess)
+            return Result<bool>.Failure(imageUrlResult.Message!, imageUrlResult.StatusCode);
 
-        if (request.Image is not null)
-        {
-            var uniqueFileName = $"{Guid.NewGuid()}{Path.GetExtension(request.Image.FileName)}";
-
-            imageUrl = await fileStorage.SaveFileAsync(
-                request.Image.OpenReadStream(),
-                uniqueFileName,
-                "notification-images");
-
-            if (imageUrl is null)
-                return Result<bool>.Failure(localizer["ImageUploadFailed"], 400);
-        }
-
-        #endregion
-
-        #region Collect UserIds
-
-        var userIds = new HashSet<string>();
-
-        if (request.ClientsCreatedByAdmin.Count > 0)
-        {
-            var ids = await db.Customers
-                .Where(x => request.ClientsCreatedByAdmin.Contains(x.Id))
-                .Select(x => x.UserId)
-                .ToListAsync(cancellationToken);
-            ids.ForEach(id => userIds.Add(id));
-        }
-
-        if (request.DeliveriesCreatedByAdmin.Count > 0)
-        {
-            var ids = await db.Deliveries
-                .Where(x => request.DeliveriesCreatedByAdmin.Contains(x.Id))
-                .Select(x => x.UserId)
-                .ToListAsync(cancellationToken);
-            ids.ForEach(id => userIds.Add(id));
-        }
-
-        if (request.ClientsExternalRegistration.Count > 0)
-        {
-            var ids = await db.Clients
-                .Where(x => request.ClientsExternalRegistration.Contains(x.Id))
-                .Select(x => x.UserId)
-                .ToListAsync(cancellationToken);
-            ids.ForEach(id => userIds.Add(id));
-        }
-
-        if (request.DeliveriesExternalRegistration.Count > 0)
-        {
-            var ids = await db.Deliveries
-                .Where(x => request.DeliveriesExternalRegistration.Contains(x.Id))
-                .Select(x => x.UserId)
-                .ToListAsync(cancellationToken);
-            ids.ForEach(id => userIds.Add(id));
-        }
+        var userIds = await CollectUserIdsAsync(request, cancellationToken);
 
         if (userIds.Count == 0)
             return Result<bool>.Failure(localizer["NoRecipientsFound"], 404);
-
-        #endregion
-
-        #region Create & Save Notification
 
         var notification = SendNotification.Create(
             titleAr: request.TitleAr,
             titleEn: request.TitleEn,
             descriptionAr: request.DescriptionAr,
             descriptionEn: request.DescriptionEn,
-            userIds: userIds.ToList(),
-            imageUrl: imageUrl);
+            userIds: userIds,
+            imageUrl: imageUrlResult.ToString());
 
         await db.SendNotifications.AddAsync(notification, cancellationToken);
         await db.SaveChangesAsync(cancellationToken);
 
-        #endregion
-
         return Result<bool>.Success(true, localizer["NotificationSentSuccessfully"]);
+    }
+
+    private async Task<Result<string?>> UploadImageAsync(
+        CreateSendNotificationCommand request,
+        CancellationToken cancellationToken)
+    {
+        if (request.Image is null)
+            return Result<string?>.Success(null);
+
+        var extension = Path.GetExtension(request.Image.FileName);
+        var uniqueFileName = $"{Guid.NewGuid()}{extension}";
+
+        await using var stream = request.Image.OpenReadStream();
+
+        var imageUrl = await fileStorage.SaveFileAsync(
+            stream,
+            uniqueFileName,
+            "notification-images");
+
+        if (imageUrl is null)
+            return Result<string?>.Failure(localizer["ImageUploadFailed"], 400);
+
+        return Result<string?>.Success(imageUrl);
+    }
+
+    private async Task<List<string>> CollectUserIdsAsync(
+        CreateSendNotificationCommand request,
+        CancellationToken cancellationToken)
+    {
+        var tasks = new List<Task<List<string>>>();
+
+        if (request.ClientsCreatedByAdmin.Count > 0)
+        {
+            tasks.Add(
+                db.Customers
+                    .AsNoTracking()
+                    .Where(x => request.ClientsCreatedByAdmin.Contains(x.Id))
+                    .Where(x => !string.IsNullOrWhiteSpace(x.UserId))
+                    .Select(x => x.UserId!)
+                    .ToListAsync(cancellationToken));
+        }
+
+        if (request.DeliveriesCreatedByAdmin.Count > 0)
+        {
+            tasks.Add(
+                db.Deliveries
+                    .AsNoTracking()
+                    .Where(x => request.DeliveriesCreatedByAdmin.Contains(x.Id))
+                    .Where(x => !string.IsNullOrWhiteSpace(x.UserId))
+                    .Select(x => x.UserId!)
+                    .ToListAsync(cancellationToken));
+        }
+
+        if (request.ClientsExternalRegistration.Count > 0)
+        {
+            tasks.Add(
+                db.Clients
+                    .AsNoTracking()
+                    .Where(x => request.ClientsExternalRegistration.Contains(x.Id))
+                    .Where(x => !string.IsNullOrWhiteSpace(x.UserId))
+                    .Select(x => x.UserId!)
+                    .ToListAsync(cancellationToken));
+        }
+
+        if (request.DeliveriesExternalRegistration.Count > 0)
+        {
+            tasks.Add(
+                db.Deliveries
+                    .AsNoTracking()
+                    .Where(x => request.DeliveriesExternalRegistration.Contains(x.Id))
+                    .Where(x => !string.IsNullOrWhiteSpace(x.UserId))
+                    .Select(x => x.UserId!)
+                    .ToListAsync(cancellationToken));
+        }
+
+        if (tasks.Count == 0)
+            return [];
+
+        var results = await Task.WhenAll(tasks);
+
+        return results
+            .SelectMany(x => x)
+            .Distinct()
+            .ToList();
     }
 }
