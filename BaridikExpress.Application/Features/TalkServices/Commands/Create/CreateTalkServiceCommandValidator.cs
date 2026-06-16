@@ -10,7 +10,9 @@ public sealed class CreateTalkServiceCommandValidator
     {
         RuleFor(x => x.ServiceBusinessPlanIds)
             .NotEmpty()
-            .WithMessage(localizer["ServiceBusinessPlanIdsIsRequired"]);
+            .WithMessage(localizer["ServiceBusinessPlanIdsIsRequired"])
+            .Must(ids => ids.Distinct().Count() == ids.Count)
+            .WithMessage(localizer["DuplicateServiceBusinessPlanIds"]);
 
         RuleForEach(x => x.ServiceBusinessPlanIds)
             .NotEmpty()
@@ -40,6 +42,11 @@ public sealed class CreateTalkServiceCommandValidator
             .NotEqual(Guid.Empty)
             .WithMessage(localizer["CityIdInvalid"])
             .When(x => x.CityId.HasValue);
+
+        RuleFor(x => x.VillageId)
+            .NotEqual(Guid.Empty)
+            .WithMessage(localizer["VillageIdInvalid"])
+            .When(x => x.VillageId.HasValue);
 
         RuleFor(x => x.PostalCode)
             .NotEmpty()
@@ -85,8 +92,7 @@ public sealed class CreateTalkServiceCommandValidator
             .MaximumLength(300)
             .WithMessage(localizer["WebsiteUrlTooLong"])
             .Must(url => Uri.TryCreate(url, UriKind.Absolute, out _))
-            .WithMessage(localizer["WebsiteUrlInvalid"])
-            .When(x => !string.IsNullOrWhiteSpace(x.WebsiteUrl));
+            .WithMessage(localizer["WebsiteUrlInvalid"]);
 
         RuleFor(x => x.AdditionalInformation)
             .NotEmpty()
