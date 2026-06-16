@@ -2,7 +2,6 @@
 using BaridikExpress.Application.Features.CommanDTO.Localizes;
 using BaridikExpress.Application.Features.LocationGeography.Dto.Country;
 using Microsoft.EntityFrameworkCore;
-using ServiceStack.Text;
 
 namespace BaridikExpress.Application.Features.LocationGeography.Queries.Country.GetALL;
 
@@ -19,35 +18,28 @@ public class GetAllCountryQueryHandler(
         CancellationToken cancellationToken)
     {
         var query = _applicationDb.Countries
-    .AsNoTracking();
+            .AsNoTracking();
 
         if (!string.IsNullOrWhiteSpace(request.Name))
         {
             var name = request.Name.Trim().ToLower();
-
             query = query.Where(x =>
                 x.CountryNameAr.ToLower().Contains(name) ||
                 x.CountryNameEn.ToLower().Contains(name));
         }
 
         if (request.IsActive.HasValue)
-        {
             query = query.Where(x => x.IsActive == request.IsActive.Value);
-        }
+
         if (!string.IsNullOrWhiteSpace(request.CreatedById))
-        {
-            query = query.Where(x =>
-                x.CreatedById == request.CreatedById);
-        }
+            query = query.Where(x => x.CreatedById == request.CreatedById);
+
         if (request.FromDate.HasValue)
-        {
             query = query.Where(x => x.CreatedAt >= request.FromDate.Value);
-        }
 
         if (request.ToDate.HasValue)
-        {
             query = query.Where(x => x.CreatedAt <= request.ToDate.Value.AddDays(1).AddTicks(-1));
-        }
+
         var countriesQuery = query.Select(x => new GetCountryResponse
         {
             Id = x.CountryId,
@@ -56,7 +48,8 @@ public class GetAllCountryQueryHandler(
                 AR = x.CountryNameAr,
                 EN = x.CountryNameEn
             },
-            PhoneCode= x.PhoneCode,
+            PhoneCode = x.PhoneCode,
+            PostalCode = x.PostalCode,
             CreatedBy = x.CreatedBy != null
                 ? x.CreatedBy.FullName
                 : x.CreatedById,
@@ -71,6 +64,8 @@ public class GetAllCountryQueryHandler(
         var paginatedCountries = await PaginatedList<GetCountryResponse>
             .CreateAsync(countriesQuery, request.PageNumber, request.PageSize);
 
-        return Result<PaginatedList<GetCountryResponse>>.Success(paginatedCountries, _localizer["CountriesRetrievedSuccessfully"]);
+        return Result<PaginatedList<GetCountryResponse>>.Success(
+            paginatedCountries,
+            _localizer["CountriesRetrievedSuccessfully"]);
     }
 }

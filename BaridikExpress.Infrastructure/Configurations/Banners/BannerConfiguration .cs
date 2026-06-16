@@ -11,7 +11,17 @@ namespace BaridikExpress.Infrastructure.Configurations.Banners
             builder.ToTable("Banners");
 
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.TitleEn)
+                .IsRequired(false);
 
+            builder.Property(x => x.TitleAr)
+                .IsRequired(false);
+
+            builder.Property(x => x.DescriptionEn)
+                .IsRequired(false);
+
+            builder.Property(x => x.DescriptionAr)
+                .IsRequired(false);
             builder.Property(x => x.ImageUrl)
                 .IsRequired()
                 .HasMaxLength(1000);

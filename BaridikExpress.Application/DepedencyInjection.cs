@@ -1,9 +1,7 @@
 ﻿using BaridikExpress.Application.Behaviors;
-using BaridikExpress.Application.Common.Abstractions;
 using BaridikExpress.Application.Common.Mapping;
 using BaridikExpress.Application.Features.Auth.Commands.CreateAccount;
 using BaridikExpress.Application.Features.SelectMenu.DTOs;
-using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.GenericSelectMenu;
 using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.Location;
 using BaridikExpress.Application.Features.SystemManagement.Commands.UpdateSystemManagement;
 using BaridikExpress.Application.Features.SystemManagement.DTOs;
@@ -14,8 +12,6 @@ using BaridikExpress.Domain.Entities.Location;
 using BaridikExpress.Domain.Entities.NotificationModules;
 using BaridikExpress.Domain.Entities.SystemManagment;
 using BaridikExpress.Domain.Entities.Vehicles;
-using FluentValidation;
-using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BaridikExpress.Application;
@@ -117,16 +113,16 @@ public static class DepedencyInjection
             GetSelectMenuQueryHandler<Village>>();
 
         services.AddTransient<
-            IRequestHandler<GetSelectMenubaseQuery<CareerField>, Result<IEnumerable<SelectMenuResponse>>>,
-            GetSelectMenuBaseQueryHandler<CareerField>>();
+            IRequestHandler<GetSelectMenuQuery<CareerField>, Result<IEnumerable<SelectMenuResponse>>>,
+            GetSelectMenuQueryHandler<CareerField>>();
 
         services.AddTransient<
-            IRequestHandler<GetSelectMenubaseQuery<Vehicle>, Result<IEnumerable<SelectMenuResponse>>>,
-            GetSelectMenuBaseQueryHandler<Vehicle>>();
+            IRequestHandler<GetSelectMenuQuery<Vehicle>, Result<IEnumerable<SelectMenuResponse>>>,
+            GetSelectMenuQueryHandler<Vehicle>>();
 
         services.AddTransient<
-            IRequestHandler<GetSelectMenubaseQuery<Banner>, Result<IEnumerable<SelectMenuResponse>>>,
-            GetSelectMenuBaseQueryHandler<Banner>>();
+            IRequestHandler<GetSelectMenuQuery<Banner>, Result<IEnumerable<SelectMenuResponse>>>,
+            GetSelectMenuQueryHandler<Banner>>();
         #endregion
         return services;
     }

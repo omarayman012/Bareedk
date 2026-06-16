@@ -1,15 +1,15 @@
+using BaridikExpress.Application.Features.Blogs.Queries.SelectMenu;
+using BaridikExpress.Application.Features.SelectMenu.Queries.GetBlogCategory;
 using BaridikExpress.Application.Features.SelectMenu.Queries.GetRolesSelectMenu;
-using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu;
 using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.Currency;
-using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.GenericSelectMenu;
 using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.Nationalities;
+using BaridikExpress.Domain.Entities.Banners;
 using BaridikExpress.Domain.Entities.CareerFields;
 using BaridikExpress.Domain.Entities.Location;
 using BaridikExpress.Domain.Entities.Vehicles;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using BaridikExpress.Domain.Entities.Banners;
 
 namespace BaridikExpress.API.Controllers.SelectMenu;
 
@@ -88,7 +88,10 @@ public class SelectMenuController(IMediator mediator) : ControllerBase
         CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
-           new GetSelectMenubaseQuery<CareerField> { Name = name },
+           new GetSelectMenuQuery<CareerField>
+           {
+               Name = name
+           },
            cancellationToken);
 
         return Ok(result);
@@ -101,14 +104,17 @@ public class SelectMenuController(IMediator mediator) : ControllerBase
         CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
-           new GetSelectMenubaseQuery<Vehicle> { Name = name },
+           new GetSelectMenuQuery<Vehicle>
+           {
+               Name = name
+           },
            cancellationToken);
 
         return Ok(result);
     }
 
     [HttpGet("currencies")]
-    [AllowAnonymous] 
+    [AllowAnonymous]
     public async Task<IActionResult> GetCurrencies(CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
@@ -116,21 +122,21 @@ public class SelectMenuController(IMediator mediator) : ControllerBase
             cancellationToken);
         return StatusCode(result.StatusCode, result);
     }
-    [HttpGet("banners")]
+
+    [HttpGet("Banners")]
     [AllowAnonymous]
     public async Task<IActionResult> GetBanners(
-[FromQuery] string? name,
-CancellationToken cancellationToken)
+        [FromQuery] string? name,
+        CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
-           new GetSelectMenubaseQuery<Banner>
+           new GetSelectMenuQuery<Banner>
            {
                Name = name
            },
            cancellationToken);
 
         return Ok(result);
-
     }
 
     [HttpGet("roles")]
@@ -140,6 +146,69 @@ CancellationToken cancellationToken)
         var result = await mediator.Send(
             new GetRolesSelectMenuQuery(),
             cancellationToken);
+        return StatusCode(result.StatusCode, result);
+    }
+
+    [HttpGet("blogs")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetBlogs(
+        [FromQuery] string? name,
+        CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new GetBlogsSelectMenuQuery(name),
+            cancellationToken);
+        return StatusCode(result.StatusCode, result);
+    }
+
+    [HttpGet("blogs-categories")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetBlogsCategories(
+        [FromQuery] string? name,
+        CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new GetBlogsCategoriesSelectMenuQuery(name),
+            cancellationToken);
+        return StatusCode(result.StatusCode, result);
+    }
+
+    [HttpGet("blogs-authors")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetBlogsAuthors(
+        [FromQuery] string? name,
+        CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new GetBlogsAuthorsSelectMenuQuery(name),
+            cancellationToken);
+
+        return StatusCode(result.StatusCode, result);
+    }
+
+    [HttpGet("tags")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetTags(
+        [FromQuery] string? name,
+        CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new GetTagsSelectMenuQuery(name),
+            cancellationToken);
+
+        return StatusCode(result.StatusCode, result);
+    }
+
+    [HttpGet("publishing-houses")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetPublishingHouses(
+        [FromQuery] string? name,
+        CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new GetPublishingHousesSelectMenuQuery(name),
+            cancellationToken);
+
         return StatusCode(result.StatusCode, result);
     }
 }

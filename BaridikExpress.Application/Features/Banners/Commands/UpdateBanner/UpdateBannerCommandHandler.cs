@@ -1,10 +1,7 @@
 using BaridikExpress.Application.Common.Helpers;
 using BaridikExpress.Application.Interfaces.File;
-using BaridikExpress.Application.Interfaces.File;
 using BaridikExpress.Application.Interfaces.IRepository;
 using BaridikExpress.Domain.Entities.Banners;
-using BaridikExpress.Domain.Entities.Vehicles;
-using Microsoft.EntityFrameworkCore;
 
 namespace BaridikExpress.Application.Features.Banners.Commands.UpdateBanner;
 
@@ -43,22 +40,7 @@ public sealed class UpdateBannerCommandHandler(
 
         #endregion
 
-        #region Validate Uniqueness (if title changed)
-
-        if (titleAr != banner.TitleAr || titleEn != banner.TitleEn)
-        {
-            var titleExists = await repo.Query()
-                .Where(x =>
-                    x.Id != request.Id &&
-                    (x.TitleEn == titleEn ||
-                     x.TitleAr == titleAr))
-                .AnyAsync(cancellationToken);
-
-            if (titleExists)
-                return Result<bool>.Failure(localizer["BannerTitleAlreadyExists"], 409);
-        }
-
-        #endregion
+       
 
         #region Upload Image (if provided)
 

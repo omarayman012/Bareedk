@@ -1,10 +1,12 @@
 using BaridikExpress.Domain.Entities.Addresses;
+using BaridikExpress.Domain.Entities.Announcementes;
 using BaridikExpress.Domain.Entities.AuthModule;
 using BaridikExpress.Domain.Entities.Banners;
 using BaridikExpress.Domain.Entities.BlogsModules;
 using BaridikExpress.Domain.Entities.CareerFields;
 using BaridikExpress.Domain.Entities.ClientModule;
 using BaridikExpress.Domain.Entities.ContactUs;
+using BaridikExpress.Domain.Entities.CurrencyModule;
 using BaridikExpress.Domain.Entities.Customers;
 using BaridikExpress.Domain.Entities.DeliveryModule;
 using BaridikExpress.Domain.Entities.DeliveryType;
@@ -13,6 +15,7 @@ using BaridikExpress.Domain.Entities.Nationality;
 using BaridikExpress.Domain.Entities.NotificationModules;
 using BaridikExpress.Domain.Entities.PublishingHouseModule;
 using BaridikExpress.Domain.Entities.RoleModule;
+using BaridikExpress.Domain.Entities.ServiceModules;
 using BaridikExpress.Domain.Entities.Services;
 using BaridikExpress.Domain.Entities.Shipments;
 using BaridikExpress.Domain.Entities.SystemManagment;
@@ -104,6 +107,7 @@ public interface IApplicationDbContext
     DbSet<CustomerRegistration> CustomerRegistrationTerms { get; set; }
     DbSet<SocialMediaLinks> SocialMediaLinks { get; set; }
     DbSet<FAQ> FAQs { get; set; }
+    DbSet<Currency> Currencies { get; set; }
 
     #endregion
 
@@ -115,12 +119,15 @@ public interface IApplicationDbContext
     
 
     DbSet<Banner>  Banners { get; set; }
+    DbSet<Announcement>  Announcements { get; set; }
     DbSet<PublishingHouse> PublishingHouses { get; set; }
 
     public DbSet<SendNotification> SendNotifications { get; set; }
     public DbSet<NotificationRecipient> NotificationRecipients { get; set; }
     public DbSet<MessageNotification> MessageNotifications { get; set; }
-
+    DbSet<GeneralCompanySettings> GeneralCompanySettings { get; set; }
+    DbSet<ServiceBusinessPlan> ServiceBusinessPlans {  get; set; }
+    DbSet<TalkService> TalkServices {  get; set; }
     DatabaseFacade Database { get; }
 
     DbSet<TEntity> Set<TEntity>() where TEntity : class;
