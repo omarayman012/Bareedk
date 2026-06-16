@@ -13,98 +13,100 @@ public sealed class GetTalkServiceByIdQueryHandler(
     : IRequestHandler<GetTalkServiceByIdQuery, Result<GetTalkServiceDto>>
 {
     public async Task<Result<GetTalkServiceDto>> Handle(
-        GetTalkServiceByIdQuery request,
-        CancellationToken cancellationToken)
+    GetTalkServiceByIdQuery request,
+    CancellationToken cancellationToken)
     {
-        var talkService = await db.TalkServices
+        var target = await db.TalkServices
             .AsNoTracking()
-            .Where(x => x.Id == request.Id)
-            .Select(x => new GetTalkServiceDto
+            .Include(x => x.ServiceBusinessPlan)
+            .Include(x => x.Country)
+            .Include(x => x.Government)
+            .Include(x => x.City)
+            .Include(x => x.Village)
+            .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+
+        if (target is null)
+            return Result<GetTalkServiceDto>.Failure(localizer["TalkServiceNotFound"]);
+
+        var allServices = await db.TalkServices
+            .AsNoTracking()
+            .Include(x => x.ServiceBusinessPlan)
+            .Where(x => x.WorkEmail == target.WorkEmail)
+            .Select(x => new LocalizedEntityDto
             {
-                Id = x.Id,
-
-                Services = new List<LocalizedEntityDto>
+                Id = x.ServiceBusinessPlan.Id,
+                Name = new LocalizeLang
                 {
-                    new LocalizedEntityDto
-                    {
-                        Id = x.ServiceBusinessPlan.Id,
-                        Name = new LocalizeLang
-                        {
-                            AR = x.ServiceBusinessPlan.NameAr,
-                            EN = x.ServiceBusinessPlan.NameEn
-                        }
-                    }
-                },
-
-                ShipmentVolumeRange = x.ShipmentVolumeRange.ToString(),
-
-                FirstName = x.FirstName,
-                LastName = x.LastName,
-
-                Country = new LocalizedEntityDto
-                {
-                    Id = x.Country!.CountryId,
-                    Name = new LocalizeLang
-                    {
-                        AR = x.Country.CountryNameAr,
-                        EN = x.Country.CountryNameEn
-                    }
-                },
-
-                Government = new LocalizedEntityDto
-                {
-                    Id = x.Government!.GovernmentId,
-                    Name = new LocalizeLang
-                    {
-                        AR = x.Government.GovernmentNameAr,
-                        EN = x.Government.GovernmentNameEn
-                    }
-                },
-
-                City = x.City == null
-                    ? null
-                    : new LocalizedEntityDto
-                    {
-                        Id = x.City.CityId,
-                        Name = new LocalizeLang
-                        {
-                            AR = x.City.CityNameAr,
-                            EN = x.City.CityNameEn
-                        }
-                    },
-
-                Village = x.Village == null
-                    ? null
-                    : new LocalizedEntityDto
-                    {
-                        Id = x.Village.VillageId,
-                        Name = new LocalizeLang
-                        {
-                            AR = x.Village.VillageNameAr,
-                            EN = x.Village.VillageNameEn
-                        }
-                    },
-
-                PostalCode = x.PostalCode,
-                PhoneNumber = x.PhoneNumber,
-                WorkEmail = x.WorkEmail,
-                JobTitle = x.JobTitle,
-                CompanyName = x.CompanyName,
-                CompanyAddress = x.CompanyAddress,
-                WebsiteUrl = x.WebsiteUrl,
-
-                RequiredDetails = x.AdditionalInformation,
-
-                Status = x.Status,
-                CreatedAt = x.CreatedAt
+                    AR = x.ServiceBusinessPlan.NameAr,
+                    EN = x.ServiceBusinessPlan.NameEn
+                }
             })
-            .FirstOrDefaultAsync(cancellationToken);
+            .ToListAsync(cancellationToken);
 
-        if (talkService is null)
-            return Result<GetTalkServiceDto>.Failure(
-                localizer["TalkServiceNotFound"]);
+        var dto = new GetTalkServiceDto
+        {
+            Id = target.Id,
+
+            Services = allServices,
+
+            ShipmentVolumeRange = target.ShipmentVolumeRange.ToString(),
+            FirstName = target.FirstName,
+            LastName = target.LastName,
+
+            Country = new LocalizedEntityDto
+            {
+                Id = target.Country!.CountryId,
+                Name = new LocalizeLang
+                {
+                    AR = target.Country.CountryNameAr,
+                    EN = target.Country.CountryNameEn
+                }
+            },
+
+            Government = new LocalizedEntityDto
+            {
+                Id = target.Government!.GovernmentId,
+                Name = new LocalizeLang
+                {
+                    AR = target.Government.GovernmentNameAr,
+                    EN = target.Government.GovernmentNameEn
+                }
+            },
+
+            City = target.City == null ? null : new LocalizedEntityDto
+            {
+                Id = target.City.CityId,
+                Name = new LocalizeLang
+                {
+                    AR = target.City.CityNameAr,
+                    EN = target.City.CityNameEn
+                }
+            },
+
+            Village = target.Village == null ? null : new LocalizedEntityDto
+            {
+                Id = target.Village.VillageId,
+                Name = new LocalizeLang
+                {
+                    AR = target.Village.VillageNameAr,
+                    EN = target.Village.VillageNameEn
+                }
+            },
+
+            PostalCode = target.PostalCode,
+            PhoneNumber = target.PhoneNumber,
+            WorkEmail = target.WorkEmail,
+            JobTitle = target.JobTitle,
+            CompanyName = target.CompanyName,
+            CompanyAddress = target.CompanyAddress,
+            WebsiteUrl = target.WebsiteUrl,
+            RequiredDetails = target.AdditionalInformation,
+            Status = target.Status,
+            CreatedAt = target.CreatedAt
+        };
+
         return Result<GetTalkServiceDto>.Success(
-            talkService,
+            dto,
             localizer["TalkServiceRetrievedSuccessfully"]);
     }
 }
