@@ -20,13 +20,13 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Command
         public DateTime DateOfBirth { get; set; }
 
         // ADDRESS
-        public string? Country { get; set; }
+        public Guid? Country { get; set; }
 
-        public string? Gov { get; set; }
+        public Guid? Gov { get; set; }
 
-        public string? City { get; set; }
+        public Guid? City { get; set; }
 
-        public string? Village { get; set; }
+        public Guid? Village { get; set; }
 
         public string? Address { get; set; }
 

@@ -77,7 +77,6 @@ public class BannersController(IMediator mediator, IExcelService excelService)
         return StatusCode(result.StatusCode, result);
     }
 
-
     [HttpGet("Export")]
     [HasPermission(Permissions.BannersRead)]
     public async Task<IActionResult> ExportData(
@@ -117,13 +116,11 @@ public class BannersController(IMediator mediator, IExcelService excelService)
             "BannersTemplate.xlsx");
     }
 
-
-
     [HttpPost("Upload")]
     [HasPermission(Permissions.BannersCreate)]
     public async Task<IActionResult> UploadExcel(
-    IFormFile file,
-    CancellationToken cancellationToken)
+        IFormFile file,
+        CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(
             new UploadBannersCommand(file),
@@ -138,12 +135,11 @@ public class BannersController(IMediator mediator, IExcelService excelService)
     [AllowAnonymous]
     [ApiExplorerSettings(GroupName = "client-v1")]
     public async Task<IActionResult> GetMobileBanners(
-    [FromQuery] GetAllBannersMobileQuery query)
+        [FromQuery] GetAllBannersMobileQuery query)
     {
         var result = await _mediator.Send(query);
         return StatusCode(result.StatusCode, result);
     }
-
 
     [HttpGet("mobile/ShowOneDetails/{id}")]
     [AllowAnonymous]
@@ -155,6 +151,6 @@ public class BannersController(IMediator mediator, IExcelService excelService)
 
         return StatusCode(result.StatusCode, result);
     }
-    #endregion
 
+    #endregion
 }

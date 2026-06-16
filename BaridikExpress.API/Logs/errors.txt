@@ -4,13 +4,13 @@
 2026-05-20 14:44:33 | SmtpProtocolException | The SMTP server has unexpectedly disconnected: 5.7.0 Invalid credentials
 2026-05-20 15:21:32 | ArgumentException | The host name cannot be empty. (Parameter 'host')
 2026-05-20 18:56:05 | ApiException | Twilio trial account restriction error on unverified numbers.
-2026-05-25 18:46:57 | InvalidOperationException | The AuthorizationPolicy named: 'SuperAdmin' was not found.
+2025-05-25 18:46:57 | InvalidOperationException | The AuthorizationPolicy named: 'SuperAdmin' was not found.
 2026-06-02 15:35:40 | InvalidOperationException | An exception was thrown while attempting to evaluate a LINQ query parameter expression.
 2026-06-02 15:46:21 | NullReferenceException | NullReferenceException occurred when executing rule for x => x.Dto.FullName.
 2026-06-02 17:07:48 | ArgumentNullException | Value cannot be null. (Parameter 'input') in Regex.IsMatch
 2026-06-04 14:37:01 | ValidationException | Validation failed: LoadCapacityTo and PricePerTon must be a positive number.
 2026-06-04 15:28:52 | NullReferenceException | Object reference not set to an instance of an object in ExcelService.UploadAsync
-2026-06-06 15:59:48 | InvalidOperationException | The LINQ expression 'DbSet<Country>().Where(c => True)...' could not be translated. Translation of member 'NameAr' on entity type 'Country' failed. This commonly occurs when the specified member is unmapped.
+2026-06-06 15:59:48 | InvalidOperationException | The LINQ expression 'DbSet<Country>().Where(c => True)...' could not be translated. Translation of member 'NameAr' on entity type 'Country' failed.
 2026-06-06 16:01:16 | InvalidOperationException | The LINQ expression 'DbSet<Government>().Where(g => False || g.ParentId == __request_ParentId_Value_0)' could not be translated. Translation of member 'ParentId' on entity type 'Government' failed.
 2026-06-07 17:58:42 | SwaggerGeneratorException | Conflicting method/path combination "GET api/v1/BlogsCategory" for actions - BaridikExpress.API.Controllers.BlogsModules.BlogsCategoryController.GetAll
 2026-06-07 18:00:18 | SwaggerGeneratorException | Conflicting method/path combination "GET api/v1/BlogsCategory" for actions - BaridikExpress.API.Controllers.BlogsModules.BlogsCategoryController.GetAll
@@ -19,8 +19,6 @@
 2026-06-09 18:19:17 | NullReferenceException | Object reference not set to an instance of an object. | at BaridikExpress.Application.Features.Banners.Commands.CreateBanner.CreateBannerCommandValidator
 2026-06-09 18:35:39 | DbUpdateException | An error occurred while saving the entity changes. See the inner exception for details.
 2026-06-09 18:46:26 | ValidationException | Validation failed: -- File: Excel file is required Severity: Error
-2026-06-10 14:43:15 | InvalidOperationException | The LINQ expression 'DbSet<Banner>().Where(b => b.NameAr.Contains(__request_Name_0)...' could not be translated. Translation of member 'NameAr' failed.
-2026-06-10 14:46:48 | InvalidOperationException | The LINQ expression 'DbSet<CareerField>().Where(c => c.NameAr.Contains(__request_Name_0)...' could not be translated.
 2026-06-11 02:00:17 | ArgumentNullException | Value cannot be null. (Parameter 'request') | at MediatR.Mediator.Send
 2026-06-11 16:06:30 | NullReferenceException | Object reference not set to an instance of an object. | at BaridikExpress.Application.Features.LocationGeography.Commands.Country.CreateCountry.CreateCountryCommandHandler.Handle
 2026-06-11 18:05:05 | ValidationException | Validation failed: -- TextColor: Invalid color format.
@@ -34,67 +32,13 @@
 2026-06-11 18:32:00 | ValidationException | Validation failed: -- BackgroundColor: لون الخلفية مطلوب
 2026-06-11 18:33:46 | ValidationException | Validation failed: -- TextColor: Invalid color format must be a valid hex code.
 2026-06-11 18:43:06 | ValidationException | Validation failed: -- File: Excel file is required
-2026-06-15 15:14:47 | SwaggerGeneratorException | Conflicting method/path combination "GET api/v1/Announcements/ShowOneDetails/{id}" for actions - BaridikExpress.API.Controllers.Announcements.AnnouncementsController.GetById (BaridikExpress.API),BaridikExpress.API.Controllers.Announcements.AnnouncementsController.GetByIdMobile (BaridikExpress.API). Actions require a unique method/path combination for Swagger/OpenAPI 3.0. Use ConflictingActionsResolver as a workaround
-2026-06-16 12:53:37 | InvalidOperationException | The LINQ expression 'DbSet<Country>().Any(c => c.Id == __request_CountryId_0)' could not be translated. Additional information: Translation of member 'Id' on entity type 'Country' failed. This commonly occurs when the specified member is unmapped.2026-06-16 14:01:47 | DbUpdateException | An error occurred while saving the entity changes. See the inner exception for details. |    at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
-   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
-   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
-   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
-   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
-   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
-   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
-   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
-   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
-   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
-   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
-   at BaridikExpress.Application.Features.TalkServices.Commands.Create.CreateTalkServiceCommandHandler.Handle(CreateTalkServiceCommand request, CancellationToken cancellationToken) in D:\Project\baridik-express-project-back-end\BaridikExpress.Application\Features\TalkServices\Commands\Create\CreateTalkServiceCommandHandler.cs:line 99
-   at BaridikExpress.Application.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in D:\Project\baridik-express-project-back-end\BaridikExpress.Application\Behaviors\ValidationBehavior.cs:line 43
-   at BaridikExpress.API.Controllers.ServicesModule.TalkServicesController.Create(CreateTalkServiceCommand command) in D:\Project\baridik-express-project-back-end\BaridikExpress.API\Controllers\ServicesModule\TalkServicesController.cs:line 17
-   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
-   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
-   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
-   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
-   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
-   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
-   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
-   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
-   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
-   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
-   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
-   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
-   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
-   at BaridikExpress.API.Middlewares.ExceptionHandlingMiddleware.Invoke(HttpContext context) in D:\Project\baridik-express-project-back-end\BaridikExpress.API\Middlewares\ExceptionHandlingMiddleware.cs:line 19
-2026-06-16 14:05:42 | ValidationException | Validation failed: 
- -- CountryId: CountryIdIsRequired Severity: Error |    at BaridikExpress.Application.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in D:\Project\baridik-express-project-back-end\BaridikExpress.Application\Behaviors\ValidationBehavior.cs:line 40
-   at BaridikExpress.API.Controllers.ServicesModule.TalkServicesController.Create(CreateTalkServiceCommand command) in D:\Project\baridik-express-project-back-end\BaridikExpress.API\Controllers\ServicesModule\TalkServicesController.cs:line 17
-   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
-   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
-   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
-   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
-   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
-   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
---- End of stack trace from previous location ---
-   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
-   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
-   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
-   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
-   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
-   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
-   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
-   at BaridikExpress.API.Middlewares.ExceptionHandlingMiddleware.Invoke(HttpContext context) in D:\Project\baridik-express-project-back-end\BaridikExpress.API\Middlewares\ExceptionHandlingMiddleware.cs:line 19
-2026-06-16 14:05:52 | ArgumentNullException | Value cannot be null. (Parameter 'request') |    at MediatR.Mediator.Send[TResponse](IRequest`1 request, CancellationToken cancellationToken)
-   at BaridikExpress.API.Controllers.ServicesModule.TalkServicesController.Create(CreateTalkServiceCommand command) in D:\Project\baridik-express-project-back-end\BaridikExpress.API\Controllers\ServicesModule\TalkServicesController.cs:line 17
-   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
-   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
-   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
-   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
-   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
-   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
---- End of stack trace from previous location ---
-   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
-   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
-   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
-   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
-   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
-   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
-   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
-   at BaridikExpress.API.Middlewares.ExceptionHandlingMiddleware.Invoke(HttpContext context) in D:\Project\baridik-express-project-back-end\BaridikExpress.API\Middlewares\ExceptionHandlingMiddleware.cs:line 19
+2026-06-15 15:14:47 | SwaggerGeneratorException | Conflicting method/path combination "GET api/v1/Announcements/ShowOneDetails/{id}" for actions - BaridikExpress.API.Controllers.Announcements.AnnouncementsController.GetById (BaridikExpress.API),BaridikExpress.API.Controllers.Announcements.AnnouncementsController.GetByIdMobile (BaridikExpress.API).
+2026-06-16 12:53:37 | InvalidOperationException | The LINQ expression 'DbSet<Country>().Any(c => c.Id == __request_CountryId_0)' could not be translated. Additional information: Translation of member 'Id' on entity type 'Country' failed.
+2026-06-16 14:01:47 | DbUpdateException | An error occurred while saving the entity changes. See the inner exception for details. | at BaridikExpress.Application.Features.TalkServices.Commands.Create.CreateTalkServiceCommandHandler.Handle line 99
+2026-06-16 14:05:42 | ValidationException | Validation failed: -- CountryId: CountryIdIsRequired Severity: Error | at BaridikExpress.API.Controllers.ServicesModule.TalkServicesController.Create
+2026-06-16 14:05:52 | ArgumentNullException | Value cannot be null. (Parameter 'request') | at MediatR.Mediator.Send
+2026-06-10 14:43:15 | InvalidOperationException | The LINQ expression 'DbSet<Banner>().Where(b => b.NameAr.Contains(__request_Name_0)...' could not be translated. Translation of member 'NameAr' failed.
+2026-06-10 14:46:48 | InvalidOperationException | The LINQ expression 'DbSet<CareerField>().Where(c => c.NameAr.Contains(__request_Name_0)...' could not be translated.
+2026-06-14 21:02:45 | NullReferenceException | Object reference not set to an instance of an object. | at BaridikExpress.API.Controllers.Currencies.CurrenciesController.Update line 64
+2026-06-14 21:03:37 | NullReferenceException | Object reference not set to an instance of an object. | at BaridikExpress.API.Controllers.Currencies.CurrenciesController.Update line 64
+2026-06-15 13:53:17 | ArgumentNullException | Value cannot be null. (Parameter 'first') | at System.Linq.Enumerable.Except | at BaridikExpress.Application.Features.Currencies.Commands.DeleteCurrency.DeleteCurrencyCommandHandler.Handle line 26

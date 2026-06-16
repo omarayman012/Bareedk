@@ -26,10 +26,10 @@ namespace BaridikExpress.API.Controllers.AuthDeliveryModule
              [FromQuery] bool? isApproved = null,
              [FromQuery] DateTime? approvedFrom = null,
              [FromQuery] DateTime? approvedTo = null,
-             [FromQuery] string? country = null,
-             [FromQuery] string? gov = null,
-             [FromQuery] string? city = null,
-             [FromQuery] string? village = null,
+             [FromQuery] Guid? country = null,
+             [FromQuery] Guid? gov = null,
+             [FromQuery] Guid? city = null,
+             [FromQuery] Guid? village = null,
              [FromQuery] int pageNumber = 1,
              [FromQuery] int pageSize = 10)
         {
