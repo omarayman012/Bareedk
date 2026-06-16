@@ -14,25 +14,25 @@ public sealed class CreateTalkServiceCommandHandler(
         CreateTalkServiceCommand request,
         CancellationToken cancellationToken)
     {
+        var planIds = request.ServiceBusinessPlanIds
+            .Distinct()
+            .ToList();
+
         var alreadyExists = await db.TalkServices
             .AnyAsync(x =>
                 x.WorkEmail == request.WorkEmail &&
-                request.ServiceBusinessPlanIds.Contains(x.ServiceBusinessPlanId),
-            cancellationToken);
+                planIds.Contains(x.ServiceBusinessPlanId),
+                cancellationToken);
 
         if (alreadyExists)
             return Result<Guid>.Failure(localizer["TalkServiceAlreadyExists"]);
 
         var existingPlanIds = await db.ServiceBusinessPlans
-            .Where(x => request.ServiceBusinessPlanIds.Contains(x.Id))
+            .Where(x => planIds.Contains(x.Id))
             .Select(x => x.Id)
             .ToListAsync(cancellationToken);
 
-        var missingPlanIds = request.ServiceBusinessPlanIds
-            .Except(existingPlanIds)
-            .ToList();
-
-        if (missingPlanIds.Count != 0)
+        if (existingPlanIds.Count != planIds.Count)
             return Result<Guid>.Failure(localizer["ServiceBusinessPlanNotFound"]);
 
         var countryExists = await db.Countries
@@ -42,7 +42,10 @@ public sealed class CreateTalkServiceCommandHandler(
             return Result<Guid>.Failure(localizer["CountryNotFound"]);
 
         var governmentExists = await db.Governments
-            .AnyAsync(x => x.GovernmentId == request.GovernmentId, cancellationToken);
+            .AnyAsync(x =>
+                x.GovernmentId == request.GovernmentId &&
+                x.CountryId == request.CountryId,
+                cancellationToken);
 
         if (!governmentExists)
             return Result<Guid>.Failure(localizer["GovernmentNotFound"]);
@@ -50,7 +53,10 @@ public sealed class CreateTalkServiceCommandHandler(
         if (request.CityId.HasValue)
         {
             var cityExists = await db.Cities
-                .AnyAsync(x => x.CityId == request.CityId.Value, cancellationToken);
+                .AnyAsync(x =>
+                    x.CityId == request.CityId.Value &&
+                    x.GovernmentId == request.GovernmentId,
+                    cancellationToken);
 
             if (!cityExists)
                 return Result<Guid>.Failure(localizer["CityNotFound"]);
@@ -59,13 +65,16 @@ public sealed class CreateTalkServiceCommandHandler(
         if (request.VillageId.HasValue)
         {
             var villageExists = await db.Villages
-                .AnyAsync(x => x.VillageId == request.VillageId.Value, cancellationToken);
+                .AnyAsync(x =>
+                    x.VillageId == request.VillageId.Value &&
+                    (!request.CityId.HasValue || x.CityId == request.CityId.Value),
+                    cancellationToken);
 
             if (!villageExists)
                 return Result<Guid>.Failure(localizer["VillageNotFound"]);
         }
 
-        var entities = request.ServiceBusinessPlanIds
+        var entities = planIds
             .Select(planId => TalkService.Create(
                 planId,
                 request.ShipmentVolumeRange,
@@ -86,6 +95,7 @@ public sealed class CreateTalkServiceCommandHandler(
             .ToList();
 
         db.TalkServices.AddRange(entities);
+
         await db.SaveChangesAsync(cancellationToken);
 
         return Result<Guid>.Success(
