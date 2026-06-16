@@ -172,4 +172,41 @@ public class SelectMenuController(IMediator mediator) : ControllerBase
             cancellationToken);
         return StatusCode(result.StatusCode, result);
     }
+
+    [HttpGet("blogs-authors")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetBlogsAuthors(
+    [FromQuery] string? name,
+    CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new GetBlogsAuthorsSelectMenuQuery(name),
+            cancellationToken);
+
+        return StatusCode(result.StatusCode, result);
+    }
+    [HttpGet("tags")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetTags(
+    [FromQuery] string? name,
+    CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new GetTagsSelectMenuQuery(name),
+            cancellationToken);
+
+        return StatusCode(result.StatusCode, result);
+    }
+    [HttpGet("publishing-houses")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetPublishingHouses(
+    [FromQuery] string? name,
+    CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new GetPublishingHousesSelectMenuQuery(name),
+            cancellationToken);
+
+        return StatusCode(result.StatusCode, result);
+    }
 }
