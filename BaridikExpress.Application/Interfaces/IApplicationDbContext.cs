@@ -6,6 +6,7 @@ using BaridikExpress.Domain.Entities.BlogsModules;
 using BaridikExpress.Domain.Entities.CareerFields;
 using BaridikExpress.Domain.Entities.ClientModule;
 using BaridikExpress.Domain.Entities.ContactUs;
+using BaridikExpress.Domain.Entities.CurrencyModule;
 using BaridikExpress.Domain.Entities.Customers;
 using BaridikExpress.Domain.Entities.DeliveryModule;
 using BaridikExpress.Domain.Entities.DeliveryType;
@@ -106,6 +107,7 @@ public interface IApplicationDbContext
     DbSet<CustomerRegistration> CustomerRegistrationTerms { get; set; }
     DbSet<SocialMediaLinks> SocialMediaLinks { get; set; }
     DbSet<FAQ> FAQs { get; set; }
+    DbSet<Currency> Currencies { get; set; }
 
     #endregion
 
@@ -125,6 +127,7 @@ public interface IApplicationDbContext
     public DbSet<MessageNotification> MessageNotifications { get; set; }
     DbSet<GeneralCompanySettings> GeneralCompanySettings { get; set; }
     DbSet<ServiceBusinessPlan> ServiceBusinessPlans {  get; set; }
+    DbSet<TalkService> TalkServices {  get; set; }
     DatabaseFacade Database { get; }
 
     DbSet<TEntity> Set<TEntity>() where TEntity : class;
