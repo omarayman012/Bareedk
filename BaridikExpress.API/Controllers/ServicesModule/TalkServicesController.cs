@@ -1,5 +1,6 @@
 ﻿using BaridikExpress.Application.Features.TalkServices.Commands.Create;
 using BaridikExpress.Application.Features.TalkServices.Queries.GetAll;
+using BaridikExpress.Application.Features.TalkServices.Queries.GetById;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,7 +19,14 @@ public sealed class TalkServicesController(IMediator mediator) : ControllerBase
 
         return Ok(result);
     }
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetById(Guid id)
+    {
+        var result = await mediator.Send(
+            new GetTalkServiceByIdQuery(id));
 
+        return StatusCode(result.StatusCode, result);
+    }
     [HttpPost("Create")]
     public async Task<IActionResult> Create(
         [FromBody] CreateTalkServiceCommand command)
