@@ -1,4 +1,5 @@
-﻿using BaridikExpress.Application.Interfaces.File;
+﻿using BaridikExpress.Application.Common.Helpers;
+using BaridikExpress.Application.Interfaces.File;
 using BaridikExpress.Domain.Entities.NotificationModules;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,85 +15,131 @@ public sealed class CreateSendNotificationCommandHandler(
         CreateSendNotificationCommand request,
         CancellationToken cancellationToken)
     {
-        #region Upload Image
+        var (titleAr, titleEn) = NormalizeHelper.Normalize(
+            request.TitleAr,
+            request.TitleEn);
 
-        string? imageUrl = null;
+        var (descriptionAr, descriptionEn) = NormalizeHelper.Normalize(
+            request.DescriptionAr,
+            request.DescriptionEn);
 
-        if (request.Image is not null)
-        {
-            var uniqueFileName = $"{Guid.NewGuid()}{Path.GetExtension(request.Image.FileName)}";
+        var imageUrlResult = await UploadImageAsync(request);
 
-            imageUrl = await fileStorage.SaveFileAsync(
-                request.Image.OpenReadStream(),
-                uniqueFileName,
-                "notification-images");
+        if (!imageUrlResult.IsSuccess)
+            return Result<bool>.Failure(
+                imageUrlResult.Message!,
+                imageUrlResult.StatusCode);
 
-            if (imageUrl is null)
-                return Result<bool>.Failure(localizer["ImageUploadFailed"], 400);
-        }
+        var userIds = await CollectUserIdsAsync(
+            request,
+            cancellationToken);
 
-        #endregion
+        if (userIds.Count == 0)
+            return Result<bool>.Failure(
+                localizer["NoRecipientsFound"],
+                404);
 
-        #region Collect UserIds
+        var notification = SendNotification.Create(
+            titleAr: titleAr,
+            titleEn: titleEn,
+            descriptionAr: descriptionAr,
+            descriptionEn: descriptionEn,
+            userIds: userIds,
+            imageUrl: imageUrlResult.Data);
 
-        var userIds = new HashSet<string>();
+        await db.SendNotifications.AddAsync(
+            notification,
+            cancellationToken);
+
+        await db.SaveChangesAsync(cancellationToken);
+
+        return Result<bool>.Success(
+            true,
+            localizer["NotificationSentSuccessfully"]);
+    }
+
+    private async Task<Result<string?>> UploadImageAsync(
+        CreateSendNotificationCommand request)
+    {
+        if (request.Image is null)
+            return Result<string?>.Success(null);
+
+        var extension = Path.GetExtension(request.Image.FileName);
+        var uniqueFileName = $"{Guid.NewGuid()}{extension}";
+
+        await using var stream = request.Image.OpenReadStream();
+
+        var imageUrl = await fileStorage.SaveFileAsync(
+            stream,
+            uniqueFileName,
+            "notification-images");
+
+        if (imageUrl is null)
+            return Result<string?>.Failure(
+                localizer["ImageUploadFailed"],
+                400);
+
+        return Result<string?>.Success(imageUrl);
+    }
+
+    private async Task<List<string>> CollectUserIdsAsync(
+        CreateSendNotificationCommand request,
+        CancellationToken cancellationToken)
+    {
+        var tasks = new List<Task<List<string>>>();
 
         if (request.ClientsCreatedByAdmin.Count > 0)
         {
-            var ids = await db.Customers
-                .Where(x => request.ClientsCreatedByAdmin.Contains(x.Id))
-                .Select(x => x.UserId)
-                .ToListAsync(cancellationToken);
-            ids.ForEach(id => userIds.Add(id));
+            tasks.Add(
+                db.Customers
+                    .AsNoTracking()
+                    .Where(x => request.ClientsCreatedByAdmin.Contains(x.Id))
+                    .Where(x => !string.IsNullOrWhiteSpace(x.UserId))
+                    .Select(x => x.UserId!)
+                    .ToListAsync(cancellationToken));
         }
 
         if (request.DeliveriesCreatedByAdmin.Count > 0)
         {
-            var ids = await db.Deliveries
-                .Where(x => request.DeliveriesCreatedByAdmin.Contains(x.Id))
-                .Select(x => x.UserId)
-                .ToListAsync(cancellationToken);
-            ids.ForEach(id => userIds.Add(id));
+            tasks.Add(
+                db.Deliveries
+                    .AsNoTracking()
+                    .Where(x => request.DeliveriesCreatedByAdmin.Contains(x.Id))
+                    .Where(x => !string.IsNullOrWhiteSpace(x.UserId))
+                    .Select(x => x.UserId!)
+                    .ToListAsync(cancellationToken));
         }
 
         if (request.ClientsExternalRegistration.Count > 0)
         {
-            var ids = await db.Clients
-                .Where(x => request.ClientsExternalRegistration.Contains(x.Id))
-                .Select(x => x.UserId)
-                .ToListAsync(cancellationToken);
-            ids.ForEach(id => userIds.Add(id));
+            tasks.Add(
+                db.Clients
+                    .AsNoTracking()
+                    .Where(x => request.ClientsExternalRegistration.Contains(x.Id))
+                    .Where(x => !string.IsNullOrWhiteSpace(x.UserId))
+                    .Select(x => x.UserId!)
+                    .ToListAsync(cancellationToken));
         }
 
         if (request.DeliveriesExternalRegistration.Count > 0)
         {
-            var ids = await db.Deliveries
-                .Where(x => request.DeliveriesExternalRegistration.Contains(x.Id))
-                .Select(x => x.UserId)
-                .ToListAsync(cancellationToken);
-            ids.ForEach(id => userIds.Add(id));
+            tasks.Add(
+                db.Deliveries
+                    .AsNoTracking()
+                    .Where(x => request.DeliveriesExternalRegistration.Contains(x.Id))
+                    .Where(x => !string.IsNullOrWhiteSpace(x.UserId))
+                    .Select(x => x.UserId!)
+                    .ToListAsync(cancellationToken));
         }
 
-        if (userIds.Count == 0)
-            return Result<bool>.Failure(localizer["NoRecipientsFound"], 404);
+        if (tasks.Count == 0)
+            return [];
 
-        #endregion
+        var results = await Task.WhenAll(tasks);
 
-        #region Create & Save Notification
-
-        var notification = SendNotification.Create(
-            titleAr: request.TitleAr,
-            titleEn: request.TitleEn,
-            descriptionAr: request.DescriptionAr,
-            descriptionEn: request.DescriptionEn,
-            userIds: userIds.ToList(),
-            imageUrl: imageUrl);
-
-        await db.SendNotifications.AddAsync(notification, cancellationToken);
-        await db.SaveChangesAsync(cancellationToken);
-
-        #endregion
-
-        return Result<bool>.Success(true, localizer["NotificationSentSuccessfully"]);
+        return results
+            .SelectMany(x => x)
+            .Distinct()
+            .ToList();
     }
 }

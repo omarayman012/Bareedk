@@ -15,7 +15,7 @@ namespace BaridikExpress.API.Controllers.Currencies;
 [ApiController]
 [Route("api/[controller]")]
 [ApiExplorerSettings(GroupName = "admin-v1")]
-//[Authorize]
+[Authorize]
 public class CurrenciesController : ControllerBase
 {
     private readonly IMediator _mediator;
