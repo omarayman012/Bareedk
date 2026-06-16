@@ -8,9 +8,13 @@ public class Country : BaseEntity, ISelectMenuEntity
     public string CountryNameAr { get; set; } = string.Empty;
     public string CountryNameEn { get; set; } = string.Empty;
     public string PhoneCode { get; set; } = string.Empty;
+    public string? PostalCode { get; set; } 
+
+    // ISelectMenuEntity implementation
     public string? NameAr => CountryNameAr;
     public string? NameEn => CountryNameEn;
     public Guid Id => CountryId;
     public Guid? ParentId => null;
+
     public ICollection<Government>? Governments { get; set; }
 }

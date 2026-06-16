@@ -27,5 +27,12 @@ public class CreateCountryValidator : AbstractValidator<CreateCountryCommand>
             .WithMessage(localizer["PhoneCodeMaxLength"])
             .Matches(@"^\+?[0-9]+$")
             .WithMessage(localizer["InvalidPhoneCode"]);
+
+        RuleFor(x => x.PostalCode)
+            .MaximumLength(20)
+            .WithMessage(localizer["PostalCodeMaxLength"])
+            .Matches(@"^[a-zA-Z0-9\s\-]+$")
+            .WithMessage(localizer["InvalidPostalCode"])
+            .When(x => !string.IsNullOrWhiteSpace(x.PostalCode));
     }
 }

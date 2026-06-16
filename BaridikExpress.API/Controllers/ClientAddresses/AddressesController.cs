@@ -14,7 +14,7 @@ public class AddressesController(IMediator mediator) : ControllerBase
 {
     private readonly IMediator _mediator = mediator;
 
-    [HttpGet("GetAll")]
+    [HttpGet("mobile/GetAll")]
     [HasPermission(Permissions.ClientAddressesRead)]
     public async Task<IActionResult> GetAll(
         [FromQuery] GetAllAddressesQuery query)
@@ -23,7 +23,7 @@ public class AddressesController(IMediator mediator) : ControllerBase
         return StatusCode(result.StatusCode, result);
     }
 
-    [HttpPost("Create")]
+    [HttpPost("mobile/Create")]
     [HasPermission(Permissions.ClientAddressesCreate)]
     public async Task<IActionResult> Create(
         [FromBody] CreateAddressCommand command)
@@ -32,7 +32,7 @@ public class AddressesController(IMediator mediator) : ControllerBase
         return StatusCode(result.StatusCode, result);
     }
 
-    [HttpPut("Update")]
+    [HttpPut("mobile/Update")]
     [HasPermission(Permissions.ClientAddressesUpdate)]
     public async Task<IActionResult> Update(
         [FromBody] UpdateAddressCommand command)
@@ -41,7 +41,7 @@ public class AddressesController(IMediator mediator) : ControllerBase
         return StatusCode(result.StatusCode, result);
     }
 
-    [HttpDelete("Delete")]
+    [HttpDelete("mobile/Delete")]
     [HasPermission(Permissions.ClientAddressesDelete)]
     public async Task<IActionResult> Delete(
         [FromBody] DeleteAddressesCommand command)

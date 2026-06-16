@@ -1,3 +1,5 @@
+using BaridikExpress.Application.Features.Blogs.Queries.SelectMenu;
+using BaridikExpress.Application.Features.SelectMenu.Queries.GetBlogCategory;
 using BaridikExpress.Application.Features.SelectMenu.Queries.GetRolesSelectMenu;
 using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.Currency;
 using BaridikExpress.Application.Features.SelectMenu.Queries.GetSelectMenu.Nationalities;
@@ -6,6 +8,8 @@ using BaridikExpress.Domain.Entities.CareerFields;
 using BaridikExpress.Domain.Entities.Location;
 using BaridikExpress.Domain.Entities.Vehicles;
 using Microsoft.AspNetCore.Authorization;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BaridikExpress.API.Controllers.SelectMenu;
 
@@ -110,7 +114,7 @@ public class SelectMenuController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("currencies")]
-    [AllowAnonymous] 
+    [AllowAnonymous]
     public async Task<IActionResult> GetCurrencies(CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
@@ -118,11 +122,12 @@ public class SelectMenuController(IMediator mediator) : ControllerBase
             cancellationToken);
         return StatusCode(result.StatusCode, result);
     }
+
     [HttpGet("Banners")]
     [AllowAnonymous]
     public async Task<IActionResult> GetBanners(
-[FromQuery] string? name,
-CancellationToken cancellationToken)
+        [FromQuery] string? name,
+        CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
            new GetSelectMenuQuery<Banner>
@@ -132,7 +137,6 @@ CancellationToken cancellationToken)
            cancellationToken);
 
         return Ok(result);
-
     }
 
     [HttpGet("roles")]
@@ -142,6 +146,69 @@ CancellationToken cancellationToken)
         var result = await mediator.Send(
             new GetRolesSelectMenuQuery(),
             cancellationToken);
+        return StatusCode(result.StatusCode, result);
+    }
+
+    [HttpGet("blogs")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetBlogs(
+        [FromQuery] string? name,
+        CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new GetBlogsSelectMenuQuery(name),
+            cancellationToken);
+        return StatusCode(result.StatusCode, result);
+    }
+
+    [HttpGet("blogs-categories")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetBlogsCategories(
+        [FromQuery] string? name,
+        CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new GetBlogsCategoriesSelectMenuQuery(name),
+            cancellationToken);
+        return StatusCode(result.StatusCode, result);
+    }
+
+    [HttpGet("blogs-authors")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetBlogsAuthors(
+        [FromQuery] string? name,
+        CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new GetBlogsAuthorsSelectMenuQuery(name),
+            cancellationToken);
+
+        return StatusCode(result.StatusCode, result);
+    }
+
+    [HttpGet("tags")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetTags(
+        [FromQuery] string? name,
+        CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new GetTagsSelectMenuQuery(name),
+            cancellationToken);
+
+        return StatusCode(result.StatusCode, result);
+    }
+
+    [HttpGet("publishing-houses")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetPublishingHouses(
+        [FromQuery] string? name,
+        CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new GetPublishingHousesSelectMenuQuery(name),
+            cancellationToken);
+
         return StatusCode(result.StatusCode, result);
     }
 }

@@ -22,11 +22,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="Features\Backup\Commands\UpdateBackupSettings\" />
+	  <Folder Include="Features\Backup\DTOs\" />
+	  <Folder Include="Features\Backup\Queries\" />
 	  <Folder Include="Features\BlogsModules\BlogComment\Validator\" />
 	  <Folder Include="Features\BlogsModules\BlogsAuthor\Validator\" />
 	  <Folder Include="Features\BlogsModules\BlogsCategoryModules\Validator\" />
 	  <Folder Include="Features\BlogsModules\Blogs\Validator\" />
 	  <Folder Include="Features\Shared\" />
+	  <Folder Include="Features\TalkServices\DTOs\" />
+	  <Folder Include="Features\TalkServices\Queries\" />
 	</ItemGroup>
 
 </Project>

@@ -16,7 +16,7 @@ public class GetCountryByIdQueryHandler(
     {
         var country = await _application.Countries
             .AsNoTracking()
-            .Where(x => x.CountryId == request.Id )
+            .Where(x => x.CountryId == request.Id)
             .Select(x => new GetCountryResponse
             {
                 Id = x.CountryId,
@@ -26,6 +26,7 @@ public class GetCountryByIdQueryHandler(
                     EN = x.CountryNameEn
                 },
                 PhoneCode = x.PhoneCode,
+                PostalCode = x.PostalCode,
                 CreatedBy = x.CreatedBy != null ? x.CreatedBy.FullName : x.CreatedById,
                 CreatedAt = x.CreatedAt,
                 UpdatedBy = x.UpdatedBy != null ? x.UpdatedBy.FullName : x.UpdatedById,

@@ -1,7 +1,9 @@
 using BaridikExpress.Application.Interfaces;
 using BaridikExpress.Domain.Entities.Addresses;
+using BaridikExpress.Domain.Entities.Announcementes;
 using BaridikExpress.Domain.Entities.AuthModule;
 using BaridikExpress.Domain.Entities.AuthModules;
+using BaridikExpress.Domain.Entities.BackupModules;
 using BaridikExpress.Domain.Entities.Banners;
 using BaridikExpress.Domain.Entities.Base;
 using BaridikExpress.Domain.Entities.BlogsModules;
@@ -17,6 +19,7 @@ using BaridikExpress.Domain.Entities.Nationality;
 using BaridikExpress.Domain.Entities.NotificationModules;
 using BaridikExpress.Domain.Entities.PublishingHouseModule;
 using BaridikExpress.Domain.Entities.RoleModule;
+using BaridikExpress.Domain.Entities.ServiceModules;
 using BaridikExpress.Domain.Entities.Services;
 using BaridikExpress.Domain.Entities.Shipments;
 using BaridikExpress.Domain.Entities.SystemManagment;
@@ -67,8 +70,9 @@ public class ApplicationDbContext : IdentityDbContext<User>, IApplicationDbConte
     #region DbSets - Client
     public DbSet<ClientAddress>  ClientAddresses { get; set; }
     #endregion
-    #region DbSets - Banners
+    #region DbSets - Banners & Announcements
     public DbSet<Banner> Banners { get; set; }
+    public DbSet<Announcement> Announcements { get; set; }
     #endregion
 
     #region DbSets - Customers
@@ -118,9 +122,12 @@ public class ApplicationDbContext : IdentityDbContext<User>, IApplicationDbConte
     public DbSet<SendNotification> SendNotifications { get; set; }
     public DbSet<NotificationRecipient> NotificationRecipients { get; set; }
     public DbSet<MessageNotification> MessageNotifications { get; set; }
+    public DbSet<ServiceBusinessPlan> ServiceBusinessPlans { get; set; }
 
+    public DbSet<BackupSetting>BackupSettings { get; set; }
+    public DbSet<BackupHistory> BackupHistories { get; set; }
 
-
+    public DbSet<TalkService> TalkServices { get; set; }
 
     #endregion
 
@@ -137,6 +144,8 @@ public class ApplicationDbContext : IdentityDbContext<User>, IApplicationDbConte
     public DbSet<SocialMediaLinks> SocialMediaLinks { get; set; }
     public DbSet<FAQ> FAQs { get; set; }
     public DbSet<Currency> Currencies { get; set; }
+    public DbSet<GeneralCompanySettings> GeneralCompanySettings { get; set; }
+
     #endregion
 
     #region OnModelCreating
@@ -184,7 +193,7 @@ public class ApplicationDbContext : IdentityDbContext<User>, IApplicationDbConte
             .WithMany()
             .HasForeignKey(r => r.UserId)
             .OnDelete(DeleteBehavior.Cascade);
-    
+        
 
         modelBuilder.Entity<BlogTag>(entity =>
         {
@@ -237,8 +246,6 @@ public class ApplicationDbContext : IdentityDbContext<User>, IApplicationDbConte
 
     #endregion
 
-
-
     #region Helpers
 
     private static TimeZoneInfo ResolveAppTimeZone(IConfiguration configuration)
@@ -258,5 +265,4 @@ public class ApplicationDbContext : IdentityDbContext<User>, IApplicationDbConte
         TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, _appTimeZone);
 
     #endregion
-
 }

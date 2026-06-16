@@ -23,12 +23,19 @@ public class UpdateCountryCommandValidator : AbstractValidator<UpdateCountryComm
             .Matches(@"^\+?[0-9]+$")
             .WithMessage(localizer["InvalidPhoneCode"])
             .When(x => !string.IsNullOrWhiteSpace(x.PhoneCode));
-
+        RuleFor(x => x.PostalCode)
+            .MaximumLength(20)
+            .WithMessage(localizer["PostalCodeMaxLength"])
+            .Matches(@"^[a-zA-Z0-9\s\-]+$")
+            .WithMessage(localizer["InvalidPostalCode"])
+            .When(x => !string.IsNullOrWhiteSpace(x.PostalCode));
         RuleFor(x => x)
-            .Must(x =>
-                !string.IsNullOrWhiteSpace(x.NameAr) ||
-                !string.IsNullOrWhiteSpace(x.NameEn) ||
-                !string.IsNullOrWhiteSpace(x.PhoneCode))
-            .WithMessage(localizer["AtLeastOneFieldRequired"]);
+           .Must(x =>
+               !string.IsNullOrWhiteSpace(x.NameAr) ||
+               !string.IsNullOrWhiteSpace(x.NameEn) ||
+               !string.IsNullOrWhiteSpace(x.PhoneCode) ||
+               x.PostalCode is not null)
+           .WithMessage(localizer["AtLeastOneFieldRequired"]);
+
     }
 }

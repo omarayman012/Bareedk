@@ -77,7 +77,6 @@ public class BannersController(IMediator mediator, IExcelService excelService)
         return StatusCode(result.StatusCode, result);
     }
 
-
     [HttpGet("Export")]
     [HasPermission(Permissions.BannersRead)]
     public async Task<IActionResult> ExportData(
@@ -104,11 +103,24 @@ public class BannersController(IMediator mediator, IExcelService excelService)
             "Banners.xlsx");
     }
 
+    [HttpGet("GetExcelTemplate")]
+    [HasPermission(Permissions.BannersRead)]
+    public async Task<IActionResult> GetTemplate()
+    {
+        var file = await _excelService
+            .GenerateTemplateAsync<BannerExcelDto>();
+
+        return File(
+            file,
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            "BannersTemplate.xlsx");
+    }
+
     [HttpPost("Upload")]
     [HasPermission(Permissions.BannersCreate)]
     public async Task<IActionResult> UploadExcel(
-    IFormFile file,
-    CancellationToken cancellationToken)
+        IFormFile file,
+        CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(
             new UploadBannersCommand(file),
@@ -119,16 +131,26 @@ public class BannersController(IMediator mediator, IExcelService excelService)
 
     #region Mobile
 
-    [HttpGet("GetAllBanners")]
+    [HttpGet("mobile/GetAllBanners")]
     [AllowAnonymous]
     [ApiExplorerSettings(GroupName = "client-v1")]
     public async Task<IActionResult> GetMobileBanners(
-    [FromQuery] GetAllBannersMobileQuery query)
+        [FromQuery] GetAllBannersMobileQuery query)
     {
         var result = await _mediator.Send(query);
         return StatusCode(result.StatusCode, result);
     }
 
-    #endregion
+    [HttpGet("mobile/ShowOneDetails/{id}")]
+    [AllowAnonymous]
+    [ApiExplorerSettings(GroupName = "client-v1")]
+    public async Task<IActionResult> GetByIdforMobile(Guid id)
+    {
+        var result = await _mediator.Send(
+            new GetBannerByIdQuery(id));
 
+        return StatusCode(result.StatusCode, result);
+    }
+
+    #endregion
 }
