@@ -4,6 +4,7 @@ using BaridikExpress.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BaridikExpress.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260616121707_AddLocationToDelivary")]
+    partial class AddLocationToDelivary
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1118,45 +1121,6 @@ namespace BaridikExpress.Infrastructure.Migrations
                     b.HasIndex("UpdatedById");
 
                     b.ToTable("ContactUs", (string)null);
-                });
-
-            modelBuilder.Entity("BaridikExpress.Domain.Entities.CurrencyModule.Currency", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CurrencyCode")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("CurrencySymbol")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UpdatedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatedById");
-
-                    b.HasIndex("UpdatedById");
-
-                    b.ToTable("Currencies");
                 });
 
             modelBuilder.Entity("BaridikExpress.Domain.Entities.Customers.Customer", b =>
@@ -2299,126 +2263,6 @@ namespace BaridikExpress.Infrastructure.Migrations
                     b.HasIndex("UpdatedById");
 
                     b.ToTable("Services", (string)null);
-                });
-
-            modelBuilder.Entity("BaridikExpress.Domain.Entities.Services.TalkService", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("AdditionalInformation")
-                        .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("nvarchar(2000)");
-
-                    b.Property<Guid?>("CityId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CompanyAddress")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("CompanyName")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<Guid>("CountryId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<Guid>("GovernmentId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("JobTitle")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("PostalCode")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<Guid>("ServiceBusinessPlanId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ShipmentVolumeRange")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasDefaultValue("Pending");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UpdatedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<Guid?>("VillageId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("WebsiteUrl")
-                        .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
-
-                    b.Property<string>("WorkEmail")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CityId");
-
-                    b.HasIndex("CountryId");
-
-                    b.HasIndex("CreatedById");
-
-                    b.HasIndex("GovernmentId");
-
-                    b.HasIndex("ServiceBusinessPlanId");
-
-                    b.HasIndex("Status");
-
-                    b.HasIndex("UpdatedById");
-
-                    b.HasIndex("VillageId");
-
-                    b.HasIndex("WorkEmail");
-
-                    b.ToTable("TalkServices", (string)null);
                 });
 
             modelBuilder.Entity("BaridikExpress.Domain.Entities.Shipments.Shipment", b =>
@@ -3865,51 +3709,6 @@ namespace BaridikExpress.Infrastructure.Migrations
                     b.Navigation("UpdatedBy");
                 });
 
-            modelBuilder.Entity("BaridikExpress.Domain.Entities.CurrencyModule.Currency", b =>
-                {
-                    b.HasOne("BaridikExpress.Domain.Entities.AuthModules.User", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("BaridikExpress.Domain.Entities.AuthModules.User", "UpdatedBy")
-                        .WithMany()
-                        .HasForeignKey("UpdatedById")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.OwnsOne("BaridikExpress.Domain.Entities.ValueObjects.LocalizedString", "Name", b1 =>
-                        {
-                            b1.Property<Guid>("CurrencyId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("Ar")
-                                .IsRequired()
-                                .HasMaxLength(100)
-                                .HasColumnType("nvarchar(100)")
-                                .HasColumnName("NameAr");
-
-                            b1.Property<string>("En")
-                                .IsRequired()
-                                .HasMaxLength(100)
-                                .HasColumnType("nvarchar(100)")
-                                .HasColumnName("NameEn");
-
-                            b1.HasKey("CurrencyId");
-
-                            b1.ToTable("Currencies");
-
-                            b1.WithOwner()
-                                .HasForeignKey("CurrencyId");
-                        });
-
-                    b.Navigation("CreatedBy");
-
-                    b.Navigation("Name")
-                        .IsRequired();
-
-                    b.Navigation("UpdatedBy");
-                });
-
             modelBuilder.Entity("BaridikExpress.Domain.Entities.Customers.Customer", b =>
                 {
                     b.HasOne("BaridikExpress.Domain.Entities.CareerFields.CareerField", "CareerField")
@@ -4429,61 +4228,6 @@ namespace BaridikExpress.Infrastructure.Migrations
                     b.Navigation("CreatedBy");
 
                     b.Navigation("UpdatedBy");
-                });
-
-            modelBuilder.Entity("BaridikExpress.Domain.Entities.Services.TalkService", b =>
-                {
-                    b.HasOne("BaridikExpress.Domain.Entities.Location.City", "City")
-                        .WithMany()
-                        .HasForeignKey("CityId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("BaridikExpress.Domain.Entities.Location.Country", "Country")
-                        .WithMany()
-                        .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("BaridikExpress.Domain.Entities.AuthModules.User", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("BaridikExpress.Domain.Entities.Location.Government", "Government")
-                        .WithMany()
-                        .HasForeignKey("GovernmentId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("BaridikExpress.Domain.Entities.ServiceModules.ServiceBusinessPlan", "ServiceBusinessPlan")
-                        .WithMany()
-                        .HasForeignKey("ServiceBusinessPlanId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("BaridikExpress.Domain.Entities.AuthModules.User", "UpdatedBy")
-                        .WithMany()
-                        .HasForeignKey("UpdatedById")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("BaridikExpress.Domain.Entities.Location.Village", "Village")
-                        .WithMany()
-                        .HasForeignKey("VillageId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.Navigation("City");
-
-                    b.Navigation("Country");
-
-                    b.Navigation("CreatedBy");
-
-                    b.Navigation("Government");
-
-                    b.Navigation("ServiceBusinessPlan");
-
-                    b.Navigation("UpdatedBy");
-
-                    b.Navigation("Village");
                 });
 
             modelBuilder.Entity("BaridikExpress.Domain.Entities.Shipments.Shipment", b =>

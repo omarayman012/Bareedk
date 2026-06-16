@@ -1,32 +1,27 @@
 ﻿using BaridikExpress.Application.Features.AuthDeliveryModule.Command;
 using FluentValidation;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace BaridikExpress.Application.Features.DeliveryModule.Validator
 {
     public class CreateDeliveryByAdminValidator
         : AbstractValidator<CreateDeliveryByAdminCommand>
     {
-        private readonly UserManager<User> _userManager;
+        private readonly IApplicationDbContext _context;
         private readonly IStringLocalizer _localizer;
 
         public CreateDeliveryByAdminValidator(
-            UserManager<User> userManager,
+            IApplicationDbContext context,
             IStringLocalizer localizer)
         {
-            _userManager = userManager;
+            _context = context;
             _localizer = localizer;
 
-            // ================= BASIC INFO =================
-
+            // ================= BASIC =================
             RuleFor(x => x.FullName)
                 .NotEmpty().WithMessage(_localizer["FullNameRequired"])
-                .MaximumLength(100).WithMessage(_localizer["FullNameMaxLength"]);
+                .MaximumLength(100);
 
             RuleFor(x => x.DateOfBirth)
                 .NotEmpty().WithMessage(_localizer["DateOfBirthRequired"])
@@ -34,89 +29,120 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Validator
                 .WithMessage(_localizer["InvalidAge"]);
 
             // ================= VEHICLE =================
-
             RuleFor(x => x.PlateNo)
-                .NotEmpty().WithMessage(_localizer["PlateRequired"])
-                .MaximumLength(20).WithMessage(_localizer["PlateMaxLength"]);
+                .NotEmpty().WithMessage(_localizer["PlateRequired"]);
 
             RuleFor(x => x.VehType)
-                .IsInEnum().WithMessage(_localizer["InvalidVehicleType"]);
+                .IsInEnum();
 
-            // ================= ADDRESS =================
+            // ================= LOCATION HIERARCHY =================
 
-            RuleFor(x => x.Country).MaximumLength(100);
-            RuleFor(x => x.Gov).MaximumLength(100);
-            RuleFor(x => x.City).MaximumLength(100);
-            RuleFor(x => x.Village).MaximumLength(100);
-            RuleFor(x => x.Address).MaximumLength(200);
-            RuleFor(x => x.Floor).MaximumLength(20);
-            RuleFor(x => x.Apt).MaximumLength(20);
+            RuleFor(x => x.Country)
+                .NotNull().WithMessage(_localizer["CountryRequired"])
+                .MustAsync(CountryExists)
+                .WithMessage(_localizer["CountryNotFound"]);
+
+            RuleFor(x => x.Gov)
+                .NotNull().WithMessage(_localizer["GovRequired"])
+                .MustAsync(GovExists)
+                .WithMessage(_localizer["GovNotFound"])
+                .MustAsync(BeGovInCountry)
+                .WithMessage(_localizer["GovNotBelongToCountry"]);
+
+            RuleFor(x => x.City)
+                .NotNull().WithMessage(_localizer["CityRequired"])
+                .MustAsync(CityExists)
+                .WithMessage(_localizer["CityNotFound"])
+                .MustAsync(BeCityInGov)
+                .WithMessage(_localizer["CityNotBelongToGov"]);
+
+            RuleFor(x => x.Village)
+                .NotNull().WithMessage(_localizer["VillageRequired"])
+                .MustAsync(VillageExists)
+                .WithMessage(_localizer["VillageNotFound"])
+                .MustAsync(BeVillageInCity)
+                .WithMessage(_localizer["VillageNotBelongToCity"]);
 
             // ================= FILES =================
-
-            RuleFor(x => x.ProfileImg)
-                .NotNull().WithMessage(_localizer["ProfileImageRequired"]);
-
-            RuleFor(x => x.NidImg)
-                .NotNull().WithMessage(_localizer["NationalIdRequired"]);
-
-            RuleFor(x => x.LicImg)
-                .NotNull().WithMessage(_localizer["LicenseRequired"]);
-
-            RuleFor(x => x.PlateImg)
-                .NotNull().WithMessage(_localizer["PlateImageRequired"]);
-
-            RuleFor(x => x.VehImg)
-                .NotNull().WithMessage(_localizer["VehicleImageRequired"]);
-
-            RuleFor(x => x.PoliceCertImg)
-                .NotNull().WithMessage(_localizer["PoliceCertRequired"]);
+            RuleFor(x => x.ProfileImg).NotNull();
+            RuleFor(x => x.NidImg).NotNull();
+            RuleFor(x => x.LicImg).NotNull();
+            RuleFor(x => x.VehImg).NotNull();
+            RuleFor(x => x.PoliceCertImg).NotNull();
+            RuleFor(x => x.PlateImg).NotNull();
 
             // ================= AUTH =================
-
             RuleFor(x => x.Email)
-                .NotEmpty().WithMessage(_localizer["EmailRequired"])
-                .EmailAddress().WithMessage(_localizer["InvalidEmail"])
+                .NotEmpty()
+                .EmailAddress()
                 .MustAsync(BeUniqueEmail)
                 .WithMessage(_localizer["EmailAlreadyExists"]);
 
             RuleFor(x => x.Phone)
-                .NotEmpty().WithMessage(_localizer["PhoneRequired"])
+                .NotEmpty()
                 .MinimumLength(8)
                 .MustAsync(BeUniquePhone)
                 .WithMessage(_localizer["PhoneAlreadyExists"]);
 
             RuleFor(x => x.Password)
-                .NotEmpty().WithMessage(_localizer["PasswordRequired"])
-                .MinimumLength(6)
-                .WithMessage(_localizer["PasswordMinLength"]);
+                .NotEmpty()
+                .MinimumLength(6);
+
+            RuleFor(x => x.ConfirmPassword)
+                .Equal(x => x.Password);
         }
 
-        // ================= AGE VALIDATION =================
-
+        // ================= AGE =================
         private bool BeAtLeast18YearsOld(DateTime date)
         {
-            var today = DateTime.UtcNow;
-            var age = today.Year - date.Year;
-
-            if (date.Date > today.AddYears(-age))
-                age--;
-
+            var age = DateTime.UtcNow.Year - date.Year;
+            if (date.Date > DateTime.UtcNow.AddYears(-age)) age--;
             return age >= 18;
         }
 
-        // ================= UNIQUE CHECKS =================
-
-        private async Task<bool> BeUniqueEmail(string email, CancellationToken cancellationToken)
+        // ================= EMAIL / PHONE =================
+        private async Task<bool> BeUniqueEmail(string email, CancellationToken ct)
         {
-            return !await _userManager.Users
-                .AnyAsync(x => x.Email == email, cancellationToken);
+            return !await _context.ApplicationUsers.AnyAsync(x => x.Email == email, ct);
         }
 
-        private async Task<bool> BeUniquePhone(string phone, CancellationToken cancellationToken)
+        private async Task<bool> BeUniquePhone(string phone, CancellationToken ct)
         {
-            return !await _userManager.Users
-                .AnyAsync(x => x.PhoneNumber == phone, cancellationToken);
+            return !await _context.ApplicationUsers.AnyAsync(x => x.PhoneNumber == phone, ct);
+        }
+
+        // ================= LOCATION CHECKS =================
+
+        private async Task<bool> CountryExists(Guid? id, CancellationToken ct)
+            => id != null && await _context.Countries.AnyAsync(x => x.Id == id, ct);
+
+        private async Task<bool> GovExists(Guid? id, CancellationToken ct)
+            => id != null && await _context.Governments.AnyAsync(x => x.Id == id, ct);
+
+        private async Task<bool> CityExists(Guid? id, CancellationToken ct)
+            => id != null && await _context.Cities.AnyAsync(x => x.Id == id, ct);
+
+        private async Task<bool> VillageExists(Guid? id, CancellationToken ct)
+            => id != null && await _context.Villages.AnyAsync(x => x.Id == id, ct);
+
+        // ================= HIERARCHY VALIDATION =================
+
+        private async Task<bool> BeGovInCountry(CreateDeliveryByAdminCommand cmd, Guid? govId, CancellationToken ct)
+        {
+            return await _context.Governments
+                .AnyAsync(x => x.Id == govId && x.CountryId == cmd.Country, ct);
+        }
+
+        private async Task<bool> BeCityInGov(CreateDeliveryByAdminCommand cmd, Guid? cityId, CancellationToken ct)
+        {
+            return await _context.Cities
+                .AnyAsync(x => x.Id == cityId && x.GovernmentId == cmd.Gov, ct);
+        }
+
+        private async Task<bool> BeVillageInCity(CreateDeliveryByAdminCommand cmd, Guid? villageId, CancellationToken ct)
+        {
+            return await _context.Villages
+                .AnyAsync(x => x.Id == villageId && x.CityId == cmd.City, ct);
         }
     }
 }
