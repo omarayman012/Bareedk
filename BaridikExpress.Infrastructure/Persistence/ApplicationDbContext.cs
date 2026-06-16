@@ -10,6 +10,7 @@ using BaridikExpress.Domain.Entities.BlogsModules;
 using BaridikExpress.Domain.Entities.CareerFields;
 using BaridikExpress.Domain.Entities.ClientModule;
 using BaridikExpress.Domain.Entities.ContactUs;
+using BaridikExpress.Domain.Entities.CurrencyModule;
 using BaridikExpress.Domain.Entities.Customers;
 using BaridikExpress.Domain.Entities.DeliveryModule;
 using BaridikExpress.Domain.Entities.DeliveryType;
@@ -128,7 +129,6 @@ public class ApplicationDbContext : IdentityDbContext<User>, IApplicationDbConte
 
     public DbSet<TalkService> TalkServices { get; set; }
 
-
     #endregion
 
     #region DbSets - System Management
@@ -143,6 +143,7 @@ public class ApplicationDbContext : IdentityDbContext<User>, IApplicationDbConte
     public DbSet<CustomerRegistration> CustomerRegistrationTerms { get; set; }
     public DbSet<SocialMediaLinks> SocialMediaLinks { get; set; }
     public DbSet<FAQ> FAQs { get; set; }
+    public DbSet<Currency> Currencies { get; set; }
     public DbSet<GeneralCompanySettings> GeneralCompanySettings { get; set; }
 
     #endregion
@@ -192,7 +193,7 @@ public class ApplicationDbContext : IdentityDbContext<User>, IApplicationDbConte
             .WithMany()
             .HasForeignKey(r => r.UserId)
             .OnDelete(DeleteBehavior.Cascade);
-    
+        
 
         modelBuilder.Entity<BlogTag>(entity =>
         {
@@ -245,8 +246,6 @@ public class ApplicationDbContext : IdentityDbContext<User>, IApplicationDbConte
 
     #endregion
 
-
-
     #region Helpers
 
     private static TimeZoneInfo ResolveAppTimeZone(IConfiguration configuration)
@@ -266,5 +265,4 @@ public class ApplicationDbContext : IdentityDbContext<User>, IApplicationDbConte
         TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, _appTimeZone);
 
     #endregion
-
 }
