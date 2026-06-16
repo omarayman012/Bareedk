@@ -8,5 +8,6 @@ public record UpdateCurrencyCommand(
     string? NameEn,
     string? NameAr,
     string CurrencyCode,
-    string? CurrencySymbol
+    string? CurrencySymbol,
+    bool IsActive
 ) : IRequest<Result<Guid>>;

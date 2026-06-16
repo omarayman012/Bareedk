@@ -1094,5 +1094,6 @@
     "StatisticsRetrievedSuccessfully": "Statistics retrieved successfully.",
     "CurrencyDeletedSuccessfully": "Currency deleted successfully.",
     "CurrencyCodeMaxLength": "Currency code must not exceed 10 characters.",
-    "CurrencySymbolMaxLength": "Currency symbol must not exceed 10 characters."
-    }
+    "CurrencySymbolMaxLength": "Currency symbol must not exceed 10 characters.",
+    "ContactUsCountRetrievedSuccessfully": "Contact us count retrieved successfully."
+}

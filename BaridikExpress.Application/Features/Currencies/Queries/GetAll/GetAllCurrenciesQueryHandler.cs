@@ -21,9 +21,10 @@ public class GetAllCurrenciesQueryHandler : IRequestHandler<GetAllCurrenciesQuer
     public async Task<Result<PaginatedList<CurrencyDto>>> Handle(GetAllCurrenciesQuery request, CancellationToken cancellationToken)
     {
         var query = _context.Currencies
-            .AsNoTracking()
-            .Include(x => x.CreatedBy)
-            .AsQueryable();
+      .AsNoTracking()
+      .Include(x => x.CreatedBy)
+      .Include(x => x.UpdatedBy)
+      .AsQueryable();
         if (!string.IsNullOrWhiteSpace(request.Search))
             query = query.Where(x =>
                 x.Name.En.Contains(request.Search) ||
@@ -38,9 +39,11 @@ public class GetAllCurrenciesQueryHandler : IRequestHandler<GetAllCurrenciesQuer
     x.Name.Ar,
     x.CurrencyCode,
     x.CurrencySymbol,
+    x.IsActive,
     x.CreatedAt,
     x.CreatedBy != null ? x.CreatedBy.UserName : null,
-    x.UpdatedAt
+    x.UpdatedAt,
+    x.UpdatedBy != null ? x.UpdatedBy.UserName : null
 ));
 
         var result = await PaginatedList<CurrencyDto>

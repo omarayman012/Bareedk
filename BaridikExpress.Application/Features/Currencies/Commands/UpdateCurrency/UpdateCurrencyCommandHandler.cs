@@ -29,10 +29,10 @@ public class UpdateCurrencyCommandHandler : IRequestHandler<UpdateCurrencyComman
             request.NameEn,
             request.NameAr,
             request.CurrencyCode,
-            request.CurrencySymbol
+            request.CurrencySymbol,
+            request.IsActive
         );
         _context.Currencies.Update(currency);
-
 
         await _context.SaveChangesAsync(cancellationToken);
 

@@ -3,4 +3,4 @@ using MediatR;
 
 namespace BaridikExpress.Application.Features.Currencies.Commands.DeleteCurrency;
 
-public record DeleteCurrencyCommand(Guid Id) : IRequest<Result<Guid>>;
+public record DeleteCurrencyCommand(List<Guid> Ids) : IRequest<Result<bool>>;

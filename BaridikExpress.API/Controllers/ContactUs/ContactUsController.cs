@@ -93,4 +93,6 @@ public class ContactUsController(IMediator mediator) : ControllerBase
         var result = await mediator.Send(command);
         return StatusCode(result.StatusCode, result);
     }
+
+
 }

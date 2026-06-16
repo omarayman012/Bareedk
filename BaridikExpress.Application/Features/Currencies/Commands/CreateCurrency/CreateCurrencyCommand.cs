@@ -7,5 +7,6 @@ public record CreateCurrencyCommand(
     string? NameEn,
     string? NameAr,
     string CurrencyCode,
-    string? CurrencySymbol
+    string? CurrencySymbol,
+    bool IsActive = true
 ) : IRequest<Result<Guid>>;

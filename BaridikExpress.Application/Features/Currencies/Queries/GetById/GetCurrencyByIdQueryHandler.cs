@@ -26,11 +26,14 @@ public class GetCurrencyByIdQueryHandler : IRequestHandler<GetCurrencyByIdQuery,
             .Select(x => new CurrencyDto(
                 x.Id,
                 x.Name.En,
+                x.Name.Ar,
                 x.CurrencyCode,
                 x.CurrencySymbol,
+                x.IsActive,
                 x.CreatedAt,
                 x.CreatedBy != null ? x.CreatedBy.UserName : null,
-                x.UpdatedAt
+                x.UpdatedAt,
+                x.UpdatedBy != null ? x.UpdatedBy.UserName : null
             ))
             .FirstOrDefaultAsync(cancellationToken);
 

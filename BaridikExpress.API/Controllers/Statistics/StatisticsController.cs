@@ -9,7 +9,7 @@ namespace BaridikExpress.API.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [ApiExplorerSettings(GroupName = "admin-v1")]
-[Authorize]
+//[Authorize]
 public class StatisticsController : ControllerBase
 {
     private readonly IMediator _mediator;

@@ -9,22 +9,25 @@ public class Currency : BaseEntity
     public LocalizedString Name { get; private set; } = default!;
     public string CurrencyCode { get; private set; } = string.Empty;
     public string? CurrencySymbol { get; private set; }
+    public bool IsActive { get; private set; } = true;
 
     private Currency() { }
 
-    public Currency(string? nameEn, string? nameAr, string currencyCode, string? currencySymbol)
+    public Currency(string? nameEn, string? nameAr, string currencyCode, string? currencySymbol, bool isActive = true)
     {
         Id = Guid.NewGuid();
         SetName(nameEn, nameAr);
         CurrencyCode = currencyCode.Trim();
         CurrencySymbol = currencySymbol?.Trim();
+        IsActive = isActive;
     }
 
-    public void Update(string? nameEn, string? nameAr, string currencyCode, string? currencySymbol)
+    public void Update(string? nameEn, string? nameAr, string currencyCode, string? currencySymbol, bool isActive)
     {
         SetName(nameEn, nameAr);
         CurrencyCode = currencyCode.Trim();
         CurrencySymbol = currencySymbol?.Trim();
+        IsActive = isActive;
     }
 
     private void SetName(string? nameEn, string? nameAr)

@@ -6,7 +6,7 @@ using Microsoft.Extensions.Localization;
 
 namespace BaridikExpress.Application.Features.Currencies.Commands.DeleteCurrency;
 
-public class DeleteCurrencyCommandHandler : IRequestHandler<DeleteCurrencyCommand, Result<Guid>>
+public class DeleteCurrencyCommandHandler : IRequestHandler<DeleteCurrencyCommand, Result<bool>>
 {
     private readonly IApplicationDbContext _context;
     private readonly IStringLocalizer _localizer;
@@ -17,17 +17,25 @@ public class DeleteCurrencyCommandHandler : IRequestHandler<DeleteCurrencyComman
         _localizer = localizer;
     }
 
-    public async Task<Result<Guid>> Handle(DeleteCurrencyCommand request, CancellationToken cancellationToken)
+    public async Task<Result<bool>> Handle(DeleteCurrencyCommand request, CancellationToken cancellationToken)
     {
-        var currency = await _context.Currencies
-            .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+        if (request.Ids is null || request.Ids.Count == 0)
+            return Result<bool>.Failure(_localizer["IdsRequired"]);
 
-        if (currency is null)
-            return Result<Guid>.Failure(_localizer["CurrencyNotFound"], 404);
+        var currencies = await _context.Currencies
+            .Where(x => request.Ids.Contains(x.Id))
+            .ToListAsync(cancellationToken);
 
-        _context.Currencies.Remove(currency);
+        var notFoundIds = request.Ids
+            .Except(currencies.Select(x => x.Id))
+            .ToList();
+
+        if (notFoundIds.Count > 0)
+            return Result<bool>.Failure(_localizer["SomeCurrenciesNotFound"]);
+
+        _context.Currencies.RemoveRange(currencies);
         await _context.SaveChangesAsync(cancellationToken);
 
-        return Result<Guid>.Success(currency.Id, _localizer["CurrencyDeletedSuccessfully"]);
+        return Result<bool>.Success(true, _localizer["CurrenciesDeletedSuccessfully"]);
     }
 }

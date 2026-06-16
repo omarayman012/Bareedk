@@ -24,7 +24,8 @@ public class CreateCurrencyCommandHandler : IRequestHandler<CreateCurrencyComman
             request.NameEn,
             request.NameAr,
             request.CurrencyCode,
-            request.CurrencySymbol
+            request.CurrencySymbol,
+            request.IsActive
         );
 
         await _context.Currencies.AddAsync(currency, cancellationToken);

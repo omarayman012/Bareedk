@@ -1398,6 +1398,7 @@
     "StatisticsRetrievedSuccessfully": "تم استرجاع الإحصائيات بنجاح",
     "CurrencyDeletedSuccessfully": "تم حذف العملة بنجاح.",
     "CurrencyCodeMaxLength": "رمز العملة يجب ألا يتجاوز 10 أحرف.",
-    "CurrencySymbolMaxLength": "رمز الرمز يجب ألا يتجاوز 10 أحرف."
+    "CurrencySymbolMaxLength": "رمز الرمز يجب ألا يتجاوز 10 أحرف.",
+    "ContactUsCountRetrievedSuccessfully": "تم استرجاع عدد الرسائل بنجاح."
 }
 
