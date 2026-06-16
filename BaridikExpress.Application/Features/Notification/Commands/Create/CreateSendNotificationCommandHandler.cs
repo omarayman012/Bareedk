@@ -1,4 +1,5 @@
-﻿using BaridikExpress.Application.Interfaces.File;
+﻿using BaridikExpress.Application.Common.Helpers;
+using BaridikExpress.Application.Interfaces.File;
 using BaridikExpress.Domain.Entities.NotificationModules;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,33 +15,51 @@ public sealed class CreateSendNotificationCommandHandler(
         CreateSendNotificationCommand request,
         CancellationToken cancellationToken)
     {
-        var imageUrlResult = await UploadImageAsync(request, cancellationToken);
+        var (titleAr, titleEn) = NormalizeHelper.Normalize(
+            request.TitleAr,
+            request.TitleEn);
+
+        var (descriptionAr, descriptionEn) = NormalizeHelper.Normalize(
+            request.DescriptionAr,
+            request.DescriptionEn);
+
+        var imageUrlResult = await UploadImageAsync(request);
 
         if (!imageUrlResult.IsSuccess)
-            return Result<bool>.Failure(imageUrlResult.Message!, imageUrlResult.StatusCode);
+            return Result<bool>.Failure(
+                imageUrlResult.Message!,
+                imageUrlResult.StatusCode);
 
-        var userIds = await CollectUserIdsAsync(request, cancellationToken);
+        var userIds = await CollectUserIdsAsync(
+            request,
+            cancellationToken);
 
         if (userIds.Count == 0)
-            return Result<bool>.Failure(localizer["NoRecipientsFound"], 404);
+            return Result<bool>.Failure(
+                localizer["NoRecipientsFound"],
+                404);
 
         var notification = SendNotification.Create(
-            titleAr: request.TitleAr,
-            titleEn: request.TitleEn,
-            descriptionAr: request.DescriptionAr,
-            descriptionEn: request.DescriptionEn,
+            titleAr: titleAr,
+            titleEn: titleEn,
+            descriptionAr: descriptionAr,
+            descriptionEn: descriptionEn,
             userIds: userIds,
-            imageUrl: imageUrlResult.ToString());
+            imageUrl: imageUrlResult.Data);
 
-        await db.SendNotifications.AddAsync(notification, cancellationToken);
+        await db.SendNotifications.AddAsync(
+            notification,
+            cancellationToken);
+
         await db.SaveChangesAsync(cancellationToken);
 
-        return Result<bool>.Success(true, localizer["NotificationSentSuccessfully"]);
+        return Result<bool>.Success(
+            true,
+            localizer["NotificationSentSuccessfully"]);
     }
 
     private async Task<Result<string?>> UploadImageAsync(
-        CreateSendNotificationCommand request,
-        CancellationToken cancellationToken)
+        CreateSendNotificationCommand request)
     {
         if (request.Image is null)
             return Result<string?>.Success(null);
@@ -56,7 +75,9 @@ public sealed class CreateSendNotificationCommandHandler(
             "notification-images");
 
         if (imageUrl is null)
-            return Result<string?>.Failure(localizer["ImageUploadFailed"], 400);
+            return Result<string?>.Failure(
+                localizer["ImageUploadFailed"],
+                400);
 
         return Result<string?>.Success(imageUrl);
     }

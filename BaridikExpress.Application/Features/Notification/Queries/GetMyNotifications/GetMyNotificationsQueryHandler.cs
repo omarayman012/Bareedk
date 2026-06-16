@@ -16,49 +16,54 @@ public sealed class GetMyNotificationsQueryHandler(
         GetMyNotificationsQuery request,
         CancellationToken cancellationToken)
     {
-        var userId = httpContextAccessor.HttpContext?.User?
-            .FindFirstValue(ClaimTypes.NameIdentifier);
+        #region Get Current User
 
-        if (string.IsNullOrWhiteSpace(userId))
-        {
+        var userId = httpContextAccessor.HttpContext?.User?
+            .FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(userId))
             return Result<PaginatedList<MyNotificationResponse>>
                 .Failure(localizer["Unauthorized"], 401);
-        }
 
-        var pageNumber = request.PageNumber <= 0 ? 1 : request.PageNumber;
-        var pageSize = request.PageSize <= 0 ? 10 : request.PageSize;
+        #endregion
+
+        #region Build Query
 
         var query = db.NotificationRecipients
             .AsNoTracking()
-            .Where(x => x.UserId == userId);
+            .Where(x => x.UserId == userId)
+            .AsQueryable();
+
+        #endregion
+
+        #region Filters
 
         if (request.IsRead.HasValue)
-        {
             query = query.Where(x => x.IsRead == request.IsRead.Value);
-        }
 
-        var projectedQuery = query
+        #endregion
+
+        #region Projection
+
+        var projected = query
             .OrderByDescending(x => x.Notification.CreatedAt)
             .Select(x => new MyNotificationResponse(
                 x.Notification.Id,
-                new LocalizedDto
-                {
-                    AR = x.Notification.TitleAr,
-                    EN = x.Notification.TitleEn
-                },
-                new LocalizedDto
-                {
-                    AR = x.Notification.DescriptionAr,
-                    EN = x.Notification.DescriptionEn
-                },
+                new LocalizedDto { AR = x.Notification.TitleAr, EN = x.Notification.TitleEn },
+                new LocalizedDto { AR = x.Notification.DescriptionAr, EN = x.Notification.DescriptionEn },
                 x.Notification.ImageUrl,
                 x.IsRead,
                 x.ReadAt,
-                x.Notification.CreatedAt
-            ));
+                x.Notification.CreatedAt));
+
+        #endregion
+
+        #region Paginate
 
         var result = await PaginatedList<MyNotificationResponse>
-            .CreateAsync(projectedQuery, pageNumber, pageSize);
+            .CreateAsync(projected, request.PageNumber, request.PageSize);
+
+        #endregion
 
         return Result<PaginatedList<MyNotificationResponse>>
             .Success(result, localizer["NotificationsRetrievedSuccessfully"]);
