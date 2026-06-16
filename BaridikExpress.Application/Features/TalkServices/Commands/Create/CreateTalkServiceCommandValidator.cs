@@ -15,7 +15,7 @@ public sealed class CreateTalkServiceCommandValidator
             .WithMessage(localizer["DuplicateServiceBusinessPlanIds"]);
 
         RuleForEach(x => x.ServiceBusinessPlanIds)
-            .NotEmpty()
+            .NotEqual(Guid.Empty)
             .WithMessage(localizer["ServiceBusinessPlanIdIsInvalid"]);
 
         RuleFor(x => x.FirstName)
@@ -31,11 +31,11 @@ public sealed class CreateTalkServiceCommandValidator
             .WithMessage(localizer["LastNameTooLong"]);
 
         RuleFor(x => x.CountryId)
-            .NotEmpty()
+            .NotEqual(Guid.Empty)
             .WithMessage(localizer["CountryIdIsRequired"]);
 
         RuleFor(x => x.GovernmentId)
-            .NotEmpty()
+            .NotEqual(Guid.Empty)
             .WithMessage(localizer["GovernmentIdIsRequired"]);
 
         RuleFor(x => x.CityId)

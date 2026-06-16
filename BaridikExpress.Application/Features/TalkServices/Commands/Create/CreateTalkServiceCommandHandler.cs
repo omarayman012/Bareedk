@@ -82,7 +82,7 @@ public sealed class CreateTalkServiceCommandHandler(
                 request.LastName,
                 request.CountryId,
                 request.GovernmentId,
-                request.CityId ?? Guid.Empty,
+                request.CityId,
                 request.VillageId,
                 request.PostalCode,
                 request.PhoneNumber,

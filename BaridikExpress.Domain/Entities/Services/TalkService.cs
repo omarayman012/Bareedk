@@ -44,22 +44,22 @@ namespace BaridikExpress.Domain.Entities.Services
         private TalkService() { }
 
         public static TalkService Create(
-            Guid serviceBusinessPlanId,
-            ShipmentVolumeRange shipmentVolumeRange,
-            string firstName,
-            string lastName,
-            Guid countryId,
-            Guid governmentId,
-            Guid cityId,
-            Guid? villageId,
-            string postalCode,
-            string phoneNumber,
-            string workEmail,
-            string jobTitle,
-            string companyName,
-            string companyAddress,
-            string websiteUrl,
-            string additionalInformation)
+       Guid serviceBusinessPlanId,
+       ShipmentVolumeRange shipmentVolumeRange,
+       string firstName,
+       string lastName,
+       Guid countryId,
+       Guid governmentId,
+       Guid? cityId,
+       Guid? villageId,
+       string postalCode,
+       string phoneNumber,
+       string workEmail,
+       string jobTitle,
+       string companyName,
+       string companyAddress,
+       string websiteUrl,
+       string additionalInformation)
         {
             return new TalkService
             {
@@ -69,7 +69,6 @@ namespace BaridikExpress.Domain.Entities.Services
                 FirstName = firstName,
                 LastName = lastName,
                 CountryId = countryId,
-
                 GovernmentId = governmentId,
                 CityId = cityId,
                 VillageId = villageId,
