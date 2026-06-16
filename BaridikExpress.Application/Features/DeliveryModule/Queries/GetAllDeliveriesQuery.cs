@@ -21,10 +21,10 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Queries
         public DateTime? ApprovedTo { get; set; }
 
         // 📍 Location
-        public string? Country { get; set; }
-        public string? Gov { get; set; }
-        public string? City { get; set; }
-        public string? Village { get; set; }
+        public Guid? Country { get; set; }
+        public Guid? Gov { get; set; }
+        public Guid? City { get; set; }
+        public Guid? Village { get; set; }
 
         // 📄 Pagination
         public int PageNumber { get; set; } = 1;

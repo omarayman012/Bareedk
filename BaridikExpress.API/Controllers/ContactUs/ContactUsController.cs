@@ -47,7 +47,7 @@ public class ContactUsController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> MarkAsRead(Guid id)
     {
         var result = await mediator.Send(new MarkAsReadCommand(id));
-        return StatusCode(result.StatusCode, result);
+       return StatusCode(result.StatusCode, result);
     }
 
     [HttpPatch("MarkAsReadBulk")]
@@ -93,4 +93,6 @@ public class ContactUsController(IMediator mediator) : ControllerBase
         var result = await mediator.Send(command);
         return StatusCode(result.StatusCode, result);
     }
+
+
 }

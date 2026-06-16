@@ -1,16 +1,14 @@
-﻿using BaridikExpress.Application.Features.DeliveryModule.Command;
+﻿using BaridikExpress.Application.Features.CommanDTO.Localizes;
+using BaridikExpress.Application.Features.DeliveryModule.Command;
 using BaridikExpress.Application.Features.DeliveryModule.DTOs;
 using BaridikExpress.Application.Interfaces.File;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace BaridikExpress.Application.Features.DeliveryModule.Handler
 {
     public class UpdateDeliveryHandler
-       : IRequestHandler<UpdateDeliveryCommand, Result<UpdateDeliveryResponseDto>>
+        : IRequestHandler<UpdateDeliveryCommand, Result<UpdateDeliveryResponseDto>>
     {
         private readonly IApplicationDbContext _context;
         private readonly IFileStorageService _fileStorage;
@@ -46,9 +44,11 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
             // ================= GET DELIVERY =================
             var delivery = await _context.Deliveries
                 .Include(x => x.User)
-                .FirstOrDefaultAsync(
-                    x => x.UserId == request.Id,
-                    cancellationToken);
+                .Include(x => x.Country)
+                .Include(x => x.Government)
+                .Include(x => x.City)
+                .Include(x => x.Village)
+                .FirstOrDefaultAsync(x => x.UserId == request.Id, cancellationToken);
 
             if (delivery == null)
             {
@@ -60,13 +60,14 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
             // ================= USER =================
             delivery.User.FullName = request.FullName;
 
-            // ================= DELIVERY =================
+            // ================= DELIVERY DATA =================
             delivery.DateOfBirth = request.DateOfBirth;
 
-            delivery.Country = request.Country;
-            delivery.Gov = request.Gov;
-            delivery.City = request.City;
-            delivery.Village = request.Village;
+            delivery.CountryId = request.Country;
+            delivery.GovernmentId = request.Gov;
+            delivery.CityId = request.City;
+            delivery.VillageId = request.Village;
+
             delivery.Address = request.Address;
             delivery.Floor = request.Floor;
             delivery.Apt = request.Apt;
@@ -75,45 +76,30 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
             delivery.VehType = request.VehType;
 
             // ================= FILES =================
-            if (request.NidImg != null)
+            async Task<string?> SaveFile(IFormFile? file, string folder)
             {
-                delivery.NidImg = await _fileStorage.SaveFileAsync(
-                    request.NidImg.OpenReadStream(),
-                    request.NidImg.FileName,
-                    "deliveries/nid");
+                if (file == null) return null;
+
+                return await _fileStorage.SaveFileAsync(
+                    file.OpenReadStream(),
+                    file.FileName,
+                    folder);
             }
+
+            if (request.NidImg != null)
+                delivery.NidImg = await SaveFile(request.NidImg, "deliveries/nid");
 
             if (request.LicImg != null)
-            {
-                delivery.LicImg = await _fileStorage.SaveFileAsync(
-                    request.LicImg.OpenReadStream(),
-                    request.LicImg.FileName,
-                    "deliveries/license");
-            }
+                delivery.LicImg = await SaveFile(request.LicImg, "deliveries/license");
 
             if (request.VehImg != null)
-            {
-                delivery.VehImg = await _fileStorage.SaveFileAsync(
-                    request.VehImg.OpenReadStream(),
-                    request.VehImg.FileName,
-                    "deliveries/vehicle");
-            }
+                delivery.VehImg = await SaveFile(request.VehImg, "deliveries/vehicle");
 
             if (request.PoliceCertImg != null)
-            {
-                delivery.PoliceCertImg = await _fileStorage.SaveFileAsync(
-                    request.PoliceCertImg.OpenReadStream(),
-                    request.PoliceCertImg.FileName,
-                    "deliveries/police");
-            }
+                delivery.PoliceCertImg = await SaveFile(request.PoliceCertImg, "deliveries/police");
 
             if (request.PlateImg != null)
-            {
-                delivery.PlateImg = await _fileStorage.SaveFileAsync(
-                    request.PlateImg.OpenReadStream(),
-                    request.PlateImg.FileName,
-                    "deliveries/plate");
-            }
+                delivery.PlateImg = await SaveFile(request.PlateImg, "deliveries/plate");
 
             await _context.SaveChangesAsync(cancellationToken);
 
@@ -128,23 +114,51 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
 
                 DateOfBirth = delivery.DateOfBirth,
 
-                Country = delivery.Country,
-                Gov = delivery.Gov,
-                City = delivery.City,
-                Village = delivery.Village,
+                // LOCATION (Localized)
+                Country = delivery.Country == null ? null : new LocalizedNameDto
+                {
+                    Id = delivery.Country.Id,
+                    EN = delivery.Country.NameEn,
+                    AR = delivery.Country.NameAr
+                },
+
+                Gov = delivery.Government == null ? null : new LocalizedNameDto
+                {
+                    Id = delivery.Government.Id,
+                    EN = delivery.Government.NameEn,
+                    AR = delivery.Government.NameAr
+                },
+
+                City = delivery.City == null ? null : new LocalizedNameDto
+                {
+                    Id = delivery.City.Id,
+                    EN = delivery.City.NameEn,
+                    AR = delivery.City.NameAr
+                },
+
+                Village = delivery.Village == null ? null : new LocalizedNameDto
+                {
+                    Id = delivery.Village.Id,
+                    EN = delivery.Village.NameEn,
+                    AR = delivery.Village.NameAr
+                },
+
                 Address = delivery.Address,
                 Floor = delivery.Floor,
                 Apt = delivery.Apt,
 
+                // VEHICLE
                 PlateNo = delivery.PlateNo,
                 VehType = delivery.VehType.ToString(),
 
+                // FILES
                 NidImg = delivery.NidImg,
                 LicImg = delivery.LicImg,
                 VehImg = delivery.VehImg,
                 PoliceCertImg = delivery.PoliceCertImg,
                 PlateImg = delivery.PlateImg,
 
+                // APPROVAL
                 IsApproved = delivery.IsApproved,
                 ApprovedAt = delivery.ApprovedAt,
                 CreateType = delivery.CreateType.ToString()

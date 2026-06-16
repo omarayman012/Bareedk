@@ -1,5 +1,6 @@
 ﻿using BaridikExpress.Application.DTOs.DeliveryModule;
 using BaridikExpress.Application.Features.AuthDeliveryModule.Command;
+using BaridikExpress.Application.Features.CommanDTO.Localizes;
 using BaridikExpress.Application.Interfaces.File;
 using BaridikExpress.Domain.Entities.AuthModules;
 using BaridikExpress.Domain.Entities.DeliveryModule;
@@ -141,10 +142,10 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
                 PlateNo = request.PlateNo,
                 VehType = request.VehType,
 
-                Country = request.Country,
-                Gov = request.Gov,
-                City = request.City,
-                Village = request.Village,
+                CountryId = request.Country,
+                GovernmentId = request.Gov,
+                CityId = request.City,
+                VillageId = request.Village,
                 Address = request.Address,
                 Floor = request.Floor,
                 Apt = request.Apt,
@@ -183,10 +184,33 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
                 ApprovedAt = delivery.ApprovedAt,
                 CreateType = delivery.CreateType.ToString(),
 
-                Country = delivery.Country,
-                Gov = delivery.Gov,
-                City = delivery.City,
-                Village = delivery.Village,
+                Country = delivery.Country == null ? null : new LocalizedNameDto
+                {
+                    Id = delivery.Country.Id,
+                    EN = delivery.Country.NameEn,
+                    AR = delivery.Country.NameAr
+                },
+
+                Gov = delivery.Government == null ? null : new LocalizedNameDto
+                {
+                    Id = delivery.Government.Id,
+                    EN = delivery.Government.NameEn,
+                    AR = delivery.Government.NameAr
+                },
+
+                City = delivery.City == null ? null : new LocalizedNameDto
+                {
+                    Id = delivery.City.Id,
+                    EN = delivery.City.NameEn,
+                    AR = delivery.City.NameAr
+                },
+
+                Village = delivery.Village == null ? null : new LocalizedNameDto
+                {
+                    Id = delivery.Village.Id,
+                    EN = delivery.Village.NameEn,
+                    AR = delivery.Village.NameAr
+                },
                 Address = delivery.Address,
                 Floor = delivery.Floor,
                 Apt = delivery.Apt,

@@ -1,4 +1,5 @@
 ﻿using BaridikExpress.Application.DTOs.DeliveryModule;
+using BaridikExpress.Application.Features.CommanDTO.Localizes;
 using BaridikExpress.Application.Features.DeliveryModule.Queries;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
@@ -29,7 +30,6 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
             GetDeliveryByIdQuery request,
             CancellationToken cancellationToken)
         {
-            // ================= AUTH CHECK =================
             var user = _httpContextAccessor.HttpContext?.User;
 
             if (user == null || !user.Identity?.IsAuthenticated == true)
@@ -39,9 +39,12 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
                     401);
             }
 
-            // ================= QUERY =================
             var delivery = await _context.Deliveries
                 .Include(x => x.User)
+                .Include(x => x.Country)
+                .Include(x => x.Government)
+                .Include(x => x.City)
+                .Include(x => x.Village)
                 .Where(x => x.UserId == request.Id)
                 .Select(x => new GetDeliveryByIdDto
                 {
@@ -61,16 +64,39 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
                     ApprovedAt = x.ApprovedAt,
                     CreateType = x.CreateType.ToString(),
 
-                    // ADDRESS
-                    Country = x.Country,
-                    Gov = x.Gov,
-                    City = x.City,
-                    Village = x.Village,
+                    // ADDRESS (FIXED)
+                    Country = x.Country == null ? null : new LocalizedNameDto
+                    {
+                        Id = x.Country.Id,
+                        EN = x.Country.NameEn,
+                        AR = x.Country.NameAr
+                    },
+
+                    Gov = x.Government == null ? null : new LocalizedNameDto
+                    {
+                        Id = x.Government.Id,
+                        EN = x.Government.NameEn,
+                        AR = x.Government.NameAr
+                    },
+
+                    City = x.City == null ? null : new LocalizedNameDto
+                    {
+                        Id = x.City.Id,
+                        EN = x.City.NameEn,
+                        AR = x.City.NameAr
+                    },
+
+                    Village = x.Village == null ? null : new LocalizedNameDto
+                    {
+                        Id = x.Village.Id,
+                        EN = x.Village.NameEn,
+                        AR = x.Village.NameAr
+                    },
+
                     Address = x.Address,
                     Floor = x.Floor,
                     Apt = x.Apt,
 
-                    // OPTIONAL
                     Edu = x.Edu,
 
                     // FILES
@@ -87,7 +113,6 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
                 })
                 .FirstOrDefaultAsync(cancellationToken);
 
-            // ================= NOT FOUND =================
             if (delivery == null)
             {
                 return Result<GetDeliveryByIdDto>.Failure(

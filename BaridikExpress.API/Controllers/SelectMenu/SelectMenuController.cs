@@ -176,8 +176,8 @@ public class SelectMenuController(IMediator mediator) : ControllerBase
     [HttpGet("blogs-authors")]
     [AllowAnonymous]
     public async Task<IActionResult> GetBlogsAuthors(
-    [FromQuery] string? name,
-    CancellationToken cancellationToken)
+        [FromQuery] string? name,
+        CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
             new GetBlogsAuthorsSelectMenuQuery(name),
@@ -185,11 +185,12 @@ public class SelectMenuController(IMediator mediator) : ControllerBase
 
         return StatusCode(result.StatusCode, result);
     }
+
     [HttpGet("tags")]
     [AllowAnonymous]
     public async Task<IActionResult> GetTags(
-    [FromQuery] string? name,
-    CancellationToken cancellationToken)
+        [FromQuery] string? name,
+        CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
             new GetTagsSelectMenuQuery(name),
@@ -197,11 +198,12 @@ public class SelectMenuController(IMediator mediator) : ControllerBase
 
         return StatusCode(result.StatusCode, result);
     }
+
     [HttpGet("publishing-houses")]
     [AllowAnonymous]
     public async Task<IActionResult> GetPublishingHouses(
-    [FromQuery] string? name,
-    CancellationToken cancellationToken)
+        [FromQuery] string? name,
+        CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
             new GetPublishingHousesSelectMenuQuery(name),

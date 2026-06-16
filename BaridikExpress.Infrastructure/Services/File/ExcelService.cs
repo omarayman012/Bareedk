@@ -1,4 +1,4 @@
-﻿using BaridikExpress.Application.Interfaces.File;
+using BaridikExpress.Application.Interfaces.File;
 using BaridikExpress.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -6,8 +6,25 @@ using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System.ComponentModel.DataAnnotations;
 using System.Drawing;
+using System.Globalization;
 using System.Linq.Expressions;
 using System.Reflection;
+
+namespace BaridikExpress.Infrastructure.Services.File
+{
+    /// <summary>
+    /// ضع هذا الـ Attribute على أي خاصية DateTime في DTO الخاص بالـ Export
+    /// لتحديد صيغة العرض في ملف Excel.
+    /// مثال: [ExcelDateFormat("yyyy-MM-dd hh:mm tt")]
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Property)]
+    public sealed class ExcelDateFormatAttribute : Attribute
+    {
+        public string Format { get; }
+        public ExcelDateFormatAttribute(string format = "yyyy-MM-dd hh:mm tt")
+            => Format = format;
+    }
+}
 
 namespace BaridikExpress.Infrastructure.Services.File
 {
@@ -42,8 +59,6 @@ namespace BaridikExpress.Infrastructure.Services.File
 
                 range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 range.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-
-
             }
 
             worksheet.Row(1).Height = 10;
@@ -51,9 +66,9 @@ namespace BaridikExpress.Infrastructure.Services.File
             return await package.GetAsByteArrayAsync();
         }
 
+
         public async Task<byte[]> DownloadDataAsync<T>(IEnumerable<T> data) where T : class
         {
-
             ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
 
             using var package = new ExcelPackage();
@@ -62,174 +77,84 @@ namespace BaridikExpress.Infrastructure.Services.File
             var entityType = _context.Model.FindEntityType(typeof(T));
             var properties = GetExcelProperties<T>(entityType);
 
+            // 1️⃣ رسم الهيدر
             for (int i = 0; i < properties.Length; i++)
             {
                 worksheet.Cells[1, i + 1].Value = properties[i].Name;
             }
 
+            // 2️⃣ كتابة البيانات
             int row = 2;
             foreach (var item in data)
             {
                 for (int col = 0; col < properties.Length; col++)
                 {
-                    worksheet.Cells[row, col + 1].Value = properties[col].GetValue(item);
+                    var prop = properties[col];
+                    var cell = worksheet.Cells[row, col + 1];
+                    var value = prop.GetValue(item);
+
+                    if (value is null)
+                    {
+                        cell.Value = null;
+                        continue;
+                    }
+
+                    // فحص نوع الخاصية الأساسي حتى لو كانت Nullable
+                    var propType = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
+
+                    // 🎯 التعديل السحري: استدعاء الـ Attribute من كلاس الـ DTO الفعلي (T) وليس الـ Entity
+                    var typeProp = typeof(T).GetProperty(prop.Name);
+                    var dateAttr = typeProp?.GetCustomAttribute<ExcelDateFormatAttribute>();
+
+                    // إذا كانت الخاصية تاريخ ولها الـ Attribute الخاص بالتنسيق
+                    if (dateAttr is not null && (propType == typeof(DateTime) || propType == typeof(DateTimeOffset)))
+                    {
+                        if (value is DateTimeOffset dto)
+                        {
+                            cell.Value = dto.DateTime; // EPPlus يتعامل مع DateTime بشكل أفضل
+                        }
+                        else
+                        {
+                            cell.Value = (DateTime)value;
+                        }
+
+                        // ضبط التنسيق الخاص بـ Excel (تحويل التنسيق الصغير والكبير ليناسب الإكسيل)
+                        string excelFormat = dateAttr.Format
+                            .Replace("tt", "AM/PM")  // إكسيل يفهم AM/PM أفضل من tt في بعض النسخ
+                            .Replace("hh", "hh")
+                            .Replace("mm", "mm");
+
+                        cell.Style.Numberformat.Format = excelFormat;
+                    }
+                    else
+                    {
+                        cell.Value = value;
+                    }
                 }
                 row++;
             }
 
+            // 3️⃣ تنسيق الهيدر (اللون الأسود والكتابة البيضاء)
             using (var range = worksheet.Cells[1, 1, 1, properties.Length])
             {
                 range.Style.Font.Color.SetColor(Color.White);
                 range.Style.Fill.PatternType = ExcelFillStyle.Solid;
-                range.Style.Fill.BackgroundColor.SetColor(color: Color.Black);
-
+                range.Style.Fill.BackgroundColor.SetColor(Color.Black);
                 range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 range.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-
             }
 
-            worksheet.Row(1).Height = 10;
+            worksheet.Row(1).Height = 25; // تكبير ارتفاع الهيدر ليكون منسقاً
             worksheet.Cells.AutoFitColumns();
 
             return await package.GetAsByteArrayAsync();
         }
 
-        //public async Task<ExcelUploadResult<T>> UploadAsync<T>(IFormFile file)
-        // where T : class, new()
-        //{
-        //    ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
-
-        //    var uploaded = new List<T>();
-        //    var skippedRows = new List<int>();
-        //    var skippedDetails = new List<ExcelSkippedRowDetail>();
-        //    var totalRows = 0;
-        //    var seenKeysInFile = new HashSet<string>(StringComparer.Ordinal);
-
-        //    using var stream = new MemoryStream();
-        //    await file.CopyToAsync(stream);
-        //    using var package = new ExcelPackage(stream);
-
-        //    var worksheet = package.Workbook.Worksheets.First();
-        //    var entityType = _context.Model.FindEntityType(typeof(T));
-        //    var properties = GetExcelProperties<T>(entityType);
-        //    var uniqueKeyOptions = GetUniqueKeyOptions(entityType, properties.Select(p => p.Name).ToHashSet(StringComparer.OrdinalIgnoreCase));
-        //    uniqueKeyOptions = AddFallbackNameKeyOptions<T>(uniqueKeyOptions, properties.Select(p => p.Name).ToHashSet(StringComparer.OrdinalIgnoreCase));
-
-        //    // قراءة الهيدر
-        //    var headers = new Dictionary<int, string>();
-        //    for (int col = 1; col <= worksheet.Dimension.End.Column; col++)
-        //    {
-        //        var header = worksheet.Cells[1, col].Text?.Trim();
-        //        if (!string.IsNullOrEmpty(header))
-        //            headers[col] = header;
-        //    }
-
-        //    for (int row = 2; row <= worksheet.Dimension.End.Row; row++)
-        //    {
-        //        var entity = new T();
-        //        totalRows++;
-
-        //        foreach (var header in headers)
-        //        {
-        //            var prop = properties.FirstOrDefault(p => p.Name == header.Value);
-
-        //            if (prop == null)
-        //                continue;
-
-        //            var cellValue = worksheet.Cells[row, header.Key].Value;
-        //            if (cellValue == null) continue;
-
-        //            try
-        //            {
-        //                var targetType = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
-        //                object safeValue;
-
-        //                if (targetType == typeof(string))
-        //                    safeValue = cellValue.ToString();
-        //                else if (targetType.IsEnum)
-        //                    safeValue = Enum.Parse(targetType, cellValue.ToString(), true);
-        //                else if (targetType == typeof(DateTime))
-        //                {
-        //                    if (DateTime.TryParse(cellValue.ToString(), out var dt))
-        //                        safeValue = dt;
-        //                    else
-        //                        safeValue = DateTime.Now;
-        //                }
-        //                else
-        //                    safeValue = Convert.ChangeType(cellValue, targetType);
-
-        //                prop.SetValue(entity, safeValue);
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                throw new Exception($"Invalid value '{cellValue}' for column '{header.Value}' at row {row}", ex);
-        //            }
-        //        }
-
-        //        // pick the first unique key option that has values for this row
-        //        var keyProps = PickKeyPropsForEntity(entity, uniqueKeyOptions);
-        //        if (keyProps != null)
-        //        {
-        //            // Skip duplicates within the same uploaded Excel file first
-        //            var keySignature = BuildKeySignature(entity, keyProps);
-        //            if (!string.IsNullOrEmpty(keySignature))
-        //            {
-        //                if (!seenKeysInFile.Add(keySignature))
-        //                {
-        //                    skippedRows.Add(row);
-        //                    skippedDetails.Add(new ExcelSkippedRowDetail
-        //                    {
-        //                        RowNumber = row,
-        //                        Reason = ExcelSkipReason.DuplicateInFile,
-        //                        KeyColumns = keyProps.ToList(),
-        //                        KeyValues = ExtractKeyValues(entity, keyProps)
-        //                    });
-        //                    continue;
-        //                }
-        //            }
-
-        //            var exists = await ExistsAsync(entity, keyProps);
-        //            if (exists)
-        //            {
-        //                skippedRows.Add(row);
-        //                skippedDetails.Add(new ExcelSkippedRowDetail
-        //                {
-        //                    RowNumber = row,
-        //                    Reason = ExcelSkipReason.ExistsInDatabase,
-        //                    KeyColumns = keyProps.ToList(),
-        //                    KeyValues = ExtractKeyValues(entity, keyProps)
-        //                });
-        //                continue;
-        //            }
-        //        }
-
-        //        uploaded.Add(entity);
-        //    }
-
-        //    if (uploaded.Count > 0)
-        //    {
-        //        _context.Set<T>().AddRange(uploaded);
-        //        await _context.SaveChangesAsync();
-        //    }
-
-        //    return new ExcelUploadResult<T>
-        //    {
-        //        Message = $"تم رفع عدد {uploaded.Count} ولم يتم رفع عدد {skippedRows.Count}",
-        //        TotalRows = totalRows,
-        //        UploadedCount = uploaded.Count,
-        //        SkippedCount = skippedRows.Count,
-        //        SkippedRows = skippedRows,
-        //        SkippedDetails = skippedDetails,
-        //        UploadedItems = uploaded
-        //    };
-        //}
-
-
         public async Task<ExcelUploadResult<TEntity>> UploadAsync<TExcel, TEntity>(
           IFormFile file,
           Func<TExcel, TEntity> mapper,
-          Func<TEntity, Task<bool>>? existsChecker = null,  
-          Func<TEntity, string>? inFileKeySelector = null,  
+          Func<TEntity, Task<bool>>? existsChecker = null,
+          Func<TEntity, string>? inFileKeySelector = null,
           CancellationToken cancellationToken = default)
           where TExcel : class, new()
           where TEntity : class
@@ -397,7 +322,6 @@ namespace BaridikExpress.Infrastructure.Services.File
         {
             if (entityType == null) return new List<string[]>();
 
-            // Prefer smaller unique indexes (single-column first).
             return entityType.GetIndexes()
                 .Where(i => i.IsUnique)
                 .Select(i => i.Properties.Select(p => p.Name).ToArray())
@@ -410,8 +334,6 @@ namespace BaridikExpress.Infrastructure.Services.File
             List<string[]> keyOptions,
             HashSet<string> excelPropertyNames)
         {
-            // If the entity doesn't have unique indexes (or the Excel sheet doesn't include them),
-            // still allow a "Name"-based uniqueness check when name columns are present.
             var candidates = new[] { "Name", "NameEn", "NameAr" };
 
             var fallback = candidates
@@ -461,7 +383,6 @@ namespace BaridikExpress.Infrastructure.Services.File
 
         private async Task<bool> ExistsAsync<TEntity>(TEntity entity, string[] keyProps) where TEntity : class
         {
-            // Build: e => e.Prop1 == value1 && e.Prop2 == value2 ...
             var param = Expression.Parameter(typeof(TEntity), "e");
             Expression? body = null;
 
@@ -477,7 +398,6 @@ namespace BaridikExpress.Infrastructure.Services.File
                 var constant = Expression.Constant(valueObj, propInfo.PropertyType);
                 var member = Expression.Property(param, propInfo);
 
-                // Normalize string comparison (trim) so it matches typical uniqueness expectations.
                 Expression equalsExpr;
                 if (propType == typeof(string))
                 {
@@ -520,8 +440,6 @@ namespace BaridikExpress.Infrastructure.Services.File
 
         private static string BuildKeySignature<TEntity>(TEntity entity, string[] keyProps)
         {
-            // Stable string representation to detect duplicates inside the file.
-            // Normalize strings by trimming and lower-casing.
             var parts = new List<string>(capacity: keyProps.Length);
             foreach (var propName in keyProps)
             {
