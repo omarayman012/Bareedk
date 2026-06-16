@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BaridikExpress.API.Controllers.AuthDeliveryModule
 {
+
     [ApiController]
     [Route("api/v1/delivery/[controller]")]
     [ApiExplorerSettings(GroupName = "delivery-v1")]
@@ -17,6 +18,8 @@ namespace BaridikExpress.API.Controllers.AuthDeliveryModule
         {
             _mediator = mediator;
         }
+
+
 
 
         [Authorize(Roles = "SuperAdmin")]
@@ -56,6 +59,8 @@ namespace BaridikExpress.API.Controllers.AuthDeliveryModule
 
             return Ok(result);
         }
+
+
 
         [Authorize(Roles = "SuperAdmin")]
         [HttpGet("GetById/{id}")]
