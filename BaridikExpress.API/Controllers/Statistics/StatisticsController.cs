@@ -1,4 +1,5 @@
 ﻿using BaridikExpress.Application.Features.Statistics.Queries.GetStatistics;
+using BaridikExpress.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,9 +22,11 @@ public class StatisticsController : ControllerBase
     }
 
     [HttpGet("GetAll")]
-    public async Task<IActionResult> GetStatistics(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetStatistics(
+    [FromQuery] StatisticsFilter filter = StatisticsFilter.Overall,
+    CancellationToken cancellationToken = default)
     {
-        var result = await _mediator.Send(new GetStatisticsQuery(), cancellationToken);
-        return Ok(result);
+        var result = await _mediator.Send(new GetStatisticsQuery(filter), cancellationToken);
+        return StatusCode(result.StatusCode, result);
     }
 }
