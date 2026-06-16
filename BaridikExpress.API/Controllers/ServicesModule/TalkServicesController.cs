@@ -2,6 +2,7 @@
 using BaridikExpress.Application.Features.TalkServices.Commands.Delete;
 using BaridikExpress.Application.Features.TalkServices.Queries.GetAll;
 using BaridikExpress.Application.Features.TalkServices.Queries.GetById;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BaridikExpress.API.Controllers.ServicesModule;
@@ -9,6 +10,7 @@ namespace BaridikExpress.API.Controllers.ServicesModule;
 [ApiController]
 [Route("api/v1/[controller]")]
 [ApiExplorerSettings(GroupName = "admin-v1")]
+[Authorize]
 public sealed class TalkServicesController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
@@ -30,6 +32,7 @@ public sealed class TalkServicesController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost]
+    [AllowAnonymous]
     public async Task<IActionResult> Create(
         [FromBody] CreateTalkServiceCommand command)
     {
