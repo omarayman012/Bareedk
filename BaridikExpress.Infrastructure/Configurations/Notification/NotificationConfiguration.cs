@@ -1,12 +1,13 @@
-﻿using BaridikExpress.Domain.Entities.NotificationModules;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BaridikExpress.Infrastructure.Configurations.Notification;
 
-public class NotificationConfiguration : IEntityTypeConfiguration<Domain.Entities.NotificationModules.Notification>
+public class NotificationConfiguration
+    : IEntityTypeConfiguration<Domain.Entities.NotificationModules.Notification>
 {
-    public void Configure(EntityTypeBuilder<Domain.Entities.NotificationModules.Notification> builder)
+    public void Configure(
+        EntityTypeBuilder<Domain.Entities.NotificationModules.Notification> builder)
     {
         builder.ToTable("Notifications");
 
@@ -19,13 +20,28 @@ public class NotificationConfiguration : IEntityTypeConfiguration<Domain.Entitie
             .HasMaxLength(450)
             .IsRequired();
 
-        builder.Property(x => x.Title)
+        builder.Property(x => x.SendNotificationId)
+            .IsRequired(false);
+
+        builder.Property(x => x.TitleAr)
             .HasMaxLength(200)
             .IsRequired();
 
-        builder.Property(x => x.Message)
+        builder.Property(x => x.TitleEn)
+            .HasMaxLength(200)
+            .IsRequired();
+
+        builder.Property(x => x.MessageAr)
             .HasMaxLength(1000)
             .IsRequired();
+
+        builder.Property(x => x.MessageEn)
+            .HasMaxLength(1000)
+            .IsRequired();
+
+        builder.Property(x => x.ImageUrl)
+            .HasMaxLength(500)
+            .IsRequired(false);
 
         builder.Property(x => x.IsRead)
             .IsRequired();
@@ -40,5 +56,20 @@ public class NotificationConfiguration : IEntityTypeConfiguration<Domain.Entitie
             .WithMany()
             .HasForeignKey(x => x.UserId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasOne(x => x.SendNotification)
+            .WithMany()
+            .HasForeignKey(x => x.SendNotificationId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        builder.HasIndex(x => x.UserId);
+
+        builder.HasIndex(x => x.SendNotificationId);
+
+        builder.HasIndex(x => new
+        {
+            x.UserId,
+            x.IsRead
+        });
     }
 }
