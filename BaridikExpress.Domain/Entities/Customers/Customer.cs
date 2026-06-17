@@ -1,6 +1,7 @@
 ﻿using BaridikExpress.Domain.Entities.AuthModules;
 using BaridikExpress.Domain.Entities.Base;
 using BaridikExpress.Domain.Entities.CareerFields;
+using BaridikExpress.Domain.Entities.OurPlans;
 
 namespace BaridikExpress.Domain.Entities.Customers;
 
@@ -14,6 +15,10 @@ public class Customer : BaseEntity
     public CareerField? CareerField { get; private set; }
     public string UserId { get; private set; } = default!;
     public User User { get; private set; } = default!;
+
+    public Guid? PlanId { get; private set; }
+    public  Plan? Plan { get; private set; }
+
     public string? ImageUrl { get; private set; }
     public ICollection<CustomerContact> Contacts { get; private set; } = [];
     public ICollection<CustomerAddress> Addresses { get; private set; } = [];

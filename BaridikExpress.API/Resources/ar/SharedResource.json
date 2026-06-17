@@ -1182,5 +1182,29 @@
     "WebsiteUrlInvalid": "رابط الموقع الإلكتروني غير صالح",
     "AdditionalInformationIsRequired": "المعلومات الإضافية مطلوبة",
     "AdditionalInformationTooLong": "المعلومات الإضافية يجب ألا تتجاوز 1000 حرف",
-    "ContactUsCountRetrievedSuccessfully": "تم استرجاع عدد الرسائل بنجاح."
+  "ContactUsCountRetrievedSuccessfully": "تم استرجاع عدد الرسائل بنجاح."
+
+  
+    "PlanNameRequired": "اسم الخطة مطلوب",
+    "PlanTypeRequired": "نوع الخطة مطلوب",
+    "FeaturesRequired": "يجب إضافة ميزة واحدة على الأقل",
+
+    "PlanAlreadyExists": "الخطة موجودة بالفعل",
+
+    "PlanNotFound": "الخطة غير موجودة",
+    "PlansNotFound": "الخطط غير موجودة",
+    "SomePlansNotFound": "بعض الخطط المحددة غير موجودة",
+
+    "PlanCreatedSuccessfully": "تم إنشاء الخطة بنجاح",
+    "PlanUpdatedSuccessfully": "تم تحديث الخطة بنجاح",
+
+    "PlanActivatedSuccessfully": "تم تفعيل الخطة بنجاح",
+    "PlanDeactivatedSuccessfully": "تم إلغاء تفعيل الخطة بنجاح",
+
+    "PlansDeletedSuccessfully": "تم حذف الخطط بنجاح",
+
+    "InvalidIds": "معرفات الخطط غير صحيحة",
+
+    "PlanHasCustomers": "لا يمكن حذف الخطة لأنها مرتبطة بعملاء"
+  
 }

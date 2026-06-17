@@ -13,6 +13,7 @@ using BaridikExpress.Domain.Entities.DeliveryType;
 using BaridikExpress.Domain.Entities.Location;
 using BaridikExpress.Domain.Entities.Nationality;
 using BaridikExpress.Domain.Entities.NotificationModules;
+using BaridikExpress.Domain.Entities.OurPlans;
 using BaridikExpress.Domain.Entities.PublishingHouseModule;
 using BaridikExpress.Domain.Entities.RoleModule;
 using BaridikExpress.Domain.Entities.ServiceModules;
@@ -116,8 +117,8 @@ public interface IApplicationDbContext
 
     DbSet<ClientAddress> ClientAddresses { get; set; }
     #endregion
-    
 
+     DbSet<Plan> Plans { get; set; }
     DbSet<Banner>  Banners { get; set; }
     DbSet<Announcement>  Announcements { get; set; }
     DbSet<PublishingHouse> PublishingHouses { get; set; }
