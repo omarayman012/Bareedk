@@ -9,7 +9,9 @@ namespace BaridikExpress.API.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [ApiExplorerSettings(GroupName = "admin-v1")]
-//[Authorize]
+[Authorize]
+
+
 public class StatisticsController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -21,10 +23,10 @@ public class StatisticsController : ControllerBase
 
     [HttpGet("GetAll")]
     public async Task<IActionResult> GetStatistics(
-        [FromQuery] StatisticsFilter filter = StatisticsFilter.Overall,
-        CancellationToken cancellationToken = default)
+    [FromQuery] StatisticsFilter filter = StatisticsFilter.Overall,
+    CancellationToken cancellationToken = default)
     {
         var result = await _mediator.Send(new GetStatisticsQuery(filter), cancellationToken);
-        return Ok(result);
+        return StatusCode(result.StatusCode, result);
     }
 }
