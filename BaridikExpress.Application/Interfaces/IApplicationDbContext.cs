@@ -1,6 +1,7 @@
 using BaridikExpress.Domain.Entities.Addresses;
 using BaridikExpress.Domain.Entities.Announcementes;
 using BaridikExpress.Domain.Entities.AuthModule;
+using BaridikExpress.Domain.Entities.BackupModules;
 using BaridikExpress.Domain.Entities.Banners;
 using BaridikExpress.Domain.Entities.BlogsModules;
 using BaridikExpress.Domain.Entities.CareerFields;
@@ -129,6 +130,8 @@ public interface IApplicationDbContext
     DbSet<GeneralCompanySettings> GeneralCompanySettings { get; set; }
     DbSet<ServiceBusinessPlan> ServiceBusinessPlans {  get; set; }
     DbSet<TalkService> TalkServices {  get; set; }
+    DbSet<BackupSetting> BackupSettings { get; set; }
+    DbSet<BackupHistory> BackupHistories { get; set; }
     DatabaseFacade Database { get; }
 
     DbSet<TEntity> Set<TEntity>() where TEntity : class;
