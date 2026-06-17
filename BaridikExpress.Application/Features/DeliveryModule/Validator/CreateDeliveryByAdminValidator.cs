@@ -114,35 +114,78 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Validator
         // ================= LOCATION CHECKS =================
 
         private async Task<bool> CountryExists(Guid? id, CancellationToken ct)
-            => id != null && await _context.Countries.AnyAsync(x => x.Id == id, ct);
+        {
+            return id.HasValue &&
+                   await _context.Countries
+                       .AnyAsync(x => x.CountryId == id.Value, ct);
+        }
 
         private async Task<bool> GovExists(Guid? id, CancellationToken ct)
-            => id != null && await _context.Governments.AnyAsync(x => x.Id == id, ct);
+        {
+            return id.HasValue &&
+                   await _context.Governments
+                       .AnyAsync(x => x.GovernmentId == id.Value, ct);
+        }
 
         private async Task<bool> CityExists(Guid? id, CancellationToken ct)
-            => id != null && await _context.Cities.AnyAsync(x => x.Id == id, ct);
+        {
+            return id.HasValue &&
+                   await _context.Cities
+                       .AnyAsync(x => x.CityId == id.Value, ct);
+        }
 
         private async Task<bool> VillageExists(Guid? id, CancellationToken ct)
-            => id != null && await _context.Villages.AnyAsync(x => x.Id == id, ct);
+        {
+            return id.HasValue &&
+                   await _context.Villages
+                       .AnyAsync(x => x.VillageId == id.Value, ct);
+        }
 
         // ================= HIERARCHY VALIDATION =================
 
-        private async Task<bool> BeGovInCountry(CreateDeliveryByAdminCommand cmd, Guid? govId, CancellationToken ct)
+        private async Task<bool> BeGovInCountry(
+            CreateDeliveryByAdminCommand cmd,
+            Guid? govId,
+            CancellationToken ct)
         {
+            if (!govId.HasValue || !cmd.Country.HasValue)
+                return false;
+
             return await _context.Governments
-                .AnyAsync(x => x.Id == govId && x.CountryId == cmd.Country, ct);
+                .AnyAsync(x =>
+                    x.GovernmentId == govId.Value &&
+                    x.CountryId == cmd.Country.Value,
+                    ct);
         }
 
-        private async Task<bool> BeCityInGov(CreateDeliveryByAdminCommand cmd, Guid? cityId, CancellationToken ct)
+        private async Task<bool> BeCityInGov(
+            CreateDeliveryByAdminCommand cmd,
+            Guid? cityId,
+            CancellationToken ct)
         {
+            if (!cityId.HasValue || !cmd.Gov.HasValue)
+                return false;
+
             return await _context.Cities
-                .AnyAsync(x => x.Id == cityId && x.GovernmentId == cmd.Gov, ct);
+                .AnyAsync(x =>
+                    x.CityId == cityId.Value &&
+                    x.GovernmentId == cmd.Gov.Value,
+                    ct);
         }
 
-        private async Task<bool> BeVillageInCity(CreateDeliveryByAdminCommand cmd, Guid? villageId, CancellationToken ct)
+        private async Task<bool> BeVillageInCity(
+            CreateDeliveryByAdminCommand cmd,
+            Guid? villageId,
+            CancellationToken ct)
         {
+            if (!villageId.HasValue || !cmd.City.HasValue)
+                return false;
+
             return await _context.Villages
-                .AnyAsync(x => x.Id == villageId && x.CityId == cmd.City, ct);
+                .AnyAsync(x =>
+                    x.VillageId == villageId.Value &&
+                    x.CityId == cmd.City.Value,
+                    ct);
         }
     }
 }

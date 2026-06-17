@@ -52,7 +52,8 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
                     FullName = x.User.FullName,
                     Email = x.User.Email!,
                     Phone = x.User.PhoneNumber!,
-
+                    IsEmailVerified = x.User.EmailConfirmed,
+                    IsPhoneVerified = x.User.PhoneNumberConfirmed,
                     DateOfBirth = x.DateOfBirth,
 
                     // VEHICLE

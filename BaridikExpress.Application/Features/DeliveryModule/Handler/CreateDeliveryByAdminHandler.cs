@@ -150,24 +150,32 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
             await _context.Deliveries.AddAsync(delivery, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
 
+
+
+            var savedDelivery = await _context.Deliveries
+                .Include(x => x.Country)
+                .Include(x => x.Government)
+                .Include(x => x.City)
+                .Include(x => x.Village)
+                .FirstAsync(x => x.Id == delivery.Id, cancellationToken);
             // ================= RESPONSE =================
             var response = new RegisterDeliveryResponseDto
             {
-                Id = delivery.UserId,
+                Id = savedDelivery.UserId,
                 FullName = userEntity.FullName,
                 Email = userEntity.Email!,
                 Phone = userEntity.PhoneNumber!,
 
-                DateOfBirth = delivery.DateOfBirth,
-                PlateNo = delivery.PlateNo,
-                VehType = delivery.VehType.ToString(),
+                DateOfBirth = savedDelivery.DateOfBirth,
+                PlateNo = savedDelivery.PlateNo,
+                VehType = savedDelivery.VehType.ToString(),
 
-                IsApproved = delivery.IsApproved,
-                ApprovedAt = delivery.ApprovedAt,
-                CreateType = delivery.CreateType.ToString(),
+                IsApproved = savedDelivery.IsApproved,
+                ApprovedAt = savedDelivery.ApprovedAt,
+                CreateType = savedDelivery.CreateType.ToString(),
 
                 Country = await _context.Countries
-                .Where(x => x.Id == delivery.CountryId)
+                .Where(x => x.CountryId == savedDelivery.CountryId)
                 .Select(x => new LocalizedNameDto
                 {
                     Id = x.Id,
@@ -177,7 +185,7 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
                 .FirstOrDefaultAsync(cancellationToken),
 
                 Gov = await _context.Governments
-                .Where(x => x.Id == delivery.GovernmentId)
+                .Where(x => x.GovernmentId == savedDelivery.GovernmentId)
                 .Select(x => new LocalizedNameDto
                 {
                     Id = x.Id,
@@ -186,9 +194,9 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
                 })
                 .FirstOrDefaultAsync(cancellationToken),
 
-               City = delivery.CityId == null ? null :
+               City = savedDelivery.CityId == null ? null :
                  await _context.Cities
-                    .Where(x => x.Id == delivery.CityId)
+                    .Where(x => x.CityId == savedDelivery.CityId)
                     .Select(x => new LocalizedNameDto
                     {
                         Id = x.Id,
@@ -197,9 +205,9 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
                     })
                     .FirstOrDefaultAsync(cancellationToken),
 
-                Village = delivery.VillageId == null ? null :
+                Village = savedDelivery.VillageId == null ? null :
                  await _context.Villages
-                    .Where(x => x.Id == delivery.VillageId)
+                    .Where(x => x.VillageId == savedDelivery.VillageId)
                     .Select(x => new LocalizedNameDto
                     {
                         Id = x.Id,
@@ -207,21 +215,21 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
                         AR = x.NameAr
                     })
                     .FirstOrDefaultAsync(cancellationToken),
-                Address = delivery.Address,
-                Floor = delivery.Floor,
-                Apt = delivery.Apt,
+                Address = savedDelivery.Address,
+                Floor = savedDelivery.Floor,
+                Apt = savedDelivery.Apt,
 
-                Edu = delivery.Edu,
+                Edu = savedDelivery.Edu,
 
-                ProfileImg = delivery.ProfileImg,
-                NidImg = delivery.NidImg,
-                LicImg = delivery.LicImg,
-                VehImg = delivery.VehImg,
-                PoliceCertImg = delivery.PoliceCertImg,
-                PlateImg = delivery.PlateImg,
+                ProfileImg = savedDelivery.ProfileImg,
+                NidImg = savedDelivery.NidImg,
+                LicImg = savedDelivery.LicImg,
+                VehImg = savedDelivery.VehImg,
+                PoliceCertImg = savedDelivery.PoliceCertImg,
+                PlateImg = savedDelivery.PlateImg,
 
-                TermsAccepted = delivery.TermsAccepted,
-                PrivacyAccepted = delivery.PrivacyAccepted
+                TermsAccepted = savedDelivery.TermsAccepted,
+                PrivacyAccepted = savedDelivery.PrivacyAccepted
             };
 
             return Result<RegisterDeliveryResponseDto>.Success(
