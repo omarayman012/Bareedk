@@ -112,7 +112,7 @@ namespace BaridikExpress.API.Controllers.AuthModules
 
         [AllowAnonymous]
         [HttpPost("reset-password-email")]
-        public async Task<IActionResult> ResetPasswordEmail([FromBody] ResسetPasswordEmailCommand command)
+        public async Task<IActionResult> ResetPasswordEmail([FromBody] ResetPasswordEmailCommand command)
         {
             var result = await _mediator.Send(command);
             return StatusCode(result.StatusCode, result);
