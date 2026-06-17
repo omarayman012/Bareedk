@@ -46,5 +46,12 @@
         public const string AnnouncementsDelete = "Announcements.Delete";
         public const string AnnouncementsRead = "Announcements.Read";
 
+
+
+        public const string OurPlansRead = "OurPlans.Read";
+        public const string OurPlansCreate = "OurPlans.Create";
+        public const string OurPlansUpdate = "OurPlans.Update";
+        public const string OurPlansDelete = "OurPlans.Delete";
+
     }
 }

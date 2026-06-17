@@ -454,6 +454,9 @@ namespace BaridikExpress.Infrastructure.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsManual")
+                        .HasColumnType("bit");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -493,6 +496,9 @@ namespace BaridikExpress.Infrastructure.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsAutoBackupEnabled")
+                        .HasColumnType("bit");
+
                     b.Property<string>("NotificationEmail")
                         .HasColumnType("nvarchar(max)");
 
@@ -503,7 +509,6 @@ namespace BaridikExpress.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("StoragePath")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -1189,6 +1194,9 @@ namespace BaridikExpress.Infrastructure.Migrations
                     b.Property<Guid?>("NationalityId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("PlanId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -1206,6 +1214,8 @@ namespace BaridikExpress.Infrastructure.Migrations
                     b.HasIndex("CreatedById");
 
                     b.HasIndex("NationalityId");
+
+                    b.HasIndex("PlanId");
 
                     b.HasIndex("UpdatedById");
 
@@ -1934,18 +1944,35 @@ namespace BaridikExpress.Infrastructure.Migrations
                     b.Property<string>("CreatedById")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("ImageUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsRead")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Message")
+                    b.Property<string>("MessageAr")
                         .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<string>("Title")
+                    b.Property<string>("MessageEn")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<Guid?>("SendNotificationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TitleAr")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("TitleEn")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
@@ -1965,9 +1992,13 @@ namespace BaridikExpress.Infrastructure.Migrations
 
                     b.HasIndex("CreatedById");
 
+                    b.HasIndex("SendNotificationId");
+
                     b.HasIndex("UpdatedById");
 
                     b.HasIndex("UserId");
+
+                    b.HasIndex("UserId", "IsRead");
 
                     b.ToTable("Notifications", (string)null);
                 });
@@ -2052,6 +2083,67 @@ namespace BaridikExpress.Infrastructure.Migrations
                     b.HasIndex("UpdatedById");
 
                     b.ToTable("SendNotifications", (string)null);
+                });
+
+            modelBuilder.Entity("BaridikExpress.Domain.Entities.OurPlans.Plan", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("DescriptionAr")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<string>("DescriptionEn")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<string>("FeaturesAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FeaturesEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<string>("NameAr")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("NameEn")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("UpdatedById");
+
+                    b.ToTable("Plans");
                 });
 
             modelBuilder.Entity("BaridikExpress.Domain.Entities.PublishingHouseModule.PublishingHouse", b =>
@@ -3927,6 +4019,11 @@ namespace BaridikExpress.Infrastructure.Migrations
                         .HasForeignKey("NationalityId")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.HasOne("BaridikExpress.Domain.Entities.OurPlans.Plan", "Plan")
+                        .WithMany("Customers")
+                        .HasForeignKey("PlanId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("BaridikExpress.Domain.Entities.AuthModules.User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
@@ -3943,6 +4040,8 @@ namespace BaridikExpress.Infrastructure.Migrations
                     b.Navigation("CreatedBy");
 
                     b.Navigation("Nationality");
+
+                    b.Navigation("Plan");
 
                     b.Navigation("UpdatedBy");
 
@@ -4275,6 +4374,11 @@ namespace BaridikExpress.Infrastructure.Migrations
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.NoAction);
 
+                    b.HasOne("BaridikExpress.Domain.Entities.NotificationModules.SendNotification", "SendNotification")
+                        .WithMany()
+                        .HasForeignKey("SendNotificationId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("BaridikExpress.Domain.Entities.AuthModules.User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
@@ -4287,6 +4391,8 @@ namespace BaridikExpress.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("CreatedBy");
+
+                    b.Navigation("SendNotification");
 
                     b.Navigation("UpdatedBy");
 
@@ -4313,6 +4419,23 @@ namespace BaridikExpress.Infrastructure.Migrations
                 });
 
             modelBuilder.Entity("BaridikExpress.Domain.Entities.NotificationModules.SendNotification", b =>
+                {
+                    b.HasOne("BaridikExpress.Domain.Entities.AuthModules.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("BaridikExpress.Domain.Entities.AuthModules.User", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("UpdatedBy");
+                });
+
+            modelBuilder.Entity("BaridikExpress.Domain.Entities.OurPlans.Plan", b =>
                 {
                     b.HasOne("BaridikExpress.Domain.Entities.AuthModules.User", "CreatedBy")
                         .WithMany()
@@ -4996,6 +5119,11 @@ namespace BaridikExpress.Infrastructure.Migrations
             modelBuilder.Entity("BaridikExpress.Domain.Entities.NotificationModules.SendNotification", b =>
                 {
                     b.Navigation("Recipients");
+                });
+
+            modelBuilder.Entity("BaridikExpress.Domain.Entities.OurPlans.Plan", b =>
+                {
+                    b.Navigation("Customers");
                 });
 
             modelBuilder.Entity("BaridikExpress.Domain.Entities.RoleModule.Permission", b =>

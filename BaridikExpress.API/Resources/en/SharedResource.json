@@ -1141,4 +1141,31 @@
   "StatisticsRetrievedSuccessfully": "Statistics retrieved successfully.",
   "CurrencyDeletedSuccessfully": "Currency deleted successfully.",
   "ContactUsCountRetrievedSuccessfully": "Contact us count retrieved successfully."
+  "CurrencyCodeMaxLength": "Currency code must not exceed 10 characters.",
+  "CurrencySymbolMaxLength": "Currency symbol must not exceed 10 characters.",
+  "ContactUsCountRetrievedSuccessfully": "Contact us count retrieved successfully.",
+
+
+
+  "PlanNameRequired": "Plan Name is required",
+  "PlanTypeRequired": "Plan Type is required",
+  "FeaturesRequired": "At least one feature is required",
+
+  "PlanAlreadyExists": "Plan already exists",
+
+  "PlanNotFound": "Plan not found",
+  "PlansNotFound": "Plans not found",
+  "SomePlansNotFound": "Some selected plans were not found",
+
+  "PlanCreatedSuccessfully": "Plan created successfully",
+  "PlanUpdatedSuccessfully": "Plan updated successfully",
+
+  "PlanActivatedSuccessfully": "Plan activated successfully",
+  "PlanDeactivatedSuccessfully": "Plan deactivated successfully",
+
+  "PlansDeletedSuccessfully": "Plans deleted successfully",
+
+  "PlanHasCustomers": "This plan cannot be deleted because it is assigned to customers",
+
+  "PlanRetrievedSuccessfully" : "Plan retrieved successfully",
 }
