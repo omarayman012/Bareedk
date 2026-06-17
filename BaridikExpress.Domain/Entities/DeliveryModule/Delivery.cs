@@ -1,5 +1,6 @@
-﻿using BaridikExpress.Domain.Entities.Base;
-using BaridikExpress.Domain.Entities.AuthModules;
+﻿using BaridikExpress.Domain.Entities.AuthModules;
+using BaridikExpress.Domain.Entities.Base;
+using BaridikExpress.Domain.Entities.Location;
 using BaridikExpress.Domain.Enum;
 
 namespace BaridikExpress.Domain.Entities.DeliveryModule
@@ -26,10 +27,10 @@ namespace BaridikExpress.Domain.Entities.DeliveryModule
         public DeliveryCreationType CreateType { get; set; }
 
         // ADDRESS
-        public string? Country { get; set; }
-        public string? Gov { get; set; }
-        public string? City { get; set; }
-        public string? Village { get; set; }
+        public Guid? CountryId { get; set; }
+        public Guid? GovernmentId { get; set; }
+        public Guid? CityId { get; set; }
+        public Guid? VillageId { get; set; }
         public string? Address { get; set; }
         public string? Floor { get; set; }
         public string? Apt { get; set; }
@@ -44,6 +45,12 @@ namespace BaridikExpress.Domain.Entities.DeliveryModule
         public string VehImg { get; set; }
         public string PoliceCertImg { get; set; } 
         public string PlateImg { get; set; } 
+       
+        public Country Country { get; set; }
+        public Government Government { get; set; }
+        public City City { get; set; }
+        public Village Village { get; set; }
+      
 
         // TERMS
         public bool TermsAccepted { get; set; } = false;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BaridikExpress.Application.Features.CommanDTO.Localizes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,13 +19,13 @@ namespace BaridikExpress.Application.Features.DeliveryModule.DTOs
 
         public DateTime DateOfBirth { get; set; }
 
-        public string? Country { get; set; }
+        public LocalizedNameDto? Country { get; set; }
 
-        public string? Gov { get; set; }
+        public LocalizedNameDto? Gov { get; set; }
 
-        public string? City { get; set; }
+        public LocalizedNameDto? City { get; set; }
 
-        public string? Village { get; set; }
+        public LocalizedNameDto? Village { get; set; }
 
         public string? Address { get; set; }
 

@@ -7,21 +7,24 @@ namespace BaridikExpress.Infrastructure.Data.Seeder.IdentitySeed
     {
         public static async Task SeedAsync(UserManager<User> userManager)
         {
-            await SeedUserAsync(userManager,
+            await SeedUserAsync(
+                userManager,
                 email: "baridikexpress@gmail.com",
                 password: "J+TVosZIruHX+p0C",
                 userName: "baridikexpress",
                 fullName: "baridikexpress",
                 role: "SuperAdmin");
 
-            await SeedUserAsync(userManager,
+            await SeedUserAsync(
+                userManager,
                 email: "client@gmail.com",
                 password: "Client@2026",
                 userName: "client",
                 fullName: "client",
                 role: "Client");
 
-            await SeedUserAsync(userManager,
+            await SeedUserAsync(
+                userManager,
                 email: "delivery@gmail.com",
                 password: "Delivery@2026",
                 userName: "delivery@gmail.com",
@@ -38,7 +41,39 @@ namespace BaridikExpress.Infrastructure.Data.Seeder.IdentitySeed
             string role)
         {
             var existingUser = await userManager.FindByEmailAsync(email);
-            if (existingUser != null) return;
+
+            if (existingUser != null)
+            {
+                existingUser.EmailConfirmed = true;
+                existingUser.PhoneNumberConfirmed = true;
+
+                var updateResult = await userManager.UpdateAsync(existingUser);
+
+                if (!updateResult.Succeeded)
+                {
+                    var errors = string.Join(", ",
+                        updateResult.Errors.Select(e => e.Description));
+
+                    throw new Exception(
+                        $"Failed to update seed user '{email}': {errors}");
+                }
+
+                if (!await userManager.IsInRoleAsync(existingUser, role))
+                {
+                    var roleResult = await userManager.AddToRoleAsync(existingUser, role);
+
+                    if (!roleResult.Succeeded)
+                    {
+                        var errors = string.Join(", ",
+                            roleResult.Errors.Select(e => e.Description));
+
+                        throw new Exception(
+                            $"Failed to assign role '{role}' to '{email}': {errors}");
+                    }
+                }
+
+                return;
+            }
 
             var user = new User
             {
@@ -46,21 +81,30 @@ namespace BaridikExpress.Infrastructure.Data.Seeder.IdentitySeed
                 FullName = fullName,
                 Email = email,
                 EmailConfirmed = true,
+                PhoneNumberConfirmed = true,
                 SecurityStamp = Guid.NewGuid().ToString()
             };
 
             var createResult = await userManager.CreateAsync(user, password);
+
             if (!createResult.Succeeded)
             {
-                var errors = string.Join(", ", createResult.Errors.Select(e => e.Description));
-                throw new Exception($"Failed to create seed user '{email}': {errors}");
+                var errors = string.Join(", ",
+                    createResult.Errors.Select(e => e.Description));
+
+                throw new Exception(
+                    $"Failed to create seed user '{email}': {errors}");
             }
 
-            var roleResult = await userManager.AddToRoleAsync(user, role);
-            if (!roleResult.Succeeded)
+            var addRoleResult = await userManager.AddToRoleAsync(user, role);
+
+            if (!addRoleResult.Succeeded)
             {
-                var errors = string.Join(", ", roleResult.Errors.Select(e => e.Description));
-                throw new Exception($"Failed to assign role '{role}' to '{email}': {errors}");
+                var errors = string.Join(", ",
+                    addRoleResult.Errors.Select(e => e.Description));
+
+                throw new Exception(
+                    $"Failed to assign role '{role}' to '{email}': {errors}");
             }
         }
     }

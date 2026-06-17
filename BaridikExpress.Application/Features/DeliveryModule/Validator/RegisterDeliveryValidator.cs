@@ -2,12 +2,7 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
-using System;
-using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace BaridikExpress.Application.Features.DeliveryModule.Validator
 {
@@ -23,137 +18,137 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Validator
             _context = context;
             _localizer = localizer;
 
-            // ================= BASIC INFO =================
+            // ================= BASIC =================
             RuleFor(x => x.FullName)
                 .NotEmpty().WithMessage(_localizer["FullNameRequired"])
-                .MinimumLength(3).WithMessage(_localizer["FullNameMinLength"])
-                .MaximumLength(150).WithMessage(_localizer["FullNameMaxLength"]);
+                .MinimumLength(3)
+                .MaximumLength(150);
 
             RuleFor(x => x.DateOfBirth)
-                .NotEmpty().WithMessage(_localizer["DateOfBirthRequired"])
-                .Must(BeValidAge).WithMessage(_localizer["InvalidAge"]);
+                .NotEmpty()
+                .Must(BeValidAge)
+                .WithMessage(_localizer["InvalidAge"]);
 
             // ================= EMAIL =================
             RuleFor(x => x.Email)
-                .NotEmpty().WithMessage(_localizer["EmailRequired"])
-                .Must(BeValidEmail).WithMessage(_localizer["InvalidEmail"])
-                .MaximumLength(256).WithMessage(_localizer["EmailMaxLength"])
-                .MustAsync(EmailNotExists).WithMessage(_localizer["EmailAlreadyExists"]);
-
-            // ================= PASSWORD =================
-            RuleFor(x => x.Password)
-                .NotEmpty().WithMessage(_localizer["PasswordRequired"])
-                .Must(BeStrongPassword).WithMessage(_localizer["PasswordInvalid"]);
-
-            RuleFor(x => x.ConfirmPassword)
-                .NotEmpty().WithMessage(_localizer["ConfirmPasswordRequired"])
-                .Equal(x => x.Password).WithMessage(_localizer["PasswordNotMatch"]);
+                .NotEmpty()
+                .Must(BeValidEmail)
+                .MustAsync(EmailNotExists)
+                .WithMessage(_localizer["EmailAlreadyExists"]);
 
             // ================= PHONE =================
             RuleFor(x => x.Phone)
-                .NotEmpty().WithMessage(_localizer["PhoneRequired"])
-                .Must(BeValidPhone).WithMessage(_localizer["InvalidPhone"])
-                .MustAsync(PhoneNotExists).WithMessage(_localizer["PhoneAlreadyExists"]);
+                .NotEmpty()
+                .Must(BeValidPhone)
+                .MustAsync(PhoneNotExists)
+                .WithMessage(_localizer["PhoneAlreadyExists"]);
+
+            // ================= PASSWORD =================
+            RuleFor(x => x.Password)
+                .NotEmpty()
+                .Must(BeStrongPassword)
+                .WithMessage(_localizer["PasswordInvalid"]);
+
+            RuleFor(x => x.ConfirmPassword)
+                .Equal(x => x.Password)
+                .WithMessage(_localizer["PasswordNotMatch"]);
 
             // ================= VEHICLE =================
             RuleFor(x => x.PlateNo)
-                .NotEmpty().WithMessage(_localizer["PlateRequired"])
-                .MaximumLength(20).WithMessage(_localizer["PlateMaxLength"]);
+                .NotEmpty();
 
             RuleFor(x => x.VehType)
-                .IsInEnum().WithMessage(_localizer["InvalidVehicleType"]);
+                .IsInEnum();
 
-            // ================= ADDRESS =================
-            RuleFor(x => x.Country).MaximumLength(100);
-            RuleFor(x => x.Gov).MaximumLength(100);
-            RuleFor(x => x.City).MaximumLength(100);
-            RuleFor(x => x.Village).MaximumLength(100);
-            RuleFor(x => x.Address).MaximumLength(300);
-            RuleFor(x => x.Floor).MaximumLength(20);
-            RuleFor(x => x.Apt).MaximumLength(20);
-            RuleFor(x => x.Edu).MaximumLength(150);
+            // ================= LOCATION VALIDATION =================
+
+            RuleFor(x => x.Country)
+                .NotNull().MustAsync(CountryExists);
+
+            RuleFor(x => x.Gov)
+                .NotNull().MustAsync(GovExists)
+                .MustAsync(BeGovInCountry);
+
+            RuleFor(x => x.City)
+                .NotNull().MustAsync(CityExists)
+                .MustAsync(BeCityInGov);
+
+            RuleFor(x => x.Village)
+                .NotNull().MustAsync(VillageExists)
+                .MustAsync(BeVillageInCity);
 
             // ================= FILES =================
-            RuleFor(x => x.ProfileImg)
-                .NotEmpty().WithMessage(_localizer["ProfileImageRequired"])
-                .Must(BeValidImage).WithMessage(_localizer["InvalidImage"]);
-
-            RuleFor(x => x.NidImg)
-                .NotEmpty().WithMessage(_localizer["NationalIdRequired"])
-                .Must(BeValidImage);
-
-            RuleFor(x => x.LicImg)
-                .NotEmpty().WithMessage(_localizer["LicenseRequired"])
-                .Must(BeValidImage);
-
-            RuleFor(x => x.VehImg)
-                .NotEmpty().WithMessage(_localizer["VehicleImageRequired"])
-                .Must(BeValidImage);
-
-            RuleFor(x => x.PoliceCertImg)
-                .NotEmpty().WithMessage(_localizer["PoliceCertRequired"])
-                .Must(BeValidImage);
-
-            RuleFor(x => x.PlateImg)
-                .NotEmpty().WithMessage(_localizer["PlateImageRequired"])
-                .Must(BeValidImage);
+            RuleFor(x => x.ProfileImg).NotNull();
+            RuleFor(x => x.NidImg).NotNull();
+            RuleFor(x => x.LicImg).NotNull();
+            RuleFor(x => x.VehImg).NotNull();
+            RuleFor(x => x.PoliceCertImg).NotNull();
+            RuleFor(x => x.PlateImg).NotNull();
 
             // ================= TERMS =================
-            RuleFor(x => x.TermsAccepted)
-                .Equal(true).WithMessage(_localizer["MustAcceptTerms"]);
-
-            RuleFor(x => x.PrivacyAccepted)
-                .Equal(true).WithMessage(_localizer["MustAcceptPrivacy"]);
+            RuleFor(x => x.TermsAccepted).Equal(true);
+            RuleFor(x => x.PrivacyAccepted).Equal(true);
         }
 
-        // ================= HELPERS =================
-
+        // ================= AGE =================
         private bool BeValidAge(DateTime dob)
             => dob <= DateTime.Today.AddYears(-18);
 
+        // ================= EMAIL =================
         private bool BeValidEmail(string email)
-        {
-            if (string.IsNullOrWhiteSpace(email))
-                return false;
+            => Regex.IsMatch(email ?? "", @"^[^@\s]+@[^@\s]+\.[^@\s]+$");
 
-            return Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$");
-        }
-
+        // ================= PHONE =================
         private bool BeValidPhone(string phone)
-        {
-            if (string.IsNullOrWhiteSpace(phone))
-                return false;
+            => Regex.IsMatch(phone ?? "", @"^\+?\d{7,20}$");
 
-            return Regex.IsMatch(phone, @"^\+\d{5,20}$");
-        }
-
+        // ================= PASSWORD =================
         private bool BeStrongPassword(string password)
         {
-            if (string.IsNullOrWhiteSpace(password))
-                return false;
-
-            return password.Length >= 8
+            return password?.Length >= 8
                 && password.Any(char.IsUpper)
                 && password.Any(char.IsLower)
                 && password.Any(char.IsDigit)
-                && password.Any(ch => !char.IsLetterOrDigit(ch));
+                && password.Any(c => !char.IsLetterOrDigit(c));
         }
 
-        private bool BeValidImage(IFormFile file)
-        {
-            if (file == null || file.Length == 0)
-                return false;
-
-            var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".webp" };
-            var ext = Path.GetExtension(file.FileName).ToLower();
-
-            return allowedExtensions.Contains(ext);
-        }
-
+        // ================= UNIQUE =================
         private async Task<bool> EmailNotExists(string email, CancellationToken ct)
             => !await _context.ApplicationUsers.AnyAsync(x => x.Email == email, ct);
 
         private async Task<bool> PhoneNotExists(string phone, CancellationToken ct)
             => !await _context.ApplicationUsers.AnyAsync(x => x.PhoneNumber == phone, ct);
+
+        // ================= LOCATION EXISTS =================
+        private async Task<bool> CountryExists(Guid? id, CancellationToken ct)
+            => id != null && await _context.Countries.AnyAsync(x => x.Id == id, ct);
+
+        private async Task<bool> GovExists(Guid? id, CancellationToken ct)
+            => id != null && await _context.Governments.AnyAsync(x => x.Id == id, ct);
+
+        private async Task<bool> CityExists(Guid? id, CancellationToken ct)
+            => id != null && await _context.Cities.AnyAsync(x => x.Id == id, ct);
+
+        private async Task<bool> VillageExists(Guid? id, CancellationToken ct)
+            => id != null && await _context.Villages.AnyAsync(x => x.Id == id, ct);
+
+        // ================= HIERARCHY =================
+        private async Task<bool> BeGovInCountry(RegisterDeliveryCommand cmd, Guid? govId, CancellationToken ct)
+        {
+            return await _context.Governments
+                .AnyAsync(x => x.Id == govId && x.CountryId == cmd.Country, ct);
+        }
+
+        private async Task<bool> BeCityInGov(RegisterDeliveryCommand cmd, Guid? cityId, CancellationToken ct)
+        {
+            return await _context.Cities
+                .AnyAsync(x => x.Id == cityId && x.GovernmentId == cmd.Gov, ct);
+        }
+
+        private async Task<bool> BeVillageInCity(RegisterDeliveryCommand cmd, Guid? villageId, CancellationToken ct)
+        {
+            return await _context.Villages
+                .AnyAsync(x => x.Id == villageId && x.CityId == cmd.City, ct);
+        }
     }
 }

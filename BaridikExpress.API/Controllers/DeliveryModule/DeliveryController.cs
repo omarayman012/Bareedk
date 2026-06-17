@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BaridikExpress.API.Controllers.AuthDeliveryModule
 {
+
     [ApiController]
     [Route("api/v1/delivery/[controller]")]
     [ApiExplorerSettings(GroupName = "delivery-v1")]
@@ -19,6 +20,8 @@ namespace BaridikExpress.API.Controllers.AuthDeliveryModule
         }
 
 
+
+
         [Authorize(Roles = "SuperAdmin")]
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetAll(
@@ -26,10 +29,10 @@ namespace BaridikExpress.API.Controllers.AuthDeliveryModule
              [FromQuery] bool? isApproved = null,
              [FromQuery] DateTime? approvedFrom = null,
              [FromQuery] DateTime? approvedTo = null,
-             [FromQuery] string? country = null,
-             [FromQuery] string? gov = null,
-             [FromQuery] string? city = null,
-             [FromQuery] string? village = null,
+             [FromQuery] Guid? country = null,
+             [FromQuery] Guid? gov = null,
+             [FromQuery] Guid? city = null,
+             [FromQuery] Guid? village = null,
              [FromQuery] int pageNumber = 1,
              [FromQuery] int pageSize = 10)
         {
@@ -56,6 +59,8 @@ namespace BaridikExpress.API.Controllers.AuthDeliveryModule
 
             return Ok(result);
         }
+
+
 
         [Authorize(Roles = "SuperAdmin")]
         [HttpGet("GetById/{id}")]
