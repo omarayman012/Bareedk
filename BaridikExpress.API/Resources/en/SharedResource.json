@@ -1146,28 +1146,29 @@
   "CurrencyDeletedSuccessfully": "Currency deleted successfully.",
   "CurrencyCodeMaxLength": "Currency code must not exceed 10 characters.",
   "CurrencySymbolMaxLength": "Currency symbol must not exceed 10 characters.",
-  "ContactUsCountRetrievedSuccessfully": "Contact us count retrieved successfully."
+  "ContactUsCountRetrievedSuccessfully": "Contact us count retrieved successfully.",
 
 
-  
-    "PlanNameRequired": "Plan Name is required",
-    "PlanTypeRequired": "Plan Type is required",
-    "FeaturesRequired": "At least one feature is required",
 
-    "PlanAlreadyExists": "Plan already exists",
+  "PlanNameRequired": "Plan Name is required",
+  "PlanTypeRequired": "Plan Type is required",
+  "FeaturesRequired": "At least one feature is required",
 
-    "PlanNotFound": "Plan not found",
-    "PlansNotFound": "Plans not found",
-    "SomePlansNotFound": "Some selected plans were not found",
+  "PlanAlreadyExists": "Plan already exists",
 
-    "PlanCreatedSuccessfully": "Plan created successfully",
-    "PlanUpdatedSuccessfully": "Plan updated successfully",
+  "PlanNotFound": "Plan not found",
+  "PlansNotFound": "Plans not found",
+  "SomePlansNotFound": "Some selected plans were not found",
 
-    "PlanActivatedSuccessfully": "Plan activated successfully",
-    "PlanDeactivatedSuccessfully": "Plan deactivated successfully",
+  "PlanCreatedSuccessfully": "Plan created successfully",
+  "PlanUpdatedSuccessfully": "Plan updated successfully",
 
-    "PlansDeletedSuccessfully": "Plans deleted successfully",
+  "PlanActivatedSuccessfully": "Plan activated successfully",
+  "PlanDeactivatedSuccessfully": "Plan deactivated successfully",
 
-    "PlanHasCustomers": "This plan cannot be deleted because it is assigned to customers"
-  
+  "PlansDeletedSuccessfully": "Plans deleted successfully",
+
+  "PlanHasCustomers": "This plan cannot be deleted because it is assigned to customers",
+
+  "PlanRetrievedSuccessfully" : "Plan retrieved successfully",
 }
