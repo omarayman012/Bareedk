@@ -3,19 +3,26 @@
 namespace BaridikExpress.Application.Features.ServiceBusinessPlans.Commands.Delete;
 
 public sealed class DeleteServiceBusinessPlansCommandHandler(
-IApplicationDbContext db,
-IStringLocalizer localizer)
-: IRequestHandler<DeleteServiceBusinessPlansCommand, Result<bool>>
+    IApplicationDbContext db,
+    IStringLocalizer localizer)
+    : IRequestHandler<DeleteServiceBusinessPlansCommand, Result<bool>>
 {
     public async Task<Result<bool>> Handle(
-    DeleteServiceBusinessPlansCommand request,
-    CancellationToken cancellationToken)
+        DeleteServiceBusinessPlansCommand request,
+        CancellationToken cancellationToken)
     {
-        var plans = await db.ServiceBusinessPlans
-        .Where(x => request.Ids.Contains(x.Id))
-        .ToListAsync(cancellationToken);
+        if (request.Ids is null || request.Ids.Count == 0)
+        {
+            return Result<bool>.Failure(
+                localizer["ServiceBusinessPlansIdsRequired"],
+                400);
+        }
 
-    if (plans.Count == 0)
+        var plans = await db.ServiceBusinessPlans
+            .Where(x => request.Ids.Contains(x.Id))
+            .ToListAsync(cancellationToken);
+
+        if (plans.Count == 0)
         {
             return Result<bool>.Failure(
                 localizer["ServiceBusinessPlansNotFound"],
@@ -30,5 +37,4 @@ IStringLocalizer localizer)
             true,
             localizer["ServiceBusinessPlansDeletedSuccessfully"]);
     }
-
 }
