@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace BaridikExpress.API.Controllers.NotificationMessage;
 
-[Route("api/[controller]")]
+[Route("api/v1/[controller]")]
 [ApiController]
 [ApiExplorerSettings(GroupName = "admin-v1")]
 [Authorize]
