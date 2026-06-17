@@ -1,4 +1,5 @@
-﻿using BaridikExpress.Application.Features.ContactUs.Commands.SendSms;
+﻿using BaridikExpress.Application.Features.ContactUs.Commands.SendEmail;
+using BaridikExpress.Application.Features.ContactUs.Commands.SendSms;
 using BaridikExpress.Application.Features.TalkServices.Commands.Create;
 using BaridikExpress.Application.Features.TalkServices.Commands.Delete;
 using BaridikExpress.Application.Features.TalkServices.Queries.GetAll;
@@ -56,4 +57,12 @@ public sealed class TalkServicesController(IMediator mediator) : ControllerBase
         var result = await mediator.Send(command);
         return StatusCode(result.StatusCode, result);
     }
+    [HttpPost("SendEmail")]
+    [Consumes("multipart/form-data")]
+    public async Task<IActionResult> SendEmail([FromForm] SendEmailCommand command)
+    {
+        var result = await mediator.Send(command);
+        return StatusCode(result.StatusCode, result);
+    }
+
 }
