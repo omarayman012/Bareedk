@@ -18,11 +18,11 @@ public sealed class GetAllNotificationsQueryHandler(
             .AsNoTracking()
             .AsQueryable();
 
-        if (!string.IsNullOrWhiteSpace(request.Search))
+        if (!string.IsNullOrWhiteSpace(request.Name))
         {
             var (searchAr, searchEn) = NormalizeHelper.Normalize(
-                request.Search,
-                request.Search);
+                request.Name,
+                request.Name);
 
             query = query.Where(x =>
                 x.TitleAr.Contains(searchAr) ||
@@ -60,10 +60,10 @@ public sealed class GetAllNotificationsQueryHandler(
 
         var recipients = await db.NotificationRecipients
             .AsNoTracking()
-            .Where(r => notificationIds.Contains(r.Id))
+            .Where(r => notificationIds.Contains(r.NotificationId))
             .Select(r => new
             {
-                r.Id,
+                r.NotificationId,
                 r.UserId
             })
             .ToListAsync(cancellationToken);
@@ -73,13 +73,23 @@ public sealed class GetAllNotificationsQueryHandler(
             .Distinct()
             .ToList();
 
+        // Internal Clients = Customers table
+        var customers = await db.Customers
+            .AsNoTracking()
+            .Where(c => userIds.Contains(c.UserId))
+            .Select(c => new
+            {
+                c.UserId
+            })
+            .ToListAsync(cancellationToken);
+
+        // External Clients = Clients table
         var clients = await db.Clients
             .AsNoTracking()
             .Where(c => userIds.Contains(c.UserId))
             .Select(c => new
             {
-                c.UserId,
-                c.CreatedById
+                c.UserId
             })
             .ToListAsync(cancellationToken);
 
@@ -93,9 +103,13 @@ public sealed class GetAllNotificationsQueryHandler(
             })
             .ToListAsync(cancellationToken);
 
-        var clientsByUserId = clients
-            .GroupBy(c => c.UserId)
-            .ToDictionary(g => g.Key, g => g.First());
+        var customerUserIds = customers
+            .Select(c => c.UserId)
+            .ToHashSet();
+
+        var clientUserIds = clients
+            .Select(c => c.UserId)
+            .ToHashSet();
 
         var deliveriesByUserId = deliveries
             .GroupBy(d => d.UserId)
@@ -104,7 +118,7 @@ public sealed class GetAllNotificationsQueryHandler(
         var items = pageItems.Select(n =>
         {
             var notificationRecipients = recipients
-                .Where(r => r.Id == n.Id)
+                .Where(r => r.NotificationId == n.Id)
                 .ToList();
 
             var recipientUserIds = notificationRecipients
@@ -112,10 +126,13 @@ public sealed class GetAllNotificationsQueryHandler(
                 .Distinct()
                 .ToList();
 
-            var notificationClients = recipientUserIds
-                .Where(userId => clientsByUserId.ContainsKey(userId))
-                .Select(userId => clientsByUserId[userId])
-                .ToList();
+            var internalClientsCount = recipientUserIds
+                .Count(userId => customerUserIds.Contains(userId));
+
+            var externalClientsCount = recipientUserIds
+                .Count(userId => clientUserIds.Contains(userId));
+
+            var totalClientsCount = internalClientsCount + externalClientsCount;
 
             var notificationDeliveries = recipientUserIds
                 .Where(userId => deliveriesByUserId.ContainsKey(userId))
@@ -138,12 +155,20 @@ public sealed class GetAllNotificationsQueryHandler(
 
                 notificationRecipients.Count,
 
-                notificationClients.Count,
-                notificationClients.Count(c => c.CreatedById != null),
-                notificationClients.Count(c => c.CreatedById == null),
+                totalClientsCount,
+
+                // Internal clients from Customers table
+                internalClientsCount,
+
+                // External clients from Clients table
+                externalClientsCount,
 
                 notificationDeliveries.Count,
+
+                // Internal deliveries
                 notificationDeliveries.Count(d => d.CreatedById != null),
+
+                // External deliveries
                 notificationDeliveries.Count(d => d.CreatedById == null),
 
                 n.CreatedByName,
