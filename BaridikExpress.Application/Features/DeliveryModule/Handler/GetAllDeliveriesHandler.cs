@@ -1,4 +1,5 @@
 ﻿using BaridikExpress.Application.DTOs.DeliveryModule;
+using BaridikExpress.Application.Features.CommanDTO.Localizes;
 using BaridikExpress.Application.Features.DeliveryModule.Queries;
 using BaridikExpress.Domain.Common;
 using Microsoft.EntityFrameworkCore;
@@ -28,10 +29,9 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
         }
 
         public async Task<Result<PagedResult<GetAllDeliveriesDto>>> Handle(
-            GetAllDeliveriesQuery request,
-            CancellationToken cancellationToken)
+     GetAllDeliveriesQuery request,
+     CancellationToken cancellationToken)
         {
-            // ================= AUTH CHECK =================
             var user = _httpContextAccessor.HttpContext?.User;
 
             if (user == null || !user.Identity?.IsAuthenticated == true)
@@ -41,9 +41,12 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
                     401);
             }
 
-            // ================= QUERY =================
             var query = _context.Deliveries
                 .Include(x => x.User)
+                .Include(x => x.Country)
+                .Include(x => x.Government)
+                .Include(x => x.City)
+                .Include(x => x.Village)
                 .AsQueryable();
 
             // ================= SEARCH =================
@@ -55,11 +58,11 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
                     x.User.PhoneNumber.Contains(request.Search));
             }
 
-            // ================= APPROVAL FILTER =================
+            // ================= APPROVAL =================
             if (request.IsApproved.HasValue)
                 query = query.Where(x => x.IsApproved == request.IsApproved);
 
-            // ================= DATE FILTER =================
+            // ================= DATE =================
             if (request.ApprovedFrom.HasValue)
                 query = query.Where(x => x.ApprovedAt >= request.ApprovedFrom);
 
@@ -67,17 +70,17 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
                 query = query.Where(x => x.ApprovedAt <= request.ApprovedTo);
 
             // ================= LOCATION FILTERS =================
-            if (!string.IsNullOrWhiteSpace(request.Country))
-                query = query.Where(x => x.Country == request.Country);
+            if (request.Country.HasValue)
+                query = query.Where(x => x.CountryId == request.Country);
 
-            if (!string.IsNullOrWhiteSpace(request.Gov))
-                query = query.Where(x => x.Gov == request.Gov);
+            if (request.Gov.HasValue)
+                query = query.Where(x => x.GovernmentId == request.Gov);
 
-            if (!string.IsNullOrWhiteSpace(request.City))
-                query = query.Where(x => x.City == request.City);
+            if (request.City.HasValue)
+                query = query.Where(x => x.CityId == request.City);
 
-            if (!string.IsNullOrWhiteSpace(request.Village))
-                query = query.Where(x => x.Village == request.Village);
+            if (request.Village.HasValue)
+                query = query.Where(x => x.VillageId == request.Village);
 
             // ================= PROJECTION =================
             var projected = query.Select(x => new GetAllDeliveriesDto
@@ -95,10 +98,34 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
                 ApprovedAt = x.ApprovedAt,
                 CreateType = x.CreateType.ToString(),
 
-                Country = x.Country,
-                Gov = x.Gov,
-                City = x.City,
-                Village = x.Village,
+                Country = x.Country == null ? null : new LocalizedNameDto
+                {
+                    Id = x.Country.Id,
+                    EN = x.Country.NameEn,
+                    AR = x.Country.NameAr
+                },
+
+                Gov = x.Government == null ? null : new LocalizedNameDto
+                {
+                    Id = x.Government.Id,
+                    EN = x.Government.NameEn,
+                    AR = x.Government.NameAr
+                },
+
+                City = x.City == null ? null : new LocalizedNameDto
+                {
+                    Id = x.City.Id,
+                    EN = x.City.NameEn,
+                    AR = x.City.NameAr
+                },
+
+                Village = x.Village == null ? null : new LocalizedNameDto
+                {
+                    Id = x.Village.Id,
+                    EN = x.Village.NameEn,
+                    AR = x.Village.NameAr
+                },
+
                 Address = x.Address,
                 Floor = x.Floor,
                 Apt = x.Apt,
@@ -116,7 +143,6 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
                 PrivacyAccepted = x.PrivacyAccepted
             });
 
-            // ================= PAGINATION =================
             var count = await projected.CountAsync(cancellationToken);
 
             var items = await projected
@@ -124,7 +150,7 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
                 .Take(request.PageSize)
                 .ToListAsync(cancellationToken);
 
-            var resultData = new PagedResult<GetAllDeliveriesDto>
+            var result = new PagedResult<GetAllDeliveriesDto>
             {
                 Items = items,
                 TotalCount = count,
@@ -133,7 +159,7 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
             };
 
             return Result<PagedResult<GetAllDeliveriesDto>>.Success(
-                resultData,
+                result,
                 _localizer["Success"],
                 200);
         }

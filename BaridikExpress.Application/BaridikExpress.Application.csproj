@@ -30,8 +30,6 @@
 	  <Folder Include="Features\BlogsModules\BlogsCategoryModules\Validator\" />
 	  <Folder Include="Features\BlogsModules\Blogs\Validator\" />
 	  <Folder Include="Features\Shared\" />
-	  <Folder Include="Features\TalkServices\DTOs\" />
-	  <Folder Include="Features\TalkServices\Queries\" />
 	</ItemGroup>
 
 </Project>

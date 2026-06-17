@@ -1,5 +1,6 @@
 ﻿using BaridikExpress.Application.DTOs.DeliveryModule;
 using BaridikExpress.Application.Features.AuthDeliveryModule.Command;
+using BaridikExpress.Application.Features.CommanDTO.Localizes;
 using BaridikExpress.Application.Interfaces.File;
 using BaridikExpress.Domain.Entities.DeliveryModule;
 using BaridikExpress.Domain.Enum;
@@ -10,7 +11,7 @@ using Microsoft.Extensions.Localization;
 namespace BaridikExpress.Application.Features.DeliveryModule.Handler
 {
     public class CreateDeliveryByAdminHandler
-     : IRequestHandler<CreateDeliveryByAdminCommand, Result<RegisterDeliveryResponseDto>>
+        : IRequestHandler<CreateDeliveryByAdminCommand, Result<RegisterDeliveryResponseDto>>
     {
         private readonly IApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
@@ -69,15 +70,33 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
                 UserName = request.Email,
                 Email = request.Email,
                 PhoneNumber = request.Phone,
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true
             };
 
-            var createUserResult = await _userManager.CreateAsync(userEntity, request.Password);
+            var createUserResult = await _userManager.CreateAsync(
+                userEntity,
+                request.Password);
 
             if (!createUserResult.Succeeded)
             {
                 var errors = string.Join(", ",
                     createUserResult.Errors.Select(x => x.Description));
+
+                return Result<RegisterDeliveryResponseDto>.Failure(errors, 400);
+            }
+
+            // ================= ASSIGN ROLE =================
+            var addRoleResult = await _userManager.AddToRoleAsync(
+                userEntity,
+                "Delivery");
+
+            if (!addRoleResult.Succeeded)
+            {
+                var errors = string.Join(", ",
+                    addRoleResult.Errors.Select(x => x.Description));
+
+                await _userManager.DeleteAsync(userEntity);
 
                 return Result<RegisterDeliveryResponseDto>.Failure(errors, 400);
             }
@@ -93,6 +112,7 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
                     folder);
             }
 
+            // ================= CREATE DELIVERY =================
             var delivery = new Delivery
             {
                 UserId = userEntity.Id,
@@ -101,10 +121,10 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
                 PlateNo = request.PlateNo,
                 VehType = request.VehType,
 
-                Country = request.Country,
-                Gov = request.Gov,
-                City = request.City,
-                Village = request.Village,
+                CountryId = request.Country,
+                GovernmentId = request.Gov,
+                CityId = request.City,
+                VillageId = request.Village,
                 Address = request.Address,
                 Floor = request.Floor,
                 Apt = request.Apt,
@@ -146,10 +166,47 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
                 ApprovedAt = delivery.ApprovedAt,
                 CreateType = delivery.CreateType.ToString(),
 
-                Country = delivery.Country,
-                Gov = delivery.Gov,
-                City = delivery.City,
-                Village = delivery.Village,
+                Country = await _context.Countries
+                .Where(x => x.Id == delivery.CountryId)
+                .Select(x => new LocalizedNameDto
+                {
+                    Id = x.Id,
+                    EN = x.NameEn,
+                    AR = x.NameAr
+                })
+                .FirstOrDefaultAsync(cancellationToken),
+
+                Gov = await _context.Governments
+                .Where(x => x.Id == delivery.GovernmentId)
+                .Select(x => new LocalizedNameDto
+                {
+                    Id = x.Id,
+                    EN = x.NameEn,
+                    AR = x.NameAr
+                })
+                .FirstOrDefaultAsync(cancellationToken),
+
+               City = delivery.CityId == null ? null :
+                 await _context.Cities
+                    .Where(x => x.Id == delivery.CityId)
+                    .Select(x => new LocalizedNameDto
+                    {
+                        Id = x.Id,
+                        EN = x.NameEn,
+                        AR = x.NameAr
+                    })
+                    .FirstOrDefaultAsync(cancellationToken),
+
+                Village = delivery.VillageId == null ? null :
+                 await _context.Villages
+                    .Where(x => x.Id == delivery.VillageId)
+                    .Select(x => new LocalizedNameDto
+                    {
+                        Id = x.Id,
+                        EN = x.NameEn,
+                        AR = x.NameAr
+                    })
+                    .FirstOrDefaultAsync(cancellationToken),
                 Address = delivery.Address,
                 Floor = delivery.Floor,
                 Apt = delivery.Apt,
