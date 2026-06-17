@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BaridikExpress.Application.Interfaces.Auth;
+﻿using BaridikExpress.Application.Interfaces.Auth;
+using MediatR;
+using Microsoft.Extensions.Localization;
 
 namespace BaridikExpress.Application.Features.ContactUs.Commands.SendSms
 {
     public sealed class SendSmsCommandHandler(
-     ISmsService smsService,
-     IStringLocalizer localizer)
-     : IRequestHandler<SendSmsCommand, Result<bool>>
+        ISmsService smsService,
+        IStringLocalizer<SendSmsCommandHandler> localizer)
+        : IRequestHandler<SendSmsCommand, Result<bool>>
     {
         public async Task<Result<bool>> Handle(
             SendSmsCommand request,
@@ -20,7 +17,9 @@ namespace BaridikExpress.Application.Features.ContactUs.Commands.SendSms
                 request.PhoneNumber,
                 request.Message);
 
-            return Result<bool>.Success(true, localizer["SmsSentSuccessfully"]);
+            return Result<bool>.Success(
+                true,
+                localizer["SmsSentSuccessfully"]);
         }
     }
 }
