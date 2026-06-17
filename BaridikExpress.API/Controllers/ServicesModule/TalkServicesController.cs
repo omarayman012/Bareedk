@@ -1,5 +1,8 @@
-﻿using BaridikExpress.Application.Features.TalkServices.Commands.Create;
+﻿using BaridikExpress.Application.Features.ContactUs.Commands.SendEmail;
+using BaridikExpress.Application.Features.ContactUs.Commands.SendSms;
+using BaridikExpress.Application.Features.TalkServices.Commands.Create;
 using BaridikExpress.Application.Features.TalkServices.Commands.Delete;
+using BaridikExpress.Application.Features.TalkServices.Queries.Export;
 using BaridikExpress.Application.Features.TalkServices.Queries.GetAll;
 using BaridikExpress.Application.Features.TalkServices.Queries.GetById;
 using Microsoft.AspNetCore.Authorization;
@@ -48,5 +51,29 @@ public sealed class TalkServicesController(IMediator mediator) : ControllerBase
         var result = await mediator.Send(command);
 
         return StatusCode(result.StatusCode, result);
+    }
+    [HttpPost("SendSms")]
+    public async Task<IActionResult> SendSms([FromBody] SendSmsCommand command)
+    {
+        var result = await mediator.Send(command);
+        return StatusCode(result.StatusCode, result);
+    }
+    [HttpPost("SendEmail")]
+    [Consumes("multipart/form-data")]
+    public async Task<IActionResult> SendEmail([FromForm] SendEmailCommand command)
+    {
+        var result = await mediator.Send(command);
+        return StatusCode(result.StatusCode, result);
+    }
+    [HttpGet("Export")]
+    public async Task<IActionResult> Export()
+    {
+        var fileBytes = await mediator.Send(
+            new ExportTalkServicesQuery());
+
+        return File(
+            fileBytes,
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            "TalkServices.xlsx");
     }
 }

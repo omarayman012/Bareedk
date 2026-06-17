@@ -1,6 +1,6 @@
 <div align="center">
-
-   
+ 
+    
 <img src="https://img.shields.io/badge/version-1.0.0-blue?style=for-the-badge" />
 <img src="https://img.shields.io/badge/.NET-9.0-512BD4?style=for-the-badge&logo=dotnet" />
 <img src="https://img.shields.io/badge/Architecture-CQRS-orange?style=for-the-badge" />
@@ -8,6 +8,8 @@
 <img src="https://img.shields.io/badge/Status-Active-brightgreen?style=for-the-badge" />
    
 <br/><br/>   
+      
+<br/><br/>    
       
 <h1>📦 BaridikExpress — Delivery Platform</h1> 
  

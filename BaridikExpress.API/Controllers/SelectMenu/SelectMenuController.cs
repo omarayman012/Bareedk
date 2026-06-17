@@ -10,6 +10,7 @@ using BaridikExpress.Domain.Entities.Vehicles;
 using Microsoft.AspNetCore.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using BaridikExpress.Domain.Entities.OurPlans;
 
 namespace BaridikExpress.API.Controllers.SelectMenu;
 
@@ -94,7 +95,8 @@ public class SelectMenuController(IMediator mediator) : ControllerBase
            },
            cancellationToken);
 
-        return Ok(result);
+
+        return StatusCode(result.StatusCode, result);
     }
 
     [HttpGet("vehicles")]
@@ -110,7 +112,8 @@ public class SelectMenuController(IMediator mediator) : ControllerBase
            },
            cancellationToken);
 
-        return Ok(result);
+
+        return StatusCode(result.StatusCode, result);
     }
 
     [HttpGet("currencies")]
@@ -136,7 +139,8 @@ public class SelectMenuController(IMediator mediator) : ControllerBase
            },
            cancellationToken);
 
-        return Ok(result);
+
+        return StatusCode(result.StatusCode, result);
     }
 
     [HttpGet("roles")]
@@ -211,4 +215,22 @@ public class SelectMenuController(IMediator mediator) : ControllerBase
 
         return StatusCode(result.StatusCode, result);
     }
+
+    [HttpGet("ourPlans")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetOurPlans(
+    [FromQuery] string? name,
+    CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+           new GetSelectMenuQuery<Plan>
+           {
+               Name = name
+           },
+           cancellationToken);
+
+
+        return StatusCode(result.StatusCode, result);
+    }
+
 }
