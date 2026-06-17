@@ -13,13 +13,21 @@ namespace BaridikExpress.Application.Features.ContactUs.Commands.SendSms
             SendSmsCommand request,
             CancellationToken cancellationToken)
         {
-            await smsService.SendSmsAsync(
-                request.PhoneNumber,
-                request.Message);
+            try
+            {
+                await smsService.SendSmsAsync(
+                    request.PhoneNumber,
+                    request.Message);
 
-            return Result<bool>.Success(
-                true,
-                localizer["SmsSentSuccessfully"]);
+                return Result<bool>.Success(
+                    true,
+                    localizer["SmsSentSuccessfully"]);
+            }
+            catch
+            {
+                return Result<bool>.Failure(
+                    localizer["SmsSendingFailed"]);
+            }
         }
     }
 }
