@@ -12,5 +12,11 @@
         public string? AR { get; set; }
     }
 
+    public  class LocalizedListDto
+    {
+        public List<string> AR { get; set; } = [];
+        public List<string> EN { get; set; } = [];
+    }
+
 }
 
