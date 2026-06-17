@@ -30,35 +30,15 @@ namespace BaridikExpress.Application.Features.Auth.AuthCommand
             LoginCommand request,
             CancellationToken cancellationToken)
         {
-            var loginValue = request.EmailOrPhone.Trim();
-
-            var normalizedEmail = loginValue.ToUpper();
+            var normalizedEmail = request.Email.Trim().ToUpper();
 
             var user = await _userManager.Users
-                .FirstOrDefaultAsync(x =>
-                    x.NormalizedEmail == normalizedEmail ||
-                    x.PhoneNumber == loginValue,
-                    cancellationToken);
+                .FirstOrDefaultAsync(x => x.NormalizedEmail == normalizedEmail, cancellationToken);
 
             if (user == null)
-            {
-                return Result<LoginResponseDto>.Failure(
-                    _localizer["InvalidCredentials"],
-                    400);
-            }
-
-            // ================= LOGIN TYPE =================
-
-            bool loginByEmail =
-                !string.IsNullOrWhiteSpace(user.Email) &&
-                user.Email.Equals(loginValue, StringComparison.OrdinalIgnoreCase);
-
-            bool loginByPhone =
-                !string.IsNullOrWhiteSpace(user.PhoneNumber) &&
-                user.PhoneNumber == loginValue;
+                return Result<LoginResponseDto>.Failure(_localizer["InvalidCredentials"], 400);
 
             // ================= VERIFICATION CHECK =================
-
             if (!user.EmailConfirmed && !user.PhoneNumberConfirmed)
             {
                 return Result<LoginResponseDto>.Failure(
@@ -66,14 +46,14 @@ namespace BaridikExpress.Application.Features.Auth.AuthCommand
                     403);
             }
 
-            if (loginByEmail && !user.EmailConfirmed)
+            if (!user.EmailConfirmed)
             {
                 return Result<LoginResponseDto>.Failure(
                     _localizer["VerifyEmail"],
                     403);
             }
 
-            if (loginByPhone && !user.PhoneNumberConfirmed)
+            if (!user.PhoneNumberConfirmed)
             {
                 return Result<LoginResponseDto>.Failure(
                     _localizer["VerifyPhone"],
@@ -81,33 +61,20 @@ namespace BaridikExpress.Application.Features.Auth.AuthCommand
             }
 
             // ================= PASSWORD CHECK =================
+            var checkPassword = await _userManager.CheckPasswordAsync(user, request.Password);
 
-            var passwordValid =
-                await _userManager.CheckPasswordAsync(
-                    user,
-                    request.Password);
-
-            if (!passwordValid)
-            {
-                return Result<LoginResponseDto>.Failure(
-                    _localizer["InvalidCredentials"],
-                    400);
-            }
+            if (!checkPassword)
+                return Result<LoginResponseDto>.Failure(_localizer["InvalidCredentials"], 400);
 
             // ================= ROLES =================
-
             var roles = await _userManager.GetRolesAsync(user);
-
             var role = roles.FirstOrDefault() ?? "Client";
 
-            // ================= DELIVERY CHECK =================
-
+            // ================= DELIVERY APPROVAL CHECK =================
             if (role == "Delivery")
             {
                 var delivery = await _context.Deliveries
-                    .FirstOrDefaultAsync(
-                        x => x.UserId == user.Id,
-                        cancellationToken);
+                    .FirstOrDefaultAsync(x => x.UserId == user.Id, cancellationToken);
 
                 if (delivery == null)
                 {
@@ -125,29 +92,21 @@ namespace BaridikExpress.Application.Features.Auth.AuthCommand
             }
 
             // ================= PERMISSIONS =================
-
             var permissions = await _context.RolePermissions
-                .Where(x => x.Role.Name == role)
-                .Select(x => x.Permission.PermissionName)
+                .Where(rp => rp.Role.Name == role)
+                .Select(rp => rp.Permission.PermissionName)
                 .ToListAsync(cancellationToken);
 
             // ================= TOKEN =================
-
-            var token =
-                await _jwtService.GenerateToken(
-                    user,
-                    role,
-                    permissions);
+            var token = await _jwtService.GenerateToken(user, role, permissions);
 
             var refreshToken = Guid.NewGuid().ToString();
-
             user.RefreshToken = refreshToken;
             user.RefreshTokenExpireAt = DateTime.UtcNow.AddDays(7);
 
             await _userManager.UpdateAsync(user);
 
             // ================= RESPONSE =================
-
             var response = new LoginResponseDto
             {
                 Token = token,

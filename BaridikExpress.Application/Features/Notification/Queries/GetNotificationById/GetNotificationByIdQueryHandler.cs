@@ -13,94 +13,71 @@ public sealed class GetNotificationByIdQueryHandler(
         GetNotificationByIdQuery request,
         CancellationToken cancellationToken)
     {
+        #region Fetch Notification
+
         var notification = await db.SendNotifications
             .AsNoTracking()
-            .Where(x => x.Id == request.Id)
-            .Select(x => new
-            {
-                x.Id,
-                x.TitleAr,
-                x.TitleEn,
-                x.DescriptionAr,
-                x.DescriptionEn,
-                x.ImageUrl,
-                CreatedByName = x.CreatedBy != null ? x.CreatedBy.FullName : null,
-                x.CreatedAt,
-                UpdatedByName = x.UpdatedBy != null ? x.UpdatedBy.FullName : null,
-                x.UpdatedAt
-            })
-            .FirstOrDefaultAsync(cancellationToken);
+            .Include(x => x.Recipients)
+                .ThenInclude(r => r.User)
+            .Include(x => x.CreatedBy)
+            .Include(x => x.UpdatedBy)
+            .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
         if (notification is null)
-        {
             return Result<NotificationDetailsResponse>
                 .Failure(localizer["NotificationNotFound"], 404);
-        }
 
-        var userIds = await db.NotificationRecipients
+        #endregion
+
+        #region Fetch Recipients Data
+
+        var userIds = notification.Recipients
+            .Select(r => r.UserId)
+            .ToHashSet();
+
+        var clientsCreatedByAdmin = await db.Clients
             .AsNoTracking()
-            .Where(x => x.NotificationId == request.Id)
-            .Select(x => x.UserId)
-            .Distinct()
+            .Where(x => userIds.Contains(x.UserId) && x.CreatedById != null)
+            .Select(x => new RecipientSummary(x.Id, x.User.FullName))
             .ToListAsync(cancellationToken);
 
-        // Internal Clients = Customers table
-        var clientsCreatedByAdmin = await db.Customers
-            .AsNoTracking()
-            .Where(x => userIds.Contains(x.UserId))
-            .Select(x => new RecipientSummary(
-                x.Id,
-                x.User.FullName))
-            .ToListAsync(cancellationToken);
-
-        // External Clients = Clients table
         var clientsExternal = await db.Clients
             .AsNoTracking()
-            .Where(x => userIds.Contains(x.UserId))
-            .Select(x => new RecipientSummary(
-                x.Id,
-                x.User.FullName))
+            .Where(x => userIds.Contains(x.UserId) && x.CreatedById == null)
+            .Select(x => new RecipientSummary(x.Id, x.User.FullName))
             .ToListAsync(cancellationToken);
 
-        // Internal Deliveries = Created by admin
         var deliveriesCreatedByAdmin = await db.Deliveries
             .AsNoTracking()
             .Where(x => userIds.Contains(x.UserId) && x.CreatedById != null)
-            .Select(x => new RecipientSummary(
-                x.Id,
-                x.User.FullName))
+            .Select(x => new RecipientSummary(x.Id, x.User.FullName))
             .ToListAsync(cancellationToken);
 
-        // External Deliveries = Registered by himself
         var deliveriesExternal = await db.Deliveries
             .AsNoTracking()
             .Where(x => userIds.Contains(x.UserId) && x.CreatedById == null)
-            .Select(x => new RecipientSummary(
-                x.Id,
-                x.User.FullName))
+            .Select(x => new RecipientSummary(x.Id, x.User.FullName))
             .ToListAsync(cancellationToken);
+
+        #endregion
+
+        #region Build Response
 
         var response = new NotificationDetailsResponse(
             notification.Id,
-            new LocalizedDto
-            {
-                AR = notification.TitleAr,
-                EN = notification.TitleEn
-            },
-            new LocalizedDto
-            {
-                AR = notification.DescriptionAr,
-                EN = notification.DescriptionEn
-            },
+            new LocalizedDto { AR = notification.TitleAr, EN = notification.TitleEn },
+            new LocalizedDto { AR = notification.DescriptionAr, EN = notification.DescriptionEn },
             notification.ImageUrl,
             clientsCreatedByAdmin,
             clientsExternal,
             deliveriesCreatedByAdmin,
             deliveriesExternal,
-            notification.CreatedByName,
+            notification.CreatedBy?.FullName,
             notification.CreatedAt,
-            notification.UpdatedByName,
+            notification.UpdatedBy?.FullName,
             notification.UpdatedAt);
+
+        #endregion
 
         return Result<NotificationDetailsResponse>
             .Success(response, localizer["NotificationRetrievedSuccessfully"]);

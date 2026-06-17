@@ -19,61 +19,34 @@ public sealed class MarkNotificationsAsReadCommandHandler(
         var userId = httpContextAccessor.HttpContext?.User?
             .FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-        if (string.IsNullOrWhiteSpace(userId))
-        {
-            return Result<bool>.Failure(
-                localizer["Unauthorized"],
-                401);
-        }
+        if (string.IsNullOrEmpty(userId))
+            return Result<bool>.Failure(localizer["Unauthorized"], 401);
 
         #endregion
 
-        #region Validate Request
+        #region Fetch Recipients
 
-        var notificationIds = request.NotificationIds
-            .Distinct()
-            .ToList();
-
-        if (notificationIds.Count == 0)
-        {
-            return Result<bool>.Failure(
-                localizer["NotificationIdsRequired"],
-                400);
-        }
-
-        #endregion
-
-        #region Fetch Notifications
-
-        var notifications = await db.Notifications
+        var recipients = await db.NotificationRecipients
             .Where(x =>
                 x.UserId == userId &&
-                notificationIds.Contains(x.Id) &&
+                request.NotificationIds.Contains(x.NotificationId) &&
                 !x.IsRead)
             .ToListAsync(cancellationToken);
 
-        if (notifications.Count == 0)
-        {
-            return Result<bool>.Success(
-                true,
-                localizer["AlreadyMarkedAsRead"]);
-        }
+        if (recipients.Count == 0)
+            return Result<bool>.Success(true, localizer["AlreadyMarkedAsRead"]);
 
         #endregion
 
         #region Mark As Read & Save
 
-        foreach (var notification in notifications)
-        {
-            notification.IsRead = true;
-        }
+        foreach (var recipient in recipients)
+            recipient.MarkAsRead();
 
         await db.SaveChangesAsync(cancellationToken);
 
         #endregion
 
-        return Result<bool>.Success(
-            true,
-            localizer["NotificationsMarkedAsReadSuccessfully"]);
+        return Result<bool>.Success(true, localizer["NotificationsMarkedAsReadSuccessfully"]);
     }
 }

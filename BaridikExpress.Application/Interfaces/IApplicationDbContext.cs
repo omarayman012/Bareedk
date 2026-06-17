@@ -1,7 +1,6 @@
 using BaridikExpress.Domain.Entities.Addresses;
 using BaridikExpress.Domain.Entities.Announcementes;
 using BaridikExpress.Domain.Entities.AuthModule;
-using BaridikExpress.Domain.Entities.BackupModules;
 using BaridikExpress.Domain.Entities.Banners;
 using BaridikExpress.Domain.Entities.BlogsModules;
 using BaridikExpress.Domain.Entities.CareerFields;
@@ -14,7 +13,6 @@ using BaridikExpress.Domain.Entities.DeliveryType;
 using BaridikExpress.Domain.Entities.Location;
 using BaridikExpress.Domain.Entities.Nationality;
 using BaridikExpress.Domain.Entities.NotificationModules;
-using BaridikExpress.Domain.Entities.OurPlans;
 using BaridikExpress.Domain.Entities.PublishingHouseModule;
 using BaridikExpress.Domain.Entities.RoleModule;
 using BaridikExpress.Domain.Entities.ServiceModules;
@@ -118,8 +116,8 @@ public interface IApplicationDbContext
 
     DbSet<ClientAddress> ClientAddresses { get; set; }
     #endregion
+    
 
-     DbSet<Plan> Plans { get; set; }
     DbSet<Banner>  Banners { get; set; }
     DbSet<Announcement>  Announcements { get; set; }
     DbSet<PublishingHouse> PublishingHouses { get; set; }
@@ -130,8 +128,6 @@ public interface IApplicationDbContext
     DbSet<GeneralCompanySettings> GeneralCompanySettings { get; set; }
     DbSet<ServiceBusinessPlan> ServiceBusinessPlans {  get; set; }
     DbSet<TalkService> TalkServices {  get; set; }
-    DbSet<BackupSetting> BackupSettings { get; set; }
-    DbSet<BackupHistory> BackupHistories { get; set; }
     DatabaseFacade Database { get; }
 
     DbSet<TEntity> Set<TEntity>() where TEntity : class;

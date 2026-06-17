@@ -10,7 +10,6 @@ using BaridikExpress.Domain.Entities.Banners;
 using BaridikExpress.Domain.Entities.CareerFields;
 using BaridikExpress.Domain.Entities.Location;
 using BaridikExpress.Domain.Entities.NotificationModules;
-using BaridikExpress.Domain.Entities.OurPlans;
 using BaridikExpress.Domain.Entities.SystemManagment;
 using BaridikExpress.Domain.Entities.Vehicles;
 using Microsoft.Extensions.DependencyInjection;
@@ -124,10 +123,6 @@ public static class DepedencyInjection
         services.AddTransient<
             IRequestHandler<GetSelectMenuQuery<Banner>, Result<IEnumerable<SelectMenuResponse>>>,
             GetSelectMenuQueryHandler<Banner>>();
-
-        services.AddTransient<
-            IRequestHandler<GetSelectMenuQuery<Plan>, Result<IEnumerable<SelectMenuResponse>>>,
-            GetSelectMenuQueryHandler<Plan>>();
         #endregion
         return services;
     }

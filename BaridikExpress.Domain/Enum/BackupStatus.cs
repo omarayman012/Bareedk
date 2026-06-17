@@ -2,7 +2,7 @@
 
 public enum BackupStatus
 {
-    Success = 1,
-    Failed = 2,
-    InProgress = 3
+    Pending = 1,
+    Success = 2,
+    Failed = 3
 }

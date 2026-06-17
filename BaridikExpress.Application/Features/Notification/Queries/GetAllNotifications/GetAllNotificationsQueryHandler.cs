@@ -14,15 +14,17 @@ public sealed class GetAllNotificationsQueryHandler(
         GetAllNotificationsQuery request,
         CancellationToken cancellationToken)
     {
-        var query = db.SendNotifications
-            .AsNoTracking()
-            .AsQueryable();
+        #region Build Query
 
-        if (!string.IsNullOrWhiteSpace(request.Name))
+        var query = db.SendNotifications.AsNoTracking().AsQueryable();
+
+        #endregion
+
+        #region Filters
+
+        if (!string.IsNullOrWhiteSpace(request.Search))
         {
-            var (searchAr, searchEn) = NormalizeHelper.Normalize(
-                request.Name,
-                request.Name);
+            var (searchAr, searchEn) = NormalizeHelper.Normalize(request.Search, request.Search);
 
             query = query.Where(x =>
                 x.TitleAr.Contains(searchAr) ||
@@ -31,158 +33,37 @@ public sealed class GetAllNotificationsQueryHandler(
                 x.DescriptionEn.Contains(searchEn));
         }
 
-        var projectedQuery = query
-            .OrderByDescending(x => x.CreatedAt)
-            .Select(x => new
-            {
-                x.Id,
-                x.TitleAr,
-                x.TitleEn,
-                x.DescriptionAr,
-                x.DescriptionEn,
-                x.ImageUrl,
-                CreatedByName = x.CreatedBy != null ? x.CreatedBy.FullName : null,
-                x.CreatedAt,
-                UpdatedByName = x.UpdatedBy != null ? x.UpdatedBy.FullName : null,
-                x.UpdatedAt
-            });
+        #endregion
 
-        var totalCount = await projectedQuery.CountAsync(cancellationToken);
+        #region Projection
 
-        var pageItems = await projectedQuery
-            .Skip((request.PageNumber - 1) * request.PageSize)
-            .Take(request.PageSize)
-            .ToListAsync(cancellationToken);
+        var projected = query
+        .OrderByDescending(x => x.CreatedAt)
+        .Select(x => new NotificationResponse(
+            x.Id,
+            new LocalizedDto { AR = x.TitleAr, EN = x.TitleEn },
+            new LocalizedDto { AR = x.DescriptionAr, EN = x.DescriptionEn },
+            x.ImageUrl,
+            x.Recipients.Count,
+            x.Recipients.Count(r => db.Clients.Any(c => c.UserId == r.UserId)),
+            x.Recipients.Count(r => db.Clients.Any(c => c.UserId == r.UserId && c.CreatedById != null)),
+            x.Recipients.Count(r => db.Clients.Any(c => c.UserId == r.UserId && c.CreatedById == null)),
+            x.Recipients.Count(r => db.Deliveries.Any(d => d.UserId == r.UserId)),
+            x.Recipients.Count(r => db.Deliveries.Any(d => d.UserId == r.UserId && d.CreatedById != null)),
+            x.Recipients.Count(r => db.Deliveries.Any(d => d.UserId == r.UserId && d.CreatedById == null)),
+            x.CreatedBy != null ? x.CreatedBy.FullName : null,
+            x.CreatedAt,
+            x.UpdatedBy != null ? x.UpdatedBy.FullName : null,
+            x.UpdatedAt));
 
-        var notificationIds = pageItems
-            .Select(x => x.Id)
-            .ToList();
+        #endregion
 
-        var recipients = await db.NotificationRecipients
-            .AsNoTracking()
-            .Where(r => notificationIds.Contains(r.NotificationId))
-            .Select(r => new
-            {
-                r.NotificationId,
-                r.UserId
-            })
-            .ToListAsync(cancellationToken);
+        #region Paginate
 
-        var userIds = recipients
-            .Select(r => r.UserId)
-            .Distinct()
-            .ToList();
+        var result = await PaginatedList<NotificationResponse>
+            .CreateAsync(projected, request.PageNumber, request.PageSize);
 
-        // Internal Clients = Customers table
-        var customers = await db.Customers
-            .AsNoTracking()
-            .Where(c => userIds.Contains(c.UserId))
-            .Select(c => new
-            {
-                c.UserId
-            })
-            .ToListAsync(cancellationToken);
-
-        // External Clients = Clients table
-        var clients = await db.Clients
-            .AsNoTracking()
-            .Where(c => userIds.Contains(c.UserId))
-            .Select(c => new
-            {
-                c.UserId
-            })
-            .ToListAsync(cancellationToken);
-
-        var deliveries = await db.Deliveries
-            .AsNoTracking()
-            .Where(d => userIds.Contains(d.UserId))
-            .Select(d => new
-            {
-                d.UserId,
-                d.CreatedById
-            })
-            .ToListAsync(cancellationToken);
-
-        var customerUserIds = customers
-            .Select(c => c.UserId)
-            .ToHashSet();
-
-        var clientUserIds = clients
-            .Select(c => c.UserId)
-            .ToHashSet();
-
-        var deliveriesByUserId = deliveries
-            .GroupBy(d => d.UserId)
-            .ToDictionary(g => g.Key, g => g.First());
-
-        var items = pageItems.Select(n =>
-        {
-            var notificationRecipients = recipients
-                .Where(r => r.NotificationId == n.Id)
-                .ToList();
-
-            var recipientUserIds = notificationRecipients
-                .Select(r => r.UserId)
-                .Distinct()
-                .ToList();
-
-            var internalClientsCount = recipientUserIds
-                .Count(userId => customerUserIds.Contains(userId));
-
-            var externalClientsCount = recipientUserIds
-                .Count(userId => clientUserIds.Contains(userId));
-
-            var totalClientsCount = internalClientsCount + externalClientsCount;
-
-            var notificationDeliveries = recipientUserIds
-                .Where(userId => deliveriesByUserId.ContainsKey(userId))
-                .Select(userId => deliveriesByUserId[userId])
-                .ToList();
-
-            return new NotificationResponse(
-                n.Id,
-                new LocalizedDto
-                {
-                    AR = n.TitleAr,
-                    EN = n.TitleEn
-                },
-                new LocalizedDto
-                {
-                    AR = n.DescriptionAr,
-                    EN = n.DescriptionEn
-                },
-                n.ImageUrl,
-
-                notificationRecipients.Count,
-
-                totalClientsCount,
-
-                // Internal clients from Customers table
-                internalClientsCount,
-
-                // External clients from Clients table
-                externalClientsCount,
-
-                notificationDeliveries.Count,
-
-                // Internal deliveries
-                notificationDeliveries.Count(d => d.CreatedById != null),
-
-                // External deliveries
-                notificationDeliveries.Count(d => d.CreatedById == null),
-
-                n.CreatedByName,
-                n.CreatedAt,
-                n.UpdatedByName,
-                n.UpdatedAt
-            );
-        }).ToList();
-
-        var result = new PaginatedList<NotificationResponse>(
-            items,
-            totalCount,
-            request.PageNumber,
-            request.PageSize);
+        #endregion
 
         return Result<PaginatedList<NotificationResponse>>
             .Success(result, localizer["NotificationsRetrievedSuccessfully"]);

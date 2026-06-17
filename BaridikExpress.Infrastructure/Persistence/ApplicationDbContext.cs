@@ -17,7 +17,6 @@ using BaridikExpress.Domain.Entities.DeliveryType;
 using BaridikExpress.Domain.Entities.Location;
 using BaridikExpress.Domain.Entities.Nationality;
 using BaridikExpress.Domain.Entities.NotificationModules;
-using BaridikExpress.Domain.Entities.OurPlans;
 using BaridikExpress.Domain.Entities.PublishingHouseModule;
 using BaridikExpress.Domain.Entities.RoleModule;
 using BaridikExpress.Domain.Entities.ServiceModules;
@@ -84,8 +83,6 @@ public class ApplicationDbContext : IdentityDbContext<User>, IApplicationDbConte
     public DbSet<CustomerContact> CustomerContacts { get; set; }
 
     #endregion
-
-    public DbSet<Plan> Plans { get; set; }
 
     #region DbSets - Delivery
 

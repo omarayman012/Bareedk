@@ -1,58 +1,31 @@
 ﻿using BaridikExpress.Application.Interfaces.Realtime;
 using BaridikExpress.Infrastructure.Services.Realtime.Hubs;
 using Microsoft.AspNetCore.SignalR;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace BaridikExpress.Infrastructure.Services.Realtime;
-
-public sealed class NotificationService(
-    IHubContext<NotificationHub> hub)
-    : INotificationService
+namespace BaridikExpress.Infrastructure.Services.Realtime
 {
-    private const string ReceiveNotificationMethod = "ReceiveNotification";
 
-    public Task SendAsync(
-        string userId,
-        object data,
-        CancellationToken cancellationToken = default)
+    public class NotificationService : INotificationService
     {
-        if (string.IsNullOrWhiteSpace(userId))
+        private readonly IHubContext<NotificationHub> _hub;
+
+        public NotificationService(IHubContext<NotificationHub> hub)
         {
-            return Task.CompletedTask;
+            _hub = hub;
         }
 
-        return hub.Clients
-            .User(userId)
-            .SendAsync(
-                ReceiveNotificationMethod,
-                data,
-                cancellationToken);
-    }
-
-    public Task SendAsync(
-        IReadOnlyCollection<string> userIds,
-        object data,
-        CancellationToken cancellationToken = default)
-    {
-        if (userIds.Count == 0)
+        public async Task SendAsync(string userId, object data)
         {
-            return Task.CompletedTask;
+            if (string.IsNullOrWhiteSpace(userId))
+                return;
+
+            await _hub.Clients.User(userId)
+                .SendAsync("ReceiveNotification", data);
         }
-
-        var validUserIds = userIds
-            .Where(userId => !string.IsNullOrWhiteSpace(userId))
-            .Distinct()
-            .ToList();
-
-        if (validUserIds.Count == 0)
-        {
-            return Task.CompletedTask;
-        }
-
-        return hub.Clients
-            .Users(validUserIds)
-            .SendAsync(
-                ReceiveNotificationMethod,
-                data,
-                cancellationToken);
     }
 }

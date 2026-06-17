@@ -1,14 +1,14 @@
-﻿namespace BaridikExpress.Application.Interfaces.Realtime;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-public interface INotificationService
+namespace BaridikExpress.Application.Interfaces.Realtime
 {
-    Task SendAsync(
-        string userId,
-        object data,
-        CancellationToken cancellationToken = default);
 
-    Task SendAsync(
-        IReadOnlyCollection<string> userIds,
-        object data,
-        CancellationToken cancellationToken = default);
+    public interface INotificationService
+    {
+        Task SendAsync(string userId, object data);
+    }
 }
