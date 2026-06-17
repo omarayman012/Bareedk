@@ -44,22 +44,25 @@ public sealed class GetNotificationByIdQueryHandler(
             .Distinct()
             .ToListAsync(cancellationToken);
 
-        var clientsCreatedByAdmin = await db.Clients
+        // Internal Clients = Customers table
+        var clientsCreatedByAdmin = await db.Customers
             .AsNoTracking()
-            .Where(x => userIds.Contains(x.UserId) && x.CreatedById != null)
+            .Where(x => userIds.Contains(x.UserId))
             .Select(x => new RecipientSummary(
                 x.Id,
                 x.User.FullName))
             .ToListAsync(cancellationToken);
 
+        // External Clients = Clients table
         var clientsExternal = await db.Clients
             .AsNoTracking()
-            .Where(x => userIds.Contains(x.UserId) && x.CreatedById == null)
+            .Where(x => userIds.Contains(x.UserId))
             .Select(x => new RecipientSummary(
                 x.Id,
                 x.User.FullName))
             .ToListAsync(cancellationToken);
 
+        // Internal Deliveries = Created by admin
         var deliveriesCreatedByAdmin = await db.Deliveries
             .AsNoTracking()
             .Where(x => userIds.Contains(x.UserId) && x.CreatedById != null)
@@ -68,6 +71,7 @@ public sealed class GetNotificationByIdQueryHandler(
                 x.User.FullName))
             .ToListAsync(cancellationToken);
 
+        // External Deliveries = Registered by himself
         var deliveriesExternal = await db.Deliveries
             .AsNoTracking()
             .Where(x => userIds.Contains(x.UserId) && x.CreatedById == null)
