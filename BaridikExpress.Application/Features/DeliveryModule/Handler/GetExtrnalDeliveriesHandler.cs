@@ -3,23 +3,23 @@ using BaridikExpress.Application.Features.CommanDTO.Localizes;
 using BaridikExpress.Application.Features.DeliveryModule.Queries;
 using BaridikExpress.Domain.Common;
 using BaridikExpress.Domain.Enum;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Localization;
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace BaridikExpress.Application.Features.DeliveryModule.Handler
 {
-    public class GetAllDeliveriesHandler
-        : IRequestHandler<GetAllDeliveriesQuery, Result<PagedResult<GetAllDeliveriesDto>>>
+
+    public class GetExtrnalDeliveriesHandler
+      : IRequestHandler<GetAllDeliveriesQuery, Result<PagedResult<GetAllDeliveriesDto>>>
     {
         private readonly IApplicationDbContext _context;
         private readonly IStringLocalizer _localizer;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public GetAllDeliveriesHandler(
+        public GetExtrnalDeliveriesHandler(
             IApplicationDbContext context,
             IStringLocalizer localizer,
             IHttpContextAccessor httpContextAccessor)
@@ -48,7 +48,7 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
                 .Include(x => x.Government)
                 .Include(x => x.City)
                 .Include(x => x.Village)
-                .Where(x => x.CreateType == DeliveryCreationType.External)
+                .Where(x => x.CreateType == DeliveryCreationType.Internal)
                 .AsQueryable();
 
             // ================= SEARCH =================
@@ -167,5 +167,6 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
                 _localizer["Success"],
                 200);
         }
+        
     }
 }
