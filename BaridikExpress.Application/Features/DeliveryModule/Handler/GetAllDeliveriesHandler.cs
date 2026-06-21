@@ -100,6 +100,7 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
 
                 IsApproved = x.IsApproved,
                 ApprovedAt = x.ApprovedAt,
+                Active = x.Active,
                 CreateType = x.CreateType.ToString(),
 
                 Country = x.Country == null ? null : new LocalizedNameDto

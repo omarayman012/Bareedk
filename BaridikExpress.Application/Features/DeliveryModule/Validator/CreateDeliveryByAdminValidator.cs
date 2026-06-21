@@ -35,8 +35,7 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Validator
             RuleFor(x => x.VehType)
                 .IsInEnum();
 
-            // ================= LOCATION HIERARCHY =================
-
+            // ================= LOCATION =================
             RuleFor(x => x.Country)
                 .NotNull().WithMessage(_localizer["CountryRequired"])
                 .MustAsync(CountryExists)
@@ -63,33 +62,51 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Validator
                 .MustAsync(BeVillageInCity)
                 .WithMessage(_localizer["VillageNotBelongToCity"]);
 
-            // ================= FILES =================
-            RuleFor(x => x.ProfileImg).NotNull();
-            RuleFor(x => x.NidImg).NotNull();
-            RuleFor(x => x.LicImg).NotNull();
-            RuleFor(x => x.VehImg).NotNull();
-            RuleFor(x => x.PoliceCertImg).NotNull();
-            RuleFor(x => x.PlateImg).NotNull();
+            // ================= FILES (UPDATED STYLE) =================
+            RuleFor(x => x.NidImg)
+                           .NotNull().WithMessage(_localizer["ProfileImgRequired"])
+                           .Must(BeValidFile).WithMessage(_localizer["InvalidProfileImg"]);
+
+            RuleFor(x => x.ProfileImg)
+                           .NotNull().WithMessage(_localizer["NidImgRequired"])
+                           .Must(BeValidFile).WithMessage(_localizer["InvalidNidImg"]);
+
+            RuleFor(x => x.LicImg)
+                .NotNull().WithMessage(_localizer["LicenseImageRequired"])
+                .Must(BeValidFile).WithMessage(_localizer["InvalidLicenseImage"]);
+
+            RuleFor(x => x.VehImg)
+                .NotNull().WithMessage(_localizer["VehicleImageRequired"])
+                .Must(BeValidFile).WithMessage(_localizer["InvalidVehicleImage"]);
+
+            RuleFor(x => x.PoliceCertImg)
+                .NotNull().WithMessage(_localizer["PoliceCertificateImageRequired"])
+                .Must(BeValidFile).WithMessage(_localizer["InvalidPoliceCertImage"]);
+
+            RuleFor(x => x.PlateImg)
+                .NotNull().WithMessage(_localizer["PlateImageRequired"])
+                .Must(BeValidFile).WithMessage(_localizer["InvalidPlateImage"]);
 
             // ================= AUTH =================
             RuleFor(x => x.Email)
-                .NotEmpty()
-                .EmailAddress()
+                .NotEmpty().WithMessage(_localizer["EmailRequired"])
+                .EmailAddress().WithMessage(_localizer["InvalidEmail"])
                 .MustAsync(BeUniqueEmail)
                 .WithMessage(_localizer["EmailAlreadyExists"]);
 
             RuleFor(x => x.Phone)
-                .NotEmpty()
+                .NotEmpty().WithMessage(_localizer["PhoneRequired"])
                 .MinimumLength(8)
                 .MustAsync(BeUniquePhone)
                 .WithMessage(_localizer["PhoneAlreadyExists"]);
 
             RuleFor(x => x.Password)
-                .NotEmpty()
+                .NotEmpty().WithMessage(_localizer["PasswordRequired"])
                 .MinimumLength(6);
 
             RuleFor(x => x.ConfirmPassword)
-                .Equal(x => x.Password);
+                .Equal(x => x.Password)
+                .WithMessage(_localizer["PasswordNotMatch"]);
         }
 
         // ================= AGE =================
@@ -100,92 +117,71 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Validator
             return age >= 18;
         }
 
-        // ================= EMAIL / PHONE =================
+        // ================= UNIQUE =================
         private async Task<bool> BeUniqueEmail(string email, CancellationToken ct)
-        {
-            return !await _context.ApplicationUsers.AnyAsync(x => x.Email == email, ct);
-        }
+            => !await _context.ApplicationUsers.AnyAsync(x => x.Email == email, ct);
 
         private async Task<bool> BeUniquePhone(string phone, CancellationToken ct)
-        {
-            return !await _context.ApplicationUsers.AnyAsync(x => x.PhoneNumber == phone, ct);
-        }
+            => !await _context.ApplicationUsers.AnyAsync(x => x.PhoneNumber == phone, ct);
 
-        // ================= LOCATION CHECKS =================
-
+        // ================= LOCATION =================
         private async Task<bool> CountryExists(Guid? id, CancellationToken ct)
-        {
-            return id.HasValue &&
-                   await _context.Countries
-                       .AnyAsync(x => x.CountryId == id.Value, ct);
-        }
+            => id.HasValue && await _context.Countries.AnyAsync(x => x.CountryId == id.Value, ct);
 
         private async Task<bool> GovExists(Guid? id, CancellationToken ct)
-        {
-            return id.HasValue &&
-                   await _context.Governments
-                       .AnyAsync(x => x.GovernmentId == id.Value, ct);
-        }
+            => id.HasValue && await _context.Governments.AnyAsync(x => x.GovernmentId == id.Value, ct);
 
         private async Task<bool> CityExists(Guid? id, CancellationToken ct)
-        {
-            return id.HasValue &&
-                   await _context.Cities
-                       .AnyAsync(x => x.CityId == id.Value, ct);
-        }
+            => id.HasValue && await _context.Cities.AnyAsync(x => x.CityId == id.Value, ct);
 
         private async Task<bool> VillageExists(Guid? id, CancellationToken ct)
-        {
-            return id.HasValue &&
-                   await _context.Villages
-                       .AnyAsync(x => x.VillageId == id.Value, ct);
-        }
+            => id.HasValue && await _context.Villages.AnyAsync(x => x.VillageId == id.Value, ct);
 
-        // ================= HIERARCHY VALIDATION =================
-
-        private async Task<bool> BeGovInCountry(
-            CreateDeliveryByAdminCommand cmd,
-            Guid? govId,
-            CancellationToken ct)
+        private async Task<bool> BeGovInCountry(CreateDeliveryByAdminCommand cmd, Guid? govId, CancellationToken ct)
         {
             if (!govId.HasValue || !cmd.Country.HasValue)
                 return false;
 
             return await _context.Governments
-                .AnyAsync(x =>
-                    x.GovernmentId == govId.Value &&
-                    x.CountryId == cmd.Country.Value,
-                    ct);
+                .AnyAsync(x => x.GovernmentId == govId.Value && x.CountryId == cmd.Country.Value, ct);
         }
 
-        private async Task<bool> BeCityInGov(
-            CreateDeliveryByAdminCommand cmd,
-            Guid? cityId,
-            CancellationToken ct)
+        private async Task<bool> BeCityInGov(CreateDeliveryByAdminCommand cmd, Guid? cityId, CancellationToken ct)
         {
             if (!cityId.HasValue || !cmd.Gov.HasValue)
                 return false;
 
             return await _context.Cities
-                .AnyAsync(x =>
-                    x.CityId == cityId.Value &&
-                    x.GovernmentId == cmd.Gov.Value,
-                    ct);
+                .AnyAsync(x => x.CityId == cityId.Value && x.GovernmentId == cmd.Gov.Value, ct);
         }
 
-        private async Task<bool> BeVillageInCity(
-            CreateDeliveryByAdminCommand cmd,
-            Guid? villageId,
-            CancellationToken ct)
+        private async Task<bool> BeVillageInCity(CreateDeliveryByAdminCommand cmd, Guid? villageId, CancellationToken ct)
         {
             if (!villageId.HasValue || !cmd.City.HasValue)
                 return false;
 
             return await _context.Villages
-                .AnyAsync(x =>
-                    x.VillageId == villageId.Value &&
-                    x.CityId == cmd.City.Value,
-                    ct);
+                .AnyAsync(x => x.VillageId == villageId.Value && x.CityId == cmd.City.Value, ct);
+        }
+        private bool BeValidFile(IFormFile file)
+        {
+            if (file == null)
+                return false;
+
+            const long maxSize = 10 * 1024 * 1024; // 10 MB
+
+            var allowedExtensions = new[]
+            {
+                ".jpg",
+                ".jpeg",
+                ".png",
+                ".pdf"
+            };
+
+            var extension = Path.GetExtension(file.FileName)?.ToLower();
+
+            return file.Length <= maxSize &&
+                   allowedExtensions.Contains(extension);
         }
     }
 }

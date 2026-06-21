@@ -113,7 +113,7 @@ namespace BaridikExpress.API.Controllers.AuthDeliveryModule
             return Ok(result);
         }
 
-        [Authorize(Roles = "SuperAdmin")]
+        //[Authorize(Roles = "SuperAdmin")]
         [HttpPut("Update")]
         public async Task<IActionResult> Update(
              [FromForm] UpdateDeliveryCommand command)
@@ -189,6 +189,18 @@ namespace BaridikExpress.API.Controllers.AuthDeliveryModule
             var result = await _mediator.Send(new DeleteDeliveryByAdminCommand
             {
                 DeliveryId = id
+            });
+
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [Authorize(Roles = "SuperAdmin")]
+        [HttpPatch("ToggleStatus/{id}")]
+        public async Task<IActionResult> ToggleStatus(string userId)
+        {
+            var result = await _mediator.Send(new ToggleDeliveryStatusCommand
+            {
+                UserId = userId
             });
 
             return StatusCode(result.StatusCode, result);

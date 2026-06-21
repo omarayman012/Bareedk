@@ -9,45 +9,39 @@ using System.Threading.Tasks;
 namespace BaridikExpress.Application.Features.DeliveryModule.Command
 {
     public class UpdateDeliveryCommand
-         : IRequest<Result<UpdateDeliveryResponseDto>>
+    : IRequest<Result<UpdateDeliveryResponseDto>>
     {
         public string Id { get; set; }
 
         // USER
         public string FullName { get; set; }
 
+        public string Email { get; set; }      // NEW
+        public string Phone { get; set; }      // NEW
+        public string? Edu { get; set; }       // NEW
+
         // DELIVERY
         public DateTime DateOfBirth { get; set; }
 
         // ADDRESS
         public Guid? Country { get; set; }
-
         public Guid? Gov { get; set; }
-
         public Guid? City { get; set; }
-
         public Guid? Village { get; set; }
 
         public string? Address { get; set; }
-
         public string? Floor { get; set; }
-
         public string? Apt { get; set; }
 
         // VEHICLE
         public string PlateNo { get; set; }
-
         public VehicleType VehType { get; set; }
 
         // FILES
         public IFormFile? NidImg { get; set; }
-
         public IFormFile? LicImg { get; set; }
-
         public IFormFile? VehImg { get; set; }
-
         public IFormFile? PoliceCertImg { get; set; }
-
         public IFormFile? PlateImg { get; set; }
     }
 }

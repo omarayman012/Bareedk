@@ -63,6 +63,7 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
                     // APPROVAL
                     IsApproved = x.IsApproved,
                     ApprovedAt = x.ApprovedAt,
+                    Active = x.Active,
                     CreateType = x.CreateType.ToString(),
 
                     // ADDRESS (FIXED)

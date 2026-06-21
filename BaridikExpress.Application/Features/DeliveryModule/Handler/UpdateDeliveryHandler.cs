@@ -31,7 +31,7 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
             UpdateDeliveryCommand request,
             CancellationToken cancellationToken)
         {
-            // ================= AUTH CHECK =================
+            // ================= AUTH =================
             var user = _httpContextAccessor.HttpContext?.User;
 
             if (user == null || !user.Identity?.IsAuthenticated == true)
@@ -60,9 +60,18 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
             // ================= USER =================
             delivery.User.FullName = request.FullName;
 
-            // ================= DELIVERY DATA =================
-            delivery.DateOfBirth = request.DateOfBirth;
+            if (!string.IsNullOrWhiteSpace(request.Email))
+                delivery.User.Email = request.Email;
 
+            if (!string.IsNullOrWhiteSpace(request.Phone))
+                delivery.User.PhoneNumber = request.Phone;
+
+            // ================= BASIC =================
+            delivery.DateOfBirth = request.DateOfBirth;
+            delivery.PlateNo = request.PlateNo;
+            delivery.VehType = request.VehType;
+
+            // ================= ADDRESS =================
             delivery.CountryId = request.Country;
             delivery.GovernmentId = request.Gov;
             delivery.CityId = request.City;
@@ -71,15 +80,11 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
             delivery.Address = request.Address;
             delivery.Floor = request.Floor;
             delivery.Apt = request.Apt;
-
-            delivery.PlateNo = request.PlateNo;
-            delivery.VehType = request.VehType;
+            delivery.Edu = request.Edu;
 
             // ================= FILES =================
-            async Task<string?> SaveFile(IFormFile? file, string folder)
+            async Task<string> SaveFile(IFormFile file, string folder)
             {
-                if (file == null) return null;
-
                 return await _fileStorage.SaveFileAsync(
                     file.OpenReadStream(),
                     file.FileName,
@@ -103,7 +108,7 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
 
             await _context.SaveChangesAsync(cancellationToken);
 
-            // ================= RESPONSE =================
+            // ================= RESPONSE (UNCHANGED STRUCTURE) =================
             var response = new UpdateDeliveryResponseDto
             {
                 Id = delivery.Id,
@@ -114,7 +119,6 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
 
                 DateOfBirth = delivery.DateOfBirth,
 
-                // LOCATION (Localized)
                 Country = delivery.Country == null ? null : new LocalizedNameDto
                 {
                     Id = delivery.Country.Id,
@@ -146,19 +150,17 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Handler
                 Address = delivery.Address,
                 Floor = delivery.Floor,
                 Apt = delivery.Apt,
+                Edu = delivery.Edu,
 
-                // VEHICLE
                 PlateNo = delivery.PlateNo,
                 VehType = delivery.VehType.ToString(),
 
-                // FILES
                 NidImg = delivery.NidImg,
                 LicImg = delivery.LicImg,
                 VehImg = delivery.VehImg,
                 PoliceCertImg = delivery.PoliceCertImg,
                 PlateImg = delivery.PlateImg,
 
-                // APPROVAL
                 IsApproved = delivery.IsApproved,
                 ApprovedAt = delivery.ApprovedAt,
                 CreateType = delivery.CreateType.ToString()

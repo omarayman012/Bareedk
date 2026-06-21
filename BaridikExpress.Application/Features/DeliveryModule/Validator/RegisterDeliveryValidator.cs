@@ -1,5 +1,6 @@
 ﻿using BaridikExpress.Application.Features.AuthDeliveryModule.Command;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using System.Text.RegularExpressions;
@@ -31,21 +32,23 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Validator
 
             // ================= EMAIL =================
             RuleFor(x => x.Email)
-                .NotEmpty()
+                .NotEmpty().WithMessage(_localizer["EmailRequired"])
                 .Must(BeValidEmail)
+                .WithMessage(_localizer["InvalidEmail"])
                 .MustAsync(EmailNotExists)
                 .WithMessage(_localizer["EmailAlreadyExists"]);
 
             // ================= PHONE =================
             RuleFor(x => x.Phone)
-                .NotEmpty()
+                .NotEmpty().WithMessage(_localizer["PhoneRequired"])
                 .Must(BeValidPhone)
+                .WithMessage(_localizer["InvalidPhone"])
                 .MustAsync(PhoneNotExists)
                 .WithMessage(_localizer["PhoneAlreadyExists"]);
 
             // ================= PASSWORD =================
             RuleFor(x => x.Password)
-                .NotEmpty()
+                .NotEmpty().WithMessage(_localizer["PasswordRequired"])
                 .Must(BeStrongPassword)
                 .WithMessage(_localizer["PasswordInvalid"]);
 
@@ -55,39 +58,78 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Validator
 
             // ================= VEHICLE =================
             RuleFor(x => x.PlateNo)
-                .NotEmpty();
+                .NotEmpty()
+                .WithMessage(_localizer["PlateNoRequired"]);
 
             RuleFor(x => x.VehType)
-                .IsInEnum();
+                .IsInEnum()
+                .WithMessage(_localizer["InvalidVehicleType"]);
 
             // ================= LOCATION VALIDATION =================
-
             RuleFor(x => x.Country)
-                .NotNull().MustAsync(CountryExists);
+                .NotNull()
+                .WithMessage(_localizer["CountryRequired"])
+                .MustAsync(CountryExists)
+                .WithMessage(_localizer["InvalidCountry"]);
 
             RuleFor(x => x.Gov)
-                .NotNull().MustAsync(GovExists)
-                .MustAsync(BeGovInCountry);
+                .NotNull()
+                .WithMessage(_localizer["GovRequired"])
+                .MustAsync(GovExists)
+                .WithMessage(_localizer["InvalidGov"])
+                .MustAsync(BeGovInCountry)
+                .WithMessage(_localizer["GovNotInCountry"]);
 
             RuleFor(x => x.City)
-                .NotNull().MustAsync(CityExists)
-                .MustAsync(BeCityInGov);
+                .NotNull()
+                .WithMessage(_localizer["CityRequired"])
+                .MustAsync(CityExists)
+                .WithMessage(_localizer["InvalidCity"])
+                .MustAsync(BeCityInGov)
+                .WithMessage(_localizer["CityNotInGov"]);
 
             RuleFor(x => x.Village)
-                .NotNull().MustAsync(VillageExists)
-                .MustAsync(BeVillageInCity);
+                .NotNull()
+                .WithMessage(_localizer["VillageRequired"])
+                .MustAsync(VillageExists)
+                .WithMessage(_localizer["InvalidVillage"])
+                .MustAsync(BeVillageInCity)
+                .WithMessage(_localizer["VillageNotInCity"]);
 
             // ================= FILES =================
-            RuleFor(x => x.ProfileImg).NotNull();
-            RuleFor(x => x.NidImg).NotNull();
-            RuleFor(x => x.LicImg).NotNull();
-            RuleFor(x => x.VehImg).NotNull();
-            RuleFor(x => x.PoliceCertImg).NotNull();
-            RuleFor(x => x.PlateImg).NotNull();
+          
+            RuleFor(x => x.NidImg)
+                           .NotNull().WithMessage(_localizer["ProfileImgRequired"])
+                           .Must(BeValidFile).WithMessage(_localizer["InvalidProfileImg"]);
+
+            RuleFor(x => x.ProfileImg)
+                           .NotNull().WithMessage(_localizer["NidImgRequired"])
+                           .Must(BeValidFile).WithMessage(_localizer["InvalidNidImg"]);
+
+            RuleFor(x => x.LicImg)
+                .NotNull().WithMessage(_localizer["LicenseImageRequired"])
+                .Must(BeValidFile).WithMessage(_localizer["InvalidLicenseImage"]);
+
+            RuleFor(x => x.VehImg)
+                .NotNull().WithMessage(_localizer["VehicleImageRequired"])
+                .Must(BeValidFile).WithMessage(_localizer["InvalidVehicleImage"]);
+
+            RuleFor(x => x.PoliceCertImg)
+                .NotNull().WithMessage(_localizer["PoliceCertificateImageRequired"])
+                .Must(BeValidFile).WithMessage(_localizer["InvalidPoliceCertImage"]);
+
+            RuleFor(x => x.PlateImg)
+                .NotNull().WithMessage(_localizer["PlateImageRequired"])
+                .Must(BeValidFile).WithMessage(_localizer["InvalidPlateImage"]);
 
             // ================= TERMS =================
-            RuleFor(x => x.TermsAccepted).Equal(true);
-            RuleFor(x => x.PrivacyAccepted).Equal(true);
+            RuleFor(x => x.TermsAccepted)
+                .Equal(true)
+                .WithMessage(_localizer["TermsMustBeAccepted"]);
+
+            RuleFor(x => x.PrivacyAccepted)
+                .Equal(true)
+                .WithMessage(_localizer["PrivacyMustBeAccepted"]);
         }
 
         // ================= AGE =================
@@ -110,6 +152,28 @@ namespace BaridikExpress.Application.Features.DeliveryModule.Validator
                 && password.Any(char.IsLower)
                 && password.Any(char.IsDigit)
                 && password.Any(c => !char.IsLetterOrDigit(c));
+        }
+
+        // ================= FILE VALIDATION =================
+        private bool BeValidFile(IFormFile file)
+        {
+            if (file == null)
+                return false;
+
+            const long maxSize = 10 * 1024 * 1024; // 10 MB
+
+            var allowedExtensions = new[]
+            {
+                ".jpg",
+                ".jpeg",
+                ".png",
+                ".pdf"
+            };
+
+            var extension = Path.GetExtension(file.FileName)?.ToLower();
+
+            return file.Length <= maxSize &&
+                   allowedExtensions.Contains(extension);
         }
 
         // ================= UNIQUE =================

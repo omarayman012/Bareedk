@@ -18,6 +18,7 @@ namespace BaridikExpress.Application.DTOs.DeliveryModule
         public string Phone { get; set; }
         public bool IsEmailVerified { get; set; }
         public bool IsPhoneVerified { get; set; }
+        public bool Active { get; set; }
         public DateTime DateOfBirth { get; set; }
 
         // VEHICLE

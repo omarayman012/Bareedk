@@ -32,6 +32,7 @@ namespace BaridikExpress.Application.Features.DeliveryModule.DTOs
         public string? Floor { get; set; }
 
         public string? Apt { get; set; }
+        public string? Edu { get; set; }
 
         public string PlateNo { get; set; }
 

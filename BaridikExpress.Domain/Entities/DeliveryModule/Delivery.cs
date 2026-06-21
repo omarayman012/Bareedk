@@ -23,6 +23,7 @@ namespace BaridikExpress.Domain.Entities.DeliveryModule
 
         // APPROVAL
         public bool IsApproved { get; set; } = false;
+        public bool Active { get; set; } = true;
         public DateTime? ApprovedAt { get; set; }
         public DeliveryCreationType CreateType { get; set; }
 
