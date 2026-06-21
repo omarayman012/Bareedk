@@ -8,7 +8,7 @@ namespace BaridikExpress.API.Controllers.BlogsModules
     [ApiController]
     [Route("api/v1/[controller]")]
     [ApiExplorerSettings(GroupName = "admin-v1")]
-    [Authorize]
+    //[Authorize]
     public class BlogController : ControllerBase
     {
         private readonly IMediator _mediator;

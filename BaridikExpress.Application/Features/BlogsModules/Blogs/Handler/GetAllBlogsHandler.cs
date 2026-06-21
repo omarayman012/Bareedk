@@ -1,5 +1,4 @@
-﻿
-using BaridikExpress.Application.Features.BlogsModules.Blogs.Queries;
+﻿using BaridikExpress.Application.Features.BlogsModules.Blogs.Queries;
 using BaridikExpress.Application.Features.BlogsModules.DTOs;
 using BaridikExpress.Domain.Entities.BlogsModules;
 using BaridikExpress.Domain.Enum;
@@ -7,181 +6,162 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 
-namespace Awael_Al_Joudah.Application.Handlers.BlogModules;
-
-public class GetAllBlogsHandler : IRequestHandler<GetBlogsQuery, Result<PaginatedList<BlogListResponse>>>
+namespace Awael_Al_Joudah.Application.Handlers.BlogModules
 {
-    private readonly IApplicationDbContext _context;
-    private readonly IStringLocalizer _localizer;
-
-    public GetAllBlogsHandler(
-        IApplicationDbContext context,
-        IStringLocalizer localizer)
+    public class GetAllBlogsHandler
+        : IRequestHandler<GetBlogsQuery, Result<PaginatedList<BlogListResponse>>>
     {
-        _context = context;
-        _localizer = localizer;
-    }
+        private readonly IApplicationDbContext _context;
+        private readonly IStringLocalizer _localizer;
 
-    public async Task<Result<PaginatedList<BlogListResponse>>> Handle(
-        GetBlogsQuery request,
-        CancellationToken cancellationToken)
-    {
-        var baseQuery = BuildQuery(request);
-
-        var count = await baseQuery.CountAsync(cancellationToken);
-
-        if (count == 0)
+        public GetAllBlogsHandler(
+            IApplicationDbContext context,
+            IStringLocalizer localizer)
         {
-            return Result<PaginatedList<BlogListResponse>>.Success(
-                new PaginatedList<BlogListResponse>(
-                    new List<BlogListResponse>(),
-                    request.PageNumber,
-                    0,
-                    request.PageSize),
-                _localizer["NoBlogsFound"]);
+            _context = context;
+            _localizer = localizer;
         }
 
-        var items = await baseQuery
-            .Skip((request.PageNumber - 1) * request.PageSize)
-            .Take(request.PageSize)
-            .Select(b => new BlogListResponse
+        public async Task<Result<PaginatedList<BlogListResponse>>> Handle(
+            GetBlogsQuery request,
+            CancellationToken cancellationToken)
+        {
+            var baseQuery = BuildQuery(request);
+
+            var count = await baseQuery.CountAsync(cancellationToken);
+
+            if (count == 0)
             {
-                Id = b.Id,
+                return Result<PaginatedList<BlogListResponse>>.Success(
+                    new PaginatedList<BlogListResponse>(
+                        new List<BlogListResponse>(),
+                        request.PageNumber,
+                        0,
+                        request.PageSize),
+                    _localizer["NoBlogsFound"]);
+            }
 
-                Title = new NameDto
+            var items = await baseQuery
+                .Skip((request.PageNumber - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .Select(b => new BlogListResponse
                 {
-                    Ar = b.TitleAr,
-                    En = b.TitleEn
-                },
+                    Id = b.Id,
 
-                Description = new DescriptionDto
-                {
-                    Ar = b.DescriptionAr,
-                    En = b.DescriptionEn
-                },
-
-                Image = b.Image,
-
-                IsActive = b.IsActive,
-
-                Category = new LookupDto
-                {
-                    Id = b.Category.Id,
-
-                    Name = new NameDto
+                    Title = new NameDto
                     {
-                        Ar = b.Category.NameAr,
-                        En = b.Category.NameEn
-                    }
-                },
-                PublishingHouse = new LookupDto
-                {
-                    Id = b.PublishingHouse.Id,
+                        Ar = b.TitleAr,
+                        En = b.TitleEn
+                    },
 
-                    Name = new NameDto
+                    Description = new DescriptionDto
                     {
-                        Ar = b.PublishingHouse.NameAr,
-                        En = b.PublishingHouse.NameEn
-                    }
-                },
+                        Ar = b.DescriptionAr,
+                        En = b.DescriptionEn
+                    },
 
-                Author = new LookupDto
-                {
-                    Id = b.Author.Id,
+                    Image = b.Image ?? "",
 
-                    Name = new NameDto
+                    IsActive = b.IsActive,
+
+                    Category = b.Category == null ? null : new LookupDto
                     {
-                        Ar = b.Author.NameAr,
-                        En = b.Author.NameEn
-                    }
-                },
+                        Id = b.Category.Id,
+                        Name = new NameDto
+                        {
+                            Ar = b.Category.NameAr,
+                            En = b.Category.NameEn
+                        }
+                    },
 
-                Tags = new TagsDto
-                {
-                    Ar = b.BlogTags
-                        .Where(t => !string.IsNullOrWhiteSpace(t.Tag.NameAr))
-                        .Select(t => t.Tag.NameAr!)
-                        .ToList(),
+                    PublishingHouse = b.PublishingHouse == null ? null : new LookupDto
+                    {
+                        Id = b.PublishingHouse.Id,
+                        Name = new NameDto
+                        {
+                            Ar = b.PublishingHouse.NameAr,
+                            En = b.PublishingHouse.NameEn
+                        }
+                    },
 
-                    En = b.BlogTags
-                        .Where(t => !string.IsNullOrWhiteSpace(t.Tag.NameEn))
-                        .Select(t => t.Tag.NameEn!)
-                        .ToList()
-                },
+                    Author = b.Author == null ? null : new LookupDto
+                    {
+                        Id = b.Author.Id,
+                        Name = new NameDto
+                        {
+                            Ar = b.Author.NameAr,
+                            En = b.Author.NameEn
+                        }
+                    },
 
-                CreatedAt = b.CreatedAt,
+                    Tags = new TagsDto
+                    {
+                        Ar = b.BlogTags
+                            .Where(t => t.Tag != null && !string.IsNullOrWhiteSpace(t.Tag.NameAr))
+                            .Select(t => t.Tag.NameAr!)
+                            .ToList(),
 
-                CreatedBy = b.CreatedBy != null
-                    ? b.CreatedBy.FullName
-                    : string.Empty,
+                        En = b.BlogTags
+                            .Where(t => t.Tag != null && !string.IsNullOrWhiteSpace(t.Tag.NameEn))
+                            .Select(t => t.Tag.NameEn!)
+                            .ToList()
+                    },
 
-                UpdatedAt = b.UpdatedAt,
+                    CreatedAt = b.CreatedAt,
 
-                UpdatedBy = b.UpdatedBy != null
-                    ? b.UpdatedBy.FullName
-                    : null,
-                CreatedDate = b.CreatedDate ,
-                CreatedTime = b .CreatedTime,
-                Likes = b.Reactions.Count(r => r.Type == ReactionType.Like),
+                    CreatedBy = b.CreatedBy != null ? b.CreatedBy.FullName : "",
 
-                Dislikes = b.Reactions.Count(r => r.Type == ReactionType.Dislike)
-            })
-            .ToListAsync(cancellationToken);
+                    UpdatedAt = b.UpdatedAt,
 
-        var result = new PaginatedList<BlogListResponse>(
-            items,
-            request.PageNumber,
-            count,
-            request.PageSize);
+                    UpdatedBy = b.UpdatedBy != null ? b.UpdatedBy.FullName : null,
 
-        return Result<PaginatedList<BlogListResponse>>.Success(
-            result,
-            _localizer["BlogsRetrievedSuccessfully"]);
-    }
+                    CreatedDate = b.CreatedDate,
+                    CreatedTime = b.CreatedTime,
 
-    private IQueryable<Blog> BuildQuery(GetBlogsQuery request)
-    {
-        var query = _context.Blogs
-            .AsNoTracking()
-            .AsSplitQuery();
+                    Likes = b.Reactions.Count(r => r.Type == ReactionType.Like),
+                    Dislikes = b.Reactions.Count(r => r.Type == ReactionType.Dislike)
+                })
+                .ToListAsync(cancellationToken);
 
-        if (!string.IsNullOrWhiteSpace(request.Name))
-        {
-            var search = $"%{request.Name.Trim()}%";
+            var result = new PaginatedList<BlogListResponse>(
+                items,
+                request.PageNumber,
+                count,
+                request.PageSize);
 
-            query = query.Where(x =>
-                EF.Functions.Like(x.TitleEn ?? string.Empty, search) ||
-                EF.Functions.Like(x.TitleAr ?? string.Empty, search));
+            return Result<PaginatedList<BlogListResponse>>.Success(
+                result,
+                _localizer["BlogsRetrievedSuccessfully"]);
         }
 
-        if (request.IsActive.HasValue)
+        private IQueryable<Blog> BuildQuery(GetBlogsQuery request)
         {
-            query = query.Where(x =>
-                x.IsActive == request.IsActive.Value);
+            var query = _context.Blogs
+                .AsNoTracking()
+                .AsSplitQuery();
+
+            if (!string.IsNullOrWhiteSpace(request.Name))
+            {
+                var search = $"%{request.Name.Trim()}%";
+
+                query = query.Where(x =>
+                    EF.Functions.Like(x.TitleEn ?? string.Empty, search) ||
+                    EF.Functions.Like(x.TitleAr ?? string.Empty, search));
+            }
+
+            if (request.IsActive.HasValue)
+                query = query.Where(x => x.IsActive == request.IsActive.Value);
+
+            if (request.BlogCategoryId.HasValue)
+                query = query.Where(x => x.BlogsCategoryId == request.BlogCategoryId.Value);
+
+            if (request.CreatedFrom.HasValue)
+                query = query.Where(x => x.CreatedAt >= request.CreatedFrom.Value.Date);
+
+            if (request.CreatedTo.HasValue)
+                query = query.Where(x => x.CreatedAt < request.CreatedTo.Value.Date.AddDays(1));
+
+            return query.OrderByDescending(x => x.CreatedAt);
         }
-
-        if (request.BlogCategoryId.HasValue)
-        {
-            query = query.Where(x =>
-                x.BlogsCategoryId == request.BlogCategoryId.Value);
-        }
-
-        if (request.CreatedFrom.HasValue)
-        {
-            var createdFrom = request.CreatedFrom.Value.Date;
-
-            query = query.Where(x =>
-                x.CreatedAt >= createdFrom);
-        }
-
-        if (request.CreatedTo.HasValue)
-        {
-            var createdTo = request.CreatedTo.Value.Date.AddDays(1);
-
-            query = query.Where(x =>
-                x.CreatedAt < createdTo);
-        }
-
-        return query.OrderByDescending(x => x.CreatedAt);
     }
 }
