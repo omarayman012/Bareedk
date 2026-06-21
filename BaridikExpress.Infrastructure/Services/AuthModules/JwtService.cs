@@ -24,11 +24,14 @@ namespace BaridikExpress.Infrastructure.Services.AuthModules
         public Task<string> GenerateToken(User user, string role, IEnumerable<string> permissions)
         {
             var claims = new List<Claim>
-            {
+{
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(ClaimTypes.Name, user.FullName),
                 new Claim(ClaimTypes.Email, user.Email ?? ""),
-                new Claim(ClaimTypes.Role, role)
+                new Claim(ClaimTypes.Role, role),
+
+                // 🔥 يخلي كل توكن مختلف 100%
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
 
@@ -36,13 +39,13 @@ namespace BaridikExpress.Infrastructure.Services.AuthModules
                 Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var expiryMinutes = int.Parse(_config["Jwt:ExpiryMinutes"] ?? "60");
+            var expiryDays = int.Parse(_config["Jwt:ExpiryDays"] ?? "7");
 
             var token = new JwtSecurityToken(
                 issuer: _config["Jwt:Issuer"],
                 audience: _config["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(expiryMinutes),
+                expires: DateTime.UtcNow.AddDays(expiryDays),
                 signingCredentials: creds
             );
 

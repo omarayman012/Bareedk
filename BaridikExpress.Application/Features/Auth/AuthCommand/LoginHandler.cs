@@ -3,6 +3,7 @@ using BaridikExpress.Application.Features.Auth.Command;
 using BaridikExpress.Application.Interfaces.Auth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Localization;
 
 namespace BaridikExpress.Application.Features.Auth.AuthCommand
@@ -13,16 +14,19 @@ namespace BaridikExpress.Application.Features.Auth.AuthCommand
         private readonly IJwtService _jwtService;
         private readonly IApplicationDbContext _context;
         private readonly IStringLocalizer _localizer;
+        private readonly IConfiguration _config;
 
         public LoginHandler(
             UserManager<User> userManager,
             IJwtService jwtService,
             IApplicationDbContext context,
-            IStringLocalizer localizer)
+            IStringLocalizer localizer,
+            IConfiguration config)
         {
             _userManager = userManager;
             _jwtService = jwtService;
             _context = context;
+            _config = config;
             _localizer = localizer;
         }
 
@@ -127,8 +131,9 @@ namespace BaridikExpress.Application.Features.Auth.AuthCommand
 
             var refreshToken = Guid.NewGuid().ToString();
             user.RefreshToken = refreshToken;
-            user.RefreshTokenExpireAt = DateTime.UtcNow.AddDays(7);
-
+            user.RefreshTokenExpireAt = DateTime.UtcNow.AddDays(
+                int.Parse(_config["Jwt:RefreshTokenExpiryDays"] ?? "7")
+            );
             await _userManager.UpdateAsync(user);
 
             // ================= RESPONSE =================
