@@ -39,13 +39,13 @@ namespace BaridikExpress.Infrastructure.Services.AuthModules
                 Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var expiryDays = int.Parse(_config["Jwt:ExpiryDays"] ?? "7");
+            var expiryMinutes = int.Parse(_config["Jwt:ExpiryMinutes"] ?? "1");
 
             var token = new JwtSecurityToken(
                 issuer: _config["Jwt:Issuer"],
                 audience: _config["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.UtcNow.AddDays(expiryDays),
+                expires: DateTime.UtcNow.AddMinutes(expiryMinutes),
                 signingCredentials: creds
             );
 
