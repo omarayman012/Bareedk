@@ -134,7 +134,7 @@ namespace BaridikExpress.API.Controllers.AuthModules
             return StatusCode(result.StatusCode, result);
         }
 
-        //[Authorize]
+        [AllowAnonymous]
         [HttpPost("refresh-token")]
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenCommand command)
         {
