@@ -1,6 +1,8 @@
 ﻿using BaridikExpress.Application.Common.Helpers;
 using BaridikExpress.Application.Interfaces.IRepository;
 using BaridikExpress.Domain.Entities.OurPlans;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace BaridikExpress.Application.Features.OurPlans.Commands.CreatePlan;
 
@@ -49,19 +51,28 @@ public sealed class CreatePlanCommandHandler(
         var featuresAr = new List<string>();
         var featuresEn = new List<string>();
 
-        var features = request.FeaturesAr?.Any() == true
-            ? request.FeaturesAr
-            : request.FeaturesEn;
+        var maxCount = Math.Max(
+            request.FeaturesAr?.Count ?? 0,
+            request.FeaturesEn?.Count ?? 0);
 
-        foreach (var feature in features)
+        for (int i = 0; i < maxCount; i++)
         {
-            var (featureAr, featureEn) =
-                NormalizeHelper.Normalize(
-                    feature,
-                    feature);
+            var ar = i < (request.FeaturesAr?.Count ?? 0)
+                ? request.FeaturesAr[i]
+                : null;
 
-            featuresAr.Add(featureAr);
-            featuresEn.Add(featureEn);
+            var en = i < (request.FeaturesEn?.Count ?? 0)
+                ? request.FeaturesEn[i]
+                : null;
+
+            var (featureAr, featureEn) =
+                NormalizeHelper.Normalize(ar, en);
+
+            if (!string.IsNullOrWhiteSpace(featureAr))
+                featuresAr.Add(featureAr);
+
+            if (!string.IsNullOrWhiteSpace(featureEn))
+                featuresEn.Add(featureEn);
         }
 
         #endregion
@@ -69,9 +80,9 @@ public sealed class CreatePlanCommandHandler(
         #region Create & Save
 
         var plan = new Plan(
-            nameEn,
-            nameAr,
-             request.Type,
+            nameEn!,
+            nameAr!,
+            request.Type,
             featuresEn,
             featuresAr,
             descriptionEn,
